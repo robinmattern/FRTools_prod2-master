@@ -178,8 +178,11 @@ function cpyToBin( ) {
 
 #   cpyScript "anyllm  " "${aRepo_Dir}/run-anyllm.sh"
 #   cpyScript "gitr    " "${aRepo_Dir}/._2/JPTs/gitr.sh"
+
     cpyScript "jpt     " "${aRepo_Dir}/._2/JPTs/JPT30_Main0.sh"
-    cpyScript "rss     " "${aRepo_Dir}/._2/JPTs/RSS/fileList/RSS21_FileList.sh"
+    cpyScript "rss     " "${aRepo_Dir}/._2/JPTs/RSS/RSS01_Main1.sh"                     # .(41029.03.1 RAM Was: fileList/RSS21_FileList.sh)
+    cpyScript "rss2    " "${aRepo_Dir}/._2/JPTs/RSS/RSS02_Main1.sh"                     # .(41029.03.2 RAM Added)
+    cpyScript "rdir    " "${aRepo_Dir}/._2/JPTs/RSS/fileList/RSS21_FileList.sh"         # .(41029.03.3 RAM Added)
     cpyScript "dirlist " "${aRepo_Dir}/._2/JPTs/RSS/dirList/RSS22_DirList.sh"
     cpyScript "info    " "${aRepo_Dir}/._2/JPTs/RSS/infoR/RSS23_Info.sh"
 #   cpyScript "killport" "${aRepo_Dir}/._2/JPTs/JPT34_killPort_p1.01.sh"
