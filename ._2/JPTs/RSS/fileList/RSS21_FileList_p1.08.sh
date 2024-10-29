@@ -70,10 +70,10 @@ while [[ $# > 0 ]]; do key="$1"; # echo "key: '${key}', \$2: '$2'"
       -s|-S)  if [ "${2:0:1}" != "-" ] && [  ! -z  $2 ]; then nSort="$2";   shift; else nSort="2";                       fi; ;; # echo "nSort: ${nSort}"; ;;
       -x|-X)  if [ "${2:0:1}" != "-" ] && [  ! -z  $2 ]; then aExcl="$2";   shift; else aExcl="node_mod|bower_comp";     fi; ;; # echo "aExcl: ${aExcl}"; ;;
 #     -i|-I)  if [ "${2:0:1}" != "-" ] && [  ! -z  $2 ]; then aIncl="$2";   shift; else aIncl="node_modules$";           fi; ;; # echo "aIncl: ${aIncl}"; ;; # .(11010.01.2 RAM Add -i Inclide option).(11010.01.2 RAM Use -x)
-#     -i|-I)  if [ "${2:0:1}" != "-" ] && [ "n" == $2 ]; then aIncl="node_module$";         fi; ;; # echo "aIncl: ${aIncl}"; ;;                              # .(11010.01.2 RAM Add -i Inclide option)
+#     -i|-I)  if [ "${2:0:1}" != "-" ] && [ "n" == $2 ]; then aIncl="node_module$";                                      fi; ;; # echo "aIncl: ${aIncl}"; ;;                              # .(11010.01.2 RAM Add -i Inclide option)
       -f|-F)  if [ "${2:0:1}" != "-" ]                 ; then bFile="1" ;                     shift;                     fi; ;; # echo "bFile: ${bFile}"; ;;
-      -h|--help|-help|help|/\?)                               aHelp=true;             ;;                                                                     # .(90401.01.1 Added -help)
-      *)                         i=`expr $i + 1`;             mArgs[$i]="$key";       ;;     # .(60506.01.2)
+      -h|--help|-help|help|/\?)                               aHelp=true;           ;;                                                                       # .(90401.01.1 Added -help)
+      *)                         i=`expr $i + 1`;             mArgs[$i]="$key";     ;;                                                                       # .(60506.01.2)
     esac;
     shift;
    done
