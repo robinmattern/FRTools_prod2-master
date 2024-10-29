@@ -1,0 +1,71 @@
+BASH=/bin/bash
+
+
+BASH_ARGC=()
+BASH_ARGV=()
+
+
+BASH_LINENO=()
+BASH_SOURCE=()
+BASH_VERSINFO=([0]="3" [1]="2" [2]="57" [3]="1" [4]="release" [5]="x86_64-apple-darwin20")
+BASH_VERSION='3.2.57(1)-release'
+COLUMNS=200
+DIRSTACK=()
+
+EUID=501
+GROUPS=()
+
+HISTFILE=/Users/robin/.bash_history
+HISTFILESIZE=500
+HISTSIZE=500
+
+HOME=/Users/robin
+HOSTNAME=rm220d.local
+HOSTTYPE=x86_64
+IFS=$' \t\n'
+
+
+
+
+LINES=25
+LOGNAME=robin
+
+MACHTYPE=x86_64-apple-darwin20
+
+MAILCHECK=60
+
+NVS_HOME=/Users/robin/.nvs
+NVS_OS=darwin
+NVS_ROOT=/Users/robin/.nvs
+NVS_USE_XZ=1
+OPTERR=1
+OPTIND=1
+
+
+
+
+OSTYPE=darwin20
+PATH='/Library/Frameworks/Python.framework/Versions/3.11/bin:/home/_0/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Applications/VMware Fusion.app/Contents/Public'
+PIPESTATUS=([0]="127")
+PPID=75237
+PS1='\h:\W \u\$ '
+PS2='> '
+PS4='+ '
+PWD=/Users/robin
+
+
+SHELL=/bin/bash
+SHELLOPTS=braceexpand:emacs:hashall:histexpand:history:interactive-comments:monitor
+SHLVL=1
+SSH_CLIENT='10.0.0.126 65194 22'
+SSH_CONNECTION='10.0.0.126 65194 10.0.0.75 22'
+SSH_TTY=/dev/ttys000
+TERM=xterm-16color
+THE_SERVER=rm219d_os11-MacMini-Dev01
+TMPDIR=/var/folders/_g/_lp7_9fj3x330y6mm_8fr4qc0000gn/T/
+
+UID=501
+USER=robin
+
+
+

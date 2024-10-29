@@ -1,0 +1,63 @@
+#!/bin/bash
+#   dockR Launcher on sc228d-w11p (local)
+
+         FRT_Scr=FRT24_run-dockr_p1.02.sh                               # current folder
+#        FRT_Scr=FRT24_run-dockr.sh                                     # FRTools folder below
+
+#        FRT_Dir="."                                                    # current folder
+         FRT_Dir="$( dirname $0 )"                                      # bin folder
+#        FRT_Dir="/C/Home/JSCW/._1/FRTs"                                # rm228-w11p
+#        FRT_Dir="/E/Repos/8020/FRTools_/prod1-master/._2/FRTs/dokR"    # rm228-w11p
+#        FRT_Dir="/home/_0/bin"                                         # rm220-os11
+#        FRT_Dir="/D/Home/JSCW/._1/FRTs"                                # rm228-w11p
+#        FRT_Dir="/D/Home/Robin/._1/FRTs"                               # sc168-w08s
+#        FRT_Dir="/nfs/u06/SCN2/._1/FRTs"                               # sc154-rh62, sc153-ub14 -- sc172:/NFS/U06
+#        FRT_Dir="/M/U06/SCN2/._1/FRTs"                                 # rm112-w10p, sc168-w08s -- sc172:/NFS/U06
+
+ if [   -f   "FRT11_run-dockr.sh"  ]; then FRT_Dir="."; fi; # echo "  FRT: ${FRT_Dir}/${FRT_Scr}"; exit
+ if [ ! -f "${FRT_Dir}/${FRT_Scr}" ]; then
+    echo -e "\n* Can't locate dockR script '${FRT_Dir}/${FRT_Scr}'.\n"
+    exit
+    fi
+
+#   echo "${FRT_Dir}/${FRT_Scr}" "$@"; exit
+#        "${FRT_Dir}/${FRT_Scr}" "$@"
+
+    export FRT_Dir
+    export FRT_RUN_DOCKR="${FRT_Dir}/${FRT_Scr}";                                          aCmd=""
+
+ if [ "${1:0:4}" == "stat" ] || [ "${1:0:3}" == "ima"  ] || [ "${1:0:3}" == "ini"  ]; then aCmd="$1";   fi
+ if [ "${1:0:3}" == "lis"  ] || [ "${1:0:4}" == "runn" ];                             then aCmd="list"; fi
+ if [ "${1:0:3}" == "con"  ];                                                         then aCmd="containers"; fi
+
+ if [   -f "run-docker.sh" ]; then    aDockr_Cmd="./run-docker.sh"; else aDockr_Cmd="${FRT_RUN_DOCKR}"; fi
+#                             echo "  aDockr_Cmd: ${aDockr_Cmd}";
+ if [ "${aCmd}"  != ""     ]; then  ${aDockr_Cmd} "$@"; exit; fi
+ if [ "$1" == ""           ]; then  ${aDockr_Cmd};      exit; fi
+
+function echo_exit() {
+   if [ "${OSTYPE:0:6}" == "darwin" ]; then echo ""; fi
+   exit
+   }
+
+ if [ ! -f "run-docker.sh" ]; then
+    echo -e "\n* You must be in a folder with a script, run-docker.sh"
+    echo -e   "  configured to run a specific Docker image"
+    echo_exit
+    fi
+
+ if [ "$1" == "midori"     ]; then echo ""; ./subsystem_manager.exe; echo ""; exit; fi
+
+ if [ "$1" != ""           ]; then ./run-docker.sh $1 $2; exit; fi
+
+# This convoluted script, is formR's management tool for managing Docker containers.
+# It calls, run-docker.sh, that must exist in a folder containing files to support
+# Docker Pull or Docker Build.  The script creates three variables.
+#
+#   DOCKR_IMAGE_NAME        For the Pull and Start commands
+#   DOCKR_RUN_COMMAND       For the Run command
+#   DOCKR_STORAGE_LOCATION  For Mounting volumes
+#
+# It then calls the script, FRT11_run-dockr.sh, that runs the DOCKR commands.
+# See docker help for instructions.
+#

@@ -1,0 +1,153 @@
+#!/bin/bash
+
+  VENV_DIR=.venv
+  VENV_DIR=python_modules
+
+function echo_exit() {
+   if [ "${OSTYPE:0:6}" == "darwin"  ]; then fi
+   if [ "${OSTYPE:0:5}" == "linux"   ]; then echo ""; fi
+   if [ "${OSTYPE:0:4}" == "msys"    ]; then fi
+   if [ "${OS:0:7}"     == "Windows" ]; then echo ""; fi
+
+   if [ "$1" != "no-exit" ];            then echo "exiting..."; exit; else "not exiting"; fi
+   }
+#  ---------------------------------------------------------
+
+if [ "$(which pip)" == "" ]; then
+   echo -e "\n* Note: Python is not installed."
+   echo_exit
+   fi
+#  ---------------------------------------------------------
+
+if [ "$1" == "" ]; then
+   echo -e "\n  pyr [cmd}   for a python virtural environment"
+   echo      "      show        the current one"
+   echo      "      list        the installed packages for it"
+   echo      "      activate    it in the current folder"
+   echo      "      deactivate  it in the current folder"
+   echo      "      create      a new one in the current folder"
+   pyr show
+   echo_exit
+   fi
+#  ---------------------------------------------------------
+
+function pry_show() {
+if [ "${VIRTURAL_ENV}" != "" ]; then
+   echo -e "\n  Python VIRTUAL_ENV:\n    ${VIRTURAL_ENV}";
+ else
+   echo ""
+   pip --version | awk '{ sub( /.+from/, ""); sub( /[\\\/]Lib.+ /, " (Python " ); sub( /__.+/, "" ); print "  Python VIRTUAL_ENV:\n   " $0 }'
+   fi
+   }
+#  ---------------------------------------------------------
+
+if [ "$1" == "show" ]; then
+   pyr_show
+   exit_show
+   fi
+#  ---------------------------------------------------------
+
+if [ "$1" == "list" ]; then
+   echo ""
+   pip list | awk '/^'$2'/'
+   echo_exit
+   fi
+#  ---------------------------------------------------------
+
+if [ "$1" == "create" ]; then
+   echo ""
+   echo    "Are you sure you want to create a Python virtual environment"
+   read -p "  in this folder, ${PWD##*/}/${VENV_DIR}. (y/n) " yorn
+
+   if [ "${yorn}" != "y" ] && [ "${yorn}" != "Y" ]; then
+     echo "  Exiting..."
+     exit 1  # Use exit code 1 to indicate user cancellation
+     fi
+   python -m venv python_modules
+   echo_exit
+   fi
+#  ---------------------------------------------------------
+
+if [ ! -d "${VENV_DIR}" ]; then
+   echo -e "\n* You need to be in a Python project folder to $1 a virtural environment";
+#  else
+
+#  echo ""
+#  echo -e "\n  CD $(pwd)\n"; # exit
+   pyr show
+   echo_exit
+   fi
+# -----------------------------------------------------
+
+     bNotSourced=1
+  if [ "$2" == "dos" ] || [ "$3" == "dos" ]; then bDOS=1; else bDOS=0;
+
+#  echo "BASH_SOURCE: ${BASH_SOURCE[0]}"
+#  echo "\$0: $0"
+
+  if [ "${BASH_SOURCE[0]}" == "${0}" ]; then bNotSourced=1; else bNotSourced=0; fi; # echo "Not Sourced: ${bNotSourced}"
+
+  if [ "${bNotSourced}" == "1" ]; then echo -e "\n* Please run: source pyr $1 (${bNotSourced})";       echo_exit; fi
+# if [ "${bNotSourced}" == "0" ]; then echo -e "\n  You are running : source pyr $1 (${bNotSourced})"; return;    fi
+
+#    source ~/.bash_profile
+#    echo_exit no-exit; if [ "${bNotSourced}" == "1" ]; then echo "exiting (${bNotSourced})"; exit; else echo "returning (${bNotSourced})"; return; fi
+  fi
+# -----------------------------------------------------
+
+  GIT_BRANCH=" ($( git branch 2>&1 | awk '/^\*/ { print $2 }' ))"
+# GIT_BRANCH=$(__git_ps1)   # a special function created by git
+# GIT_BRANCH=$1
+
+# echo "GIT_BRANCH: ${GIT_BRANCH}"; # exit
+
+# -----------------------------------------------------
+
+if [ "$1" == "deactivate" ]; then
+
+   if [ "${bDOS}" == "1" ]; then  echo "${bDOS}:deactivate"; fi
+   if [ "${bDOS}" != "1" ]; then  echo "${bDOS}:source ${VENV_DIR}/Scripts/deactivate"; fi
+#  echo_exit no-exit; return
+   echo "fuck you"
+   return
+
+#  echo ""
+# ${VENV_DIR}/Scripts/deactivate.bat
+#  if [ "$( command -v deactivate )" != ""      ]; then deactivate; fi
+   if [ "$( command -v deactivate )" == ""      ]; then
+   echo -e "\n* Command, deactivate, not found"
+#  if [ -f "${VENV_DIR}/Scripts/deactivate.bat" ]; then
+
+#  if [ "${bDOS}" == "1" ]; then        deactivate; fi
+#  if [ "${bDOS}" != "1" ]; then source deactivate; fi
+   fi
+   export VIRTUAL_ENV=""
+   export PROJECT_NAME=
+   export PS1="\[\033]0;$TITLEPREFIX:$PWD\007\]\n\[\033[32m\]\u@\h \[\033[35m\]$MSYSTEM \[\033[33m\]\w\[\033[36m\]${GIT_BRANCH}\[\033[0m\]\n$ "
+
+#   pyr_show
+#   echo_exit no-exit; return
+   fi
+# -----------------------------------------------------
+
+if [ "$1" == "activate" ]; then
+
+#  echo ""
+   if [ "${bDOS}" == "1" ]; then  echo "${bDOS}:${VENV_DIR}/Scripts/activate"; fi
+   if [ "${bDOS}" != "1" ]; then  echo "${bDOS}:source ${VENV_DIR}/Scripts/activate"; fi
+#  if [ "${bDOS}" == "1" ]; then        ${VENV_DIR}/Scripts/activate; fi
+#  if [ "${bDOS}" != "1" ]; then source ${VENV_DIR}/Scripts/activate; fi
+   echo_exit no-exit; return
+
+   export VIRTUAL_ENV="${VIRTUAL_ENV}"
+   export PROJECT_NAME=$(basename "$PWD")
+   export PS1="\[\033]0;$TITLEPREFIX:$PWD\007\]\n\[\033[32m\]\u@\h \[\033[35m\]$MSYSTEM \[\033[33m\]\w\[\033[36m\]${GIT_BRANCH}\[\033[0m\] (${PROJECT_NAME}/${VENV_DIR})\n# "
+
+#  echo "   \${VIRTUAL_ENV}: ${VIRTUAL_ENV}"
+#  which python | awk '{ print "                " $0 }'
+
+   pyr_show
+   echo_exit no-exit; return
+   fi
+#  ---------------------------------------------------------
+#  echo ""

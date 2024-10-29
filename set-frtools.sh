@@ -1,0 +1,246 @@
+#!/bin/bash
+  aVer="v0.05.41023.1443"  # set-anyllm.sh
+  aVer="v0.05.41024.1000"  # set-anyllm.sh
+
+  echo ""
+
+# ---------------------------------------------------------------------------
+
+function help( ) {
+  echo "  Run . ./set-anyllm.sh commands  (${aVer} OS: ${aOS})"
+  echo "    help            This help"
+  echo "    scripts [doit]  Copy FRTools scripts"
+  echo "    profile [doit]  Update ${aBashrc} file"
+  echo "    show            ${aBashrc} and script files"
+  echo "    wipe            Erase all setup changes"
+  }
+# -----------------------------------------------------------
+
+function setOSvars( ) {
+     aTS=$( date '+%y%m%d.%H%M' ); aTS=${aTS:2}
+     aBashrc="$HOME/.bashrc"
+     aBinDir="/Home/._0/bin"
+     aOS="linux"
+  if [[ "${OS:0:7}" == "Windows" ]]; then
+     aOS="windows";
+     aBinDir="/C/Home/._0/bin"
+     fi
+  if [[ "${OSTYPE:0:6}" == "darwin" ]]; then
+     aBashrc="$HOME/.zshrc"
+     aBinDir="/Users/Shared/._0/bin"
+     aOS="darwin"
+     fi
+     }
+# -----------------------------------------------------------
+
+function Sudo( ) {
+  if [[ "${aOS}" != "windows" ]]; then if [ "${USERNAME}" != "root" ]; then sudo "$@"; fi; fi
+     }
+# -----------------------------------------------------------
+
+function exit_withCR( ) {
+  if [[ "${aOS}" != "windows" ]]; then echo ""; fi
+     }
+# -----------------------------------------------------------
+
+                                    aCmd="help";    bDoScripts="0"; bDoProfile="0"
+#  if [[ "$1" == ""        ]]; then aCmd="help";    fi
+   if [[ "$1" == "help"    ]]; then aCmd="help";    fi
+   if [[ "$1" == "profile" ]]; then aCmd="profile"; if [ "$2" == "doit" ]; then bDoProfile="1"; fi; fi
+   if [[ "$1" == "show"    ]]; then aCmd="showEm";  fi
+   if [[ "$1" == "wipe"    ]]; then aCmd="wipeIt";  fi
+   if [[ "$1" == "scripts" ]]; then aCmd="copyEm";  if [ "$2" == "doit" ]; then bDoScripts="1"; fi; fi
+
+# ---------------------------------------------------------------------------
+
+function showEm( ) {
+
+  echo "  aBinDir: '${aBinDir}'"
+  if [ -d "${aBinDir}" ]; then ls -l "${aBinDir}" | awk 'NR > 1 { print "    " $0 }'; fi
+  echo ""
+
+  echo "  .Bashrc: '${aBashrc}'"
+  if [ -f "${aBashrc}" ]; then cat  "${aBashrc}" | awk '{ print "    " $0 }'; fi
+  echo -e "    -------\n"
+
+  echo "  PATH (bin folders only):"
+  echo "${PATH}" | awk '{ gsub( /:/, "\n" );  print }' | awk '/[./]bin/ { print "    " $0 }'
+  }
+# -----------------------------------------------------------
+
+function clnHouse( ) {
+
+  PATH="${PATH/${aBinDir}:}"
+
+  if [[ -f "${aBinDir}"/* ]]; then
+  rm "${aBinDir}"/anyllm*;
+  rm "${aBinDir}"/gitr*;
+  fi
+
+  cp -p "${aBashrc}" "${aBashrc}_v${aTS}"
+  cat   "${aBashrc}" | awk '/._0/ { exit }; NF > 0 { print }' >"${aBashrc}_@tmp"
+  mv    "${aBashrc}_@tmp" "${aBashrc}"
+  }
+# -----------------------------------------------------------
+
+function  mkScript( ) {
+# echo " making script in $2/$3"; exit
+# echo "    aAnyLLMscr:  $2/$3"
+  echo "#!/bin/bash"   >"$2/$3"
+  echo "  $1 \"\$@\"" >>"$2/$3"
+  chmod 777 "$2/$3"
+  }
+# -----------------------------------------------------------
+
+function setBashrc( ) {
+
+# if [ "${PATH/._0/}" != "${PATH}" ]; then
+
+     inRC=$( cat "${aBashrc}" | awk '/._0/ { print 1 }' )
+  if [[ "${inRC}" == "1" ]]; then
+
+     echo "* The path, '${aBinDir}', is already in the User's ${aBashrc} file."
+
+   else
+
+     if [ "${bDoProfile}" == "0" ]; then aBashrc="${aBashrc}-temp"; fi
+     if [ "${bDoProfile}" == "1" ]; then cp -p "${aBashrc}" "${aBashrc}_v${aTS}"; fi
+     if [ "${bDoProfile}" == "1" ]; then aWill_add="Will add"; else aWill_add="Adding"; fi
+
+     echo " ${aWill_add} path, '${aBinDir}', to User's PATH in '${aBashrc}'."
+
+     echo ""                                                >>"${aBashrc}"
+#    echo "export PATH=\"/Users/Shared/._0/bin:\$PATH\""    >>"${aBashrc}"
+     echo "export PATH=\"${aBinDir}:\$PATH\""               >>"${aBashrc}"
+     echo ""                                                >>"${aBashrc}"
+     if [ "${aOS}" != "windows" ]; then
+     echo "function git_branch_name() {"                                                               >>"${aBashrc}"
+     echo "  branch=\$( git symbolic-ref HEAD 2>/dev/null | awk 'BEGIN{ FS=\"/\" } { print \$NF }' )"  >>"${aBashrc}"
+     echo "  if [[ \$branch == \"\" ]]; then"                                                          >>"${aBashrc}"
+     echo "    :"                                           >>"${aBashrc}"
+     echo "  else"                                          >>"${aBashrc}"
+     echo "    echo ' ('\$branch')'"                        >>"${aBashrc}"
+     echo "  fi"                                            >>"${aBashrc}"
+     echo "  }"                                             >>"${aBashrc}"
+     echo ""                                                >>"${aBashrc}"
+     echo "# Add timestamps and user to history"            >>"${aBashrc}"
+     echo "export HISTTIMEFORMAT=\"%F %T \$(whoami) \""     >>"${aBashrc}"
+     echo ""                                                >>"${aBashrc}"
+     echo "# Append to history file, don't overwrite it"    >>"${aBashrc}"
+  if [ "${aOS}" != "darwin" ]; then
+     echo "shopt -s histappend"                             >>"${aBashrc}"
+     fi
+     echo ""                                                >>"${aBashrc}"
+     echo "# Write history after every command"             >>"${aBashrc}"
+     echo "PROMPT_COMMAND=\"history -a; $PROMPT_COMMAND\""  >>"${aBashrc}"
+     echo ""                                                >>"${aBashrc}"
+     echo "alias history=\"fc -il 1\""                      >>"${aBashrc}"
+     echo ""                                                >>"${aBashrc}"
+     echo "setopt PROMPT_SUBST"                             >>"${aBashrc}"
+     echo "PROMPT='%n@%m %1~\$(git_branch_name): '"         >>"${aBashrc}"
+     fi
+     echo "  executing: source \"${aBashrc}\""
+
+  if [ "${bDoProfile}" == "1" ]; then
+     source "${aBashrc}"
+   else
+     echo "  .Bashrc-temp: '${aBashrc}'"
+     if [ -f "${aBashrc}" ]; then cat "${aBashrc}" | awk '{ print "    " $0 }'; fi
+     if [ -f "${aBashrc}" ]; then rm "${aBashrc}"; fi
+     rm
+     fi
+     fi
+  }
+# -----------------------------------------------------------
+
+function cpyToBin( ) {
+# return
+
+    aJPTs_JDir="${aBinDir}"; if [ "${aOS}" == "darwin" ]; then aJPTs_JDir="/Users/Shared/._0/bin"; fi
+
+#   echo ""
+#   echo " aJPTs_JDir: ${aJPTs_JDir}";
+#   echo " aJPTs_GitR: ${aJPTs_GitR}";
+#   echo " alias gitr: ${aJPTs_JDir}/gitr.sh";
+#   echo " copying run-anyllm.sh and gitr to: \"${aJPTs_JDir}\""; echo ""
+
+ if [   -d "${aJPTs_JDir}"   ]; then                                                     echo "  Wont create BinDir: it exists in \"${aJPTs_JDir}\""; fi
+ if [ ! -d "${aJPTs_JDir}"   ]; then
+ if [ "${bDoScripts}" == "0" ]; then                                                     echo "  Will create BinDir: doesnt exist \"${aJPTs_JDir}\""; else
+ if [ "${aOS}" == "windows"  ]; then      mkdir -p  "${aJPTs_JDir}";
+                                else Sudo mkdir -p  "${aJPTs_JDir}"; fi;                 echo "  Created BinDir:  it didn't exist \"${aJPTs_JDir}\""
+                                     Sudo chmod 777 "${aJPTs_JDir}"; fi;
+        fi;
+#   echo  "  cpyScript \"${aAnyLLMscr}\" \"anyllm\""
+
+#   aJPTs_GitR="${aRepo_Dir}/._2/JPTs/gitr.sh"
+#   aAnyLLMscr="${aRepo_Dir}/run-anyllm.sh"
+
+#   cpyScript "anyllm  " "${aRepo_Dir}/run-anyllm.sh"
+#   cpyScript "gitr    " "${aRepo_Dir}/._2/JPTs/gitr.sh"
+    cpyScript "jpt     " "${aRepo_Dir}/._2/JPTs/JPT30_Main0.sh"
+    cpyScript "rss     " "${aRepo_Dir}/._2/JPTs/RSS/fileList/RSS21_FileList.sh"
+    cpyScript "dirlist " "${aRepo_Dir}/._2/JPTs/RSS/dirList/RSS22_DirList.sh"
+    cpyScript "info    " "${aRepo_Dir}/._2/JPTs/RSS/infoR/RSS23_Info.sh"
+#   cpyScript "killport" "${aRepo_Dir}/._2/JPTs/JPT34_killPort_p1.01.sh"
+
+    cpyScript "frt     " "${aRepo_Dir}/._2/FRTs/FRT40_Main0.sh"
+    cpyScript "keys    " "${aRepo_Dir}/._2/FRTs/keyS/FRT41_keyS1.sh"
+    cpyScript "gitr    " "${aRepo_Dir}/._2/FRTs/gitR/FRT42_gitR1.sh"
+    cpyScript "gitr1   " "${aRepo_Dir}/._2/FRTs/gitR/FRT42_gitR1.sh"
+    cpyScript "gitr2   " "${aRepo_Dir}/._2/FRTs/gitR/FRT42_gitR2.sh"
+#   cpyScript "gitclone" "${aRepo_Dir}/._2/FRTs/gitR/FRT43_gitR_clone_p1.04.sh"
+#   cpyScript "dokrun  " "${aRepo_Dir}/._2/FRTs/gitR/FRT44_run-docker_p1.02.sh"
+    cpyScript "dokr    " "${aRepo_Dir}/._2/FRTs/dokR/FRT45_dokR1.sh"
+    cpyScript "docr    " "${aRepo_Dir}/._2/FRTs/FRT46_docR0.sh"
+#   cpyScript "killport" "${aRepo_Dir}/._2/FRTs/RSS/portR/killPort"
+#   cpyScript "appr    " "${aRepo_Dir}/._2/FRTs/appR/FRT47_FRApp1_u1.07.sh
+#   cpyScript "prox    " "${aRepo_Dir}/._2/FRTs/proX/FRT48_Proxy1_u1.07.sh
+
+#   "E:\VMs\RAM3-Dev03\rm231\Users\Shared\Repos\FRTools_\prod1-master\._2\FRTs\gitR\FRT22_gitR1_p1.01.sh"
+#   "/e/VMs/RAM3-Dev03/rm231/Users/Shared/Repos/FRTools_/prod1-master/._2/JPTs/gitr.sh"
+#   "E:\VMs\RAM3-Dev03\rm231\Users\Shared\Repos\FRTools_\prod1-master\._2\JPTs\RSS\dirList\RSS22_DirList.sh"
+
+# if [   -f  "${aJPTs_GitR}" ]; then cp    -p "${aJPTs_GitR}" "${aJPTs_JDir}/";          echo "  Copied:  ${aJPTs_GitR}"; fi
+# if [   -f  "${aJPTs_GitR}" ]; then mkScript "${aJPTs_GitR}" "${aJPTs_JDir}" "gitr";    echo "  Created: ${aJPTs_GitR}";
+#                                    Sudo chmod 777 "${aJPTs_GitR}"; fi
+
+# if [   -f  "${aAnyLLMscr}" ]; then mkScript "${aAnyLLMscr}" "${aJPTs_JDir}" "anyllm";  echo "  Created: ${aJPTs_JDir}/anyllm";
+#                                    Sudo chmod 777 "${aAnyLLMscr}"; fi
+
+# alias gitr="${aJPTs_JDir}/gitr";      echo "  Done: created alias gitr   = ${aJPTs_JDir}/gitr"
+# alias anyllm="${aJPTs_JDir}/anyllm";  echo "  Done: created alias anyllm = ${aJPTs_JDir}/anyllm"
+  }
+# ---------------------------------------------------------------------------
+
+function cpyScript( ) {
+
+  aJPTs_Script="$2"; aName1="$1"; aName="${aName1// /}" # echo "  cp -p \"${aJPTs_Script}\" to \"${aJPTs_JDir}/${aName}\""
+# echo "  copying script: \"${aJPTs_Script}\" to \"${aJPTs_JDir}/${aName}\""
+  if [ ! -f "${aJPTs_Script}" ]; then                                                           echo "* Script not found:  \"${aJPTs_Script}\""; return; fi
+  if [ "${bDoScripts}" == "0" ]; then                                                           echo "  Will create script: ${aName1} for \"${aJPTs_Script}\""; return; fi
+# if [   -f "${aJPTs_Script}" ]; then cp    -p  "${aJPTs_Script}" "${aJPTs_JDir}/";             echo "  Copied  script for: ${aName1}  in \"${aJPTs_Script}\""; fi
+  if [   -f "${aJPTs_Script}" ]; then mkScript  "${aJPTs_Script}" "${aJPTs_JDir}" "${aName}";   echo "  Created script for: ${aName1}  in \"${aJPTs_Script}\"";
+                                 Sudo chmod 777 "${aJPTs_Script}"; fi
+  }
+# ---------------------------------------------------------------------------
+
+  aRepo_Dir="$(pwd)"
+  cd ..
+  aProj_Dir="$(pwd)"
+
+  setOSvars; # echo "  OS: ${aOS}"
+
+  if [[ "${aCmd}" == "help"    ]]; then help; fi
+  if [[ "${aCmd}" == "showEm"  ]]; then showEm; fi
+  if [[ "${aCmd}" == "wipeIt"  ]]; then clnHouse; fi
+  if [[ "${aCmd}" == "profile" ]]; then setBashrc; fi
+  if [[ "${aCmd}" == "copyEm"  ]]; then cpyToBin; fi
+
+# ---------------------------------------------------------------------------
+
+  cd "${aRepo_Dir}"
+
+  exit_withCR
+
+

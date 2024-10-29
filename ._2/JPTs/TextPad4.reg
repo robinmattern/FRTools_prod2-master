@@ -1,0 +1,925 @@
+Windows Registry Editor Version 5.00
+
+[HKEY_CURRENT_USER\Software\Helios\TextPad 4]
+
+[HKEY_CURRENT_USER\Software\Helios\TextPad 4\Clip Library]
+"ClipBookIndex"=dword:ffffffff
+"ClipBookTop"=dword:00000000
+"ClipBookEntry"=dword:00000000
+
+[HKEY_CURRENT_USER\Software\Helios\TextPad 4\Compatibility]
+
+[HKEY_CURRENT_USER\Software\Helios\TextPad 4\Docking]
+
+[HKEY_CURRENT_USER\Software\Helios\TextPad 4\Docking\Control-Bar0]
+"BarID"=dword:0000e801
+"Style"=dword:00008000
+"ExStyle"=dword:00000000
+"PrevFloating"=dword:00000000
+"MDIChild"=dword:00000000
+"PctWidth"="1000000"
+"MRUFloatCX"=dword:00000000
+"MRUFloatCY"=dword:00000000
+"MRUHorzDockCX"=dword:00000000
+"MRUHorzDockCY"=dword:00000000
+"MRUVertDockCX"=dword:00000000
+"MRUVertDockCY"=dword:00000000
+"MRUDockingState"=dword:00000000
+"DockingStyle"=dword:00000000
+"TypeID"=dword:00000000
+"ClassName"="SECCustomStatusBar"
+"WindowName"=""
+"ResourceID"=dword:00000000
+
+[HKEY_CURRENT_USER\Software\Helios\TextPad 4\Docking\Control-Bar1]
+"BarID"=dword:0000e804
+"Visible"=dword:00000000
+"XPos"=dword:00000007
+"YPos"=dword:0000001f
+"Docking"=dword:00000001
+"MRUDockID"=dword:00000000
+"MRUDockLeftPos"=dword:00000007
+"MRUDockTopPos"=dword:0000001f
+"MRUDockRightPos"=dword:0000009d
+"MRUDockBottomPos"=dword:000001f1
+"MRUFloatStyle"=dword:00000004
+"MRUFloatXPos"=dword:00000007
+"MRUFloatYPos"=dword:0000001f
+"Style"=dword:00001f8c
+"ExStyle"=dword:00000f11
+"PrevFloating"=dword:00000000
+"MDIChild"=dword:00000000
+"PctWidth"="1000000"
+"MRUFloatCX"=dword:0000012c
+"MRUFloatCY"=dword:000000b4
+"MRUHorzDockCX"=dword:0000012c
+"MRUHorzDockCY"=dword:000000b4
+"MRUVertDockCX"=dword:000000d1
+"MRUVertDockCY"=dword:000001d2
+"MRUDockingState"=dword:00000000
+"DockingStyle"=dword:00005000
+"TypeID"=dword:00000000
+"ClassName"="SECControlBar"
+"WindowName"="Clip Library"
+"ResourceID"=dword:00000000
+
+[HKEY_CURRENT_USER\Software\Helios\TextPad 4\Docking\Control-Bar10]
+"BarID"=dword:0000e80b
+"Visible"=dword:00000000
+"XPos"=dword:00000007
+"YPos"=dword:00000015
+"Docking"=dword:00000001
+"MRUDockID"=dword:00000000
+"MRUDockLeftPos"=dword:00000007
+"MRUDockTopPos"=dword:00000015
+"MRUDockRightPos"=dword:000001e6
+"MRUDockBottomPos"=dword:00000033
+"MRUFloatStyle"=dword:00002004
+"MRUFloatXPos"=dword:00000007
+"MRUFloatYPos"=dword:0000001f
+"Style"=dword:00002fb4
+"ExStyle"=dword:0000030c
+"PrevFloating"=dword:00000000
+"MDIChild"=dword:00000000
+"PctWidth"="1000000"
+"MRUFloatCX"=dword:00000000
+"MRUFloatCY"=dword:00000000
+"MRUHorzDockCX"=dword:000001df
+"MRUHorzDockCY"=dword:0000001e
+"MRUVertDockCX"=dword:00000000
+"MRUVertDockCY"=dword:00000000
+"MRUDockingState"=dword:00000000
+"DockingStyle"=dword:0000f000
+"TypeID"=dword:00003a62
+"ClassName"="TxpCustomToolBar"
+"WindowName"="Tools"
+"ResourceID"=dword:00000000
+"Title"="Tools"
+"Buttons"=hex:54,80,00,00,00,50,80,00,00,00,b3,81,00,00,00,b0,81,00,00,00,56,\
+  80,00,00,00,57,80,00,00,00,58,80,00,00,00,59,80,00,00,00,5a,80,00,00,00,5b,\
+  80,00,00,00,5c,80,00,00,00,5d,80,00,00,00,5e,80,00,00,00,5f,80,00,00,00,60,\
+  80,00,00,00,61,80,00,00,00,62,80,00,00,00,63,80,00,00,00,64,80,00,00,00,65,\
+  80,00,00,00
+
+[HKEY_CURRENT_USER\Software\Helios\TextPad 4\Docking\Control-Bar11]
+"BarID"=dword:0000e80c
+"Visible"=dword:00000000
+"XPos"=dword:00000007
+"YPos"=dword:0000001f
+"Docking"=dword:00000001
+"MRUDockID"=dword:00000000
+"MRUDockLeftPos"=dword:00000007
+"MRUDockTopPos"=dword:0000001f
+"MRUDockRightPos"=dword:000000a4
+"MRUDockBottomPos"=dword:0000003d
+"MRUFloatStyle"=dword:00002004
+"MRUFloatXPos"=dword:00000007
+"MRUFloatYPos"=dword:0000001f
+"Style"=dword:00002fb4
+"ExStyle"=dword:0000030c
+"PrevFloating"=dword:00000000
+"MDIChild"=dword:00000000
+"PctWidth"="1000000"
+"MRUFloatCX"=dword:00000000
+"MRUFloatCY"=dword:00000000
+"MRUHorzDockCX"=dword:0000009d
+"MRUHorzDockCY"=dword:0000001e
+"MRUVertDockCX"=dword:00000000
+"MRUVertDockCY"=dword:00000000
+"MRUDockingState"=dword:00000000
+"DockingStyle"=dword:0000f000
+"TypeID"=dword:00003a62
+"ClassName"="TxpCustomToolBar"
+"WindowName"="Window"
+"ResourceID"=dword:00000000
+"Title"="Window"
+"Buttons"=hex:35,e1,00,00,00,33,e1,00,00,00,34,e1,00,00,00,32,e1,00,00,00,3a,\
+  80,00,00,00,3b,80,00,00,00
+
+[HKEY_CURRENT_USER\Software\Helios\TextPad 4\Docking\Control-Bar2]
+"BarID"=dword:0000e805
+"XPos"=dword:00000000
+"YPos"=dword:fffffffe
+"Docking"=dword:00000001
+"MRUDockID"=dword:0000e81c
+"MRUDockLeftPos"=dword:00000000
+"MRUDockTopPos"=dword:fffffffe
+"MRUDockRightPos"=dword:000000d1
+"MRUDockBottomPos"=dword:00000311
+"MRUFloatStyle"=dword:00000004
+"MRUFloatXPos"=dword:00000007
+"MRUFloatYPos"=dword:0000001f
+"Style"=dword:00001f8c
+"ExStyle"=dword:00000f11
+"PrevFloating"=dword:00000000
+"MDIChild"=dword:00000000
+"PctWidth"="1000000"
+"MRUFloatCX"=dword:0000012c
+"MRUFloatCY"=dword:000000b4
+"MRUHorzDockCX"=dword:0000012c
+"MRUHorzDockCY"=dword:000000b4
+"MRUVertDockCX"=dword:000000d1
+"MRUVertDockCY"=dword:00000313
+"MRUDockingState"=dword:00000000
+"DockingStyle"=dword:0000f000
+"TypeID"=dword:00000000
+"ClassName"="SECControlBar"
+"WindowName"="Selector"
+"ResourceID"=dword:00000000
+
+[HKEY_CURRENT_USER\Software\Helios\TextPad 4\Docking\Control-Bar3]
+"BarID"=dword:0000e81b
+"Bars"=dword:0000000f
+"Bar#0"=dword:00000000
+"Bar#1"=dword:0000e806
+"Bar#2"=dword:00000000
+"Bar#3"=dword:0000e807
+"Bar#4"=dword:00000000
+"Bar#5"=dword:0000e808
+"Bar#6"=dword:00000000
+"Bar#7"=dword:0000e809
+"Bar#8"=dword:00000000
+"Bar#9"=dword:0000e80a
+"Bar#10"=dword:00000000
+"Bar#11"=dword:0000e80b
+"Bar#12"=dword:00000000
+"Bar#13"=dword:0000e80c
+"Bar#14"=dword:00000000
+"Style"=dword:00000000
+"ExStyle"=dword:00000000
+"PrevFloating"=dword:00000000
+"MDIChild"=dword:00000000
+"PctWidth"="0"
+"MRUFloatCX"=dword:00000000
+"MRUFloatCY"=dword:00000000
+"MRUHorzDockCX"=dword:00000000
+"MRUHorzDockCY"=dword:00000000
+"MRUVertDockCX"=dword:00000000
+"MRUVertDockCY"=dword:00000000
+"MRUDockingState"=dword:00000000
+"DockingStyle"=dword:00000000
+"TypeID"=dword:00000000
+"ClassName"=""
+"WindowName"=""
+"ResourceID"=dword:00000000
+
+[HKEY_CURRENT_USER\Software\Helios\TextPad 4\Docking\Control-Bar4]
+"BarID"=dword:0000e81c
+"Bars"=dword:00000004
+"Bar#0"=dword:00000000
+"Bar#1"=dword:0000e805
+"Bar#2"=dword:0000e804
+"Bar#3"=dword:00000000
+"Style"=dword:00000000
+"ExStyle"=dword:00000000
+"PrevFloating"=dword:00000000
+"MDIChild"=dword:00000000
+"PctWidth"="0"
+"MRUFloatCX"=dword:00000000
+"MRUFloatCY"=dword:00000000
+"MRUHorzDockCX"=dword:00000000
+"MRUHorzDockCY"=dword:00000000
+"MRUVertDockCX"=dword:00000000
+"MRUVertDockCY"=dword:00000000
+"MRUDockingState"=dword:00000000
+"DockingStyle"=dword:00000000
+"TypeID"=dword:00000000
+"ClassName"=""
+"WindowName"=""
+"ResourceID"=dword:00000000
+
+[HKEY_CURRENT_USER\Software\Helios\TextPad 4\Docking\Control-Bar5]
+"BarID"=dword:0000e806
+"XPos"=dword:00000007
+"MRUWidth"=dword:00008072
+"Docking"=dword:00000001
+"MRUDockID"=dword:00000000
+"MRUDockLeftPos"=dword:00000007
+"MRUDockTopPos"=dword:ffffffff
+"MRUDockRightPos"=dword:00000342
+"MRUDockBottomPos"=dword:0000001d
+"MRUFloatStyle"=dword:00002004
+"MRUFloatXPos"=dword:00000007
+"MRUFloatYPos"=dword:0000001f
+"Style"=dword:00002fb4
+"ExStyle"=dword:0000030c
+"PrevFloating"=dword:00000000
+"MDIChild"=dword:00000000
+"PctWidth"="1000000"
+"MRUFloatCX"=dword:00000000
+"MRUFloatCY"=dword:00000000
+"MRUHorzDockCX"=dword:0000033b
+"MRUHorzDockCY"=dword:0000001e
+"MRUVertDockCX"=dword:00000000
+"MRUVertDockCY"=dword:00000000
+"MRUDockingState"=dword:00000000
+"DockingStyle"=dword:0000f000
+"TypeID"=dword:00003a62
+"ClassName"="TxpCustomToolBar"
+"WindowName"="Standard"
+"ResourceID"=dword:00000000
+"Title"="Standard"
+"Buttons"=hex:00,e1,00,00,00,a8,02,00,00,00,02,e1,00,00,00,a9,02,00,00,00,00,\
+  00,00,00,00,00,80,00,00,00,aa,02,00,00,00,09,e1,00,00,00,32,80,00,00,00,00,\
+  00,00,00,00,ac,02,00,00,00,ab,02,00,00,00,ad,02,00,00,00,00,00,00,00,00,ae,\
+  02,00,00,00,af,02,00,00,00,00,00,00,00,00,16,80,00,00,00,17,80,00,00,00,00,\
+  00,00,00,00,33,80,00,00,00,ac,80,00,00,00,00,00,00,00,00,b0,81,00,00,00,b3,\
+  81,00,00,00,54,80,00,00,00,50,80,00,00,00,00,00,00,00,00,26,80,00,00,00,29,\
+  80,00,00,00,2d,80,00,00,00,00,00,00,00,00,b0,02,00,00,00,b1,02,00,00,00,b2,\
+  02,00,00,00,00,00,00,00,00,45,e1,00,00,00,56,80,00,00,00,57,80,00,00,00,58,\
+  80,00,00,00,59,80,00,00,00
+
+[HKEY_CURRENT_USER\Software\Helios\TextPad 4\Docking\Control-Bar6]
+"BarID"=dword:0000e807
+"Visible"=dword:00000000
+"XPos"=dword:00000007
+"YPos"=dword:0000001f
+"Docking"=dword:00000001
+"MRUDockID"=dword:00000000
+"MRUDockLeftPos"=dword:00000007
+"MRUDockTopPos"=dword:0000001f
+"MRUDockRightPos"=dword:00000108
+"MRUDockBottomPos"=dword:0000003d
+"MRUFloatStyle"=dword:00002004
+"MRUFloatXPos"=dword:00000007
+"MRUFloatYPos"=dword:0000001f
+"Style"=dword:00002fb4
+"ExStyle"=dword:0000030c
+"PrevFloating"=dword:00000000
+"MDIChild"=dword:00000000
+"PctWidth"="1000000"
+"MRUFloatCX"=dword:00000000
+"MRUFloatCY"=dword:00000000
+"MRUHorzDockCX"=dword:00000101
+"MRUHorzDockCY"=dword:0000001e
+"MRUVertDockCX"=dword:00000000
+"MRUVertDockCY"=dword:00000000
+"MRUDockingState"=dword:00000000
+"DockingStyle"=dword:0000f000
+"TypeID"=dword:00003a62
+"ClassName"="TxpCustomToolBar"
+"WindowName"="File"
+"ResourceID"=dword:00000000
+"Title"="File"
+"Buttons"=hex:00,e1,00,00,00,a8,02,00,00,00,02,e1,00,00,00,a9,02,00,00,00,12,\
+  80,00,00,00,0c,80,00,00,00,00,00,00,00,00,00,80,00,00,00,aa,02,00,00,00,09,\
+  e1,00,00,00,0c,e1,00,00,00
+
+[HKEY_CURRENT_USER\Software\Helios\TextPad 4\Docking\Control-Bar7]
+"BarID"=dword:0000e808
+"Visible"=dword:00000000
+"XPos"=dword:00000007
+"YPos"=dword:0000001f
+"Docking"=dword:00000001
+"MRUDockID"=dword:00000000
+"MRUDockLeftPos"=dword:00000007
+"MRUDockTopPos"=dword:0000001f
+"MRUDockRightPos"=dword:000000e2
+"MRUDockBottomPos"=dword:0000003d
+"MRUFloatStyle"=dword:00002004
+"MRUFloatXPos"=dword:00000007
+"MRUFloatYPos"=dword:0000001f
+"Style"=dword:00002fb4
+"ExStyle"=dword:0000030c
+"PrevFloating"=dword:00000000
+"MDIChild"=dword:00000000
+"PctWidth"="1000000"
+"MRUFloatCX"=dword:00000000
+"MRUFloatCY"=dword:00000000
+"MRUHorzDockCX"=dword:000000db
+"MRUHorzDockCY"=dword:0000001e
+"MRUVertDockCX"=dword:00000000
+"MRUVertDockCY"=dword:00000000
+"MRUDockingState"=dword:00000000
+"DockingStyle"=dword:0000f000
+"TypeID"=dword:00003a62
+"ClassName"="TxpCustomToolBar"
+"WindowName"="Edit"
+"ResourceID"=dword:00000000
+"Title"="Edit"
+"Buttons"=hex:ac,02,00,00,00,ab,02,00,00,00,ad,02,00,00,00,00,00,00,00,00,ae,\
+  02,00,00,00,af,02,00,00,00,00,00,00,00,00,16,80,00,00,00,17,80,00,00,00,c6,\
+  80,00,00,00
+
+[HKEY_CURRENT_USER\Software\Helios\TextPad 4\Docking\Control-Bar8]
+"BarID"=dword:0000e809
+"Visible"=dword:00000000
+"XPos"=dword:00000007
+"YPos"=dword:0000001f
+"Docking"=dword:00000001
+"MRUDockID"=dword:00000000
+"MRUDockLeftPos"=dword:00000007
+"MRUDockTopPos"=dword:0000001f
+"MRUDockRightPos"=dword:000000f9
+"MRUDockBottomPos"=dword:0000003d
+"MRUFloatStyle"=dword:00002004
+"MRUFloatXPos"=dword:00000007
+"MRUFloatYPos"=dword:0000001f
+"Style"=dword:00002fb4
+"ExStyle"=dword:0000030c
+"PrevFloating"=dword:00000000
+"MDIChild"=dword:00000000
+"PctWidth"="1000000"
+"MRUFloatCX"=dword:00000000
+"MRUFloatCY"=dword:00000000
+"MRUHorzDockCX"=dword:000000f2
+"MRUHorzDockCY"=dword:0000001e
+"MRUVertDockCX"=dword:00000000
+"MRUVertDockCY"=dword:00000000
+"MRUDockingState"=dword:00000000
+"DockingStyle"=dword:0000f000
+"TypeID"=dword:00003a62
+"ClassName"="TxpCustomToolBar"
+"WindowName"="Search"
+"ResourceID"=dword:00000000
+"Title"="Search"
+"Buttons"=hex:26,80,00,00,00,29,80,00,00,00,2d,80,00,00,00,00,00,00,00,00,ba,\
+  80,00,00,00,b9,80,00,00,00,00,00,00,00,00,ad,80,00,00,00,ae,80,00,00,00,af,\
+  80,00,00,00,b0,80,00,00,00
+
+[HKEY_CURRENT_USER\Software\Helios\TextPad 4\Docking\Control-Bar9]
+"BarID"=dword:0000e80a
+"Visible"=dword:00000000
+"XPos"=dword:00000007
+"YPos"=dword:0000001f
+"Docking"=dword:00000001
+"MRUDockID"=dword:00000000
+"MRUDockLeftPos"=dword:00000007
+"MRUDockTopPos"=dword:0000001f
+"MRUDockRightPos"=dword:0000005f
+"MRUDockBottomPos"=dword:0000003d
+"MRUFloatStyle"=dword:00002004
+"MRUFloatXPos"=dword:00000007
+"MRUFloatYPos"=dword:0000001f
+"Style"=dword:00002fb4
+"ExStyle"=dword:0000030c
+"PrevFloating"=dword:00000000
+"MDIChild"=dword:00000000
+"PctWidth"="1000000"
+"MRUFloatCX"=dword:00000000
+"MRUFloatCY"=dword:00000000
+"MRUHorzDockCX"=dword:00000058
+"MRUHorzDockCY"=dword:0000001e
+"MRUVertDockCX"=dword:00000000
+"MRUVertDockCY"=dword:00000000
+"MRUDockingState"=dword:00000000
+"DockingStyle"=dword:0000f000
+"TypeID"=dword:00003a62
+"ClassName"="TxpCustomToolBar"
+"WindowName"="Macros"
+"ResourceID"=dword:00000000
+"Title"="Macros"
+"Buttons"=hex:b0,02,00,00,00,b1,02,00,00,00,b2,02,00,00,00
+
+
+[HKEY_CURRENT_USER\Software\Helios\TextPad 4\Docking\Control-Summary]
+"Bars"=dword:0000000c
+"ScreenCX"=dword:00000588
+"ScreenCY"=dword:00000408
+
+[HKEY_CURRENT_USER\Software\Helios\TextPad 4\Docking\Control-ToolBarManager]
+"ToolTips"=dword:00000001
+"CoolLook"=dword:00000001
+"LargeButtons"=dword:00000000
+
+[HKEY_CURRENT_USER\Software\Helios\TextPad 4\Document Classes]
+"Properties"=hex:00,00,00,00
+
+[HKEY_CURRENT_USER\Software\Helios\TextPad 4\Document Classes\ASP]
+"Type"=dword:00000002
+"Members"=hex(7):2a,00,2e,00,41,00,53,00,50,00,00,00,2a,00,2e,00,56,00,42,00,\
+  00,00,2a,00,2e,00,56,00,42,00,53,00,00,00,2a,00,2e,00,42,00,41,00,53,00,00,\
+  00,2a,00,2e,00,41,00,53,00,4d,00,58,00,00,00,00,00
+"Properties"=hex:46,00,00,00,11,01,00,00,01,00,00,00,01,00,00,00
+"TabStops"=hex:00,00,00,00,00,00,00,00,04,00,04,00,00,00,00,00,50,a2,b9,00,28,\
+  09,ff,00,4a,d8,50,00,ff,ff,ff,ff,f0,ee,12,00,d8,1d,b8,00,00,01,00,00,fe,32,\
+  47,00,f0,ee,12,00,8d,00,00,00,d8,1d,b8,00,a8,5a,15,00,f8,1b,b8,00,1c,ef,12,\
+  00,00,00,00,00,78,dd,4f,00,f0,ee,12,00,01,00,00,00,f8,1b,b8,00,94,f9,12,00,\
+  20,ef,12,00,01,00,00,00,f8,1b,b8,00,8d,00,00,00,01,00,00,00,94,f9,12,00,00,\
+  00,00,00,a8,5a,15,00,e0,ee,12,00,bc,f3,12,00,cf,e7,52,00,00,00,00,00
+"Printer"=hex(7):77,00,69,00,6e,00,73,00,70,00,6f,00,6f,00,6c,00,00,00,48,00,\
+  50,00,20,00,4c,00,61,00,73,00,65,00,72,00,4a,00,65,00,74,00,20,00,34,00,53,\
+  00,69,00,00,00,4c,00,50,00,54,00,31,00,3a,00,00,00,00,00
+"PageSetup"=hex:7f,00,00,00,7f,00,00,00,7f,00,00,00,7f,00,00,00,01,00,00,00,01,\
+  00,00,00,00,00,00,00,01,00,00,00,00,00,00,00,00,00,00,00,01,00,00,00
+"Header"="&l&f&r&d"
+"Footer"="&p"
+"UseDefault"=dword:00000000
+"SyntaxProps"=hex:01,00,00,00
+"SyntaxFile"="htm-vb.syn"
+"WordChars"="_"
+"Colors"=hex:01,00,00,00,01,00,00,00,01,00,00,00,01,00,00,00,01,00,00,00,01,00,\
+  00,00,ff,00,00,00,01,00,00,00,01,00,00,00,01,00,00,00,01,00,00,00,01,00,00,\
+  00,00,82,00,00,01,00,00,00,01,00,00,00,01,00,00,00,01,00,00,00,01,00,00,00,\
+  01,00,00,00,01,00,00,00,00,00,ff,00,01,00,00,00,00,82,84,00,01,00,00,00,01,\
+  00,00,00,01,00,00,00,84,00,00,00,01,00,00,00,01,00,00,00,01,00,00,00,84,00,\
+  84,00,01,00,00,00,ff,00,00,00,01,00,00,00,01,00,00,00,01,00,00,00,01,00,00,\
+  00,01,00,00,00,01,00,00,00,01,00,00,00,84,00,00,00,01,00,00,00,84,00,00,00,\
+  01,00,00,00
+"Font2"=hex:08,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,90,01,00,00,00,00,\
+  00,00,00,00,00,00,4c,75,63,69,64,61,20,43,6f,6e,73,6f,6c,65,00,00,00,00,00,\
+  00,00,00,00,00,00,00,00,00,00,00,00,00
+
+[HKEY_CURRENT_USER\Software\Helios\TextPad 4\Document Classes\Bats]
+"Type"=dword:00000002
+"Members"=hex(7):2e,00,62,00,61,00,74,00,00,00,00,00
+"Properties"=hex:46,00,00,00,11,01,00,00,01,00,00,00,01,00,00,00
+"Font0"=hex:09,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,90,01,00,00,00,00,\
+  00,00,00,00,00,00,4c,75,63,69,64,61,20,43,6f,6e,73,6f,6c,65,00,00,00,00,00,\
+  00,00,00,00,00,00,00,00,00,00,00,00,00
+"Font1"=hex:06,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,90,01,00,00,00,00,\
+  00,ff,00,00,00,00,54,65,72,6d,69,6e,61,6c,00,00,00,00,00,00,00,00,00,00,00,\
+  00,00,00,00,00,00,00,00,00,00,00,00,00
+"Font2"=hex:08,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,90,01,00,00,00,00,\
+  00,00,00,00,00,00,4c,75,63,69,64,61,20,43,6f,6e,73,6f,6c,65,00,00,00,00,00,\
+  00,00,00,00,00,00,00,00,00,00,00,00,00
+"Font3"=hex:08,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,90,01,00,00,00,00,\
+  00,ff,00,00,00,00,4c,69,6e,65,50,72,69,6e,74,65,72,00,00,00,00,00,00,00,00,\
+  00,00,00,00,00,00,00,00,00,00,00,00,00
+"PageSetup"=hex:7f,00,00,00,7f,00,00,00,7f,00,00,00,7f,00,00,00,01,00,00,00,01,\
+  00,00,00,00,00,00,00,01,00,00,00,00,00,00,00,00,00,00,00,01,00,00,00
+"Header"="&l&f&r&d"
+"Footer"="&p"
+"UseDefault"=dword:00000000
+"TabStops"=hex:00,00,00,00,00,00,00,00,04,00,04,00,00,00,00,00,50,a2,b9,00,28,\
+  09,ff,00,4a,d8,50,00,ff,ff,ff,ff,f0,ee,12,00,d8,1d,b8,00,00,01,00,00,fe,32,\
+  47,00,f0,ee,12,00,8d,00,00,00,d8,1d,b8,00,a8,5a,15,00,f8,1b,b8,00,1c,ef,12,\
+  00,00,00,00,00,78,dd,4f,00,f0,ee,12,00,01,00,00,00,f8,1b,b8,00,94,f9,12,00,\
+  20,ef,12,00,01,00,00,00,f8,1b,b8,00,8d,00,00,00,01,00,00,00,94,f9,12,00,00,\
+  00,00,00,a8,5a,15,00,e0,ee,12,00,bc,f3,12,00,cf,e7,52,00,00,00,00,00
+"Colors"=hex:01,00,00,00,01,00,00,00,01,00,00,00,01,00,00,00,01,00,00,00,01,00,\
+  00,00,ff,00,00,00,01,00,00,00,01,00,00,00,01,00,00,00,01,00,00,00,01,00,00,\
+  00,00,82,00,00,01,00,00,00,01,00,00,00,01,00,00,00,01,00,00,00,01,00,00,00,\
+  01,00,00,00,01,00,00,00,00,00,ff,00,01,00,00,00,00,82,84,00,01,00,00,00,01,\
+  00,00,00,01,00,00,00,84,00,00,00,01,00,00,00,01,00,00,00,01,00,00,00,84,00,\
+  84,00,01,00,00,00,ff,00,00,00,01,00,00,00,01,00,00,00,01,00,00,00,01,00,00,\
+  00,01,00,00,00,01,00,00,00,01,00,00,00,84,00,00,00,01,00,00,00,84,00,00,00,\
+  01,00,00,00
+
+[HKEY_CURRENT_USER\Software\Helios\TextPad 4\Document Classes\Binary]
+"Type"=dword:00000001
+"SyntaxProps"=hex:00,00,00,00
+"SyntaxFile"=""
+"WordChars"="_"
+
+[HKEY_CURRENT_USER\Software\Helios\TextPad 4\Document Classes\C/C++]
+"Type"=dword:00000002
+"Members"=hex(7):2a,00,2e,00,43,00,00,00,2a,00,2e,00,43,00,50,00,50,00,00,00,\
+  2a,00,2e,00,48,00,00,00,2a,00,2e,00,48,00,50,00,50,00,00,00,2a,00,2e,00,43,\
+  00,58,00,58,00,00,00,2a,00,2e,00,48,00,58,00,58,00,00,00,2a,00,2e,00,49,00,\
+  4e,00,4c,00,00,00,2a,00,2e,00,52,00,43,00,00,00,2a,00,2e,00,52,00,43,00,32,\
+  00,00,00,00,00
+"Properties"=hex:46,00,00,00,11,01,00,00,01,00,00,00,01,00,00,00
+"TabStops"=hex:00,00,00,00,00,00,00,00,04,00,04,00,00,00,00,00,50,a2,b9,00,28,\
+  09,ff,00,4a,d8,50,00,ff,ff,ff,ff,f0,ee,12,00,d8,1d,b8,00,00,01,00,00,fe,32,\
+  47,00,f0,ee,12,00,8d,00,00,00,d8,1d,b8,00,a8,5a,15,00,f8,1b,b8,00,1c,ef,12,\
+  00,00,00,00,00,78,dd,4f,00,f0,ee,12,00,01,00,00,00,f8,1b,b8,00,94,f9,12,00,\
+  20,ef,12,00,01,00,00,00,f8,1b,b8,00,8d,00,00,00,01,00,00,00,94,f9,12,00,00,\
+  00,00,00,a8,5a,15,00,e0,ee,12,00,bc,f3,12,00,cf,e7,52,00,00,00,00,00
+"SyntaxProps"=hex:01,00,00,00
+"SyntaxFile"="C:\\Program Files\\TextPad 4\\System\\CPP.SYN"
+"WordChars"="_"
+"Font0"=hex:09,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,90,01,00,00,00,00,\
+  00,00,00,00,00,00,4c,75,63,69,64,61,20,43,6f,6e,73,6f,6c,65,00,00,00,00,00,\
+  00,00,00,00,00,00,00,00,00,00,00,00,00
+"Font2"=hex:08,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,90,01,00,00,00,00,\
+  00,00,00,00,00,00,4c,75,63,69,64,61,20,43,6f,6e,73,6f,6c,65,00,00,00,00,00,\
+  00,00,00,00,00,00,00,00,00,00,00,00,00
+"Font3"=hex:08,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,90,01,00,00,00,00,\
+  00,ff,00,00,00,00,4c,69,6e,65,50,72,69,6e,74,65,72,00,00,00,00,00,00,00,00,\
+  00,00,00,00,00,00,00,00,00,00,00,00,00
+"PageSetup"=hex:7f,00,00,00,7f,00,00,00,7f,00,00,00,7f,00,00,00,01,00,00,00,01,\
+  00,00,00,00,00,00,00,01,00,00,00,00,00,00,00,00,00,00,00,01,00,00,00
+"Header"="&l&f&r&d"
+"Footer"="&p"
+"UseDefault"=dword:00000000
+"Colors"=hex:01,00,00,00,01,00,00,00,01,00,00,00,01,00,00,00,01,00,00,00,01,00,\
+  00,00,ff,00,00,00,01,00,00,00,01,00,00,00,01,00,00,00,01,00,00,00,01,00,00,\
+  00,00,82,00,00,01,00,00,00,01,00,00,00,01,00,00,00,01,00,00,00,01,00,00,00,\
+  01,00,00,00,01,00,00,00,00,00,ff,00,01,00,00,00,00,82,84,00,01,00,00,00,01,\
+  00,00,00,01,00,00,00,84,00,00,00,01,00,00,00,01,00,00,00,01,00,00,00,84,00,\
+  84,00,01,00,00,00,ff,00,00,00,01,00,00,00,01,00,00,00,01,00,00,00,01,00,00,\
+  00,01,00,00,00,01,00,00,00,01,00,00,00,84,00,00,00,01,00,00,00,84,00,00,00,\
+  01,00,00,00
+
+[HKEY_CURRENT_USER\Software\Helios\TextPad 4\Document Classes\CommandResults]
+"Type"=dword:00000003
+"SyntaxProps"=hex:00,00,00,00
+"SyntaxFile"=""
+"WordChars"="_"
+"Font0"=hex:09,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,90,01,00,00,00,00,\
+  00,00,00,00,00,00,4c,75,63,69,64,61,20,43,6f,6e,73,6f,6c,65,00,00,00,00,00,\
+  00,00,00,00,00,00,00,00,00,00,00,00,00
+"Font2"=hex:08,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,90,01,00,00,00,00,\
+  00,00,00,00,00,00,4c,75,63,69,64,61,20,43,6f,6e,73,6f,6c,65,00,00,00,00,00,\
+  00,00,00,00,00,00,00,00,00,00,00,00,00
+"Font3"=hex:08,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,90,01,00,00,00,00,\
+  00,ff,00,00,00,00,4c,69,6e,65,50,72,69,6e,74,65,72,00,00,00,00,00,00,00,00,\
+  00,00,00,00,00,00,00,00,00,00,00,00,00
+"PageSetup"=hex:7f,00,00,00,7f,00,00,00,7f,00,00,00,7f,00,00,00,01,00,00,00,01,\
+  00,00,00,00,00,00,00,01,00,00,00,00,00,00,00,00,00,00,00,01,00,00,00
+"Header"="&l&f&r&d"
+"Footer"="&p"
+"UseDefault"=dword:00000000
+"Printer"=hex(7):77,00,69,00,6e,00,73,00,70,00,6f,00,6f,00,6c,00,00,00,5c,00,\
+  5c,00,45,00,32,00,30,00,5f,00,57,00,32,00,4b,00,5c,00,48,00,50,00,20,00,4c,\
+  00,61,00,73,00,65,00,72,00,4a,00,65,00,74,00,20,00,34,00,53,00,69,00,00,00,\
+  4c,00,50,00,54,00,31,00,3a,00,00,00,00,00
+"Members"=hex(7):00,00,00,00
+"Properties"=hex:46,00,00,00,11,01,00,00,01,00,00,00,01,00,00,00
+"TabStops"=hex:00,00,00,00,00,00,00,00,04,00,04,00,00,00,00,00,50,a2,b9,00,28,\
+  09,ff,00,4a,d8,50,00,ff,ff,ff,ff,f0,ee,12,00,d8,1d,b8,00,00,01,00,00,fe,32,\
+  47,00,f0,ee,12,00,8d,00,00,00,d8,1d,b8,00,a8,5a,15,00,f8,1b,b8,00,1c,ef,12,\
+  00,00,00,00,00,78,dd,4f,00,f0,ee,12,00,01,00,00,00,f8,1b,b8,00,94,f9,12,00,\
+  20,ef,12,00,01,00,00,00,f8,1b,b8,00,8d,00,00,00,01,00,00,00,94,f9,12,00,00,\
+  00,00,00,a8,5a,15,00,e0,ee,12,00,bc,f3,12,00,cf,e7,52,00,00,00,00,00
+"Colors"=hex:01,00,00,00,01,00,00,00,01,00,00,00,01,00,00,00,01,00,00,00,01,00,\
+  00,00,ff,00,00,00,01,00,00,00,01,00,00,00,01,00,00,00,01,00,00,00,01,00,00,\
+  00,00,82,00,00,01,00,00,00,01,00,00,00,01,00,00,00,01,00,00,00,01,00,00,00,\
+  01,00,00,00,01,00,00,00,00,00,ff,00,01,00,00,00,00,82,84,00,01,00,00,00,01,\
+  00,00,00,01,00,00,00,84,00,00,00,01,00,00,00,01,00,00,00,01,00,00,00,84,00,\
+  84,00,01,00,00,00,84,00,00,00,01,00,00,00,01,00,00,00,01,00,00,00,01,00,00,\
+  00,01,00,00,00,01,00,00,00,01,00,00,00,84,00,00,00,01,00,00,00,84,00,00,00,\
+  01,00,00,00
+
+[HKEY_CURRENT_USER\Software\Helios\TextPad 4\Document Classes\Default]
+"Type"=dword:00000000
+"SyntaxProps"=hex:00,00,00,00
+"SyntaxFile"=""
+"WordChars"="_"
+"Font0"=hex:09,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,90,01,00,00,00,00,\
+  00,00,00,00,00,00,4c,75,63,69,64,61,20,43,6f,6e,73,6f,6c,65,00,00,00,00,00,\
+  00,00,00,00,00,00,00,00,00,00,00,00,00
+"Font2"=hex:08,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,90,01,00,00,00,00,\
+  00,00,00,00,00,00,4c,75,63,69,64,61,20,43,6f,6e,73,6f,6c,65,00,00,00,00,00,\
+  00,00,00,00,00,00,00,00,00,00,00,00,00
+"Font3"=hex:08,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,90,01,00,00,00,00,\
+  00,ff,00,00,00,00,4c,69,6e,65,50,72,69,6e,74,65,72,00,00,00,00,00,00,00,00,\
+  00,00,00,00,00,00,00,00,00,00,00,00,00
+"Printer"=hex(7):77,00,69,00,6e,00,73,00,70,00,6f,00,6f,00,6c,00,00,00,5c,00,\
+  5c,00,45,00,32,00,30,00,5f,00,57,00,32,00,4b,00,5c,00,48,00,50,00,20,00,4c,\
+  00,61,00,73,00,65,00,72,00,4a,00,65,00,74,00,20,00,34,00,53,00,69,00,00,00,\
+  4c,00,50,00,54,00,31,00,3a,00,00,00,00,00
+"PageSetup"=hex:7f,00,00,00,7f,00,00,00,7f,00,00,00,7f,00,00,00,01,00,00,00,01,\
+  00,00,00,00,00,00,00,01,00,00,00,00,00,00,00,00,00,00,00,01,00,00,00
+"Header"="&l&f&r&d"
+"Footer"="&p"
+"UseDefault"=dword:00000000
+"Properties"=hex:46,00,00,00,11,01,00,00,01,00,00,00,01,00,00,00
+"TabStops"=hex:00,00,00,00,00,00,00,00,04,00,04,00,00,00,00,00,50,a2,b9,00,28,\
+  09,ff,00,4a,d8,50,00,ff,ff,ff,ff,f0,ee,12,00,d8,1d,b8,00,00,01,00,00,fe,32,\
+  47,00,f0,ee,12,00,8d,00,00,00,d8,1d,b8,00,a8,5a,15,00,f8,1b,b8,00,1c,ef,12,\
+  00,00,00,00,00,78,dd,4f,00,f0,ee,12,00,01,00,00,00,f8,1b,b8,00,94,f9,12,00,\
+  20,ef,12,00,01,00,00,00,f8,1b,b8,00,8d,00,00,00,01,00,00,00,94,f9,12,00,00,\
+  00,00,00,a8,5a,15,00,e0,ee,12,00,bc,f3,12,00,cf,e7,52,00,00,00,00,00
+"Colors"=hex:01,00,00,00,01,00,00,00,01,00,00,00,01,00,00,00,01,00,00,00,01,00,\
+  00,00,ff,00,00,00,01,00,00,00,01,00,00,00,01,00,00,00,01,00,00,00,01,00,00,\
+  00,00,82,00,00,01,00,00,00,01,00,00,00,01,00,00,00,01,00,00,00,01,00,00,00,\
+  01,00,00,00,01,00,00,00,00,00,ff,00,01,00,00,00,00,82,84,00,01,00,00,00,01,\
+  00,00,00,01,00,00,00,84,00,00,00,01,00,00,00,01,00,00,00,01,00,00,00,84,00,\
+  84,00,01,00,00,00,ff,00,00,00,01,00,00,00,01,00,00,00,01,00,00,00,01,00,00,\
+  00,01,00,00,00,01,00,00,00,01,00,00,00,84,00,00,00,01,00,00,00,84,00,00,00,\
+  01,00,00,00
+
+[HKEY_CURRENT_USER\Software\Helios\TextPad 4\Document Classes\HTML]
+"Type"=dword:00000002
+"Members"=hex(7):2a,00,2e,00,43,00,46,00,4d,00,00,00,2a,00,2e,00,48,00,54,00,\
+  4d,00,00,00,2a,00,2e,00,48,00,54,00,4d,00,4c,00,00,00,2a,00,2e,00,50,00,48,\
+  00,50,00,00,00,2a,00,2e,00,53,00,47,00,4d,00,00,00,2a,00,2e,00,53,00,47,00,\
+  4d,00,4c,00,00,00,2a,00,2e,00,53,00,48,00,54,00,4d,00,00,00,2a,00,2e,00,53,\
+  00,48,00,54,00,4d,00,4c,00,00,00,2a,00,2e,00,53,00,54,00,4d,00,00,00,2a,00,\
+  2e,00,53,00,54,00,4d,00,4c,00,00,00,2a,00,2e,00,57,00,52,00,4c,00,00,00,2a,\
+  00,2e,00,4a,00,53,00,00,00,2a,00,2e,00,41,00,53,00,50,00,58,00,00,00,2a,00,\
+  2e,00,43,00,53,00,00,00,2a,00,2e,00,56,00,4a,00,00,00,2a,00,2e,00,58,00,4d,\
+  00,4c,00,00,00,2a,00,2e,00,58,00,53,00,4c,00,00,00,2a,00,2e,00,58,00,53,00,\
+  44,00,00,00,2a,00,2e,00,57,00,53,00,43,00,00,00,2a,00,2e,00,48,00,54,00,43,\
+  00,00,00,2a,00,2e,00,48,00,54,00,41,00,00,00,00,00
+"Properties"=hex:46,00,00,00,11,01,00,00,01,00,00,00,01,00,00,00
+"TabStops"=hex:01,00,00,00,01,00,00,00,04,00,04,00,00,00,00,00,d8,9f,c3,00,6e,\
+  11,04,00,4a,d8,50,00,ff,ff,ff,ff,f8,ec,12,00,30,a6,c3,00,00,01,00,00,fe,32,\
+  47,00,f8,ec,12,00,8d,00,00,00,30,a6,c3,00,50,5b,15,00,50,a4,c3,00,24,ed,12,\
+  00,00,00,00,00,78,dd,4f,00,f8,ec,12,00,01,00,00,00,50,a4,c3,00,94,f9,12,00,\
+  28,ed,12,00,01,00,00,00,50,a4,c3,00,8d,00,00,00,01,00,00,00,94,f9,12,00,00,\
+  00,00,00,50,5b,15,00,e8,ec,12,00,bc,f3,12,00,cf,e7,52,00,00,00,00,00
+"SyntaxProps"=hex:01,00,00,00
+"SyntaxFile"="htm-js.syn"
+"WordChars"="_"
+"Printer"=hex(7):77,00,69,00,6e,00,73,00,70,00,6f,00,6f,00,6c,00,00,00,5c,00,\
+  5c,00,45,00,32,00,30,00,5f,00,57,00,32,00,4b,00,5c,00,48,00,50,00,20,00,4c,\
+  00,61,00,73,00,65,00,72,00,4a,00,65,00,74,00,20,00,34,00,53,00,69,00,00,00,\
+  4c,00,50,00,54,00,31,00,3a,00,00,00,00,00
+"PageSetup"=hex:7f,00,00,00,7f,00,00,00,7f,00,00,00,7f,00,00,00,01,00,00,00,01,\
+  00,00,00,00,00,00,00,01,00,00,00,00,00,00,00,00,00,00,00,01,00,00,00
+"Header"="&l&f&r&d"
+"Footer"="&p"
+"UseDefault"=dword:00000000
+"Font0"=hex:09,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,90,01,00,00,00,00,\
+  00,00,00,00,00,00,4c,75,63,69,64,61,20,43,6f,6e,73,6f,6c,65,00,00,00,00,00,\
+  00,00,00,00,00,00,00,00,00,00,00,00,00
+"Font2"=hex:08,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,90,01,00,00,00,00,\
+  00,00,00,00,00,00,4c,75,63,69,64,61,20,43,6f,6e,73,6f,6c,65,00,00,00,00,00,\
+  00,00,00,00,00,00,00,00,00,00,00,00,00
+"Font3"=hex:08,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,90,01,00,00,00,00,\
+  00,ff,00,00,00,00,4c,69,6e,65,50,72,69,6e,74,65,72,00,00,00,00,00,00,00,00,\
+  00,00,00,00,00,00,00,00,00,00,00,00,00
+"Colors"=hex:00,00,00,00,01,00,00,00,01,00,00,00,01,00,00,00,01,00,00,00,01,00,\
+  00,00,ff,00,00,00,01,00,00,00,01,00,00,00,01,00,00,00,01,00,00,00,01,00,00,\
+  00,00,82,00,00,01,00,00,00,01,00,00,00,01,00,00,00,01,00,00,00,01,00,00,00,\
+  01,00,00,00,01,00,00,00,00,00,ff,00,01,00,00,00,00,5b,88,00,01,00,00,00,01,\
+  00,00,00,01,00,00,00,84,00,00,00,01,00,00,00,01,00,00,00,01,00,00,00,84,00,\
+  84,00,01,00,00,00,ff,00,00,00,01,00,00,00,01,00,00,00,01,00,00,00,01,00,00,\
+  00,01,00,00,00,01,00,00,00,01,00,00,00,84,00,00,00,01,00,00,00,84,00,00,00,\
+  01,00,00,00
+
+[HKEY_CURRENT_USER\Software\Helios\TextPad 4\Document Classes\Java]
+"Type"=dword:00000002
+"Members"=hex(7):2a,00,2e,00,4a,00,41,00,56,00,00,00,2a,00,2e,00,4a,00,41,00,\
+  56,00,41,00,00,00,00,00
+"Properties"=hex:46,00,00,00,11,01,00,00,01,00,00,00,01,00,00,00
+"TabStops"=hex:01,00,00,00,01,00,00,00,04,00,04,00,00,00,00,00,d8,5d,c4,00,fa,\
+  11,03,00,4a,d8,50,00,ff,ff,ff,ff,b0,ec,12,00,68,ec,c3,00,00,01,00,00,fe,32,\
+  47,00,b0,ec,12,00,8d,00,00,00,68,ec,c3,00,50,5b,15,00,88,ea,c3,00,dc,ec,12,\
+  00,00,00,00,00,78,dd,4f,00,b0,ec,12,00,01,00,00,00,88,ea,c3,00,94,f9,12,00,\
+  e0,ec,12,00,01,00,00,00,88,ea,c3,00,8d,00,00,00,01,00,00,00,94,f9,12,00,00,\
+  00,00,00,50,5b,15,00,a0,ec,12,00,bc,f3,12,00,cf,e7,52,00,00,00,00,00
+"SyntaxProps"=hex:01,00,00,00
+"SyntaxFile"="C:\\Program Files\\TextPad 4\\System\\JAVA.SYN"
+"WordChars"="_"
+"Font0"=hex:09,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,90,01,00,00,00,00,\
+  00,00,00,00,00,00,4c,75,63,69,64,61,20,43,6f,6e,73,6f,6c,65,00,00,00,00,00,\
+  00,00,00,00,00,00,00,00,00,00,00,00,00
+"Font2"=hex:08,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,90,01,00,00,00,00,\
+  00,00,00,00,00,00,4c,75,63,69,64,61,20,43,6f,6e,73,6f,6c,65,00,00,00,00,00,\
+  00,00,00,00,00,00,00,00,00,00,00,00,00
+"Font3"=hex:08,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,90,01,00,00,00,00,\
+  00,ff,00,00,00,00,4c,69,6e,65,50,72,69,6e,74,65,72,00,00,00,00,00,00,00,00,\
+  00,00,00,00,00,00,00,00,00,00,00,00,00
+"PageSetup"=hex:7f,00,00,00,7f,00,00,00,7f,00,00,00,7f,00,00,00,01,00,00,00,01,\
+  00,00,00,00,00,00,00,01,00,00,00,00,00,00,00,00,00,00,00,01,00,00,00
+"Header"="&l&f&r&d"
+"Footer"="&p"
+"UseDefault"=dword:00000000
+"Colors"=hex:01,00,00,00,01,00,00,00,01,00,00,00,01,00,00,00,01,00,00,00,01,00,\
+  00,00,ff,00,00,00,01,00,00,00,01,00,00,00,01,00,00,00,01,00,00,00,01,00,00,\
+  00,00,82,00,00,01,00,00,00,01,00,00,00,01,00,00,00,01,00,00,00,01,00,00,00,\
+  01,00,00,00,01,00,00,00,00,00,ff,00,01,00,00,00,00,82,84,00,01,00,00,00,01,\
+  00,00,00,01,00,00,00,84,00,00,00,01,00,00,00,01,00,00,00,01,00,00,00,84,00,\
+  84,00,01,00,00,00,ff,00,00,00,01,00,00,00,01,00,00,00,01,00,00,00,01,00,00,\
+  00,01,00,00,00,01,00,00,00,01,00,00,00,84,00,00,00,01,00,00,00,84,00,00,00,\
+  01,00,00,00
+
+[HKEY_CURRENT_USER\Software\Helios\TextPad 4\Document Classes\SearchResults]
+"Type"=dword:00000004
+"SyntaxProps"=hex:00,00,00,00
+"SyntaxFile"=""
+"WordChars"="_"
+"Font0"=hex:09,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,90,01,00,00,00,00,\
+  00,00,00,00,00,00,4c,75,63,69,64,61,20,43,6f,6e,73,6f,6c,65,00,00,00,00,00,\
+  00,00,00,00,00,00,00,00,00,00,00,00,00
+"Font2"=hex:08,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,90,01,00,00,00,00,\
+  00,00,00,00,00,00,4c,75,63,69,64,61,20,43,6f,6e,73,6f,6c,65,00,00,00,00,00,\
+  00,00,00,00,00,00,00,00,00,00,00,00,00
+"Font3"=hex:08,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,90,01,00,00,00,00,\
+  00,ff,00,00,00,00,4c,69,6e,65,50,72,69,6e,74,65,72,00,00,00,00,00,00,00,00,\
+  00,00,00,00,00,00,00,00,00,00,00,00,00
+"PageSetup"=hex:7f,00,00,00,7f,00,00,00,7f,00,00,00,7f,00,00,00,01,00,00,00,01,\
+  00,00,00,00,00,00,00,01,00,00,00,00,00,00,00,00,00,00,00,01,00,00,00
+"Header"="&l&f&r&d"
+"Footer"="&p"
+"UseDefault"=dword:00000000
+"Members"=hex(7):00,00,00,00
+"Properties"=hex:46,00,00,00,11,01,00,00,01,00,00,00,01,00,00,00
+"TabStops"=hex:00,00,00,00,00,00,00,00,04,00,04,00,00,00,00,00,50,a2,b9,00,28,\
+  09,ff,00,4a,d8,50,00,ff,ff,ff,ff,f0,ee,12,00,d8,1d,b8,00,00,01,00,00,fe,32,\
+  47,00,f0,ee,12,00,8d,00,00,00,d8,1d,b8,00,a8,5a,15,00,f8,1b,b8,00,1c,ef,12,\
+  00,00,00,00,00,78,dd,4f,00,f0,ee,12,00,01,00,00,00,f8,1b,b8,00,94,f9,12,00,\
+  20,ef,12,00,01,00,00,00,f8,1b,b8,00,8d,00,00,00,01,00,00,00,94,f9,12,00,00,\
+  00,00,00,a8,5a,15,00,e0,ee,12,00,bc,f3,12,00,cf,e7,52,00,00,00,00,00
+"Printer"=hex(7):77,00,69,00,6e,00,73,00,70,00,6f,00,6f,00,6c,00,00,00,5c,00,\
+  5c,00,45,00,32,00,30,00,5f,00,57,00,32,00,4b,00,5c,00,48,00,50,00,20,00,4c,\
+  00,61,00,73,00,65,00,72,00,4a,00,65,00,74,00,20,00,34,00,53,00,69,00,00,00,\
+  4c,00,50,00,54,00,31,00,3a,00,00,00,00,00
+"Colors"=hex:01,00,00,00,01,00,00,00,01,00,00,00,01,00,00,00,01,00,00,00,01,00,\
+  00,00,ff,00,00,00,01,00,00,00,01,00,00,00,01,00,00,00,01,00,00,00,01,00,00,\
+  00,00,82,00,00,01,00,00,00,01,00,00,00,01,00,00,00,01,00,00,00,01,00,00,00,\
+  01,00,00,00,01,00,00,00,00,00,ff,00,01,00,00,00,00,82,84,00,01,00,00,00,01,\
+  00,00,00,01,00,00,00,84,00,00,00,01,00,00,00,01,00,00,00,01,00,00,00,84,00,\
+  84,00,01,00,00,00,ff,00,00,00,01,00,00,00,01,00,00,00,01,00,00,00,01,00,00,\
+  00,01,00,00,00,01,00,00,00,01,00,00,00,84,00,00,00,01,00,00,00,84,00,00,00,\
+  01,00,00,00
+
+[HKEY_CURRENT_USER\Software\Helios\TextPad 4\Document Classes\Text]
+"Type"=dword:00000002
+"Members"=hex(7):2a,00,2e,00,00,00,2a,00,2e,00,54,00,58,00,54,00,00,00,2a,00,\
+  2e,00,49,00,4e,00,49,00,00,00,41,00,55,00,54,00,4f,00,45,00,58,00,45,00,43,\
+  00,2e,00,44,00,4f,00,53,00,00,00,43,00,4f,00,4e,00,46,00,49,00,47,00,2e,00,\
+  44,00,4f,00,53,00,00,00,43,00,4f,00,4e,00,46,00,49,00,47,00,2e,00,53,00,59,\
+  00,53,00,00,00,4d,00,53,00,44,00,4f,00,53,00,2e,00,53,00,59,00,53,00,00,00,\
+  2a,00,2e,00,6c,00,6f,00,67,00,00,00,00,00
+"Properties"=hex:46,00,00,00,11,01,00,00,01,00,00,00,01,00,00,00
+"SyntaxProps"=hex:01,00,00,00
+"SyntaxFile"="C:\\Program Files\\TextPad 4\\System\\TEXT.SYN"
+"WordChars"="_"
+"Printer"=hex(7):77,00,69,00,6e,00,73,00,70,00,6f,00,6f,00,6c,00,00,00,5c,00,\
+  5c,00,45,00,32,00,30,00,5f,00,57,00,32,00,4b,00,5c,00,48,00,50,00,20,00,4c,\
+  00,61,00,73,00,65,00,72,00,4a,00,65,00,74,00,20,00,34,00,53,00,69,00,00,00,\
+  4c,00,50,00,54,00,31,00,3a,00,00,00,00,00
+"PageSetup"=hex:7f,00,00,00,7f,00,00,00,7f,00,00,00,7f,00,00,00,01,00,00,00,01,\
+  00,00,00,00,00,00,00,01,00,00,00,00,00,00,00,00,00,00,00,01,00,00,00
+"Header"="&l&f&r&d"
+"Footer"="&p"
+"UseDefault"=dword:00000000
+"Font0"=hex:09,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,90,01,00,00,00,00,\
+  00,00,00,00,00,00,4c,75,63,69,64,61,20,43,6f,6e,73,6f,6c,65,00,00,00,00,00,\
+  00,00,00,00,00,00,00,00,00,00,00,00,00
+"Font2"=hex:08,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,90,01,00,00,00,00,\
+  00,00,00,00,00,00,4c,75,63,69,64,61,20,43,6f,6e,73,6f,6c,65,00,00,00,00,00,\
+  00,00,00,00,00,00,00,00,00,00,00,00,00
+"Font3"=hex:08,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,90,01,00,00,00,00,\
+  00,ff,00,00,00,00,4c,69,6e,65,50,72,69,6e,74,65,72,00,00,00,00,00,00,00,00,\
+  00,00,00,00,00,00,00,00,00,00,00,00,00
+"TabStops"=hex:01,00,00,00,01,00,00,00,04,00,04,00,00,00,00,00,b0,16,c3,00,f4,\
+  1b,04,00,4a,d8,50,00,ff,ff,ff,ff,68,ec,12,00,08,d2,c2,00,00,01,00,00,fe,32,\
+  47,00,68,ec,12,00,8d,00,00,00,08,d2,c2,00,30,5b,15,00,28,d0,c2,00,94,ec,12,\
+  00,00,00,00,00,78,dd,4f,00,68,ec,12,00,01,00,00,00,28,d0,c2,00,94,f9,12,00,\
+  98,ec,12,00,01,00,00,00,28,d0,c2,00,8d,00,00,00,01,00,00,00,94,f9,12,00,00,\
+  00,00,00,30,5b,15,00,58,ec,12,00,bc,f3,12,00,cf,e7,52,00,00,00,00,00
+"Colors"=hex:01,00,00,00,01,00,00,00,01,00,00,00,01,00,00,00,01,00,00,00,01,00,\
+  00,00,ff,00,00,00,01,00,00,00,01,00,00,00,01,00,00,00,01,00,00,00,01,00,00,\
+  00,00,82,00,00,01,00,00,00,01,00,00,00,01,00,00,00,01,00,00,00,01,00,00,00,\
+  01,00,00,00,01,00,00,00,00,00,ff,00,01,00,00,00,00,82,84,00,01,00,00,00,01,\
+  00,00,00,01,00,00,00,01,00,00,00,01,00,00,00,01,00,00,00,01,00,00,00,84,00,\
+  84,00,01,00,00,00,ff,00,00,00,01,00,00,00,01,00,00,00,01,00,00,00,01,00,00,\
+  00,01,00,00,00,01,00,00,00,01,00,00,00,84,00,00,00,01,00,00,00,84,00,00,00,\
+  01,00,00,00
+
+[HKEY_CURRENT_USER\Software\Helios\TextPad 4\Folders]
+"Bindings"=""
+"Startup"=""
+"Backup"=""
+"Spelling"=""
+"Macros"="C:\\Program Files\\TextPad 4\\Macros"
+"ClipLibrary"=""
+"Syntax"=""
+"WebRoot"="D:\\Webs"
+"WebAddress"="http://127.0.0.1"
+
+[HKEY_CURRENT_USER\Software\Helios\TextPad 4\Macros]
+"PromptSave"=dword:00000001
+"Macro0"="MACRO1.TPM"
+"Macro1"="CopyToNew.TPM"
+
+[HKEY_CURRENT_USER\Software\Helios\TextPad 4\Options]
+"WrapCommand"=dword:00000000
+"PreviewPages"=dword:00000000
+"ShowClock"=dword:00000001
+"WrapSearch"=dword:00000000
+"SendAttachment"=dword:00000001
+
+[HKEY_CURRENT_USER\Software\Helios\TextPad 4\Preferences]
+"RegInit"=dword:fffffff8
+"General"=hex:4d,00,00,00
+"File"=hex:00,00,00,00,00,00,00,00,00,00,00,00,01,00,00,00
+"Editor"=hex:20,00,00,00
+"Bindings"=""
+"CustomBindings"=dword:00000000
+"Backup"=hex:0a,00,00,00,00,00,00,00,00,00,00,00
+"Locale"=dword:00000009
+"View"=hex:5c,1c,00,00
+"FilterIndex"=dword:00000006
+
+[HKEY_CURRENT_USER\Software\Helios\TextPad 4\Recent File List]
+
+[HKEY_CURRENT_USER\Software\Helios\TextPad 4\Recent Strings]
+
+[HKEY_CURRENT_USER\Software\Helios\TextPad 4\Run]
+
+[HKEY_CURRENT_USER\Software\Helios\TextPad 4\Sort]
+"Lexicographic"=dword:00000001
+"DeleteDups"=dword:00000001
+"Order1"=dword:00000000
+"Compare1"=dword:00000000
+"Order2"=dword:00000000
+"Compare2"=dword:00000000
+"Order3"=dword:00000000
+"Compare3"=dword:00000000
+"Column1"=dword:00000001
+"Length1"=dword:ffffffff
+"Column2"=dword:ffffffff
+"Length2"=dword:ffffffff
+"Column3"=dword:ffffffff
+"Length3"=dword:ffffffff
+
+[HKEY_CURRENT_USER\Software\Helios\TextPad 4\Spelling]
+"DefaultLCID"=dword:00000409
+
+[HKEY_CURRENT_USER\Software\Helios\TextPad 4\Tips]
+"TimeStamp"=dword:39ed61e2
+"StartUp"=dword:00000001
+"FilePos"=dword:000001fc
+
+[HKEY_CURRENT_USER\Software\Helios\TextPad 4\Tools]
+
+[HKEY_CURRENT_USER\Software\Helios\TextPad 4\Tools\0]
+"Properties"=hex:01,00,00,00,56,80,00,00,ec,00,00,00
+"MenuText"="$File"
+"Command"="cmd.exe"
+"Parameters"="\"$File\""
+"Folder"="$FileDir"
+"RE"=""
+
+[HKEY_CURRENT_USER\Software\Helios\TextPad 4\Tools\1]
+"Properties"=hex:01,00,00,00,57,80,00,00,ec,00,00,00
+"MenuText"="CScript $file"
+"Command"="cmd.exe"
+"Parameters"="CScript $file"
+"Folder"="$FileDir"
+"RE"=""
+
+[HKEY_CURRENT_USER\Software\Helios\TextPad 4\Tools\2]
+"Properties"=hex:01,00,00,00,58,80,00,00,ec,00,00,00
+"MenuText"="CScript $file //x"
+"Command"="cmd.exe"
+"Parameters"="CScript $file //x"
+"Folder"="$FileDir"
+"RE"=""
+
+[HKEY_CURRENT_USER\Software\Helios\TextPad 4\Tools\3]
+"Properties"=hex:01,00,00,00,59,80,00,00,ec,00,00,00
+"MenuText"="CScript $file $prompt(Enter argument(s):)"
+"Command"="cmd.exe"
+"Parameters"="CScript $file $prompt(Enter arguments:)"
+"Folder"="$FileDir"
+"RE"=""
+
+[HKEY_CURRENT_USER\Software\Helios\TextPad 4\Tools\4]
+"Properties"=hex:01,00,00,00,59,80,00,00,ec,00,00,00
+"MenuText"="JPT fo sc $file doit"
+"Command"="cmd.exe"
+"Parameters"="JPT fo sc $file doit"
+"Folder"="$FileDir"
+"RE"=""
+
+
+[HKEY_CURRENT_USER\Software\Helios\TextPad 4\Window Placement]
+"Command"="110 110 664 521 1"
+"Maximized"=dword:00000001
+"ShowSelector"=dword:00000001
+"ShowClipLib"=dword:00000000
+"MainFrame"="75 21 1201 900 0"
+"ShowTabs"=dword:00000000
+"ClipLibrary"="7 31 7 31 0"
+"Selector"="0 0 209 787 0"
+"Search"="22 22 672 413 0"
+
+
+
+
+
+
+
+
+
+
+
+
