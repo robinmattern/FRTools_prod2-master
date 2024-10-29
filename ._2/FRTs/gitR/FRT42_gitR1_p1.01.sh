@@ -30,7 +30,11 @@
 # .(41023.01  9/01/24 RAM 10:00a| Created
 # .(41024.01 10/26/24 RAM 10:00a| Did something
 # .(41025.02 10/26/24 RAM 10:00a| Did something else
-# .(41026.07 10/26/24 RAM 17:20p| Added doc header
+# .(41026.07 10/26/24 RAM 17:20p| Add doc header
+# .(41029.04 10/29/24 RAM  7:55a| Add msg to do make remote 
+# .(41029.05 10/29/24 RAM  8:11a| Add setRemote 
+# .(41029.06 10/29/24 RAM  8:44a| Add remote alias: frtools
+# .(41029.07 10/29/24 RAM  8:52a| Opps, change git:github-ram to git@github-ram
 #
 ##PRGM     +====================+===============================================+
 ##ID 69.600. Main0              |
@@ -47,20 +51,20 @@
 function help() {
      echo ""
 #    echo "  GitR Commands (${aVer})"
-     echo "  ${aVTitle} (${aVer})        (${aVDt})"
-     echo "  ---------------------------------------  ---------------------------------"
+     echo "  ${aVTitle} (${aVer})            (${aVDt})"
+     echo "  -------------------------------------------  ---------------------------------"
      echo ""
-     echo "    Show last                              Show last commit"
-     echo "    Show remotes                           Show current remote repositories"
-     echo "    Set remote  {name} [{acct}] [{repo}]   Set current remote repository"
-     echo "    Add remote  {name} [{acct}] [{repo}]   Add new origin remote repository"
-     echo "    Make remote {name} [{acct}] [{repo}]   Create new remote repository in github"
-     echo "    Remove remote [{name}]                 Remove origin remote"
-     echo "    Backup local                           Copy local repo to ../ZIPs"
-     echo "    Track Branch                           Set tracking for origin/branch"
-     echo "    Install gh                             Install the GIT CLI"
-     echo "    [-b]                                   Show debug messages"
-     echo "    [-d]                                   Doit, i.e. execute the command"
+     echo "    Show last                                  Show last commit"
+     echo "    Show remotes                               Show current remote repositories"
+     echo "    Set remote  {name} [{acct}] [{repo}] [-d]  Set current remote repository"
+     echo "    Add remote  {name} [{acct}] [{repo}] [-d]  Add new origin remote repository"
+     echo "    Make remote {name} [{acct}] [{repo}] [-d]  Create new remote repository in github"
+     echo "    Remove remote [{name}]               [-d]  Remove origin remote"
+     echo "    Backup local                               Copy local repo to ../ZIPs"
+     echo "    Track Branch                               Set tracking for origin/branch"
+     echo "    Install gh                                 Install the GIT CLI"
+     echo "    [-b]                                       Show debug messages"
+     echo "    [-d]                                       Doit, i.e. execute the command"
 #    echo ""
      echo "    Note: [name] defaults to ${aLocation}"
      echo "          [proj] defaults to ${aProject}"
@@ -173,7 +177,7 @@ done
 
     getRepoDir
 
-    aSSH="git:github-ram"
+    aSSH="git@github-ram"                                                                                   # .(41029.07.1 RAM Was git:github-ram)
     aAcct="robinmattern"
     aLocation="origin"
 #   aBranch="$( git branch | awk '/\*/ { sub( ".+at ", "" ); sub( "\)$", "" ); print }' )"
@@ -226,7 +230,7 @@ done
      eval        "${aGIT1}"
      fi
      aGIT2="gh repo create ${aProj/_\//}_${aStage} --public"
-     echo -e "\n  ${aGIT2}\n"; # exit
+     echo -e "\n  ${aGIT2} # Add -d to doit"; # exit                                    # .(41029.04.1 RAM Add doit msg)
  if [ "${bDoit}" == "1" ]; then
      eval        "${aGIT2}"
      fi
@@ -286,7 +290,6 @@ done
      if [ "${aRemote_name:0:7}" == "anyllm_"        ]; then aRemoteName="AnyLLM_${aStage/-*/}";
         if [ "${aRemoteBranch}" == ""               ]; then aRemoteBranch="b241013.01_ALT"; fi
         if [ "${aLocalBranch}"  == ""               ]; then aLocalBranch="ALTools"; fi; fi
-
              aAWK="/${aRemoteName}/ { if (\$1 == \"${aRemoteName}\" && \$3 == \"(push)\") { print 1 } }"
 #            echo "git remote -v | awk '${aAWK}'"
              bValid="$( git remote -v | awk "${aAWK}" )"
@@ -301,7 +304,7 @@ done
      aGIT3="git merge ${aRemoteName}/${aRemoteBranch}"
 
 #    aGIT1="git pull ${RemoteName}/${RemoteBranch}"
-     echo -e "\n  ${aGIT1}\n  ${aGIT2}\n  ${aGIT3}"
+     echo -e "\n  ${aGIT1} # Add -d to doit\n  ${aGIT2}\n  ${aGIT3}"                    # .(41029.04.2)
   if [ "${bDoit}" == "1" ]; then
      eval        "${aGIT1}"
      eval        "${aGIT2}"
@@ -311,7 +314,7 @@ done
      fi
 # ---------------------------------------------------------------------------
 
-  if [ "${aCmd}" == "addRemote" ]; then
+  if [ "${aCmd}" == "addRemote" ] || [ "${aCmd}" == "setRemote" ]; then                 # .(41029.05.1 RAM Add seetRemote)
 #    aName="origin";    aBranch="master"
 #    aSSH="github-ram"; aAcct='robinmattern';  aStage="${aArg3}";
      if [ "${aArg3}" != "" ]; then aRemote_name="$( echo "${aArg3}" | awk '{ print tolower($0) }' )"; fi
@@ -349,12 +352,30 @@ done
              aStage_="dev03-robin"  # "_${aStage}"
              aRemoteURL="${aSSH}/${aAcct}/${aProject}_${aStage_}.git"
              fi
+     if [ "${aRemote_name}" == "frtools" ]; then                                        # .(41029.06.1 RAM Add alias: frtools Beg)
+#            aStage=""
+#            aProject="APTools"
+             aSSH="git@github.ram"
+             aAcct="robinmattern"
+             aBranch="master"
+             aRemoteName="origin"  # "FRTools_${aStage/-*/}"
+             aStage_="prod1-master"  # "_${aStage}"
+             aRemoteURL="${aSSH}:${aAcct}/${aProject}_${aStage_}.git"                                       # .(41029.07.2 RAM Use : not /)
+        fi                                                                              # .(41029.06.1 End)
 #    -------------------------------------------------------------
-             echo "  aRemoteURL: '${aRemoteURL}'"
+#    echo "  aRemoteURL: '${aRemoteURL}'"  # Provided via aliases: frtools, altools* or anyllm*
 
-     if [ "${aRemoteURL}" == "" ]; then
+     if [ "${aRemoteURL}" == "" ]; then    # Provided via arguments
+#    echo "  say what: aArg3: '${aArg3}', aArg4: '${aArg4}', 'aArg5: '${aArg5}'"
+#    echo "  say what: aProject: '${aProject}', aStage: '${aStage}'"
 
-     if [ "${aArg4}" == ":" ]; then aAcct=":robinmattern"; fi
+#    if [ "${aArg3}" == ""  ]; then aArg3="origin"; fi                                  # .(41029.06.2 RAM Add origin)
+     if [ "${aArg4}" == ":" ]; then aArg4=":robinmattern"; fi                           # .(41029.06.3 RAM Was: aAcct=)
+     if [ "${aArg4}" == "" ] && [ "${aArg5}" == "" ]; then                              # .(41029.06.4 RAM If no args Beg)
+             aRemoteName="${aArg3}"
+             aAcct2="/${aAcct}"; if [ "${aSSH:0:3}" == "git" ]; then aAcct2=":${aAcct}"; fi                 # .(41029.07.3) 
+             aRemoteURL="${aSSH}${aAcct2}/${aProject}_${aStage}.git"                                        # .(41029.07.4) 
+        fi                                                                              # .(41029.06.4 End) 
      if [ "${aArg4}" != "" ] && [ "${aArg5}" == "" ]; then
              aAcct="${aArg4/\/*/}"
              aRemoteName="${aArg3}"
@@ -362,7 +383,7 @@ done
         fi
      if [ "${aAcct}" != "" ] && [ "${aProject}" != "" ]; then
          if [ "${aAcct:0:1}" != ":" ] || [ "${aAcct:0:1}" == "/" ]; then aAcct="/${aAcct}"; fi
-         if [ "${aAcct:0:1}" == ":" ]; then aSSH="git:github.com:"; else aSSH="https://github.com/"; fi
+         if [ "${aAcct:0:1}" == ":" ]; then aSSH="git@github.com:"; else aSSH="https://github.com/"; fi     # .(41029.07.5 RAM Was git:github-ram)
              aAcct="${aAcct:1}"
 #            aAcctRepoName="${aAcct}{aProject}{aStage}"
 #            echo "  aProject: ${aProject/_/} == ${aProject}"
@@ -385,15 +406,20 @@ done
 #    exit_withCR
 #    fi
 
+     if [ "${aCmd}" == "setRemote" ]; then                                              # .(41029.05.2 RAM Beg)
+     echo "  Setting Remote, ${aProject}, for Account, ${aAcct} and stage, ${aStage}"
+     aGIT1="git remote set-url  ${aRemoteName}  ${aRemoteURL}"
+#    aGIT2="git branch --set-upstream-to  ${aProject}/${aBranch}  ${aBranch}"
+     fi                                                                                 # .(41029.05.2 End)
+     if [ "${aCmd}" == "addRemote" ]; then                                              # .(41029.05.3)
      echo "  Adding a Remote, ${aProject}, for Account, ${aAcct} and stage, ${aStage}"
 #    aGIT1="git remote add  ${aProject} git@${aSSH}:${aAcct}/${aProject}_${aStage}.git"
 # if [ "${aSSH:0:3}" == "git" ]; then aAcct=":${aAcct}"; else aAcct="/${aAcct}"; fi
-     aGIT1="git remote add  ${aRemoteName}  ${aSSH}${aAcct}/${aProject}${aStage_}.git"
+#    aGIT1="git remote add  ${aRemoteName}  ${aSSH}${aAcct}/${aProject}${aStage_}.git"
      aGIT1="git remote add  ${aRemoteName}  ${aRemoteURL}"
-
-#    aGIT2="git branch --set-upstream-to  ${aProject}/${aBranch}  ${aBranch}"
+     fi                                                                                 # .(41029.05.4)
 #    echo -e "\n  ${aGIT1}\n  ${aGIT2}"
-     echo -e "\n  ${aGIT1}"
+     echo -e "\n  ${aGIT1} # Add -d to doit"                                            # .(41029.04.3)
   if [ "${bDoit}" == "1" ]; then
      eval        "${aGIT1}"
 #    eval        "${aGIT2}"
@@ -404,10 +430,10 @@ done
 
   if [ "${aCmd}" == "delRemote" ]; then
      aName="${aArg3}"; if [ "${aName}" == "" ]; then aName="origin"; fi
-     aGIT="git remote remove ${aName}"
-     echo -e "\n  ${aGIT}"
+     aGIT1="git remote remove ${aName}"
+     echo -e "\n  ${aGIT1} # Add -d to doit"                                            # .(41029.04.4)
   if [ "${bDoit}" == "1" ]; then
-     eval        "${aGIT}"
+     eval        "${aGIT1}"
      aCmd="shoRemote"
      fi
      fi
@@ -441,7 +467,7 @@ done
      aBranch="$( git branch | awk '/*/ { print substr($0,3) }' )"
      aGIT1="mkdir -p  \"${aPath}\""
      aGIT2="git checkout-index -a -f --prefix=\"${aPath}/_v${aTS}_${aBranch}/\""
-     echo -e "\n  ${aGIT1}\n  ${aGIT2}"; #  exit
+     echo -e "\n  ${aGIT1} # Add -d to doit\n  ${aGIT2}"; #  exit                       # .(41029.04.5)
      eval        "${aGIT1}"
      eval        "${aGIT2}"
      fi
