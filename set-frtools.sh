@@ -6,6 +6,7 @@
 ##RFILE    +====================+=======+=================+======+===============+
 ##FD         set-frtools.sh     |   9479|  4/30/22 20:45|   136| v1.05.21030.2045
 ##FD         set-frtools.sh     |  15476|  4/30/22 21:05|   331| v1.05.21030.2105
+##FD         set-frtools.sh     |  17992|  4/30/22 23:50|   355| v1.05.21030.2350
 ##DESC     .--------------------+-------+-----------------+------+---------------+
 #            Create ._0/bin folder and copy all command scripts there as well as
 #            Update ,bashrc (or .zshrc) with PATH, THE_SERVER and OS Prompt.
@@ -31,6 +32,9 @@
 # .(41024.01 10/24/24 RAM 10:43a|
 # .(41030.01 10/30/24 RAM  8:45p| Fix MacOS's issue with function abc( ) { ... }
 # .(41030.02 10/30/24 RAM  9:05p| Add this header
+# .(41030.03 10/30/24 RAM  9:45p| Add doit to wipe command
+# .(41030.07 10/30/24 RAM 10:05p| Add THE_SERVER to .bashrc file
+# .(41030.06 10/30/24 RAM 11:50p| Fix doit and THE_SERVER for profile
 
 ##PRGM     +====================+===============================================+
 ##ID 69.600. Main0              |
@@ -50,7 +54,7 @@ function help() {
   echo "    scripts [doit]  Copy FRTools scripts"
   echo "    profile [doit]  Update ${aBashrc} file"
   echo "    show            ${aBashrc} and script files"
-  echo "    wipe            Erase all setup changes"
+  echo "    wipe    [doit]  Erase all setup changes"                                                        # .(41030.03.1)
   }
 # -----------------------------------------------------------
 
@@ -81,45 +85,53 @@ function exit_withCR() {
      }
 # -----------------------------------------------------------
 
-                                    aCmd="help";    bDoScripts="0"; bDoProfile="0"
+                                    aCmd="help";    bDoScripts="0"; bDoProfile="0"; bDoWipe="0"
 #  if [[ "$1" == ""        ]]; then aCmd="help";    fi
    if [[ "$1" == "help"    ]]; then aCmd="help";    fi
-   if [[ "$1" == "profile" ]]; then aCmd="profile"; if [[ "$2" == "doit" ]]; then bDoProfile="1"; fi; fi
+   if [[ "$1" == "profile" ]]; then aCmd="profile"; if [[ "${!#}" == "doit" ]]; then bDoProfile="1"; fi; fi
    if [[ "$1" == "show"    ]]; then aCmd="showEm";  fi
-   if [[ "$1" == "wipe"    ]]; then aCmd="wipeIt";  fi
-   if [[ "$1" == "scripts" ]]; then aCmd="copyEm";  if [[ "$2" == "doit" ]]; then bDoScripts="1"; fi; fi
+   if [[ "$1" == "wipe"    ]]; then aCmd="wipeIt";  if [[    "$2" == "doit" ]]; then bDoWipe="1";    fi; fi # .(41030.03.2 Add doit)
+   if [[ "$1" == "scripts" ]]; then aCmd="copyEm";  if [[    "$2" == "doit" ]]; then bDoScripts="1"; fi; fi
 
 # ---------------------------------------------------------------------------
 
 function showEm() {
 
   echo "   aBinDir: '${aBinDir}'"
-  if [ -d "${aBinDir}" ]; then ls -l "${aBinDir}" | awk 'NR > 1 { print "    " $0 }'; fi
+  if [ -f "${aBinDir}/frt" ]; then ls -l "${aBinDir}" | awk 'NR > 1 { print "    " $0 }'; fi
   echo ""
 
-  echo "  .Bashrc: '${aBashrc}'"
+  echo "  .Bashrc: '${aBashrc}' contents:"
+  echo "  ------------------------------------------------"
   if [ -f "${aBashrc}" ]; then cat  "${aBashrc}" | awk '{ print "    " $0 }'; fi
-  echo -e "    -------\n"
+  echo "  ------------------------------------------------"; echo ""
 
-  echo "  PATH (bin folders only):"
+  echo "  \$PATH (bin folders only):"
   echo "${PATH}" | awk '{ gsub( /:/, "\n" );  print }' | awk '/[.]*bin$/ { print "    " $0 }'
   }
 # -----------------------------------------------------------
 
 function clnHouse() {
 
-  PATH="${PATH/${aBinDir}:}"
+  if [[  "${bDoWipe}" == "0" ]]; then                                                                       # .(41030.03.3 Beg)
+   echo "  About to delete the JPTs scripts from ${aBinDir}"; return
+   else
+     PATH="${PATH/${aBinDir}:}"
 
-  if [[ -f "${aBinDir}"/* ]]; then
-  rm "${aBinDir}"/anyllm*;
-  rm "${aBinDir}"/gitr*;
-  fi
+  if [[ -f "${aBinDir}"/frt ]]; then
+   echo "  Deleting wiping the JPTs scripts from ${aBinDir}"                                                # .(41030.03.3 End)
+     rm   "${aBinDir}"/*;
+#    rm   "${aBinDir}"/gitr*;
+   else
+   echo "  Nothing to delete from ${aBinDir}";
+     fi
 
-  cp -p "${aBashrc}" "${aBashrc}_v${aTS}"
-  cat   "${aBashrc}" | awk '/._0/ { exit }; NF > 0 { print }' >"${aBashrc}_@tmp"
-  mv    "${aBashrc}_@tmp" "${aBashrc}"
+     cp -p "${aBashrc}" "${aBashrc}_v${aTS}"
+     cat   "${aBashrc}" | awk '/._0/ { exit }; NF > 0 { print }' >"${aBashrc}_@tmp"
+     mv    "${aBashrc}_@tmp" "${aBashrc}"
 
-  echo "  Wipe complete";
+   echo "  Wipe of \$PATH and ${aBashrc} file complete";
+     fi
   }
 # -----------------------------------------------------------
 
@@ -134,7 +146,7 @@ function  makScript() {
 
 function setBashrc() {
 
-     setTHE_SERVER "$1"; echo "  THE_SERVER is: ${THE_SERVER}"; # exit
+     setTHE_SERVER "$1"; echo -e "  THE_SERVER is: ${THE_SERVER}\n"; # exit             # .(41030.07.1)
 
 # if [ "${PATH/._0/}" != "${PATH}" ]; then
 
@@ -143,19 +155,19 @@ function setBashrc() {
 
      echo "* The path, '${aBinDir}', is already in the User's ${aBashrc} file."
 
-   else
+   else  # Recreate "${aBashrc}"
 
-     if [ "${bDoProfile}" == "0" ]; then aBashrc="${aBashrc}-temp"; fi
-     if [ "${bDoProfile}" == "1" ]; then cp -p "${aBashrc}" "${aBashrc}_v${aTS}"; fi
-     if [ "${bDoProfile}" == "1" ]; then aWill_add="Will add"; else aWill_add="Adding"; fi
+     if [ "${bDoProfile}" == "0" ]; then cat     "${aBashrc}" | awk '/._0/ { exit }; NF > 0 { print }' >"${aBashrc}_@tmp"
+                                         aBashrc="${aBashrc}_@tmp"; fi
+     if [ "${bDoProfile}" == "0" ]; then aWill_add="Will add"; else aWill_add="Adding"; fi
+     if [ "${bDoProfile}" == "1" ]; then cp -p   "${aBashrc}" "${aBashrc}_v${aTS}"; fi
 
-     echo " ${aWill_add} path, '${aBinDir}', to User's PATH in '${aBashrc}'."
+     echo "  ${aWill_add} path, '${aBinDir}', to User's PATH in '${aBashrc}'."
 
      echo ""                                                >>"${aBashrc}"
 #    echo "export PATH=\"/Users/Shared/._0/bin:\$PATH\""    >>"${aBashrc}"
      echo "export PATH=\"${aBinDir}:\$PATH\""               >>"${aBashrc}"
-     echo ""                                                >>"${aBashrc}"
-     echo "export THE_SERVER=\"${THE_SERVER}\""             >>"${aBashrc}"
+     echo "export THE_SERVER=\"${THE_SERVER}\""             >>"${aBashrc}"              # .(41030.07.2)
      echo ""                                                >>"${aBashrc}"
      if [ "${aOS}" != "windows" ]; then
      echo "function git_branch_name() {"                                                               >>"${aBashrc}"
@@ -167,37 +179,48 @@ function setBashrc() {
      echo "  fi"                                            >>"${aBashrc}"
      echo "  }"                                             >>"${aBashrc}"
      echo ""                                                >>"${aBashrc}"
+  if [ "${aOS}" != "darwin" ]; then                                                     # .(41030.06.1 Beg)
+     echo "setopt PROMPT_SUBST"                             >>"${aBashrc}"
+     fi
+  if [ "${aOS}" == "darwin" ]; then
+     echo "PROMPT_SUBST=true"                               >>"${aBashrc}"
+     echo "setopt prompt_subst"                             >>"${aBashrc}"
+     fi                                                                                 # .(41030.06.1 End)
+     echo "PROMPT='%n@%m %1~\$(git_branch_name): '"         >>"${aBashrc}"
+     echo ""                                                >>"${aBashrc}"
+     fi
      echo "# Add timestamps and user to history"            >>"${aBashrc}"
      echo "export HISTTIMEFORMAT=\"%F %T \$(whoami) \""     >>"${aBashrc}"
      echo ""                                                >>"${aBashrc}"
-     echo "# Append to history file, don't overwrite it"    >>"${aBashrc}"
-  if [ "${aOS}" != "darwin" ]; then
-     echo "shopt -s histappend"                             >>"${aBashrc}"
-     fi
-     echo ""                                                >>"${aBashrc}"
      echo "# Write history after every command"             >>"${aBashrc}"
      echo "PROMPT_COMMAND=\"history -a; $PROMPT_COMMAND\""  >>"${aBashrc}"
+  if [ "${aOS}" != "darwin" ]; then
+     echo ""                                                >>"${aBashrc}"
+     echo "# Append to history file, don't overwrite it"    >>"${aBashrc}"
+     echo "shopt -s histappend"                             >>"${aBashrc}"
+     fi
+  if [ "${aOS}" == "darwin" ]; then
      echo ""                                                >>"${aBashrc}"
      echo "alias history=\"fc -il 1\""                      >>"${aBashrc}"
-     echo ""                                                >>"${aBashrc}"
-     echo "setopt PROMPT_SUBST"                             >>"${aBashrc}"
-     echo "PROMPT='%n@%m %1~\$(git_branch_name): '"         >>"${aBashrc}"
      fi
-     echo "  Executing: source \"${aBashrc}\""
 
-  if [ "${bDoProfile}" == "1" ]; then
-     source "${aBashrc}"
-   else
-     echo "  .Bashrc-temp: '${aBashrc}'"
-     if [ -f "${aBashrc}" ]; then cat "${aBashrc}" | awk '{ print "    " $0 }'; fi
-     if [ -f "${aBashrc}" ]; then rm "${aBashrc}"; fi
-     rm
-     fi
-     fi
+     echo -e "  Executing: source \"${aBashrc}\"\n"
+
+  if [ "${bDoProfile}" == "1" ]; then   source "${aBashrc}" "" 2>/dev/null;  fi         # .(41030.06.2 RAM setopt gets an error in MacOS when run here, but not during login)
+#  else
+     echo -e "  .Bashrc: '${aBashrc}' contents:"                                        # .(41030.06.3 Beg)
+     echo      "  ------------------------------------------------"
+     if [[  -f "${aBashrc}" ]]; then cat "${aBashrc}" | awk '{ print "    " $0 }'; fi
+     echo -e "  ------------------------------------------------";
+
+  if [ "${bDoProfile}" == "0" ]; then
+     if [[  -f "${aBashrc}" ]]; then rm  "${aBashrc}"; fi
+     fi                                                                                 # .(41030.06.3 End)
+     fi  # eif Recreate "${aBashrc}"
   }
 # -----------------------------------------------------------
 
-function setTHE_SERVER() {
+function setTHE_SERVER() {                                                              # .(41030.07.3 RAM Write setTHE_SERVER Beg)
 
 #    OS=Windows_NT
 #     OSTYPE=msys
@@ -211,16 +234,16 @@ function setTHE_SERVER() {
   if [ "${aOS}" == "windows" ]; then aIP="$( ipconfig | awk '/IPv4/  { a = substr($0,40) }; END { print a }' )"
                                 else aIP="$( ifconfig | awk '/inet / { a = $2 }; END { print a }' )"; fi
   if [ "${aOS}" == "darwin"  ]; then aOSN="os${OSTYPE:6:2}"; fi
-  if [ "${aOS}" == "windows" ]; then aOSN="w$(wmic os get caption | awk 'NR == 2 { print $3 substr($4,1,1) }' )"; fi
-  if [ "${aOS}" == "msys"    ]; then aOSN="w$(wmic os get caption | awk '{ print $3 substr($4,1,1) }' )"; fi
+  if [ "${aOS}" == "windows" ]; then aOSN="w$( wmic os get caption | awk 'NR == 2 { print $3 substr($4,1,1) }' )"; fi
+  if [ "${aOS}" == "msys"    ]; then aOSN="w$( wmic os get caption | awk '{ print $3 substr($4,1,1) }' )"; fi
   if [ "${aOS}" == "linux"   ]; then aOSN="ub$( cat /etc/issue | awk '{ print $3 substr($4,1,1) }' )"; fi
 #      echo "  THE_SERVER: ${THE_SERVER}"
 
-       aSvr="$1";  aSvr="$( echo "${aSvr}" | sed 's/ *$//' )"
+       aSvr="$1";  aSvr="$( echo "${aSvr/doit/}" | sed 's/ *$//' )"                     # .(41030.06.4 RAM Add /doit/)
 #                           echo "  aSvr: '${aSvr}' (${#aSvr})'"
   if [ "${aSvr}" != ""    ]; then
 
-  if [ "${#aSvr}" == "11" ]; then aSvr="${aSvr}_${HOSTNAME/.local}"; fi
+  if [ "${#aSvr}" == "11" ]; then aSvr="${aSvr}_${HOSTNAME/.local/}"; fi
 #                            echo "  aSvr: '${aSvr%% }'"
 #                            echo "  aSvr: '$( echo "${aSvr}" | sed 's/ *$//' )'"
 #    THE_SERVER="${aSvr%% } (${aIP})"
@@ -232,7 +255,7 @@ function setTHE_SERVER() {
      aSvr="xx000-${aOSN}_${HOSTNAME/.local/} (${aIP})"
      THE_SERVER="${aSvr}"
      fi
-  }
+  }                                                                                     # .(41030.07.3 End)
 # -----------------------------------------------------------
 
 function cpyToBin() {
@@ -286,8 +309,8 @@ function cpyToBin() {
 #   "/e/VMs/RAM3-Dev03/rm231/Users/Shared/Repos/FRTools_/prod1-master/._2/JPTs/gitr.sh"
 #   "E:\VMs\RAM3-Dev03\rm231\Users\Shared\Repos\FRTools_\prod1-master\._2\JPTs\RSS\dirList\RSS22_DirList.sh"
 
-# if [   -f  "${aJPTs_GitR}" ]; then cp     -p "${aJPTs_GitR}" "${aJPTs_JDir}/";          echo "  Copied:  ${aJPTs_GitR}"; fi
-# if [   -f  "${aJPTs_GitR}" ]; then makScript "${aJPTs_GitR}" "${aJPTs_JDir}" "gitr";    echo "  Created: ${aJPTs_GitR}";
+# if [   -f  "${aJPTs_GitR}" ]; then cp     -p "${aJPTs_GitR}" "${aJPTs_JDir}/";                 echo "  Copied:  ${aJPTs_GitR}"; fi
+# if [   -f  "${aJPTs_GitR}" ]; then makScript "${aJPTs_GitR}" "${aJPTs_JDir}" "gitr";           echo "  Created: ${aJPTs_GitR}";
 #                                    Sudo chmod 777 "${aJPTs_GitR}"; fi
 
 # if [   -f  "${aAnyLLMscr}" ]; then mkScript "${aAnyLLMscr}" "${aJPTs_JDir}" "anyllm";  echo "  Created: ${aJPTs_JDir}/anyllm";
@@ -302,8 +325,8 @@ function cpyScript() {
 
   aJPTs_Script="$2"; aName1="$1"; aName="${aName1// /}" # echo "  cp -p \"${aJPTs_Script}\" to \"${aJPTs_JDir}/${aName}\""
 # echo "  copying script: \"${aJPTs_Script}\" to \"${aJPTs_JDir}/${aName}\""
-  if [ ! -f "${aJPTs_Script}" ]; then                                                           echo "* Script not found:  \"${aJPTs_Script}\""; return; fi
-  if [ "${bDoScripts}" == "0" ]; then                                                           echo "  Will create script: ${aName1} for \"${aJPTs_Script}\""; return; fi
+  if [ ! -f "${aJPTs_Script}" ]; then                                                            echo "* Script not found:  \"${aJPTs_Script}\""; return; fi
+  if [ "${bDoScripts}" == "0" ]; then                                                            echo "  Will create script: ${aName1} for \"${aJPTs_Script}\""; return; fi
 # if [   -f "${aJPTs_Script}" ]; then cp     -p  "${aJPTs_Script}" "${aJPTs_JDir}/";             echo "  Copied  script for: ${aName1}  in \"${aJPTs_Script}\""; fi
   if [   -f "${aJPTs_Script}" ]; then makScript  "${aJPTs_Script}" "${aJPTs_JDir}" "${aName}";   echo "  Created script for: ${aName1}  in \"${aJPTs_Script}\"";
                                  Sudo chmod  777 "${aJPTs_Script}"; fi
@@ -319,7 +342,8 @@ function cpyScript() {
   if [[ "${aCmd}" == "help"    ]]; then help; fi
   if [[ "${aCmd}" == "showEm"  ]]; then showEm; fi
   if [[ "${aCmd}" == "wipeIt"  ]]; then clnHouse; fi
-  if [[ "${aCmd}" == "profile" ]]; then setBashrc "$2 $3 $4"; fi
+  if [[ "${aCmd}" == "profile" ]]; then setBashrc "$2 $3 $4"; fi                        # .(41030.07.4)
+# if [[ "${aCmd}" == "profile" ]]; then setBashrc; fi                                   # .(41030.07.5)
   if [[ "${aCmd}" == "copyEm"  ]]; then cpyToBin; fi
 
 # ---------------------------------------------------------------------------
