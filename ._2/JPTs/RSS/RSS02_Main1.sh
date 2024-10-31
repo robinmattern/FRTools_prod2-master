@@ -9,7 +9,7 @@
 #       RSS_Scr=RSS1-Main1_v1.7.81216.sh    ##.(00421.02.15 RAM)
 #       RSS_Scr=RSS1-Main1_v1.8.91221.sh
 #       RSS_Scr=RSS2-Main1_v2.0.sh          # .(00421.02.15 RAM Use RSS2-Main1)
-        RSS_Scr=RSS02-Main1_p2.01.sh        # .(41029.01.1 RAM Rename from above)
+        RSS_Scr=RSS02_Main1_p2.01.sh        # .(41029.01.1 RAM Rename from above)
 
 #       RSS_Dir=$( dirname "$0" )
         RSS_Dir=$( realpath "$0" ); RSS_Dir=$( dirname "${RSS_Dir}" )
