@@ -6,7 +6,7 @@
 ##FD   FRT22_GitR1.sh           |  21714| 10/26/24 17:20|   461| v1.01.41026.1720
 ##FD   FRT42_GitR1.sh           |  24865| 10/29/24  8:52|   488| v1.01.41029.0852
 ##FD   FRT42_GitR1.sh           |  27486| 10/30/24 20:28|   513| v1.01.41030.2028
-##FD   FRT42_GitR1.sh           |  28834| 10/31/24  8:12|   524| v1.01.41031.0810
+##FD   FRT42_GitR1.sh           |  30370| 10/31/24 10:11|   544| v1.01.41031.0810
 ##DESC     .--------------------+-------+---------------+------+-----------------+
 #            This script has usefull GIT functions.
 #
@@ -40,9 +40,11 @@
 # .(41029.07 10/29/24 RAM  8:52a| Opps, change git:github-ram to git@github-ram
 # .(41030.04 10/29/24 RAM  5:56p| Fix show last n times
 # .(41030.05 10/29/24 RAM  8:28p| Add command: show commit
-# .(41031.03 10/31/24 RAM  7:25p| Add List last and list remotes
-# .(41031.04 10/31/24 RAM  8:00p| Reformat date for List last
-# .(41031.05 10/31/24 RAM  8:10p| Fix no more commits line
+# .(41031.03 10/31/24 RAM  7:25a| Add List last and list remotes
+# .(41031.04 10/31/24 RAM  8:00a| Reformat date for List last
+# .(41031.05 10/31/24 RAM  8:10a| Fix no more commits line
+# .(41031.06 10/31/24 RAM  8:10a| Chop list last comment
+# .(41031.07 10/31/24 RAM  9:45a| Add replace remote command
 #
 ##PRGM     +====================+===============================================+
 ##ID 69.600. Main0              |
@@ -52,7 +54,7 @@
 
      aVTitle="Useful GIT Tools by formR"
 
-     aVer="p0.05"; aVDt="Oct 31, 2024 8:10a" # .41031.0810"
+     aVer="p0.05"; aVDt="Oct 31, 2024 9:45a" # .41031.0945"
 
 # ---------------------------------------------------------------------------
 
@@ -68,7 +70,8 @@ function help() {
      echo "    Set remote  {name} [{acct}] [{repo}] [-d]  Set current remote repository"
      echo "    Add remote  {name} [{acct}] [{repo}] [-d]  Add new origin remote repository"
      echo "    Make remote {name} [{acct}] [{repo}] [-d]  Create new remote repository in github"
-     echo "    Remove remote [{name}]               [-d]  Remove origin remote"
+     echo "    Remove remote [{name}]               [-d]  Remove origin or {name} remote"
+     echo "    Replace [local] [{name}]             [-d]  Replace all files with origin or {name} remote"   # .(41031.07.1)
      echo "    Backup local                               Copy local repo to ../ZIPs"
      echo "    Track Branch                               Set tracking for origin/branch"
      echo "    Install gh                                 Install the GIT CLI"
@@ -158,24 +161,25 @@ done
 
 # ---------------------------------------------------------------------------
 
-  if [ "$1" == "lis" ] && [ "$2" == "las" ]; then aCmd="shoLast";     fi                # .(41031.03.4)
-  if [ "$1" == "sho" ] && [ "$2" == "las" ]; then aCmd="shoLast";     fi
-  if [ "$1" == "sho" ] && [ "$2" == "com" ]; then aCmd="shoCommit";   fi                # .(51030.05.2)
-  if [ "$1" == "com" ] && [ "$2" == "sho" ]; then aCmd="shoCommit";   fi                # .(51030.05.3)
-  if [ "$1" == "add" ] && [ "$2" == "rem" ]; then aCmd="addRemote";   fi
-  if [ "$1" == "rem" ] && [ "$2" == "add" ]; then aCmd="addRemote";   fi
-  if [ "$1" == "set" ] && [ "$2" == "rem" ]; then aCmd="setRemote";   fi
-  if [ "$1" == "rem" ] && [ "$2" == "set" ]; then aCmd="setRemote";   fi
-  if [ "$1" == "sho" ] && [ "$2" == "rem" ]; then aCmd="shoRemote";   fi
-  if [ "$1" == "lis" ] && [ "$2" == "rem" ]; then aCmd="shoRemote";   fi                # .(41031.03.5)
-  if [ "$1" == "rem" ] && [ "$2" == "lis" ]; then aCmd="shoRemote";   fi                # .(41031.03.6)
-  if [ "$1" == "mer" ] && [ "$2" == "rem" ]; then aCmd="mergeRemote"; fi
-  if [ "$1" == "rem" ] && [ "$2" == "mer" ]; then aCmd="mergeRemote"; fi
-  if [ "$1" == "rem" ] && [ "$2" == "rem" ]; then aCmd="delRemote";   fi
-  if [ "$1" == "mak" ] && [ "$2" == "rem" ]; then aCmd="makRemote";   fi
-  if [ "$1" == "ins" ] && [ "$2" == "gh"  ]; then aCmd="getCLI";      fi
-  if [ "$1" == "tra" ] && [ "$2" == "bra" ]; then aCmd="trackBranch"; fi
-  if [ "$1" == "bac" ] && [ "$2" == "loc" ]; then aCmd="backupLocal"; fi
+  if [ "$1" == "lis" ] && [ "$2" == "las" ]; then aCmd="shoLast";      fi               # .(41031.03.4)
+  if [ "$1" == "sho" ] && [ "$2" == "las" ]; then aCmd="shoLast";      fi
+  if [ "$1" == "sho" ] && [ "$2" == "com" ]; then aCmd="shoCommit";    fi               # .(51030.05.2)
+  if [ "$1" == "com" ] && [ "$2" == "sho" ]; then aCmd="shoCommit";    fi               # .(51030.05.3)
+  if [ "$1" == "add" ] && [ "$2" == "rem" ]; then aCmd="addRemote";    fi
+  if [ "$1" == "rem" ] && [ "$2" == "add" ]; then aCmd="addRemote";    fi
+  if [ "$1" == "set" ] && [ "$2" == "rem" ]; then aCmd="setRemote";    fi
+  if [ "$1" == "rem" ] && [ "$2" == "set" ]; then aCmd="setRemote";    fi
+  if [ "$1" == "sho" ] && [ "$2" == "rem" ]; then aCmd="shoRemote";    fi
+  if [ "$1" == "lis" ] && [ "$2" == "rem" ]; then aCmd="shoRemote";    fi               # .(41031.03.5)
+  if [ "$1" == "rem" ] && [ "$2" == "lis" ]; then aCmd="shoRemote";    fi               # .(41031.03.6)
+  if [ "$1" == "mer" ] && [ "$2" == "rem" ]; then aCmd="mergeRemote";  fi
+  if [ "$1" == "rem" ] && [ "$2" == "mer" ]; then aCmd="mergeRemote";  fi
+  if [ "$1" == "rem" ] && [ "$2" == "rem" ]; then aCmd="delRemote";    fi
+  if [ "$1" == "mak" ] && [ "$2" == "rem" ]; then aCmd="makRemote";    fi
+  if [ "$1" == "ins" ] && [ "$2" == "gh"  ]; then aCmd="getCLI";       fi
+  if [ "$1" == "tra" ] && [ "$2" == "bra" ]; then aCmd="trackBranch";  fi
+  if [ "$1" == "bac" ] && [ "$2" == "loc" ]; then aCmd="backupLocal";  fi
+  if [ "$1" == "rep" ] && [ "$2" == "loc" ]; then aCmd="replaceLocal"; fi               # .(41031.07.2)
 
   if [ "${bDebug}" == "1" ]; then
 #    echo -e "\n  aCmd: ${aCmd}, bDoit: ${bDoit}, bDebug: ${bDebug}, 1)$1, 2)$2, 3)$3, 4)$4, 5)$5, 6)$6."; # exit_withCR
@@ -214,8 +218,8 @@ done
 
 function shoCommitMsg() {                                                                                   # .(41030.05.2 RAM Write showCommitMsg Beg)
      n=$(($1-1)); if [ "${#n}" == "1" ]; then m=" ${n}"; else m="${n}"; fi                                  # .(41031.05.1 RAM Move to here)
-     aAWK1='/^commit / { c = substr($0,8,8) }; /^Author:/ { a = substr($0,8) }; /^Date:/ { d = substr($0,6,27) }; NR == 5 { m = sprintf( "\"%-50s", ($0 != "") ? substr($0,5)"\"" : "n/a\"" ); print " " c d"   "m"  "a }'
-     aAWK2='{ m = $3; d = $4; t = $5; y = $6; m = ( 2 + index( "JanFebMarAprMayJunJulAugSepOctNovDev", m ) ) / 3; print substr( $0, 1, 15)" "y"."m"."d" "t"   "substr( $0, 40 ) }';   #echo "  aAWK2: '${aAWK2}'"; exit # .(41031.04.1)
+     aAWK1='/^commit / { c = substr($0,8,8) }; /^Author:/ { a = substr($0,8) }; /^Date:/ { d = substr($0,6,27) }; NR == 5 { p = length($0) > 63 ? "..." : ""; m = sprintf( "\"%-61s", ($0 != "") ? substr( $0, 5, 60-(p > "" ? 3 : 0) ) p "\"" : "n/a\"" ); print " " c d"   "m" "a }'
+     aAWK2='{ m = $3; d = $4; t = $5; y = $6; m = ( 2 + index( "JanFebMarAprMayJunJulAugSepOctNovDev", m ) ) / 3; d = d > 9 ? d : "0" d; m = m > 9 ? m : "0" m; print substr( $0, 1, 15)" "y"."m"."d" "t"   "substr( $0, 40 ) }';   #echo "  aAWK2: '${aAWK2}'"; exit # .(41031.04.1)
      aCommitHash=$( git rev-parse HEAD~$n 2>/dev/null ); # echo "  aCommitHash: '${aCommitHash}'"  # Get commit hash at current position
 #    echo "  aCommitHash: ${aCommitHash}"; return
 #    if [ "${#n}" == "1" ]; then m=" ${n}"; else m="${n}"; fi
@@ -306,6 +310,22 @@ function shoCommitMsg() {                                                       
      fi
      exit_withCR
      fi
+# ---------------------------------------------------------------------------
+
+  if [ "${aCmd}" == "replaceLocal" ]; then                                              # .(41031.07.3 Write replace local command Beg)
+                                  aBranch="$( git branch | awk '/*/ { print substr($0,3) }' )"
+                                  aRemote_name="origin"; if [ "${aBranch}" == "" ]; then aBranch="master"; fi
+    if [ "${aArg3}" != "" ]; then aRemote_name="$( echo "${aArg3}" | awk '{ print tolower($0) }' )"; fi
+    if [ "${bDoit}" != "1" ]; then
+       echo ""
+       git fetch "${aRemote_name}" | awk '{ print "  " $0 }; END{ print "  Fetch complete" }'
+       echo      "  The ${aRemote_name} repo has been fetched. To replace it add -d to run this git command:"
+       echo      "     git reset --hard ${aRemote_name}/${aBranch}"
+       fi
+     if [ "${bDoit}" == "1" ]; then
+       git reset --hard ${aRemote_name}/${aBranch}
+       fi
+     fi                                                                                 # .(41031.07.3 End)
 # ---------------------------------------------------------------------------
 
   if [ "${aCmd}" == "mergeRemote" ]; then
