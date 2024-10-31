@@ -188,7 +188,7 @@ function sayMsg( ) {  aMsg="$1"; aSp=""; # aSp=" -- space --";
   if [ "${aCmd}"  == "" ] || [ "${aCmd}" == "Help" ]; then
 
      echo ""
-     echo "  Useful formR keyS Commands ${aVer}   (${aVdt})"                  # .(20620.01.1 RAM
+     echo "  Useful formR keyS Commands ${aVer}   (${aVdt})"                            # .(20620.01.1 RAM
      echo "  ---------------------------------------------------------------  ----------------------------------------"
      echo ""
      echo "    keyS  List                                                     List Private and Public Key Files "

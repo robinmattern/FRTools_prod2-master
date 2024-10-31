@@ -129,19 +129,19 @@ function echo_exit() {                                                          
     echo "          -s [n]      Sort output 1)Size, 2)Date & Time, 3)[path]/Filename"
     echo "          -s [n[r]]   Reverse sort order, defaults to 2r"
     echo "          -x [str]    Exclude RegEx pattern from result, defaults to 'node_mod|bower_comp'"
-#   echo "          -i [str]    Include RegEx pattern from result, defaults to 'node_mod|bower_comp'"                             # .(11010.01.3)
+#   echo "          -i [str]    Include RegEx pattern from result, defaults to 'node_mod|bower_comp'"                           # .(11010.01.3)
 #   echo ""
-    echo_exit                                                                                                                     # .(40520.02.2)
+    echo_exit                                                                                                                   # .(40520.02.2)
   else
 
-#   echo ""                                                                                                                       ##.(21114.07.2)
+#   echo ""                                                                                                                     ##.(21114.07.2)
 #   echo "        find \"${aDir}\"" ${opt} -iname "'"${aStr}"'"
-#   echo "        find \"${aDir}\" ${opt} ${aSearch}${aSort}${aExcl}"                                                             ##.(11010.01.5)
-# if [ "${bDebug}" == "1" ]; then                                                                                                 # .(21117.02.1)
-#   echo "        find \"${aDir}\" ${opt} ${aSearch}${aSort}${aExcl}${aIncl}"; fi                                                 # .(11010.01.5).(21114.07.2).(21117.02.2)
-#   bQuiet=0; bSpace=0; sayMsg "                                find \"${aDir}\" ${opt} ${aSearch}${aSort}${aExcl}${aIncl}" -1    # .(21117.02.2)
-#   echo -e "\n Folder Size     Files    Dirs  $( pwd )/$aDir"                                                                    # .(21114.07.2)
-    echo -e "\n   File Size     Date    Time   $( pwd )/$aDir"                                                                    # .(21114.07.2)
+#   echo "        find \"${aDir}\" ${opt} ${aSearch}${aSort}${aExcl}"                                                           ##.(11010.01.5)
+# if [ "${bDebug}" == "1" ]; then                                                                                               # .(21117.02.1)
+#   echo "        find \"${aDir}\" ${opt} ${aSearch}${aSort}${aExcl}${aIncl}"; fi                                               # .(11010.01.5).(21114.07.2).(21117.02.2)
+#   bQuiet=0; bSpace=0; sayMsg "                                find \"${aDir}\" ${opt} ${aSearch}${aSort}${aExcl}${aIncl}" -1  # .(21117.02.2)
+#   echo -e "\n Folder Size     Files    Dirs  $( pwd )/$aDir"                                                                  # .(21114.07.2)
+    echo -e "\n   File Size     Date    Time   $( pwd )/$aDir"                                                                  # .(21114.07.2)
 
   if [ ! -z "${bFile}" ]; then
   echo "  ----------  ----------------  -------------------------------------------------------------------------------------------------------------  ------------------"

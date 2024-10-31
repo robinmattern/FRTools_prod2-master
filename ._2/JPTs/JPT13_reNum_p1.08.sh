@@ -1,16 +1,16 @@
 #!/bin/bash
 
          aFile="$( basename $1 )"
-         aDevs="Robin|Rick"                                    # .(40413.01.1 RAM)
+         aDevs="Robin|Rick"                                       # .(40413.01.1 RAM)
          aFCd="$2"
 
-         if [ "${1/-R/}" == "$1" ]; then aDevs=""; fi          # .(40413.01.1 RAM)
+         if [ "${1/-R/}" == "$1" ]; then aDevs=""; fi             # .(40413.01.1 RAM)
 
       if [ "${bDoit}"  == "" ]; then bDoit=0; fi
 #     if [ "${bQuiet}" == "" ]; then bQuiet=0; fi
       if [ "${bQuiet}" == "" ] && [ "${bNoisy}" == "0" ]; then bQuiet=1; fi
 
-      if [ "${aFCd}"   == "" ]; then aFCd="${aFile:0:5}"; fi   # .(21128.03.1 RAM First 5 chars of Filename)
+      if [ "${aFCd}"   == "" ]; then aFCd="${aFile:0:5}"; fi      # .(21128.03.1 RAM First 5 chars of Filename)
 
 #             aFCd='GitR1'; aFile="FRT22_${aFCd}_p2.02.sh"
 #             aFCd='JPFns'; aFile="JPT12_Main2Fns_p1.06.sh"
@@ -18,24 +18,24 @@
 #             aFCd='{JPT}'; aFile="FRT90_frt_u1.06-MT.sh"
 #             aFCd='JPT10'; aFile="JPT10_Main0_p1.06.sh"
 
-#     if [ "${aFCd}" == "FRT10" ]; then aFCd="FRT10"; fi       # .(21128.03.2 RAM Use as is)          keyS1
-      if [ "${aFCd}" == "FRT21" ]; then aFCd="keyS1"; fi       # .(21128.03.3 RAM Swap)               keyS1
-      if [ "${aFCd}" == "FRT22" ]; then aFCd="gitR1"; fi       #                                      gitR1
-      if [ "${aFCd}" == "FRT23" ]; then aFCd="gitR2"; fi       # .(21128.03.4 RAM Swap)               gitR_clone
+#     if [ "${aFCd}" == "FRT10" ]; then aFCd="FRT10"; fi          # .(21128.03.2 RAM Use as is)          keyS1
+      if [ "${aFCd}" == "FRT21" ]; then aFCd="keyS1"; fi          # .(21128.03.3 RAM Swap)               keyS1
+      if [ "${aFCd}" == "FRT22" ]; then aFCd="gitR1"; fi          #                                      gitR1
+      if [ "${aFCd}" == "FRT23" ]; then aFCd="gitR2"; fi          # .(21128.03.4 RAM Swap)               gitR_clone
 
-#     if [ "${aFCd}" == "FRA23" ]; then aFCd="FRApp"; fi       # .(21128.03.5 RAM Visit later)        ??
+#     if [ "${aFCd}" == "FRA23" ]; then aFCd="FRApp"; fi          # .(21128.03.5 RAM Visit later)        ??
 
-#     if [ "${aFCd}" == "JPT10" ]; then aFCd="JPT10"; fi       # .(21128.03.6 RAM Use as is)          Main1
+#     if [ "${aFCd}" == "JPT10" ]; then aFCd="JPT10"; fi          # .(21128.03.6 RAM Use as is)          Main1
       if [ "${aFCd}" == "JPT12" ]; then aFCd="JPFns"; fi
-#     if [ "${aFCd}" == "JPT13" ]; then aFCd="JPT13"; fi       # .(21128.03.7 RAM Use as is)          reNum
-#     if [ "${aFCd}" == "JPT21" ]; then aFCd="JPT21"; fi       # .(21128.03.8 RAM Use as is)          Dirs1
-#     if [ "${aFCd}" == "JPT30" ]; then aFCd="JPT30"; fi       # .(21128.03.9 RAM Use as is)          docR0
-      if [ "${aFCd}" == "FRT90" ]; then aFCd="{JPT}"; fi       #                                      Template
-      if [ "${aFCd}" == "FRT99" ]; then aFCd="{JPT}"; fi       # .(21128.03.10 RAM Swap)              Template
+#     if [ "${aFCd}" == "JPT13" ]; then aFCd="JPT13"; fi          # .(21128.03.7 RAM Use as is)          reNum
+#     if [ "${aFCd}" == "JPT21" ]; then aFCd="JPT21"; fi          # .(21128.03.8 RAM Use as is)          Dirs1
+#     if [ "${aFCd}" == "JPT30" ]; then aFCd="JPT30"; fi          # .(21128.03.9 RAM Use as is)          docR0
+      if [ "${aFCd}" == "FRT90" ]; then aFCd="{JPT}"; fi          #                                      Template
+      if [ "${aFCd}" == "FRT99" ]; then aFCd="{JPT}"; fi          # .(21128.03.10 RAM Swap)              Template
 
-#     if [ "${aFCd}" == "RSS21" ]; then aFCd="RSS21"; fi       # .(21128.03.11 RAM Use as is)         ListList
-#     if [ "${aFCd}" == "RSS22" ]; then aFCd="RSS22"; fi       # .(21128.03.12 RAM Use as is)         DirList
-      if [ "${aFCd}" == "RSS22" ]; then aFCd="RSS23"; fi       # .(21128.03.13 RAM Use as is)         Info
+#     if [ "${aFCd}" == "RSS21" ]; then aFCd="RSS21"; fi          # .(21128.03.11 RAM Use as is)         ListList
+#     if [ "${aFCd}" == "RSS22" ]; then aFCd="RSS22"; fi          # .(21128.03.12 RAM Use as is)         DirList
+      if [ "${aFCd}" == "RSS22" ]; then aFCd="RSS23"; fi          # .(21128.03.13 RAM Use as is)         Info
 
 #        bDoit=0
          bQuiet=0
@@ -105,9 +105,9 @@ function Echo( ) {
          Echo "  - JPT13[ 96]  aFile: '${aFile}', aVer: '${aVer}'";  # exit
 
          aFle=$( echo ${aFile} | awk '{ sub( /_'${aVer}'/, "" ); print }' );
-         aFl2=$( echo ${aFile} | awk '{ sub( /_'${aVer}'/, "" ); print substr($0,1,25) }' );        # .(40406.04.1 RAM)
+         aFl2=$( echo ${aFile} | awk '{ sub( /_'${aVer}'/, "" ); print substr($0,1,25) }' );                # .(40406.04.1 RAM)
 
-         aVer2=${aVer}; aVer=${aVer/./-};                                                           # Original version
+         aVer2=${aVer}; aVer=${aVer/./-};                                                                   # Original version
 #        aVer=$( echo ${aVer}  | awk '{ sub( /^v[0-9.]+/,       "v1" ); print }' ); aVer1=${aVer}
          aVer=$( echo ${aVer}  | awk '{ sub( /_v[0-9-]+[absz]?/, ""  ); print }' ); aVer=${aVer/-/.}; aVer1=${aVer}
 
@@ -211,7 +211,7 @@ END{ }
    if [ "${aFile}" == "${aFile2}" ]; then
          echo ""; echo " ** Failed to make backup copy. Aborting"; echo ""; exit
          fi
-                               cp -p  "${aFile}"  "${aFile2}"                      # .(40407.01.1 RAM Save backup, aFile2, as the existing file)
+                               cp -p  "${aFile}"  "${aFile2}"                           # .(40407.01.1 RAM Save backup, aFile2, as the existing file)
 
    if [ ! -f "${aFile2}" ]; then
          echo ""; echo " ** Failed to make backup copy. Aborting"; echo ""; exit
@@ -220,7 +220,7 @@ END{ }
 #        cat "${aFile2/.sh/${aTS}.bak}" | awk "${aAWKscr2}" >"${aFile}"
          cat "${aFile2}"                | awk "${aAWKscr2}" >"${aFile}"
 
-                               cp -p  "${aFile}"  "${aFile2}"                      # .(40407.01.2 RAM Save backup, aFile2, as the current formatted file)
+                               cp -p  "${aFile}"  "${aFile2}"                           # .(40407.01.2 RAM Save backup, aFile2, as the current formatted file)
 #        echo ""
          echo "  - JPT13[215]  script '${aFile2}'   has been formatted."
 #        echo ""

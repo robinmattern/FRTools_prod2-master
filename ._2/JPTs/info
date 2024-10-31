@@ -330,7 +330,7 @@ function Help() {                                                               
 
      if [ "$aCmd1" == "path" ]; then    # if  aCmd1 == path
 
-function cvt2winPath() { nLen=110                                                                    # .(21131.06.1 RAM Beg)
+function cvt2winPath() { nLen=110                                                                           # .(21131.06.1 RAM Beg)
       if [ "$2" != "w" ];  then aNewPath="$1"; else
          aNewPath="$1" #="$( echo "$1"   | awk '{ sub( /\/n/, "{n}" ); print }' )"
          aNewPath="$( echo "${aNewPath}" | awk '{ gsub( /:/, ";"); gsub( /\/[cC]/, "C:" ); gsub( /\//, "\\" ); print }' )"
@@ -338,32 +338,32 @@ function cvt2winPath() { nLen=110                                               
          fi
       if [ "$3" == "1" ]; then echo "${aNewPath}"; return; fi
          echo "${aNewPath}" | awk '{ n = length($0);  print n < '${nLen}' ? $0 : substr( $0, 1, '${nLen}' ) "..." }'  # Find 1st 80 chars in $PATH
-         }                                                                                           # .(21131.06.1 RAM End)
+         }                                                                                                  # .(21131.06.1 RAM End)
 #    +---- +------------------ +-----------------------------------------------------------
 
 aAwkPgm1='
 function cvt( a ) { print "--- a: '" a "', d: '" d "'"; if (d == ";") { sub( /\/[cC]/, "C:", a ); gsub( /\//, "\\", a ) }; return a }      # .(21120.06.1 RAM cvt path character)
-BEGIN  { d = ARGV[1]; aPath = d; bShow=ARGV[2] != "new"; ARGC=1; IGNORECASE=1; m=0 }                 # .(21114.01.1 RAM Beg Write Awk program to mark dups).(21125.03.1 RAM Added IGNORECASE).(21126.03.1)
+BEGIN  { d = ARGV[1]; aPath = d; bShow=ARGV[2] != "new"; ARGC=1; IGNORECASE=1; m=0 }                        # .(21114.01.1 RAM Beg Write Awk program to mark dups).(21125.03.1 RAM Added IGNORECASE).(21126.03.1)
 #      { print index( aPath, d $0 d ) " " aPath }
        { n = index( aPath, d $0 d ); } # printf "%3d %s %5d\n", NR, n "   " cvt( $0 ), length( aPath) }
-       { if (n > 0) { if (bShow) { printf "%3d %s\n", NR, " x " cvt( $0 ) } }                           # .(21120.06.2)
-               else { if (bShow) { printf "%3d %s\n", NR, "   " cvt( $0 ) }; aPath = aPath d $0; m++ }  # .(21120.06.3).(21126.03.2)
-#                                                                            aPath = aPath d $0         # .(21120.06.3)
+       { if (n > 0) { if (bShow) { printf "%3d %s\n", NR, " x " cvt( $0 ) } }                               # .(21120.06.2)
+               else { if (bShow) { printf "%3d %s\n", NR, "   " cvt( $0 ) }; aPath = aPath d $0; m++ }      # .(21120.06.3).(21126.03.2)
+#                                                                            aPath = aPath d $0             # .(21120.06.3)
           }
 END    { if (bShow != 1) { print aPath }
-           else { if (m == 0) { print "     * None found" } }                                        # .(21126.03.3 RAM Print "None found")
-         }                                                                                           # .(21114.01.1 RAM End)
+           else { if (m == 0) { print "     * None found" } }                                               # .(21126.03.3 RAM Print "None found")
+         }                                                                                                  # .(21114.01.1 RAM End)
 '
 #    +---- +------------------ +-----------------------------------------------------------
 
-           aDelim=":"; if [ "${aOSv:0:1}" == "w" ]; then aDelim=";"; fi;                             # .(21120.06.4)
+           aDelim=":"; if [ "${aOSv:0:1}" == "w" ]; then aDelim=";"; fi;                                    # .(21120.06.4)
 
-     if [ "$aCmd2" != "show"  ] && [ "$aCmd2" != "clean"  ] && [ "$aCmd2" != "add"  ]; then          # .(21120.04.1 RAM)
-           aArg1="$aCmd2"; aCmd2="show"; aArg2="$3"; fi                                              # .(21120.04.2).(21125.06.4 RAM Add aArg2)
+     if [ "$aCmd2" != "show"  ] && [ "$aCmd2" != "clean"  ] && [ "$aCmd2" != "add"  ]; then                 # .(21120.04.1 RAM)
+           aArg1="$aCmd2"; aCmd2="show"; aArg2="$3"; fi                                                     # .(21120.04.2).(21125.06.4 RAM Add aArg2)
 
 #    +---- +------------------ +----------------------------------------------------------- # --------+
 
-#          a="$( cmd /c "echo %PATH%" )"                                                                           # .(21120.06.5 RAM How to get Windows Path)
+#          a="$( cmd /c "echo %PATH%" )"                                                                    # .(21120.06.5 RAM How to get Windows Path)
 #          echo "-- aCmd2: $aCmd2, aArg1: $aArg1, PATH: ${PATH};"; exit
      if [ "$aCmd2" == "show"  ]; then
                                                aShell=${aArg2};                                                                             # .(21125.06.1 RAM Beg Show different paths)
@@ -371,16 +371,16 @@ END    { if (bShow != 1) { print aPath }
            if [ "${aShell:0:1}" != "-" ]; then aShell="-bash"; if [ "${aOSv:0:1}" == "w" ]; then aShell="-user"; fi; fi                                                                           # .(21125.06.1 RAM End)
 #         echo "aArg1: '$aArg1', aShell: '$aShell'"; exit
 
-     if [ "${aShell}" == "-sys" ]; then                                                                          # .(21125.06.2
+     if [ "${aShell}" == "-sys" ]; then                                                                     # .(21125.06.2
            aOldPATH="$( cmd //c REG QUERY "HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Session Manager\Environment" -v PATH )";     # .(21125.05.1 RAM Get Windows PATH)
            aOldPATH="$( echo "${aOldPATH}" | awk '/PATH/ { sub( /.+_SZ +/, "" ); print }' )"; aDelim=";"; fi                                # .(21125.05.2)
 
-     if [ "${aShell}" == "-user" ]; then                                                                         # .(21125.06.3
+     if [ "${aShell}" == "-user" ]; then                                                                    # .(21125.06.3
            aOldPATH="$( cmd //c REG QUERY "HKEY_CURRENT_USER\Environment" -v PATH )"                                                        # .(21125.03.1 RAM Get Windows PATH)
            aOldPATH="$( echo "${aOldPATH}" | awk '/PATH/ { sub( /.+_SZ +/, "" ); print }' )"; aDelim=";"; fi                                # .(21125.01.2)
 #          aOldPATH="$( echo "${aOldPATH}" | tr '[:upper:]' '[:lower:]' )"; aDelim=";"                                                      ##.(21125.03.2)
 
-     if [ "${aShell}" == "-bash" ]; then                                                                         # .(21125.06.4
+     if [ "${aShell}" == "-bash" ]; then                                                                    # .(21125.06.4
            aOldPATH="$PATH"; aDelim=":"
            fi
 
@@ -419,7 +419,7 @@ END    { if (bShow != 1) { print aPath }
             aOldPATH="$( cmd //c REG QUERY "HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Session Manager\Environment" -v PATH )"     # .(21124.01.3 RAM Get Windows PATH)
 
 #           aOldPATH="$( echo "${aOldPATH}" | awk '{ sub( /[\s\S ]+REG_SZ /, "" ); print }' )"     # {aOldPATH:105}"                        ##.(21124.01.3)
-            aOldPATH="$( echo "${aOldPATH}" | awk '/PATH/ { sub( /.+REG_SZ +/, "" ); print }' )"     # {aOldPATH:105}"                      # .(21124.01.4)
+            aOldPATH="$( echo "${aOldPATH}" | awk '/PATH/ { sub( /.+REG_SZ +/, "" ); print }' )"   # {aOldPATH:105}"                        # .(21124.01.4)
 
             aNewPATH="$( echo "${aOldPATH}" | awk "${aAwkPgm}" "${aDelim}" "new" )"; aNewPATH="${aNewPATH:2}"                               # .(21124.01.5)
 
@@ -456,8 +456,8 @@ END    { if (bShow != 1) { print aPath }
             echo -e "    The Old PATH will have (${nDups}) chars removed from the new PATH (${#aNewPATH} chars)\n"; echo "${aNewPATH}"
             fi
             fi
-            bCmdRan="1"                                                                   # .(81014.03.8)
-            fi                          # eif aCmd2 == path clean                         # .(21114.04.1 RAM End)
+            bCmdRan="1"                                                                     # .(81014.03.8)
+            fi                          # eif aCmd2 == path clean                           # .(21114.04.1 RAM End)
 #    +---- +------------------ +----------------------------------------------------------- # --------+
 
 #====== =================================================================================================== #

@@ -28,7 +28,7 @@
 #            sayMsg( )          |
 #            setOS( )           |
 #            logIt( )           |
-#            askYN( )           |                                                       #.(20503.03.3 RAM Added)
+#            askYN( )           |                                                       # .(20503.03.3 RAM Added)
 #            sayMsg( )          |
 #            setArgs()          |
 #            getOpts()          |
@@ -226,7 +226,7 @@ function  logIt() {                                                             
 function pause() {                                                                      # .(20409.05.3 RAM Beg)
          echo "$1"
          read -p "  Press any key to continue."
-         } # eof pause                                                                      # .(20409.05.3 RAM End)
+         } # eof pause                                                                  # .(20409.05.3 RAM End)
 #   ------- ------------------  =  ---------------------------------------------------  #  ----------------
 
 function askYN() {                                                                      # .(20409.05.3 RAM Beg)
@@ -237,7 +237,7 @@ function askYN() {                                                              
          aAnswer=$( echo ${aAnswer} | awk '/^[yY]+$/ { print "y" }' )
 #if [ "${aAnswer}" != "y" ]; then exit; fi
 
-         } # eof askYN                                                                      # .(20409.05.3 RAM End)
+         } # eof askYN                                                                  # .(20409.05.3 RAM End)
 #   ------- ------------------  =  ---------------------------------------------------  #  ----------------
 
 function  Begin() {                                                                     # .(20409.06.1 RAM Beg)
@@ -507,21 +507,21 @@ function getCmd( ) {    # dBug="1"; # "1"                                       
 
     sayMsg sp "JPFns[508]  aArg1: '${aArg1}', aCmd: '${aCmd}', aCmd1: '${aCmd1}', aCmd2_: '${aCmd2_}', aCmd3_: '${aCmd3_}', \$1: '$1', \$2: '$2', \$3: '$3', \$4: '$4', \$5: '$5', dBug: ${dBug} " ${dBug} # -1
 
-                                                                cmd=$4; dBug1=$5; c1=$1; c2=$2; c3=$3;       # .(20601.04.4).(20625.06.1 RAM Good grief)
- if [ "$4" == ""  ] || [ "$4" == "0" ] || [ "$4" == "1" ]; then cmd=$3; dBug1=$4; c1=$1; c2=$2; c3=""; fi    # .(20508.04.1 RAM).(20601.04.5).(20625.06.2)
- if [ "$3" == ""  ] || [ "$3" == "0" ] || [ "$3" == "1" ]; then cmd=$2; dBug1=$3; c1=$1; c2=""; c3=""; fi    # .(20508.04.2 RAM).(20601.04.6).(20625.06.3)
+                                                                cmd=$4; dBug1=$5; c1=$1; c2=$2; c3=$3;      # .(20601.04.4).(20625.06.1 RAM Good grief)
+ if [ "$4" == ""  ] || [ "$4" == "0" ] || [ "$4" == "1" ]; then cmd=$3; dBug1=$4; c1=$1; c2=$2; c3=""; fi   # .(20508.04.1 RAM).(20601.04.5).(20625.06.2)
+ if [ "$3" == ""  ] || [ "$3" == "0" ] || [ "$3" == "1" ]; then cmd=$2; dBug1=$3; c1=$1; c2=""; c3=""; fi   # .(20508.04.2 RAM).(20601.04.6).(20625.06.3)
 
-  if [ "$2" == "*" ]; then aCmd2="${aCmd2:0:2}-"; aCmd3="${aCmd3:0:2}--"; c2=""; c3="";                       # .(21027.02.4 RAM Allow 2nd Cmd to be "*")
-                      else aCmd2="${aCmd2_}";     aCmd3="${aCmd3_}"; fi                                       # .(21027.02.5 RAM Gotta use original)
+  if [ "$2" == "*" ]; then aCmd2="${aCmd2:0:2}-"; aCmd3="${aCmd3:0:2}--"; c2=""; c3="";                     # .(21027.02.4 RAM Allow 2nd Cmd to be "*")
+                      else aCmd2="${aCmd2_}";     aCmd3="${aCmd3_}"; fi                                     # .(21027.02.5 RAM Gotta use original)
 
  if [ "${dBug1}" == "1" ]; then dBug=1; fi                                              # .(20601.04.7)
  if [ "${dBug}"  == ""  ]; then dBug=0; fi                                              # .(20601.04.7)
 
     sayMsg    "JPFns[520]  aArg1: '${aArg1}', aCmd1: '${aCmd1}', aCmd2: '${aCmd2}', aCmd3: '${aCmd3}', \$1: '$c1', \$2: '$c2', \$3: '$c3', dBug: ${dBug}" ${dBug}
 
-#if [ "$3"           == ""   ]; then                                                     ##.(20508.04.3)
-#if [ "${aCmd2:2:1}" == "-"  ]; then                                                     ##.(20508.04.3 RAM if "${aCmd2:2:1}" == "-").(20625.06.4)
- if [ "$c2"          == ""   ]; then                                                     # .(20508.04.3 RAM if "$2" is MT, not if "${aCmd2:2:1}" == "-").(20625.06.4)
+#if [ "$3"           == ""   ]; then                                                    ##.(20508.04.3)
+#if [ "${aCmd2:2:1}" == "-"  ]; then                                                    ##.(20508.04.3 RAM if "${aCmd2:2:1}" == "-").(20625.06.4)
+ if [ "$c2"          == ""   ]; then                                                    # .(20508.04.3 RAM if "$2" is MT, not if "${aCmd2:2:1}" == "-").(20625.06.4)
 
 #              bOk1=0; if [ "${aArg1:0:2}-" == "${aCmd2}" ] || [ "${aArg1}" == "$c1" ]; then bOk1=1; fi                             ##.(20625.06.5)
                bOk1=0; if [ "${aArg1:0:2}-" == "${aCmd2}" ] || [   "${c2}"  == "$c1" ]; then bOk1=1; fi                             # .(20625.06.5)

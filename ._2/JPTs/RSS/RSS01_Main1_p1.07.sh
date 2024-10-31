@@ -139,39 +139,39 @@ function Help() {
 
 # ----------------------------------------------------------------
 
-         JPTdir="$( dirname "${BASH_SOURCE}" )"                                 # .(21114.06.1 RAM Do Workie)
-#        JPTdir=$( dirname $0 )                                                 ##.(21111.01.2 RAM No Workie).(21114.06.1)
-#        JPTdir="."                                                             ##.(21114.06.1 RAM No Workie)
+         JPTdir="$( dirname "${BASH_SOURCE}" )"                                         # .(21114.06.1 RAM Do Workie)
+#        JPTdir=$( dirname $0 )                                                         ##.(21111.01.2 RAM No Workie).(21114.06.1)
+#        JPTdir="."                                                                     ##.(21114.06.1 RAM No Workie)
 
-  if [ "${aCmd}" == "dir" ] || [ "${aCmd}" == "rdir" ]; then                    # .(21111.01.1 RAM Beg Replace Run with direct call).(21111.03.1)
+  if [ "${aCmd}" == "dir" ] || [ "${aCmd}" == "rdir" ]; then                            # .(21111.01.1 RAM Beg Replace Run with direct call).(21111.03.1)
           shift
-          export -f sayMsg sayMBugEnd; export bDebug                            # .(21117.03.1 RAM Wierd)
-          LIB_FileList="${JPTdir}/FileList/${LIB}21_FileList"                   # .(21114.06.2 RAM Was ${LIB}21-FileList)
-        ${LIB_FileList}.sh "$@"; if [ "$?" == "0" ]; then exit; fi              # .(21111.03.2 RAM Exit if successful)
+          export -f sayMsg sayMBugEnd; export bDebug                                    # .(21117.03.1 RAM Wierd)
+          LIB_FileList="${JPTdir}/FileList/${LIB}21_FileList"                           # .(21114.06.2 RAM Was ${LIB}21-FileList)
+        ${LIB_FileList}.sh "$@"; if [ "$?" == "0" ]; then exit; fi                      # .(21111.03.2 RAM Exit if successful)
      fi
 # ----------------------------------------------------------------
 
   if [ "${aCmd}" == "dirlist" ]; then
           shift
-          LIB_DirList="${JPTdir}/DirList/${LIB}22_DirList"                      # .(21114.06.3 RAM Was ${LIB}21-DirList)
-        ${LIB_DirList}.sh "$@";  if [ "$?" == "0" ]; then exit; fi              # .(21111.03.3)
+          LIB_DirList="${JPTdir}/DirList/${LIB}22_DirList"                              # .(21114.06.3 RAM Was ${LIB}21-DirList)
+        ${LIB_DirList}.sh "$@";  if [ "$?" == "0" ]; then exit; fi                      # .(21111.03.3)
      fi
 # ----------------------------------------------------------------
 
 # if [ "${aCmd:0:2}" == "ed" ]; then
 #         shift
 #         LIB_Edit=${JPTdir}/${LIB}23-EditFile
-#       ${LIB_Edit}.sh "$@";     if [ "$?" == "0" ]; then exit; fi              # .(21111.03.4)
+#       ${LIB_Edit}.sh "$@";     if [ "$?" == "0" ]; then exit; fi                      # .(21111.03.4)
 #    fi
 # ----------------------------------------------------------------
 #
-# if [ "${aCmd:0:2}" == "in" ]; then                                            ##.(30520.01.3)
-  if [ "${aCmd:0:2}" == "in" ] || [ "$aCmd}" == "se" ]; then                    # .(30520.01.3 RAM Process Set Cmd in ${LIB_Info}.sh)
+# if [ "${aCmd:0:2}" == "in" ]; then                                                    ##.(30520.01.3)
+  if [ "${aCmd:0:2}" == "in" ] || [ "$aCmd}" == "se" ]; then                            # .(30520.01.3 RAM Process Set Cmd in ${LIB_Info}.sh)
           shift
-          LIB_Info="${JPTdir}/infoR/${LIB}23_Info"                              # .(41026.05.1 RAM Was: Info/${LIB}23_Info).(30520.03.2 RAM New version)
-#         echo -e "\n LIB_Info: '${LIB_Info}.sh'" "$@"; exit                    # .(41030.01.1 RAM Hide)
-        ${LIB_Info}.sh "$@";     if [ "$?" == "0" ]; then exit; fi              # .(21111.03.5)
-     fi                                                                         # .(21101.01.1 RAM End)
+          LIB_Info="${JPTdir}/infoR/${LIB}23_Info"                                      # .(41026.05.1 RAM Was: Info/${LIB}23_Info).(30520.03.2 RAM New version)
+#         echo -e "\n LIB_Info: '${LIB_Info}.sh'" "$@"; exit                            # .(41030.01.1 RAM Hide)
+        ${LIB_Info}.sh "$@";     if [ "$?" == "0" ]; then exit; fi                      # .(21111.03.5)
+     fi                                                                                 # .(21101.01.1 RAM End)
 # ----------------------------------------------------------------
 
 # if [ "${aCmd:0:2}" == "ne" ]; then  Run  1  "home/robin"  "Config/rh70/bin/rnet-v80914.sh"; fi

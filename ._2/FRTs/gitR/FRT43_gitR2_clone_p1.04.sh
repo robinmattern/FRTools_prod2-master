@@ -122,9 +122,9 @@
     echo ""
     echo "      Project=\"FRApps\""
     echo "      Stage=\"prod-master\""
-    echo "      GitHub_Acct=\"8020data\""                                                               # .(21101.01.1 RAM Add Acct and SSH Key)
+    echo "      GitHub_Acct=\"8020data\""                                                                   # .(21101.01.1 RAM Add Acct and SSH Key)
     echo "      GitHub_Cert=\"github-usr\""
-    echo "      GitHub_SSH=\"no\""                                                                      # .(21101.01.2)
+    echo "      GitHub_SSH=\"no\""                                                                          # .(21101.01.2)
     echo ""
     echo "      RepoDir=\"{Project}_{Stage}\"   # In Workstation: C:\\Repos "
     echo "      RepoDir=\"{Project}\"           # In Server:      /webs "
@@ -147,8 +147,8 @@
 
     aStage_var="{prod1-robin}"
     aGitHub_Cert_var="{github-ram}"
-    aGitHub_Acct_var="{robinmattern}"                                                                   # .(21101.01.3)
-    aGitHub_SSH_var="{yes}"                                                                             # .(21101.01.4)
+    aGitHub_Acct_var="{robinmattern}"                                                                       # .(21101.01.3)
+    aGitHub_SSH_var="{yes}"                                                                                 # .(21101.01.4)
 
 # ------------------------------------------------------------------------------------
 #
@@ -158,9 +158,9 @@
 
 # if [ "${aPrj/-/}"  != "${aPrj}" ] || [ "${aPrj/:/}" != "${aPrj}" ] || [ "${aPrj/-/}" != "${aPrj}" ]; then bParse=1; else bParse=0; fi
 
-         bParse=$( echo "${aPrj}" | awk '/^[a-zA-Z0-9]+_?$/ { print 0; exit }; { print 1 }' );         # .(21101.01.4 RAM 1st work contains _)
+         bParse=$( echo "${aPrj}" | awk '/^[a-zA-Z0-9]+_?$/ { print 0; exit }; { print 1 }' );              # .(21101.01.4 RAM 1st work contains _)
  #       echo -e "\n  aPrj: ${aPrj}', bParse: ${bParse}"; exit
- if [ "${bParse}" == "1" ]; then                                                                       # .(21101.01.5 RAM Beg Parse if aPrj = location)
+ if [ "${bParse}" == "1" ]; then                                                                            # .(21101.01.5 RAM Beg Parse if aPrj = location)
 
 #       {Project}_{stg1}-{ownr}
 #       {GitHub_Cert}:{GitHub_Acct}/{Project}_{stg1}-{ownr}
@@ -482,10 +482,10 @@ if [ "${bParse}" == "1" ]; then                                                 
     aTS=$( date '+%y%m%d.%H%M' ); aTS=${aTS:1}
     cp -p "${aConfigFile}" "${aConfigFile/.sh}_v${aTS}.sh"
 
-                                                    aRepoDir_arg="\${Project}_/\${Stage}";   # .(21105.03.1)
+                                                    aRepoDir_arg="\${Project}_/\${Stage}";  # .(21105.03.1)
     if [ "${aPrj/_}_" != "${aDir}" ];          then aRepoDir_arg="\${Project}_\${Stage}"; fi # .(21105.03.2)
-    if [ "${aStage_arg}" == "{stg1}-{ownr}" ]; then aRepoDir_arg="\${Project}"; fi           # .(21105.03.3)
-    if [ "${aStage_arg}" == "{stg1}-{ownr}" ]; then aStage_arg=""; fi                        # .(21105.01.2 RAM Here too)
+    if [ "${aStage_arg}" == "{stg1}-{ownr}" ]; then aRepoDir_arg="\${Project}"; fi          # .(21105.03.3)
+    if [ "${aStage_arg}" == "{stg1}-{ownr}" ]; then aStage_arg=""; fi                       # .(21105.01.2 RAM Here too)
 
 awkPgm='
 BEGIN { }

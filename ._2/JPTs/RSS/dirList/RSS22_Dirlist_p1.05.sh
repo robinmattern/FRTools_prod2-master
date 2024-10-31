@@ -121,18 +121,18 @@ function echo_exit() {                                                          
             echo "                                                       2) Sizes and Files, 3) Sizes, Files and Dirs"          # .(21203.04.2)
             echo "                                                       Default is: dirlist 1 1, or dirlist . 1 1"             # .(21203.04.3 RAM was 1 2)
 #           echo ""
-            echo_exit # ${aLstSp}; exit                                             # .(40520.02.5)
+            echo_exit # ${aLstSp}; exit                                                 # .(40520.02.5)
     fi
 #  ------------------------------------------------------------------------------------------
 
   function  getCnts1() {
-        aDir="$1"; if [ ! "${a/lost+found/}" = "$a" ]; then return; fi              # .(11203.02.5 RAM Use Quotes)
-#       printf "%12s %7s %6s  %s\n" "" "" "" $1                                     ##.(11203.02.6 )
-        printf "%12s %9s %7s  %s/\n" "-" "-" "-" "${aDir}"                          # .(81007.06.1).(11203.02.6)
+        aDir="$1"; if [ ! "${a/lost+found/}" = "$a" ]; then return; fi                  # .(11203.02.5 RAM Use Quotes)
+#       printf "%12s %7s %6s  %s\n" "" "" "" $1                                         ##.(11203.02.6 )
+        printf "%12s %9s %7s  %s/\n" "-" "-" "-" "${aDir}"                              # .(81007.06.1).(11203.02.6)
         }
 
   function  getCnts2() {
-        aDir="$1"; if [ ! "${aDir/lost+found/}" = "$aDir" ]; then return; fi        # .(11203.02.7 RAM Use Quotes)
+        aDir="$1"; if [ ! "${aDir/lost+found/}" = "$aDir" ]; then return; fi            # .(11203.02.7 RAM Use Quotes)
 #       aDir=${aDir## /}
 
         aBytes="-b";           if [ "${OSTYPE:0:6}" == "darwin" ]; then aBytes="-sk"; fi # .(40520.03.1 RAM Different option for du)
@@ -145,22 +145,22 @@ function echo_exit() {                                                          
 #       return
 
         nSize=999; nFles="-"; nDirs="-"
- if [ "$nTyp" == "2" ] || [ "$nTyp" == "3" ]; then                                  # .(21203.04.4)
-        nFles=$( ls -l -L -R "${aDir}" 2>/dev/null | grep ^- | wc -l )              # Counts number of files in all subfolders (takes a long time)
-#       nDirs=$( ls -l -L -R  $1       2>>$aErrLog | grep ^d | wc -l )              # Counts number of folders in all subfolders (takes a long time)
-#       nDirs=$( ls -l -L -R  $1       2>/dev/null | grep ^d | wc -l )              ##.(81007.03.1).(11203.02.8)
-        nDirs=$( ls -l -L -R "${aDir}" 2>/dev/null | grep ^d | wc -l )              # .(81007.04.1).(11203.02.8)
+ if [ "$nTyp" == "2" ] || [ "$nTyp" == "3" ]; then                                      # .(21203.04.4)
+        nFles=$( ls -l -L -R "${aDir}" 2>/dev/null | grep ^- | wc -l )                  # Counts number of files in all subfolders (takes a long time)
+#       nDirs=$( ls -l -L -R  $1       2>>$aErrLog | grep ^d | wc -l )                  # Counts number of folders in all subfolders (takes a long time)
+#       nDirs=$( ls -l -L -R  $1       2>/dev/null | grep ^d | wc -l )                  ##.(81007.03.1).(11203.02.8)
+        nDirs=$( ls -l -L -R "${aDir}" 2>/dev/null | grep ^d | wc -l )                  # .(81007.04.1).(11203.02.8)
         fi
 
 #          echo "du -L ${aBytes} ${aMaxD} '${aDir}'"
-#       nSize=$( du -L           --max-depth=0  $1       2>>$aErrLog  )             # Counts number of bytes in all subfolders (quick)
-#       nSize=$( du -L           --max-depth=0  $1       2>/dev/null )              ##.(81007.03.2).(11203.02.9)
-#       nSize=$( du -L           --max-depth=0 "${aDir}" 2>/dev/null )              ##.(81007.03.2).(11203.02.9)
-#       nSize=$( du -L   -b      --max-depth=0 "${aDir}" 2>/dev/null )              ##.(81007.04.1 Display bytes).(11203.02.9).(40520.03.2)
-        nSize=$( du -L ${aBytes} ${aMaxD}      "${aDir}" 2>/dev/null )              # .(40520.03.3)
+#       nSize=$( du -L           --max-depth=0  $1       2>>$aErrLog  )                 # Counts number of bytes in all subfolders (quick)
+#       nSize=$( du -L           --max-depth=0  $1       2>/dev/null )                  ##.(81007.03.2).(11203.02.9)
+#       nSize=$( du -L           --max-depth=0 "${aDir}" 2>/dev/null )                  ##.(81007.03.2).(11203.02.9)
+#       nSize=$( du -L   -b      --max-depth=0 "${aDir}" 2>/dev/null )                  ##.(81007.04.1 Display bytes).(11203.02.9).(40520.03.2)
+        nSize=$( du -L ${aBytes} ${aMaxD}      "${aDir}" 2>/dev/null )                  # .(40520.03.3)
 
-        bEN_US=$( locale -a | awk '/en_us/ { print 1 }' )                           # .(40520.04.1 RAM Check if ok to set)
-        if [ "${bEN_US}" == "1" ]; then export LC_NUMERIC="en_US"; fi               # .(40520.04.2)
+        bEN_US=$( locale -a | awk '/en_us/ { print 1 }' )                               # .(40520.04.1 RAM Check if ok to set)
+        if [ "${bEN_US}" == "1" ]; then export LC_NUMERIC="en_US"; fi                   # .(40520.04.2)
 
 #       nSize=$( echo $nSize | sed 's/\x0*/ /' )
 
@@ -170,7 +170,7 @@ function echo_exit() {                                                          
 #       aStrc=$( echo $nSize | awk '{ printf "%d@%d\n" }' )
 #       aStrc=$( echo $nSize | awk "{ printf \"%d@%'d\n\" }" )
 #       echo  { printf "%d@%'d\n", $1, $2 }  >t.awk
-        aStrc=$( printf "%'d\n" $aStrc )                                           # .(30516.01.1 RAM Add Commas)
+        aStrc=$( printf "%'d\n" $aStrc )                                                # .(30516.01.1 RAM Add Commas)
 #       echo 1234567 | awk "{ printf \"%'d\n\",\$1}"
 
 #       echo "'$nSize' '${aStrc}'"; exit # '2152308188/data' '2152308188'
@@ -182,16 +182,16 @@ function echo_exit() {                                                          
 #       printf "nSize:%6d == \"%s\"\n" "${aStrc}" "$aDir"
 #       return
 
-    if [ "$nTyp" == "2" ]; then nDirs="        -"; fi                               # .(21203.04.5)
+    if [ "$nTyp" == "2" ]; then nDirs="        -"; fi                                   # .(21203.04.5)
 
-# if [[ ${#aStrc} -gt 8 ]]; then aStrc=`expr $aStrc / 1000`; s="${aStrc}K"; fi      # results is a neg number ??
+# if [[ ${#aStrc} -gt 8 ]]; then aStrc=`expr $aStrc / 1000`; s="${aStrc}K"; fi          # results is a neg number ??
 
 #       printf "%12d %7d %6d     %s\n" $s $a     $b     $1
 #       printf "%12s %9s %7s  %s\n"   $aStrc  $nFles $nDirs  $1
 #       printf "%12s %9s %7s  %s/\n"  $aStrc  $nFles $nDirs  $1
-#       printf "%12s %9s %7s  %s/\n"  $aStrc  $nFles $nDirs "$1"                    # .(81007.04.2)
-#       printf "%12s %9s %7s  %s/\n" "$aStrc" $nFles $nDirs "${aDir}"               # .(81007.06.1).(11203.02.10)
-        printf "%15s %7s %6s  %s/\n" "$aStrc" $nFles $nDirs "${aDir}"               # .(81007.06.1).(11203.02.10).(30516.01.2)
+#       printf "%12s %9s %7s  %s/\n"  $aStrc  $nFles $nDirs "$1"                        # .(81007.04.2)
+#       printf "%12s %9s %7s  %s/\n" "$aStrc" $nFles $nDirs "${aDir}"                   # .(81007.06.1).(11203.02.10)
+        printf "%15s %7s %6s  %s/\n" "$aStrc" $nFles $nDirs "${aDir}"                   # .(81007.06.1).(11203.02.10).(30516.01.2)
 
         }  # eof getCnts
 #  ------------------------------------------------------------------------------------------
@@ -200,8 +200,8 @@ function echo_exit() {                                                          
         aDte=$(date +%y%m%d.%H%M); aDte=${aDte:1}
         aErrLog=sc${aDte}_dirlist-errors.log
 if [ ! "$nTyp" = "1" ]; then
-#       echo "" >$aErrLog                                                           ##.(81007.03.3)
-        aErrLog=""                                                                  # .(81007.03.3)
+#       echo "" >$aErrLog                                                               ##.(81007.03.3)
+        aErrLog=""                                                                      # .(81007.03.3)
         fi; fi
 
 if [ "$bHdr" != "0" ]; then
@@ -209,7 +209,7 @@ if [ "$bHdr" != "0" ]; then
 #       echo ""
 #       echo      " Folder Size  Files     Dirs    Path (${aDir} - ${nLvl} level$s)"
 #       echo -e "\n Folder Size     Files    Dirs  $( pwd )/$aDir (${nLvl} level$s)"
-        echo -e "\n  Folder Size     Files   Dirs  $( pwd )/$aDir (${nLvl} level$s)" # .(30516.01.3)
+        echo -e "\n  Folder Size     Files   Dirs  $( pwd )/$aDir (${nLvl} level$s)"    # .(30516.01.3)
 
 #       echo " ----------- ------- ------      ---------------------------------------------------"
 #       echo " +---------- +-------- +------ +----------------------------+-------------------+---------- +-------------+"   # .(81005.02.2)
@@ -249,7 +249,7 @@ if [ "$bHdr" != "0" ]; then
 
   if [ "$bHdr" != "0" ]; then
         ${aLstSp}; exit
-        echo_exit # ${aLstSp}; exit                                                         # .(40520.02.6)
+        echo_exit # ${aLstSp}; exit                                                     # .(40520.02.6)
 #       echo ""
         fi
 

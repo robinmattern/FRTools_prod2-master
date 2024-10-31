@@ -211,7 +211,8 @@ function shoCommitMsg() {                                                       
      aCommitHash=$( git rev-parse HEAD~$n 2>/dev/null ); # echo "  aCommitHash: '${aCommitHash}'"  # Get commit hash at current position
 #    echo "  aCommitHash: ${aCommitHash}"; return
      if [ "$?" -ne "0" ]; then echo -e "* $1.  There are no more commits (HEAD~$n)!"; exit_withCR; fi
-     echo "  $n. $( git show $(git rev-parse HEAD~$n) | awk "${aAWK}" )"  # git show $aCommitHash | awk "${aAWK}"
+     if [ "${#n}" == "1" ]; then m=" ${n}"; else m="$n"; fi 
+     echo "  ${m}. $( git show $(git rev-parse HEAD~$n) | awk "${aAWK}" )"  # git show $aCommitHash | awk "${aAWK}"
      }                                                                                                      # .(41030.05.2 End)
 # ---------------------------------------------------------------------------
 

@@ -67,7 +67,7 @@ for line in "${mPIDs[@]}"; do  echo " aLine: ${aLine}"
     nPID=$(  echo "$line"   | awk '{ printf "%8d\n", $1 }' ); aPID="${nPID// /}"
 
     aIP=$(   echo "${line}" | awk '{ sub( /:.+/, "", $2); print $2 }' )
-    nPort=$( echo "${line}" | awk '{ sub( /.+:/, "", $2); printf "%5d", $2 }' )  # .(40419.02.1 Added printf)
+    nPort=$( echo "${line}" | awk '{ sub( /.+:/, "", $2); printf "%5d", $2 }' )         # .(40419.02.1 Added printf)
 
     if [ "${nPort}" == "" ]; then nPort="${aIP}"; aIP=""; fi
 

@@ -114,9 +114,9 @@
     echo ""
     echo "      Project=\"FRApps\""
     echo "      Stage=\"prod-master\""
-    echo "      GitHub_Acct=\"8020data\""                                                               # .(21101.01.1 RAM Add Acct and SSH Key)
+    echo "      GitHub_Acct=\"8020data\""                                                                   # .(21101.01.1 RAM Add Acct and SSH Key)
     echo "      GitHub_Cert=\"github-usr\""
-    echo "      GitHub_SSH=\"no\""                                                                      # .(21101.01.2)
+    echo "      GitHub_SSH=\"no\""                                                                          # .(21101.01.2)
     echo ""
     echo "      RepoDir=\"{Project}_{Stage}\"   # In Workstation: C:\\Repos "
     echo "      RepoDir=\"{Project}\"           # In Server:      /webs "
@@ -139,8 +139,8 @@
 
     aStage_var="{prod1-robin}"
     aGitHub_Cert_var="{github-ram}"
-    aGitHub_Acct_var="{robinmattern}"                                                                   # .(21101.01.3)
-    aGitHub_SSH_var="{yes}"                                                                             # .(21101.01.4)
+    aGitHub_Acct_var="{robinmattern}"                                                                       # .(21101.01.3)
+    aGitHub_SSH_var="{yes}"                                                                                 # .(21101.01.4)
 
 # ------------------------------------------------------------------------------------
 #
@@ -150,9 +150,9 @@
 
 # if [ "${aPrj/-/}"  != "${aPrj}" ] || [ "${aPrj/:/}" != "${aPrj}" ] || [ "${aPrj/-/}" != "${aPrj}" ]; then bParse=1; else bParse=0; fi
 
-         bParse=$( echo "${aPrj}" | awk '/^[a-zA-Z0-9]+_?$/ { print 0; exit }; { print 1 }' );         # .(21101.01.4 RAM 1st work contains _)
+         bParse=$( echo "${aPrj}" | awk '/^[a-zA-Z0-9]+_?$/ { print 0; exit }; { print 1 }' );              # .(21101.01.4 RAM 1st work contains _)
 #        echo -e "\n  bParse: ${bParse}"; exit
- if [ "${bParse}" == "1" ]; then                                                                       # .(21101.01.5 RAM Beg Parse if aPrj = location)
+ if [ "${bParse}" == "1" ]; then                                                                            # .(21101.01.5 RAM Beg Parse if aPrj = location)
 
 #       {Project}_{stg1}-{ownr}
 #       {GitHub_Cert}:{GitHub_Acct}/{Project}_{stg1}-{ownr}
@@ -210,12 +210,12 @@ if [ "${aProj_arg}"        != "{Project}"     ]; then aPrj="${aProj_arg}"; fi
 if [ "${aGitHub_Cert_arg}" != "n/a"           ]; then aGitHub_Cert_var="${aGitHub_Cert_arg}"; fi
 if [ "${aGitHub_Acct_arg}" != "n/a"           ]; then aGitHub_Acct_var="${aGitHub_Acct_arg}"; fi
                                                       aGitHub_SSH_var="${aGitHub_SSH_arg}";
-    fi  # eif "${bParse}" == "1"                                                                        # .(21101.01.5 RAM End)
+    fi  # eif "${bParse}" == "1"                                                                            # .(21101.01.5 RAM End)
 #   -----------------------------------------------------------
 
-# if [ "${aRepoDir}" == "" ]; then aRepoDir="${aStage_var}"; fi                                         # .(21118.02.2)
+# if [ "${aRepoDir}" == "" ]; then aRepoDir="${aStage_var}"; fi                                             # .(21118.02.2)
 
-    aProj="$( echo "${aPrj}" | tr '[:upper:]' '[:lower:]' )"                                            # .(21101.02.1 RAM End)
+    aProj="$( echo "${aPrj}" | tr '[:upper:]' '[:lower:]' )"                                                # .(21101.02.1 RAM End)
 #   echo -e "   aRepo: '${aPrj/_}_${aStage_var}', aCert: '${aGitHub_Cert_var}', aAcct: '${aGitHub_Acct_var}', aSSH: '${aGitHub_SSH_var}'"; #exit
 
 #   --- --- ---------------  =  ------------------------------------------------------  #  ---------------- #
@@ -362,24 +362,24 @@ if [ "$c5" == " " ]; then
     echo ""                                                                             >>"${aConfigFile}"
 #   echo "    Apps=(  \"/._2/\" )"                                                      >>"${aConfigFile}"
     echo "    Apps+=\"/client1/\""                                                      >>"${aConfigFile}"
-    echo "    Apps+=\"/server1/\""                                                      >>"${aConfigFile}"    # .(21202.02.2 RAM Beg Push paths into Apps array)
+    echo "    Apps+=\"/server1/\""                                                      >>"${aConfigFile}"  # .(21202.02.2 RAM Beg Push paths into Apps array)
     echo "    Apps+=\"/README.md\""                                                     >>"${aConfigFile}"
     echo "    Apps+=\"/code-workspace\""                                                >>"${aConfigFile}"
 #   echo "    Apps+=\"/client1/1c1_my-html-custom-app/\""                               >>"${aConfigFile}"
-#   echo "    Apps+=\"/client1/2c1_my-html-remote-app/\""                               >>"${aConfigFile}"    # .(21202.02.2 RAM End)
+#   echo "    Apps+=\"/client1/2c1_my-html-remote-app/\""                               >>"${aConfigFile}"  # .(21202.02.2 RAM End)
     echo ""                                                                             >>"${aConfigFile}"
     echo "#   ------------------------------------------------"                         >>"${aConfigFile}"
     echo ""                                                                             >>"${aConfigFile}"
     echo "    export aProject=\"\${Project}\""                                          >>"${aConfigFile}"
     echo "    export aStage=\"\${Stage}\""                                              >>"${aConfigFile}"
-    echo "    export aRepo=\"\${Project}_${Stage}\""                                    >>"${aConfigFile}"    # .(21202.02.3 RAM Add aRepo=)
+    echo "    export aRepo=\"\${Project}_${Stage}\""                                    >>"${aConfigFile}"  # .(21202.02.3 RAM Add aRepo=)
     echo "    export aRepoDir=\"\${RepoDir}\""                                          >>"${aConfigFile}"
     echo "    export aWebsDir=\"\${WebsDir}\""                                          >>"${aConfigFile}"
     echo "    export aGitHub_Cert=\"\${GitHub_Cert}\""                                  >>"${aConfigFile}"
     echo "    export aGitHub_Acct=\"\${GitHub_Acct}\""                                  >>"${aConfigFile}"
     echo "    export aGitHub_SSH=\"\${GitHub_SSH}\""                                    >>"${aConfigFile}"
     echo "    export Apps"                                                              >>"${aConfigFile}"
-    echo ""                                                                             >>"${aConfigFile}"    # .(21029.02.1 RAM End)
+    echo ""                                                                             >>"${aConfigFile}"  # .(21029.02.1 RAM End)
 
 #   -----------------------------------------
 
@@ -423,10 +423,10 @@ if [ "${bParse}" == "1" ]; then                                                 
     aTS=$( date '+%y%m%d.%H%M' ); aTS=${aTS:1}
     cp -p "${aConfigFile}" "${aConfigFile/.sh}_v${aTS}.sh"
 
-                                                    aRepoDir_arg="\${Project}_/\${Stage}";   # .(21105.03.1)
+                                                    aRepoDir_arg="\${Project}_/\${Stage}";  # .(21105.03.1)
     if [ "${aPrj/_}_" != "${aDir}" ];          then aRepoDir_arg="\${Project}_\${Stage}"; fi # .(21105.03.2)
-    if [ "${aStage_arg}" == "{stg1}-{ownr}" ]; then aRepoDir_arg="\${Project}"; fi           # .(21105.03.3)
-    if [ "${aStage_arg}" == "{stg1}-{ownr}" ]; then aStage_arg=""; fi                        # .(21105.01.2 RAM Here too)
+    if [ "${aStage_arg}" == "{stg1}-{ownr}" ]; then aRepoDir_arg="\${Project}"; fi          # .(21105.03.3)
+    if [ "${aStage_arg}" == "{stg1}-{ownr}" ]; then aStage_arg=""; fi                       # .(21105.01.2 RAM Here too)
 
 awkPgm='
 BEGIN { }

@@ -144,7 +144,7 @@ function Help( ) {
      if [ "${aCmd}" != "Help" ] && [ "help" != "$1" ]; then return; fi
      if [ "$1" != "help" ]; then sayMsg " ** Invalid Command: '$1'" 3 "sp"; aCmd="Help"; fi
 
-#    -- --- ---------------  =  ------------------------------------------------------  #  ---------------- #
+#    -- --- ---------------  =  ----------------------------------------------------  #  ---------------- #
 
      echo ""
 #    echo "  FormR Tools ${aVer}   ($( date "+%b %-d %Y %H:%M" ))"                      ##.(20429.04.2)
@@ -349,9 +349,9 @@ function Help( ) {
 #      "$( dirname $0 )/gitR/FRT22_gitR1_p2.02.sh"  "${aArg1}" "${aArg2}" "${aArg3}" "${aArg4}"
 #      "$( dirname $0 )/gitR/FRT22_gitR1_p2.02.sh"  "$@"
 # echo "$( dirname $0 )/gitR/FRT22_gitR1_d2.04.sh"  "$@"
-#      "$( dirname $0 )/gitR/FRT22_gitR1_p2.04.sh"  "$@"                                                   # .(21027.04.2).(41028.01.2)
-#      "$( dirname $0 )/gitR/FRT22_${aGitR_Ver}.sh" "$@"                                                   # .(41026.06.x)
-       "$( dirname $0 )/gitR/FRT42_${aGitR_Ver}.sh" "$@"                                                   # .(41028.01.2 RAM Was FRT22)
+#      "$( dirname $0 )/gitR/FRT22_gitR1_p2.04.sh"  "$@"                                                    # .(21027.04.2).(41028.01.2)
+#      "$( dirname $0 )/gitR/FRT22_${aGitR_Ver}.sh" "$@"                                                    # .(41026.06.x)
+       "$( dirname $0 )/gitR/FRT42_${aGitR_Ver}.sh" "$@"                                                    # .(41028.01.2 RAM Was FRT22)
 
         ${aLstSp}
         exit

@@ -95,8 +95,8 @@ function Help() {
 #    -- --- ---------------  =  ------------------------------------------------------  #  ---------------- #
 
         getCmd  "he"           "Help"
-        getCmd  "Command1"     "Command1"                                                                  # .(21128.01.2 RAM Beg)
-        getCmd  "Command2"     "Command2"                                                                  # .(21128.01.2 RAM End)
+        getCmd  "Command1"     "Command1"                                                                   # .(21128.01.2 RAM Beg)
+        getCmd  "Command2"     "Command2"                                                                   # .(21128.01.2 RAM End)
 
 #    -- --- ---------------  =  ------------------------------------------------------  #  ---------------- #
 

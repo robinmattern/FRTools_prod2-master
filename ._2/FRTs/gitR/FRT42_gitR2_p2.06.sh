@@ -61,7 +61,7 @@
 #            getCurBranch       |
 #            shoGitRemotes1     |
 #            shoGitRemotes2     |
-#            setConfigFile      |                                                                          # .(21212.02.1)
+#            setConfigFile      |                                                                           # .(21212.02.1)
 #
 ##CHGS     .--------------------+----------------------------------------------+
 
@@ -326,7 +326,7 @@ function Help( ) {
 
         getCmd "cr" "re"        "Create Remote"   #1
 
-#       getCmd "li" "re" "al"   "List All Remotes"                                       # .(20623.13.12)
+#       getCmd "li" "re" "al"   "List All Remotes"                                      # .(20623.13.12)
 #       getCmd "li" "re"        "List Remotes"           # maybe ok: 'List Remotes All'
 
         getCmd "rm" "re"        "Remove Remote"
@@ -357,12 +357,12 @@ function Help( ) {
         getCmd "li" "br"        "List Local Branches"   # is wrong: 'List All Branches' # .(20625.02.6)
 
         getCmd "co" "co" "al"   "Count All Commits"
-        getCmd "co" "co" "lo"   "Count Local Commits"   # is wrong: 'List All Commits'   # .(20625.02.7)
-        getCmd "co" "co" "re"   "Count Remote Commits"  # is wrong: 'List All Commits'   # .(20625.02.8)
-        getCmd "co" "co"        "Count Local Commits"   # is wrong: 'List All Commits'   # .(20502.06.x End).(20625.02.9)
+        getCmd "co" "co" "lo"   "Count Local Commits"   # is wrong: 'List All Commits'  # .(20625.02.7)
+        getCmd "co" "co" "re"   "Count Remote Commits"  # is wrong: 'List All Commits'  # .(20625.02.8)
+        getCmd "co" "co"        "Count Local Commits"   # is wrong: 'List All Commits'  # .(20502.06.x End).(20625.02.9)
         getCmd "co" "re"        "Count Remote Commits"
 
-        getCmd "li" "re" "al"   "List All Remotes"                                       # .(20623.13.12)
+        getCmd "li" "re" "al"   "List All Remotes"                                      # .(20623.13.12)
         getCmd "li" "re"        "List Remotes"          # maybe ok: 'List Remotes All'
 
         getCmd "he" "re"        "Remote Help"
@@ -395,7 +395,7 @@ function Help( ) {
 #
 #====== =================================================================================================== #  ===========
 
-# function sayMsg( ) {  ... }                                                                                               ##.(20501.01.6)
+# function sayMsg( ) {  ... }                                                                               ##.(20501.01.6)
 
 #====== =================================================================================================== #  ===========
 
@@ -1755,24 +1755,24 @@ if [ "${bLocal}" == "1" ]; then
         if [ "${aArg2}" == "-copy" ]; then bCpy=1; fi
 #   -----------------------------------------------------------------
 
- if [ -d "${aRepoDir}/.git" ] && [ "${bCpy}" == "1" ]; then                     # .(21029.01.1 RAM Beg Copy repo to ${aRepoDir}_v${aTS})
+ if [ -d "${aRepoDir}/.git" ] && [ "${bCpy}" == "1" ]; then                                 # .(21029.01.1 RAM Beg Copy repo to ${aRepoDir}_v${aTS})
 
     aTS=$( date '+%y%m%d.%H%M' ); aTS=${aTS:1}
-    if [ ! -d "${aRepoDir}_v${aTS}" ]; then mkdir  "${aRepoDir}_v${aTS}"; fi    # .(21030.01.1 RAM Don't remove _)
+    if [ ! -d "${aRepoDir}_v${aTS}" ]; then mkdir  "${aRepoDir}_v${aTS}"; fi                # .(21030.01.1 RAM Don't remove _)
     echo -e "\n  Backing up to '${aWebsDir}/${aRepoDir}_v${aTS}'"
 #   cp -pr "${aRepoDir}"/*  "${aRepoDir}_v${aTS}";
     cp -pa "${aRepoDir}"/.  "${aRepoDir}_v${aTS}";
-    fi                                                                          # .(21029.01.1 RAM End)
+    fi                                                                                      # .(21029.01.1 RAM End)
 #   -----------------------------------------------------------------
 
- if [ -d "${aRepoDir}/.git" ] && [ "${bZip}" == "1" ]; then                     # .(21029.01.2 RAM Beg Zip repo to ${aRepoDir}_v${aTS}.zip)
+ if [ -d "${aRepoDir}/.git" ] && [ "${bZip}" == "1" ]; then                                 # .(21029.01.2 RAM Beg Zip repo to ${aRepoDir}_v${aTS}.zip)
 
     aTS=$( date '+%y%m%d.%H%M' ); aTS=${aTS:1}
-    aZipFile="${aRepoDir}_v${aTS}.zip"                                          # .(21030.01.2 RAM Don't remove _)
+    aZipFile="${aRepoDir}_v${aTS}.zip"                                                      # .(21030.01.2 RAM Don't remove _)
     if [ -f "${aZipFile}" ]; then rm "${aZipFile}"; fi
     echo -e "\n  Ziping into '${aZipFile}'"
     zip a -r -bt '-x!node_modules' "${aZipFile}" "${aRepoDir}" | awk '/to archive|size/ { print "  " $0 }; /Globa/ { print "  In " $4 " secs" }'
-    fi                                                                          # .(21029.01.2 RAM End)
+    fi                                                                                      # .(21029.01.2 RAM End)
 #   -----------------------------------------------------------------
 
     rm -fr "${aWebsDir}/${aRepoDir}"/*  2>/dev/null                                         # .(21026.01.1 RAM Delete all files in RepoDir).(21201.09.1 RAM Use full path)
@@ -1789,7 +1789,7 @@ if [ "${bLocal}" == "1" ]; then
          echo -e "\n * The repo folder, ${aRepoDir} was not completey removed"
 
          cd "${aWebsDir}"                                                                   # .(21202.02.10)
-         if [ -f "${aRDir}" ]; then "${aRDir}" "${aRepoDir}" 2 3 | awk '{ print "  " $0 }'; exit; fi  # .(21127.02.2 Show remaining files).(21201.09.6)
+         if [ -f "${aRDir}" ]; then "${aRDir}" "${aRepoDir}" 2 3 | awk '{ print "  "$0 }'; exit; fi         # .(21127.02.2 Show remaining files).(21201.09.6)
          exit
          fi                                                                                 # .(21127.08.3)
      fi

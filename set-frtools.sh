@@ -4,15 +4,16 @@
 ##=========+====================+================================================+
 ##RD         set-frtools        | JScriptWare Power Tools
 ##RFILE    +====================+=======+=================+======+===============+
-##FD         set-frtools.sh     |   9479|  4/30/22 20:45|   136| v1.05.21030.2045
-##FD         set-frtools.sh     |  15476|  4/30/22 21:05|   331| v1.05.21030.2105
-##FD         set-frtools.sh     |  17992|  4/30/22 23:52|   355| v1.05.21030.2352
+##FD         set-frtools.sh     |   9479| 10/30/24 20:45|   136| v1.05`41030.2045
+##FD         set-frtools.sh     |  15476| 10/30/24 21:05|   331| v1.05`41030.2105
+##FD         set-frtools.sh     |  17992| 10/30/24 23:52|   355| v1.05`41030.2352
+##FD         set-frtools.sh     |  17992| 10/31/24  7:15|   355| v1.05`41031.0615
 ##DESC     .--------------------+-------+-----------------+------+---------------+
 #            Create ._0/bin folder and copy all command scripts there as well as
 #            Update ,bashrc (or .zshrc) with PATH, THE_SERVER and OS Prompt.
 #
 ##LIC      .--------------------+----------------------------------------------+
-#            Copyright (c) 2024 formR Tools * Released under
+#            Copyright (c) 2024 formR Tools - 8020 Data * Released under
 #            MIT License: http://www.opensource.org/licenses/mit-license.php
 ##FNCS     .--------------------+-------+-------------------+------+-----------+
 #            help               | List of JPT commands
@@ -35,6 +36,7 @@
 # .(41030.03 10/30/24 RAM  9:45p| Add doit to wipe command
 # .(41030.07 10/30/24 RAM 10:05p| Add THE_SERVER to .bashrc file
 # .(41030.06 10/30/24 RAM 11:52p| Fix doit and THE_SERVER for profile
+# .(41031.02 10/31/24 RAM  6:15a| Add set-frtools command doit 
 
 ##PRGM     +====================+===============================================+
 ##ID 69.600. Main0              |
@@ -42,18 +44,19 @@
 #*/
 #========================================================================================================== #  ===============================  #
 
-  aVer="v0.05.41030.2045"
+  aVer="v1.05\`41031.0615"
 
   echo ""
 
 # ---------------------------------------------------------------------------
 
 function help() {
-  echo "  Run . ./set-anyllm.sh commands  (${aVer} OS: ${aOS})"
+  echo "  Run . ./set-anyllm.sh commands  (${aVer}, OS: ${aOS})"
   echo "    help            This help"
+  echo "    show            ${aBashrc} and script files"
+  echo "    doit            Do scripts and profile"                                                         # .(41031.01.1)                                                       
   echo "    scripts [doit]  Copy FRTools scripts"
   echo "    profile [doit]  Update ${aBashrc} file"
-  echo "    show            ${aBashrc} and script files"
   echo "    wipe    [doit]  Erase all setup changes"                                                        # .(41030.03.1)
   }
 # -----------------------------------------------------------
@@ -85,12 +88,13 @@ function exit_withCR() {
      }
 # -----------------------------------------------------------
 
-                                    aCmd="help";    bDoScripts="0"; bDoProfile="0"; bDoWipe="0"
+                                    aCmd="help";    bDoScripts="0"; bDoProfile="0";  bDoWipe="0"
 #  if [[ "$1" == ""        ]]; then aCmd="help";    fi
    if [[ "$1" == "help"    ]]; then aCmd="help";    fi
-   if [[ "$1" == "profile" ]]; then aCmd="profile"; if [[ "${!#}" == "doit" ]]; then bDoProfile="1"; fi; fi
    if [[ "$1" == "show"    ]]; then aCmd="showEm";  fi
-   if [[ "$1" == "wipe"    ]]; then aCmd="wipeIt";  if [[    "$2" == "doit" ]]; then bDoWipe="1";    fi; fi # .(41030.03.2 Add doit)
+   if [[ "$1" == "doit"    ]]; then aCmd="doit";                    bDoProfile="1";  bDoScripts="1";     fi # .(41031.02.2 Add doit command)
+   if [[ "$1" == "wipe"    ]]; then aCmd="wipeIt";  if [[    "$2" == "doit" ]]; then bDoWipe="1";    fi; fi # .(41030.03.2 Add doit option)
+   if [[ "$1" == "profile" ]]; then aCmd="profile"; if [[ "${!#}" == "doit" ]]; then bDoProfile="1"; fi; fi
    if [[ "$1" == "scripts" ]]; then aCmd="copyEm";  if [[    "$2" == "doit" ]]; then bDoScripts="1"; fi; fi
 
 # ---------------------------------------------------------------------------
@@ -340,6 +344,7 @@ function cpyScript() {
   setOSvars; # echo "  OS: ${aOS}"
 
   if [[ "${aCmd}" == "help"    ]]; then help; fi
+  if [[ "${aCmd}" == "doit"    ]]; then setBashrc; cpyToBin;  fi                                            # .(41031.02.3)
   if [[ "${aCmd}" == "showEm"  ]]; then showEm; fi
   if [[ "${aCmd}" == "wipeIt"  ]]; then clnHouse; fi
   if [[ "${aCmd}" == "profile" ]]; then setBashrc "$2 $3 $4"; fi                        # .(41030.07.4)

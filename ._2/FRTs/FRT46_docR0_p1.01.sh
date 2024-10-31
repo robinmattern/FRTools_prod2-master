@@ -115,22 +115,22 @@ function Help() {
 #    -- --- ---------------  =  ------------------------------------------------------  #  ---------------- #
 
         getCmd  "he"                 "Help"
-#       getCmd  "start"              "docR Start"                                                            ##.(21128.01.2 RAM No Workie)
-#       getCmd  "start"  "*"         "docR Start"                                                            # .(21128.01.2 RAM No Workie)
-        getCmd  "start"  "*"         "docR Start"      # Any 2nd cmd                                         # .(21128.01.2 RAM Beg Left arg must be lowercase)
-#       getCmd  "start"  "*"         "docR Start"   1  # Sets dBug=1                                         # .(21128.01.2 RAM Beg Left arg must be lowercase)
+#       getCmd  "start"              "docR Start"                                                           ##.(21128.01.2 RAM No Workie)
+#       getCmd  "start"  "*"         "docR Start"                                                           # .(21128.01.2 RAM No Workie)
+        getCmd  "start"  "*"         "docR Start"      # Any 2nd cmd                                        # .(21128.01.2 RAM Beg Left arg must be lowercase)
+#       getCmd  "start"  "*"         "docR Start"   1  # Sets dBug=1                                        # .(21128.01.2 RAM Beg Left arg must be lowercase)
         getCmd  "type"   "*"         "docR Type"
         getCmd  "alert"  "*"         "docR Alert"
         getCmd  "title"  "*"         "docR Title"
         getCmd  "note"   "*"         "docR Note"
-        getCmd  "line"   "*"         "docR Line"                                                             # .(21128.02.5)
-        getCmd  "space"  "*"         "docR Blank Line"                                                       # .(21128.02.8)
-        getCmd  "bl"     "li"        "docR Blank Line"                                                       # .(21128.02.9)
-        getCmd  "step"   "*"         "docR Step"                                                             # .(21128.02.2)
+        getCmd  "line"   "*"         "docR Line"                                                            # .(21128.02.5)
+        getCmd  "space"  "*"         "docR Blank Line"                                                      # .(21128.02.8)
+        getCmd  "bl"     "li"        "docR Blank Line"                                                      # .(21128.02.9)
+        getCmd  "step"   "*"         "docR Step"                                                            # .(21128.02.2)
         getCmd  "se"     "pa"  "on"  "docR Set Pause On"  # 1
         getCmd  "se"     "pa"  "of"  "docR Set Pause Off"
         getCmd  "code"   "*"         "docR Code"
-        getCmd  "end"    "*"         "docR End"                                                              # .(21128.01.2 RAM End)
+        getCmd  "end"    "*"         "docR End"                                                             # .(21128.01.2 RAM End)
 
 #    -- --- ---------------  =  ------------------------------------------------------  #  ---------------- #
 

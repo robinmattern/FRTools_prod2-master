@@ -82,19 +82,19 @@ if [ "$1" == "restart"   ]; then run-node-apps restart  $2; bRam=1; fi
 if [ "$1" == "stop"      ]; then run-node-apps stop     $2; bRam=1; fi
 if [ "$1" == "config"    ]; then run-node-apps show     $2; bRam=1; fi
 
-#f [ "$1" == "shlog"     ]; then aCmd=shlog;                bRam=1; fi             ##.(40507.02.1)
-#f [ "$1" == "sholog"    ]; then aCmd=shlog;                bRam=1; fi             ##.(40507.02.1)
+#f [ "$1" == "shlog"     ]; then aCmd=shlog;                bRam=1; fi                  ##.(40507.02.1)
+#f [ "$1" == "sholog"    ]; then aCmd=shlog;                bRam=1; fi                  ##.(40507.02.1)
 
-if [ "$1" == "shlog"     ]; then aCmd=log;                  bSho=0; fi             # .(40507.02.1 RAM Beg Add pm2 logs)
+if [ "$1" == "shlog"     ]; then aCmd=log;                  bSho=0; fi                  # .(40507.02.1 RAM Beg Add pm2 logs)
 if [ "$1" == "sholog"    ]; then aCmd=log;                  bSho=0; fi
-if [ "$1" == "clog"      ]; then aCmd=log;                  bSho=0; fi             # .(40507.02.1 RAM Beg Add pm2 logs)
+if [ "$1" == "clog"      ]; then aCmd=log;                  bSho=0; fi                  # .(40507.02.1 RAM Beg Add pm2 logs)
 if [ "$1" == "colog"     ]; then aCmd=log;                  bSho=0; fi
 if [ "${1:0:3}" == "log" ]; then aCmd=log;                  bSho=1; fi
 
 if [ "$aCmd"    == "log" ]; then                            bRam=1;
 if [ "$2" == ""          ]; then aCmd=ngx_log;                      fi
 if [ "${2:0:2}" == "ng"  ]; then aCmd=ngx_log; shift;               fi
-if [ "${2:0:2}" == "pm"  ]; then aCmd=pm2_log; shift;               fi; fi         # .(40507.02.1 RAM End)
+if [ "${2:0:2}" == "pm"  ]; then aCmd=pm2_log; shift;               fi; fi              # .(40507.02.1 RAM End)
 if [ "$aCmd"    == "log" ]; then aCmd=ngx_log;                      fi
 
 #  echo "  aCmd: ${aCmd}, bSho: ${bSho}, \$2: '$2', \$3: '$3'"; exit
@@ -207,8 +207,8 @@ function LogIt( ) {
     fi
 # -------------------------------------------------------------------------------
 
-#if [ "${aCmd/log//}" != "{$aCmd}" ]; then                                       ##.(40507.02.3)
- if [ "${aCmd}" == "ngx_log"       ]; then                                       # .(40507.02.3 RAM Was: "${aCmd/log//}" != "{$aCmd}")
+#if [ "${aCmd/log//}" != "{$aCmd}" ]; then                                              ##.(40507.02.3)
+ if [ "${aCmd}" == "ngx_log"       ]; then                                              # .(40507.02.3 RAM Was: "${aCmd/log//}" != "{$aCmd}")
 
                                       aValidApps="anyllm, aidocs, demo1, rick, bruce, suzee, robin"
 
@@ -236,7 +236,7 @@ function LogIt( ) {
     fi
 # -------------------------------------------------------------------------------
 
- if [ "${aCmd}" == "pm2_log"  ]; then                                       # .(40507.02.4 RAM Add pm2 logs)
+ if [ "${aCmd}" == "pm2_log"  ]; then                                                   # .(40507.02.4 RAM Add pm2 logs)
 
                                       aValidApps="aidocs, demo1, rick, bruce, suzee, robin\n  and anyllm, frontend, collector, server"
 
