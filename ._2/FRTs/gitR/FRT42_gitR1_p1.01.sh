@@ -6,6 +6,7 @@
 ##FD   FRT22_GitR1.sh           |  21714| 10/26/24 17:20|   461| v1.01.41026.1720
 ##FD   FRT42_GitR1.sh           |  24865| 10/29/24  8:52|   488| v1.01.41029.0852
 ##FD   FRT42_GitR1.sh           |  27486| 10/30/24 20:28|   513| v1.01.41030.2028
+##FD   FRT42_GitR1.sh           |  28834| 10/31/24  8:12|   524| v1.01.41031.0810
 ##DESC     .--------------------+-------+---------------+------+-----------------+
 #            This script has usefull GIT functions.
 #
@@ -39,6 +40,9 @@
 # .(41029.07 10/29/24 RAM  8:52a| Opps, change git:github-ram to git@github-ram
 # .(41030.04 10/29/24 RAM  5:56p| Fix show last n times
 # .(41030.05 10/29/24 RAM  8:28p| Add command: show commit
+# .(41031.03 10/31/24 RAM  7:25p| Add List last and list remotes
+# .(41031.04 10/31/24 RAM  8:00p| Reformat date for List last
+# .(41031.05 10/31/24 RAM  8:10p| Fix no more commits line
 #
 ##PRGM     +====================+===============================================+
 ##ID 69.600. Main0              |
@@ -48,7 +52,7 @@
 
      aVTitle="Useful GIT Tools by formR"
 
-     aVer="p0.05"; aVDt="Oct 24, 2024 17:00p" # .41023.1335"
+     aVer="p0.05"; aVDt="Oct 31, 2024 8:10a" # .41031.0810"
 
 # ---------------------------------------------------------------------------
 
@@ -57,10 +61,10 @@ function help() {
 #    echo "  GitR Commands (${aVer})"
      echo "  ${aVTitle} (${aVer})            (${aVDt})"
      echo "  -------------------------------------------  ---------------------------------"
-     echo ""
-     echo "    Show last [nCnt]                           Show last nCnt commits"
+#    echo ""
+     echo "    List last [nCnt]                           List last nCnt commits"                           # .(41031.03.1).(51030.05.1)
      echo "    Show commit [nCnt|aHash]                   Show files for commit -nCnt or aHash"             # .(41030.05.1)
-     echo "    Show remotes                               Show current remote repositories"
+     echo "    List remotes                               List current remote repositories"                 # .(41031.03.2)
      echo "    Set remote  {name} [{acct}] [{repo}] [-d]  Set current remote repository"
      echo "    Add remote  {name} [{acct}] [{repo}] [-d]  Add new origin remote repository"
      echo "    Make remote {name} [{acct}] [{repo}] [-d]  Create new remote repository in github"
@@ -154,6 +158,7 @@ done
 
 # ---------------------------------------------------------------------------
 
+  if [ "$1" == "lis" ] && [ "$2" == "las" ]; then aCmd="shoLast";     fi                # .(41031.03.4)
   if [ "$1" == "sho" ] && [ "$2" == "las" ]; then aCmd="shoLast";     fi
   if [ "$1" == "sho" ] && [ "$2" == "com" ]; then aCmd="shoCommit";   fi                # .(51030.05.2)
   if [ "$1" == "com" ] && [ "$2" == "sho" ]; then aCmd="shoCommit";   fi                # .(51030.05.3)
@@ -162,6 +167,8 @@ done
   if [ "$1" == "set" ] && [ "$2" == "rem" ]; then aCmd="setRemote";   fi
   if [ "$1" == "rem" ] && [ "$2" == "set" ]; then aCmd="setRemote";   fi
   if [ "$1" == "sho" ] && [ "$2" == "rem" ]; then aCmd="shoRemote";   fi
+  if [ "$1" == "lis" ] && [ "$2" == "rem" ]; then aCmd="shoRemote";   fi                # .(41031.03.5)
+  if [ "$1" == "rem" ] && [ "$2" == "lis" ]; then aCmd="shoRemote";   fi                # .(41031.03.6)
   if [ "$1" == "mer" ] && [ "$2" == "rem" ]; then aCmd="mergeRemote"; fi
   if [ "$1" == "rem" ] && [ "$2" == "mer" ]; then aCmd="mergeRemote"; fi
   if [ "$1" == "rem" ] && [ "$2" == "rem" ]; then aCmd="delRemote";   fi
@@ -206,20 +213,22 @@ done
 # ---------------------------------------------------------------------------
 
 function shoCommitMsg() {                                                                                   # .(41030.05.2 RAM Write showCommitMsg Beg)
-     n=$(($1-1))
-     aAWK='/^commit / { c = substr($0,8,8) }; /^Author:/ { a = substr($0,8) }; /^Date:/ { d = substr($0,6,27) }; NR == 5 { m = sprintf( "\"%-50s", ($0 != "") ? substr($0,5)"\"" : "n/a\"" ); print " " c d"   "m"  "a }'
+     n=$(($1-1)); if [ "${#n}" == "1" ]; then m=" ${n}"; else m="${n}"; fi                                  # .(41031.05.1 RAM Move to here)
+     aAWK1='/^commit / { c = substr($0,8,8) }; /^Author:/ { a = substr($0,8) }; /^Date:/ { d = substr($0,6,27) }; NR == 5 { m = sprintf( "\"%-50s", ($0 != "") ? substr($0,5)"\"" : "n/a\"" ); print " " c d"   "m"  "a }'
+     aAWK2='{ m = $3; d = $4; t = $5; y = $6; m = ( 2 + index( "JanFebMarAprMayJunJulAugSepOctNovDev", m ) ) / 3; print substr( $0, 1, 15)" "y"."m"."d" "t"   "substr( $0, 40 ) }';   #echo "  aAWK2: '${aAWK2}'"; exit # .(41031.04.1)
      aCommitHash=$( git rev-parse HEAD~$n 2>/dev/null ); # echo "  aCommitHash: '${aCommitHash}'"  # Get commit hash at current position
 #    echo "  aCommitHash: ${aCommitHash}"; return
-     if [ "$?" -ne "0" ]; then echo -e "* $1.  There are no more commits (HEAD~$n)!"; exit_withCR; fi
-     if [ "${#n}" == "1" ]; then m=" ${n}"; else m="$n"; fi 
-     echo "  ${m}. $( git show $(git rev-parse HEAD~$n) | awk "${aAWK}" )"  # git show $aCommitHash | awk "${aAWK}"
+#    if [ "${#n}" == "1" ]; then m=" ${n}"; else m="${n}"; fi
+     if [ "$?" -ne "0" ]; then echo -e "* ${m}.  There are no more commits (HEAD~$n)!"; exit_withCR; fi     # .(41031.05.2 RAM Was ${1})
+#    echo "  ${m}. $( git show $(git rev-parse HEAD~$n) | awk "${aAWK1}"                  )"  # git show $aCommitHash | awk "${aAWK}" ##.(41031.04.2)
+     echo "  ${m}. $( git show $(git rev-parse HEAD~$n) | awk "${aAWK1}" | awk "${aAWK2}" )"                # .(41031.04.2)
      }                                                                                                      # .(41030.05.2 End)
 # ---------------------------------------------------------------------------
 
   if [ "${aCmd}" == "shoLast" ]; then
      nCnt=${aArg3}; if [ "${nCnt}" == "" ]; then nCnt=1; fi # echo "  nCnt: ${nCnt}"
 #    aAWK='/^commit / { c = substr($0,8,8) }; /^Author:/ { a = substr($0,8) }; /^Date:/ { d = substr($0,6,27) }; NR == 5 { print "\n  " c $0 d"  "a }'
-     aAWK='/^commit / { c = substr($0,8,8) }; /^Author:/ { a = substr($0,8) }; /^Date:/ { d = substr($0,6,27) }; NR == 5 { m = sprintf( "\"%-50s", ($0 != "") ? substr($0,5)"\"" : "n/a\"" ); print " " c d"   "m"  "a }'
+#    aAWK='/^commit / { c = substr($0,8,8) }; /^Author:/ { a = substr($0,8) }; /^Date:/ { d = substr($0,6,27) }; NR == 5 { m = sprintf( "\"%-50s", ($0 != "") ? substr($0,5)"\"" : "n/a\"" ); print " " c d"   "m"  "a }'
 #    git show $(git rev-parse HEAD) | awk '/^commit / { c = substr($0,8,8) }; /^Author:/ { a = substr($0,8) }; /^Date:/ { print "\n" c substr($0,7,26) a }'
 #    git show $(git rev-parse HEAD) | awk '/^commit / { c = substr($0,8,8) }; /^Author:/ { a = substr($0,8) }; /^Date:/ { d = substr($0,7,26) }; NR == 5 { print "\n  " c d a $0 }'
 #    git show $(git rev-parse HEAD) | awk '/^commit / { c = substr($0,8,8) }; /^Author:/ { a = substr($0,8) }; /^Date:/ { d = substr($0,6,27) }; NR == 5 { print "\n  " c $0 d"  "a }'

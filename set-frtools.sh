@@ -54,7 +54,7 @@ function help() {
   echo "  Run . ./set-anyllm.sh commands  (${aVer}, OS: ${aOS})"
   echo "    help            This help"
   echo "    show            ${aBashrc} and script files"
-  echo "    doit            Do scripts and profile"                                                         # .(41031.01.1)
+  echo "    doit            Do scripts and profile"                                                         # .(41031.02.1)
   echo "    scripts [doit]  Copy FRTools scripts"
   echo "    profile [doit]  Update ${aBashrc} file"
   echo "    wipe    [doit]  Erase all setup changes"                                                        # .(41030.03.1)
