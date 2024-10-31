@@ -45,6 +45,7 @@
 # .(41031.05 10/31/24 RAM  8:10a| Fix no more commits line
 # .(41031.06 10/31/24 RAM  8:10a| Chop list last comment
 # .(41031.07 10/31/24 RAM  9:45a| Add replace remote command
+# .(41031.08 10/31/24 RAM 10:35a| Add help for Add remote commmand
 #
 ##PRGM     +====================+===============================================+
 ##ID 69.600. Main0              |
@@ -318,12 +319,12 @@ function shoCommitMsg() {                                                       
     if [ "${aArg3}" != "" ]; then aRemote_name="$( echo "${aArg3}" | awk '{ print tolower($0) }' )"; fi
     if [ "${bDoit}" != "1" ]; then
        echo ""
-       git fetch "${aRemote_name}" | awk '{ print "  " $0 }; END{ print "  Fetch complete" }'
+       git fetch "${aRemote_name}" | awk '{ print "  " $0 }; END{ if (NR > 0) { print "" }; print "Fetch complete " NR }'
        echo      "  The ${aRemote_name} repo has been fetched. To replace it add -d to run this git command:"
        echo      "     git reset --hard ${aRemote_name}/${aBranch}"
        fi
      if [ "${bDoit}" == "1" ]; then
-       git reset --hard ${aRemote_name}/${aBranch}
+       git reset --hard ${aRemote_name}/${aBranch} | awk '{ print "  " $0 }'
        fi
      fi                                                                                 # .(41031.07.3 End)
 # ---------------------------------------------------------------------------
@@ -379,7 +380,14 @@ function shoCommitMsg() {                                                       
      if [ "${aArg5}" != "" ]; then aProject="${aArg5}"; fi
      if [ "${aArg6}" != "" ]; then aStage_="${aArg6}"; fi
      if [ "${aRemote_name}" == "" ]; then echo -e "\n* You must provide a remote repo name, i.e. origin or reponame"; exit_withCR; fi
-
+     if [ "${aRemote_name}" == 'help' ]; then 
+             echo -e "\n  The arguments are AccountName, Project, Stage, or you can do"
+             echo      "    anything-llm    for   Mintplex-Labs  anything-llm  " 
+             echo      "    anyllm          for   ${aAcct}  AnyLLM_${aStage}" 
+             echo      "    altools         for   ${aAcct}  ALTools_${aStage}" 
+             echo      "    jptools         for   ${aAcct}  JPTools_${aStage}"
+             exit_withCR
+             fi  
              aRemoteURL=""
      if [ "${aRemote_name}" == "anythingllm_master" ]; then aRemote_name="anything-llm"; fi
      if [ "${aRemote_name}" == "anythingllm"        ]; then aRemote_name="anything-llm"; fi
