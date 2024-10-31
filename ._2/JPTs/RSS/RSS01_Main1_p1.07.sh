@@ -169,7 +169,7 @@ function Help() {
   if [ "${aCmd:0:2}" == "in" ] || [ "$aCmd}" == "se" ]; then                    # .(30520.01.3 RAM Process Set Cmd in ${LIB_Info}.sh)
           shift
           LIB_Info="${JPTdir}/infoR/${LIB}23_Info"                              # .(41026.05.1 RAM Was: Info/${LIB}23_Info).(30520.03.2 RAM New version)
-          echo -e "\n LIB_Info: '${LIB_Info}.sh'" "$@"; exit
+#         echo -e "\n LIB_Info: '${LIB_Info}.sh'" "$@"; exit                    # .(41030.01.1 RAM Hide)
         ${LIB_Info}.sh "$@";     if [ "$?" == "0" ]; then exit; fi              # .(21111.03.5)
      fi                                                                         # .(21101.01.1 RAM End)
 # ----------------------------------------------------------------

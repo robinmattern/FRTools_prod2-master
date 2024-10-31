@@ -140,7 +140,7 @@
 #       aFns="$( dirname "${BASH_SOURCE}")/../../JPTs/JPT12_Main2Fns_p1.07.sh"; if [ ! -f "${aFns}" ]; then # .(21113.05.7 RAM Use JPT12_Main2Fns_p1.07.sh)
 #       aFns="$( dirname "${BASH_SOURCE}"           )/JPT12_Main2Fns_p1.07.sh"; if [ ! -f "${aFns}" ]; then # .(41026.04.5 RAM Use copy in FRTs).(21113.05.9 RAM Use FRT12_Main2Fns_p1.06_v21027.sh).(41027.01.5)
 #       aFns="$( dirname "${BASH_SOURCE}"   )/../JPTs/JPT12_Main2Fns_p1.07.sh"; if [ ! -f "${aFns}" ]; then ##.(41026.04.1).(41027.01.5)
-                             aFns="${aDir/FRTs*/JPTs}/JPT12_Main2Fns_p1.07.sh"; if [ ! -f "${aFns}" ]; then  # .(41027.01.5).(41026.04.1)
+                             aFns="${aDir/FRTs*/JPTs}/JPT12_Main2Fns_p1.07.sh"; if [ ! -f "${aFns}" ]; then # .(41027.01.5).(41026.04.1)
         echo -e "\n ** gitR2[144]  JPT Fns script, '${aFns}', NOT FOUND\n"; exit; fi; #fi
         source "${aFns}";
 

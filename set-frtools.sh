@@ -64,7 +64,7 @@ function showEm( ) {
   echo -e "    -------\n"
 
   echo "  PATH (bin folders only):"
-  echo "${PATH}" | awk '{ gsub( /:/, "\n" );  print }' | awk '/[./]bin/ { print "    " $0 }'
+  echo "${PATH}" | awk '{ gsub( /:/, "\n" );  print }' | awk '/[.]*bin$/ { print "    " $0 }'
   }
 # -----------------------------------------------------------
 
@@ -80,6 +80,8 @@ function clnHouse( ) {
   cp -p "${aBashrc}" "${aBashrc}_v${aTS}"
   cat   "${aBashrc}" | awk '/._0/ { exit }; NF > 0 { print }' >"${aBashrc}_@tmp"
   mv    "${aBashrc}_@tmp" "${aBashrc}"
+
+  echo "  Wipe complete"; exit_withCR
   }
 # -----------------------------------------------------------
 
@@ -94,9 +96,11 @@ function  mkScript( ) {
 
 function setBashrc( ) {
 
+     setTHE_SERVER "$1"; echo "  THE_SERVER is: ${THE_SERVER}"; # exit
+
 # if [ "${PATH/._0/}" != "${PATH}" ]; then
 
-     inRC=$( cat "${aBashrc}" | awk '/._0/ { print 1 }' )
+     inRC=$( cat "${aBashrc}" | awk '/._0/ { print 1 }' );
   if [[ "${inRC}" == "1" ]]; then
 
      echo "* The path, '${aBinDir}', is already in the User's ${aBashrc} file."
@@ -112,6 +116,8 @@ function setBashrc( ) {
      echo ""                                                >>"${aBashrc}"
 #    echo "export PATH=\"/Users/Shared/._0/bin:\$PATH\""    >>"${aBashrc}"
      echo "export PATH=\"${aBinDir}:\$PATH\""               >>"${aBashrc}"
+     echo ""                                                >>"${aBashrc}"
+     echo "export THE_SERVER=\"${THE_SERVER}\""             >>"${aBashrc}"
      echo ""                                                >>"${aBashrc}"
      if [ "${aOS}" != "windows" ]; then
      echo "function git_branch_name() {"                                                               >>"${aBashrc}"
@@ -149,6 +155,44 @@ function setBashrc( ) {
      if [ -f "${aBashrc}" ]; then rm "${aBashrc}"; fi
      rm
      fi
+     fi
+  }
+# -----------------------------------------------------------
+
+function setTHE_SERVER() {
+
+#    OS=Windows_NT
+#     OSTYPE=msys
+#       MSYSTEM=MINGW64
+#     wmic os get caption
+
+#   THE_SERVER='rm219d_os11-MacMini-Dev01   rm220d.local
+#   THE_SERVER='Robins-Mac-mini.local       rm231d-os14_
+#   THE_SERVER='sc212d-w10p_Windows-Prod1 (127.0.0.1)'      rm228d-w11p    RM228D-W11P
+
+  if [ "${aOS}" == "windows" ]; then aIP="$( ipconfig | awk '/IPv4/  { a = substr($0,40) }; END { print a }' )"
+                                else aIP="$( ifconfig | awk '/inet / { a = $2 }; END { print a }' )"; fi
+  if [ "${aOS}" == "darwin"  ]; then aOSN="os${OSTYPE:6:2}"; fi
+  if [ "${aOS}" == "windows" ]; then aOSN="w$(wmic os get caption | awk 'NR == 2 { print $3 substr($4,1,1) }' )"; fi
+  if [ "${aOS}" == "msys"    ]; then aOSN="w$(wmic os get caption | awk '{ print $3 substr($4,1,1) }' )"; fi
+  if [ "${aOS}" == "linux"   ]; then aOSN="ub$( cat /etc/issue | awk '{ print $3 substr($4,1,1) }' )"; fi
+#      echo "  THE_SERVER: ${THE_SERVER}"
+
+       aSvr="$1";  aSvr="$( echo "${aSvr}" | sed 's/ *$//' )" 
+#                           echo "  aSvr: '${aSvr}' (${#aSvr})'" 
+  if [ "${aSvr}" != ""    ]; then
+                                     
+  if [ "${#aSvr}" == "11" ]; then aSvr="${aSvr}_${HOSTNAME/.local}"; fi 
+#                            echo "  aSvr: '${aSvr%% }'" 
+#                            echo "  aSvr: '$( echo "${aSvr}" | sed 's/ *$//' )'" 
+#    THE_SERVER="${aSvr%% } (${aIP})"
+     THE_SERVER="$( echo "${aSvr}" | sed 's/ *$//' ) (${aIP})" 
+     fi    
+  if [ "${THE_SERVER}" != "" ]; then return; fi
+
+  if [ "${aSvr}" == "" ]; then
+     aSvr="xx000-${aOSN}_${HOSTNAME/.local/} (${aIP})"
+     THE_SERVER="${aSvr}"
      fi
   }
 # -----------------------------------------------------------
@@ -237,7 +281,7 @@ function cpyScript( ) {
   if [[ "${aCmd}" == "help"    ]]; then help; fi
   if [[ "${aCmd}" == "showEm"  ]]; then showEm; fi
   if [[ "${aCmd}" == "wipeIt"  ]]; then clnHouse; fi
-  if [[ "${aCmd}" == "profile" ]]; then setBashrc; fi
+  if [[ "${aCmd}" == "profile" ]]; then setBashrc "$2 $3 $4"; fi
   if [[ "${aCmd}" == "copyEm"  ]]; then cpyToBin; fi
 
 # ---------------------------------------------------------------------------

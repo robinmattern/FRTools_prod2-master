@@ -4,6 +4,8 @@
 ##RD         Main0              | GitR Tools
 ##RFILE    +====================+=======+===============+======+=================+
 ##FD   FRT22_GitR1.sh           |  21714| 10/26/24 17:20|   461| v1.01.41026.1720
+##FD   FRT42_GitR1.sh           |  24865| 10/29/24  8:52|   488| v1.01.41029.0852
+##FD   FRT42_GitR1.sh           |  27486| 10/30/24 20:28|   513| v1.01.41030.2028
 ##DESC     .--------------------+-------+---------------+------+-----------------+
 #            This script has usefull GIT functions.
 #
@@ -31,10 +33,12 @@
 # .(41024.01 10/26/24 RAM 10:00a| Did something
 # .(41025.02 10/26/24 RAM 10:00a| Did something else
 # .(41026.07 10/26/24 RAM 17:20p| Add doc header
-# .(41029.04 10/29/24 RAM  7:55a| Add msg to do make remote 
-# .(41029.05 10/29/24 RAM  8:11a| Add setRemote 
+# .(41029.04 10/29/24 RAM  7:55a| Add msg to do make remote
+# .(41029.05 10/29/24 RAM  8:11a| Add setRemote
 # .(41029.06 10/29/24 RAM  8:44a| Add remote alias: frtools
 # .(41029.07 10/29/24 RAM  8:52a| Opps, change git:github-ram to git@github-ram
+# .(41030.04 10/29/24 RAM  5:56p| Fix show last n times
+# .(41030.05 10/29/24 RAM  8:28p| Add command: show commit
 #
 ##PRGM     +====================+===============================================+
 ##ID 69.600. Main0              |
@@ -54,7 +58,8 @@ function help() {
      echo "  ${aVTitle} (${aVer})            (${aVDt})"
      echo "  -------------------------------------------  ---------------------------------"
      echo ""
-     echo "    Show last                                  Show last commit"
+     echo "    Show last [nCnt]                           Show last nCnt commits"
+     echo "    Show commit [nCnt|aHash]                   Show files for commit -nCnt or aHash"             # .(41030.05.1)
      echo "    Show remotes                               Show current remote repositories"
      echo "    Set remote  {name} [{acct}] [{repo}] [-d]  Set current remote repository"
      echo "    Add remote  {name} [{acct}] [{repo}] [-d]  Add new origin remote repository"
@@ -150,6 +155,8 @@ done
 # ---------------------------------------------------------------------------
 
   if [ "$1" == "sho" ] && [ "$2" == "las" ]; then aCmd="shoLast";     fi
+  if [ "$1" == "sho" ] && [ "$2" == "com" ]; then aCmd="shoCommit";   fi                # .(51030.05.2)
+  if [ "$1" == "com" ] && [ "$2" == "sho" ]; then aCmd="shoCommit";   fi                # .(51030.05.3)
   if [ "$1" == "add" ] && [ "$2" == "rem" ]; then aCmd="addRemote";   fi
   if [ "$1" == "rem" ] && [ "$2" == "add" ]; then aCmd="addRemote";   fi
   if [ "$1" == "set" ] && [ "$2" == "rem" ]; then aCmd="setRemote";   fi
@@ -190,7 +197,7 @@ done
     echo "* You are not in a ${aProject}_/{StgDir} Git Repository"
     exit_withCR
   else
-    echo "  RepoDir is: ${aRepoDir}, branch: ${aBranch}";   # exit_withCR
+    echo "  RepoDir is: ${aRepoDir}, branch: ${aBranch:2}";   # exit_withCR
     fi
 # ---------------------------------------------------------------------------
 
@@ -198,21 +205,41 @@ done
 
 # ---------------------------------------------------------------------------
 
-  if [ "${aCmd}" == "shoLast" ]; then
+function shoCommitMsg() {                                                                                   # .(41030.05.2 RAM Write showCommitMsg Beg)
+     n=$(($1-1))
+     aAWK='/^commit / { c = substr($0,8,8) }; /^Author:/ { a = substr($0,8) }; /^Date:/ { d = substr($0,6,27) }; NR == 5 { m = sprintf( "\"%-50s", ($0 != "") ? substr($0,5)"\"" : "n/a\"" ); print " " c d"   "m"  "a }'
+     aCommitHash=$( git rev-parse HEAD~$n 2>/dev/null ); # echo "  aCommitHash: '${aCommitHash}'"  # Get commit hash at current position
+#    echo "  aCommitHash: ${aCommitHash}"; return
+     if [ "$?" -ne "0" ]; then echo -e "* $1.  There are no more commits (HEAD~$n)!"; exit_withCR; fi
+     echo "  $n. $( git show $(git rev-parse HEAD~$n) | awk "${aAWK}" )"  # git show $aCommitHash | awk "${aAWK}"
+     }                                                                                                      # .(41030.05.2 End)
+# ---------------------------------------------------------------------------
 
+  if [ "${aCmd}" == "shoLast" ]; then
      nCnt=${aArg3}; if [ "${nCnt}" == "" ]; then nCnt=1; fi # echo "  nCnt: ${nCnt}"
 #    aAWK='/^commit / { c = substr($0,8,8) }; /^Author:/ { a = substr($0,8) }; /^Date:/ { d = substr($0,6,27) }; NR == 5 { print "\n  " c $0 d"  "a }'
-     aAWK='/^commit / { c = substr($0,8,8) }; /^Author:/ { a = substr($0,8) }; /^Date:/ { d = substr($0,6,27) }; NR == 5 { m = sprintf( "\"%-50s", ($0 != "") ? substr($0,5)"\"" : "n/a\"" ); print "  " c d"   "m"  "a }'
+     aAWK='/^commit / { c = substr($0,8,8) }; /^Author:/ { a = substr($0,8) }; /^Date:/ { d = substr($0,6,27) }; NR == 5 { m = sprintf( "\"%-50s", ($0 != "") ? substr($0,5)"\"" : "n/a\"" ); print " " c d"   "m"  "a }'
 #    git show $(git rev-parse HEAD) | awk '/^commit / { c = substr($0,8,8) }; /^Author:/ { a = substr($0,8) }; /^Date:/ { print "\n" c substr($0,7,26) a }'
 #    git show $(git rev-parse HEAD) | awk '/^commit / { c = substr($0,8,8) }; /^Author:/ { a = substr($0,8) }; /^Date:/ { d = substr($0,7,26) }; NR == 5 { print "\n  " c d a $0 }'
 #    git show $(git rev-parse HEAD) | awk '/^commit / { c = substr($0,8,8) }; /^Author:/ { a = substr($0,8) }; /^Date:/ { d = substr($0,6,27) }; NR == 5 { print "\n  " c $0 d"  "a }'
+     echo ""
      while [[ $i -lt $nCnt ]]; do
-       aCommitHash=$(git rev-parse HEAD~$i 2>/dev/null); # echo "  aCommitHash: '${aCommitHash}'"  # Get commit hash at current position
-       if [ "$?" -ne "0" ]; then echo -e "* There is no last commit!"; exit_withCR; fi
-       git show $(git rev-parse HEAD~$i) | awk "${aAWK}"  # git show $aCommitHash | awk "${aAWK}"
-       i=$((i+1))
+       i=$((i+1)); shoCommitMsg $i                                                                          # .(41030.04.1).(41030.05.3 RAM Use showCommitMsg)
+#      aCommitHash=$(git rev-parse HEAD~$i 2>/dev/null); # echo "  aCommitHash: '${aCommitHash}'"  # Get commit hash at current position
+#      if [ "$?" -ne "0" ]; then echo -e "* $i.  There are no more commits (HEAD~$i)!"; exit_withCR; fi
+#      echo "  $i. $( git show $(git rev-parse HEAD~$i) | awk "${aAWK}" )"  # git show $aCommitHash | awk "${aAWK}"
+#      i=$((i+1));                                                                                          ##.(41030.04.1 RAM Move above)
        done
      fi
+# ---------------------------------------------------------------------------
+
+  if [ "${aCmd}" == "shoCommit" ]; then                                                                     # .(41030.05.4 RAM Add shoCommit Beg)
+     nCnt=${aArg3}; if [ "${nCnt}" == "" ]; then nCnt=0; fi # echo "  nCnt: ${nCnt}"
+     echo ""; nCnt=$((nCnt+1)); shoCommitMsg ${nCnt};  nCnt=$((nCnt-1))  # echo "  shoCommitMsg ${nCnt}"
+     aFilter="AMDR"; aAWK='/^['${aFilter}']/ { printf "      %-2s %s\n", substr($1,1,1), substr( $0, 6) }'; # echo "  aAWK: '${aAWK}'"
+#    echo "git show --pretty=\"\" --name-status HEAD~${nCnt} | awk ${aAWK}"
+           git show --pretty="" --name-status HEAD~${nCnt} | awk "${aAWK}"
+     fi                                                                                                     # .(41030.05.4 End)
 # ---------------------------------------------------------------------------
 
   if [ "${aCmd}" == "makRemote" ]; then
@@ -373,9 +400,9 @@ done
      if [ "${aArg4}" == ":" ]; then aArg4=":robinmattern"; fi                           # .(41029.06.3 RAM Was: aAcct=)
      if [ "${aArg4}" == "" ] && [ "${aArg5}" == "" ]; then                              # .(41029.06.4 RAM If no args Beg)
              aRemoteName="${aArg3}"
-             aAcct2="/${aAcct}"; if [ "${aSSH:0:3}" == "git" ]; then aAcct2=":${aAcct}"; fi                 # .(41029.07.3) 
-             aRemoteURL="${aSSH}${aAcct2}/${aProject}_${aStage}.git"                                        # .(41029.07.4) 
-        fi                                                                              # .(41029.06.4 End) 
+             aAcct2="/${aAcct}"; if [ "${aSSH:0:3}" == "git" ]; then aAcct2=":${aAcct}"; fi                 # .(41029.07.3)
+             aRemoteURL="${aSSH}${aAcct2}/${aProject}_${aStage}.git"                                        # .(41029.07.4)
+        fi                                                                              # .(41029.06.4 End)
      if [ "${aArg4}" != "" ] && [ "${aArg5}" == "" ]; then
              aAcct="${aArg4/\/*/}"
              aRemoteName="${aArg3}"
