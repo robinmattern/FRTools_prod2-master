@@ -1,12 +1,49 @@
 #!/bin/bash
-  aVer="v0.05.41023.1443"  # set-anyllm.sh
-  aVer="v0.05.41024.1000"  # set-anyllm.sh
+#!/bin/bash
+#*\
+##=========+====================+================================================+
+##RD         set-frtools        | JScriptWare Power Tools
+##RFILE    +====================+=======+=================+======+===============+
+##FD         set-frtools.sh     |   9479|  4/30/22 20:45|   136| v1.05.21030.2045
+##DESC     .--------------------+-------+-----------------+------+---------------+
+#            Create ._0/bin folder and copy all command scripts there as well as
+#            Update ,bashrc (or .zshrc) with PATH, THE_SERVER and OS Prompt.
+#
+##LIC      .--------------------+----------------------------------------------+
+#            Copyright (c) 2024 formR Tools * Released under
+#            MIT License: http://www.opensource.org/licenses/mit-license.php
+##FNCS     .--------------------+-------+-------------------+------+-----------+
+#            help               | List of JPT commands
+#            showEm             |
+#            clnHouse           |
+#            makScript          |
+#            setBashrc          |
+#            setTHE_SERVER      |
+#            cpyToBin           |
+#            cpyScript          |
+#            setOSvars          |
+#            exit_withCR        |
+#            Sudo               |
+#                               |
+##CHGS     .--------------------+-------+-------------------+------+-----------+
+# .(41023.01 10/23/24 RAM  2:43p|
+# .(41024.01 10/24/24 RAM 10:43a|
+# .(41030.01 10/30/24 RAM  8:45p| Fix MacOS's issue with function abc( ) { ... }
+# .(41030.02 10/30/24 RAM  9:00p| Add this header  
+
+##PRGM     +====================+===============================================+
+##ID 69.600. Main0              |
+##SRCE     +====================+===============================================+
+#*/
+#========================================================================================================== #  ===============================  #
+
+  aVer="v0.05.41030.2045"
 
   echo ""
 
 # ---------------------------------------------------------------------------
 
-function help( ) {
+function help() {
   echo "  Run . ./set-anyllm.sh commands  (${aVer} OS: ${aOS})"
   echo "    help            This help"
   echo "    scripts [doit]  Copy FRTools scripts"
@@ -16,7 +53,7 @@ function help( ) {
   }
 # -----------------------------------------------------------
 
-function setOSvars( ) {
+function setOSvars() {
      aTS=$( date '+%y%m%d.%H%M' ); aTS=${aTS:2}
      aBashrc="$HOME/.bashrc"
      aBinDir="/Home/._0/bin"
@@ -33,12 +70,12 @@ function setOSvars( ) {
      }
 # -----------------------------------------------------------
 
-function Sudo( ) {
+function Sudo() {
   if [[ "${aOS}" != "windows" ]]; then if [ "${USERNAME}" != "root" ]; then sudo "$@"; fi; fi
      }
 # -----------------------------------------------------------
 
-function exit_withCR( ) {
+function exit_withCR() {
   if [[ "${aOS}" != "windows" ]]; then echo ""; fi
      }
 # -----------------------------------------------------------
@@ -46,16 +83,16 @@ function exit_withCR( ) {
                                     aCmd="help";    bDoScripts="0"; bDoProfile="0"
 #  if [[ "$1" == ""        ]]; then aCmd="help";    fi
    if [[ "$1" == "help"    ]]; then aCmd="help";    fi
-   if [[ "$1" == "profile" ]]; then aCmd="profile"; if [ "$2" == "doit" ]; then bDoProfile="1"; fi; fi
+   if [[ "$1" == "profile" ]]; then aCmd="profile"; if [[ "$2" == "doit" ]]; then bDoProfile="1"; fi; fi
    if [[ "$1" == "show"    ]]; then aCmd="showEm";  fi
    if [[ "$1" == "wipe"    ]]; then aCmd="wipeIt";  fi
-   if [[ "$1" == "scripts" ]]; then aCmd="copyEm";  if [ "$2" == "doit" ]; then bDoScripts="1"; fi; fi
+   if [[ "$1" == "scripts" ]]; then aCmd="copyEm";  if [[ "$2" == "doit" ]]; then bDoScripts="1"; fi; fi
 
 # ---------------------------------------------------------------------------
 
-function showEm( ) {
+function showEm() {
 
-  echo "  aBinDir: '${aBinDir}'"
+  echo "   aBinDir: '${aBinDir}'"
   if [ -d "${aBinDir}" ]; then ls -l "${aBinDir}" | awk 'NR > 1 { print "    " $0 }'; fi
   echo ""
 
@@ -68,7 +105,7 @@ function showEm( ) {
   }
 # -----------------------------------------------------------
 
-function clnHouse( ) {
+function clnHouse() {
 
   PATH="${PATH/${aBinDir}:}"
 
@@ -81,11 +118,11 @@ function clnHouse( ) {
   cat   "${aBashrc}" | awk '/._0/ { exit }; NF > 0 { print }' >"${aBashrc}_@tmp"
   mv    "${aBashrc}_@tmp" "${aBashrc}"
 
-  echo "  Wipe complete"; exit_withCR
+  echo "  Wipe complete";
   }
 # -----------------------------------------------------------
 
-function  mkScript( ) {
+function  makScript() {
 # echo " making script in $2/$3"; exit
 # echo "    aAnyLLMscr:  $2/$3"
   echo "#!/bin/bash"   >"$2/$3"
@@ -94,7 +131,7 @@ function  mkScript( ) {
   }
 # -----------------------------------------------------------
 
-function setBashrc( ) {
+function setBashrc() {
 
      setTHE_SERVER "$1"; echo "  THE_SERVER is: ${THE_SERVER}"; # exit
 
@@ -145,7 +182,7 @@ function setBashrc( ) {
      echo "setopt PROMPT_SUBST"                             >>"${aBashrc}"
      echo "PROMPT='%n@%m %1~\$(git_branch_name): '"         >>"${aBashrc}"
      fi
-     echo "  executing: source \"${aBashrc}\""
+     echo "  Executing: source \"${aBashrc}\""
 
   if [ "${bDoProfile}" == "1" ]; then
      source "${aBashrc}"
@@ -178,16 +215,16 @@ function setTHE_SERVER() {
   if [ "${aOS}" == "linux"   ]; then aOSN="ub$( cat /etc/issue | awk '{ print $3 substr($4,1,1) }' )"; fi
 #      echo "  THE_SERVER: ${THE_SERVER}"
 
-       aSvr="$1";  aSvr="$( echo "${aSvr}" | sed 's/ *$//' )" 
-#                           echo "  aSvr: '${aSvr}' (${#aSvr})'" 
+       aSvr="$1";  aSvr="$( echo "${aSvr}" | sed 's/ *$//' )"
+#                           echo "  aSvr: '${aSvr}' (${#aSvr})'"
   if [ "${aSvr}" != ""    ]; then
-                                     
-  if [ "${#aSvr}" == "11" ]; then aSvr="${aSvr}_${HOSTNAME/.local}"; fi 
-#                            echo "  aSvr: '${aSvr%% }'" 
-#                            echo "  aSvr: '$( echo "${aSvr}" | sed 's/ *$//' )'" 
+
+  if [ "${#aSvr}" == "11" ]; then aSvr="${aSvr}_${HOSTNAME/.local}"; fi
+#                            echo "  aSvr: '${aSvr%% }'"
+#                            echo "  aSvr: '$( echo "${aSvr}" | sed 's/ *$//' )'"
 #    THE_SERVER="${aSvr%% } (${aIP})"
-     THE_SERVER="$( echo "${aSvr}" | sed 's/ *$//' ) (${aIP})" 
-     fi    
+     THE_SERVER="$( echo "${aSvr}" | sed 's/ *$//' ) (${aIP})"
+     fi
   if [ "${THE_SERVER}" != "" ]; then return; fi
 
   if [ "${aSvr}" == "" ]; then
@@ -197,7 +234,7 @@ function setTHE_SERVER() {
   }
 # -----------------------------------------------------------
 
-function cpyToBin( ) {
+function cpyToBin() {
 # return
 
     aJPTs_JDir="${aBinDir}"; if [ "${aOS}" == "darwin" ]; then aJPTs_JDir="/Users/Shared/._0/bin"; fi
@@ -248,8 +285,8 @@ function cpyToBin( ) {
 #   "/e/VMs/RAM3-Dev03/rm231/Users/Shared/Repos/FRTools_/prod1-master/._2/JPTs/gitr.sh"
 #   "E:\VMs\RAM3-Dev03\rm231\Users\Shared\Repos\FRTools_\prod1-master\._2\JPTs\RSS\dirList\RSS22_DirList.sh"
 
-# if [   -f  "${aJPTs_GitR}" ]; then cp    -p "${aJPTs_GitR}" "${aJPTs_JDir}/";          echo "  Copied:  ${aJPTs_GitR}"; fi
-# if [   -f  "${aJPTs_GitR}" ]; then mkScript "${aJPTs_GitR}" "${aJPTs_JDir}" "gitr";    echo "  Created: ${aJPTs_GitR}";
+# if [   -f  "${aJPTs_GitR}" ]; then cp     -p "${aJPTs_GitR}" "${aJPTs_JDir}/";          echo "  Copied:  ${aJPTs_GitR}"; fi
+# if [   -f  "${aJPTs_GitR}" ]; then makScript "${aJPTs_GitR}" "${aJPTs_JDir}" "gitr";    echo "  Created: ${aJPTs_GitR}";
 #                                    Sudo chmod 777 "${aJPTs_GitR}"; fi
 
 # if [   -f  "${aAnyLLMscr}" ]; then mkScript "${aAnyLLMscr}" "${aJPTs_JDir}" "anyllm";  echo "  Created: ${aJPTs_JDir}/anyllm";
@@ -260,15 +297,15 @@ function cpyToBin( ) {
   }
 # ---------------------------------------------------------------------------
 
-function cpyScript( ) {
+function cpyScript() {
 
   aJPTs_Script="$2"; aName1="$1"; aName="${aName1// /}" # echo "  cp -p \"${aJPTs_Script}\" to \"${aJPTs_JDir}/${aName}\""
 # echo "  copying script: \"${aJPTs_Script}\" to \"${aJPTs_JDir}/${aName}\""
   if [ ! -f "${aJPTs_Script}" ]; then                                                           echo "* Script not found:  \"${aJPTs_Script}\""; return; fi
   if [ "${bDoScripts}" == "0" ]; then                                                           echo "  Will create script: ${aName1} for \"${aJPTs_Script}\""; return; fi
-# if [   -f "${aJPTs_Script}" ]; then cp    -p  "${aJPTs_Script}" "${aJPTs_JDir}/";             echo "  Copied  script for: ${aName1}  in \"${aJPTs_Script}\""; fi
-  if [   -f "${aJPTs_Script}" ]; then mkScript  "${aJPTs_Script}" "${aJPTs_JDir}" "${aName}";   echo "  Created script for: ${aName1}  in \"${aJPTs_Script}\"";
-                                 Sudo chmod 777 "${aJPTs_Script}"; fi
+# if [   -f "${aJPTs_Script}" ]; then cp     -p  "${aJPTs_Script}" "${aJPTs_JDir}/";             echo "  Copied  script for: ${aName1}  in \"${aJPTs_Script}\""; fi
+  if [   -f "${aJPTs_Script}" ]; then makScript  "${aJPTs_Script}" "${aJPTs_JDir}" "${aName}";   echo "  Created script for: ${aName1}  in \"${aJPTs_Script}\"";
+                                 Sudo chmod  777 "${aJPTs_Script}"; fi
   }
 # ---------------------------------------------------------------------------
 
