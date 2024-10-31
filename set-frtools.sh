@@ -7,7 +7,7 @@
 ##FD         set-frtools.sh     |   9479| 10/30/24 20:45|   136| v1.05`41030.2045
 ##FD         set-frtools.sh     |  15476| 10/30/24 21:05|   331| v1.05`41030.2105
 ##FD         set-frtools.sh     |  17992| 10/30/24 23:52|   355| v1.05`41030.2352
-##FD         set-frtools.sh     |  17992| 10/31/24  7:15|   355| v1.05`41031.0615
+##FD         set-frtools.sh     |  18548| 10/31/24  7:15|   360| v1.05`41031.0615
 ##DESC     .--------------------+-------+-----------------+------+---------------+
 #            Create ._0/bin folder and copy all command scripts there as well as
 #            Update ,bashrc (or .zshrc) with PATH, THE_SERVER and OS Prompt.
@@ -36,7 +36,7 @@
 # .(41030.03 10/30/24 RAM  9:45p| Add doit to wipe command
 # .(41030.07 10/30/24 RAM 10:05p| Add THE_SERVER to .bashrc file
 # .(41030.06 10/30/24 RAM 11:52p| Fix doit and THE_SERVER for profile
-# .(41031.02 10/31/24 RAM  6:15a| Add set-frtools command doit 
+# .(41031.02 10/31/24 RAM  6:15a| Add set-frtools command doit
 
 ##PRGM     +====================+===============================================+
 ##ID 69.600. Main0              |
@@ -54,7 +54,7 @@ function help() {
   echo "  Run . ./set-anyllm.sh commands  (${aVer}, OS: ${aOS})"
   echo "    help            This help"
   echo "    show            ${aBashrc} and script files"
-  echo "    doit            Do scripts and profile"                                                         # .(41031.01.1)                                                       
+  echo "    doit            Do scripts and profile"                                                         # .(41031.01.1)
   echo "    scripts [doit]  Copy FRTools scripts"
   echo "    profile [doit]  Update ${aBashrc} file"
   echo "    wipe    [doit]  Erase all setup changes"                                                        # .(41030.03.1)
