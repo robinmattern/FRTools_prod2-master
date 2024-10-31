@@ -6,7 +6,7 @@
 ##RFILE    +====================+=======+=================+======+===============+
 ##FD         set-frtools.sh     |   9479|  4/30/22 20:45|   136| v1.05.21030.2045
 ##FD         set-frtools.sh     |  15476|  4/30/22 21:05|   331| v1.05.21030.2105
-##FD         set-frtools.sh     |  17992|  4/30/22 23:51|   355| v1.05.21030.2351
+##FD         set-frtools.sh     |  17992|  4/30/22 23:52|   355| v1.05.21030.2352
 ##DESC     .--------------------+-------+-----------------+------+---------------+
 #            Create ._0/bin folder and copy all command scripts there as well as
 #            Update ,bashrc (or .zshrc) with PATH, THE_SERVER and OS Prompt.
@@ -34,7 +34,7 @@
 # .(41030.02 10/30/24 RAM  9:05p| Add this header
 # .(41030.03 10/30/24 RAM  9:45p| Add doit to wipe command
 # .(41030.07 10/30/24 RAM 10:05p| Add THE_SERVER to .bashrc file
-# .(41030.06 10/30/24 RAM 11:51p| Fix doit and THE_SERVER for profile
+# .(41030.06 10/30/24 RAM 11:52p| Fix doit and THE_SERVER for profile
 
 ##PRGM     +====================+===============================================+
 ##ID 69.600. Main0              |
