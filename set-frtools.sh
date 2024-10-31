@@ -5,6 +5,7 @@
 ##RD         set-frtools        | JScriptWare Power Tools
 ##RFILE    +====================+=======+=================+======+===============+
 ##FD         set-frtools.sh     |   9479|  4/30/22 20:45|   136| v1.05.21030.2045
+##FD         set-frtools.sh     |  15476|  4/30/22 21:05|   331| v1.05.21030.2105
 ##DESC     .--------------------+-------+-----------------+------+---------------+
 #            Create ._0/bin folder and copy all command scripts there as well as
 #            Update ,bashrc (or .zshrc) with PATH, THE_SERVER and OS Prompt.
@@ -29,7 +30,7 @@
 # .(41023.01 10/23/24 RAM  2:43p|
 # .(41024.01 10/24/24 RAM 10:43a|
 # .(41030.01 10/30/24 RAM  8:45p| Fix MacOS's issue with function abc( ) { ... }
-# .(41030.02 10/30/24 RAM  9:00p| Add this header  
+# .(41030.02 10/30/24 RAM  9:05p| Add this header
 
 ##PRGM     +====================+===============================================+
 ##ID 69.600. Main0              |
