@@ -523,7 +523,7 @@ function shoCommitMsg() {                                                       
              if [ "${aRemoteName}"  != "origin"      ]; then aRemoteName="${aProject}${aStage_/-*/}"; fi
              aRemoteURL="${aSSH}${aAcct}/${aProject}${aStage_}.git"
         fi
-     }                                                                                                      # .(41102.03.6 End)
+     }                                                                                                       # .(41102.03.6 End)
 #    --------------------------------------------------------------------------------
 
    function  setRemote() {                                                                                  # .(41102.03.5 RAM Write setRemote Beg)
