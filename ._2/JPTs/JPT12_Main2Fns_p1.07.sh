@@ -18,6 +18,7 @@
 ##FD   JPT12_Main2Fns.sh        |  46045|  4/07/24 12:55|   630| p1.07`40407.1255
 ##FD   JPT12_Main2Fns.sh        |  46128|  4/07/24 13:34|   631| p1.07`40407.1334
 ##FD   JPT12_Main2Fns.sh        |  46481|  4/13/24 10:52|   634| p1.07`40413.1052
+##FD   JPT12_Main2Fns.sh        |  46500| 11/02/24 19:31|   632| p1.07`41102.0948
 ##DESC     .--------------------+-------+---------------+------+-----------------+
 #            Common function for JScriptWare Tools
 #
@@ -46,20 +47,9 @@
 # .(80917.01  9/17/18 RAM  4:10p| Fix bug when $aAct = x
 # .(80920.01  9/20/18 RAM  1:20p| Put JPTnn..sh scripts into JPTs not JSHs
 # .(80920.02  9/20/18 RAM  2:45p| Add logIt()
-
 # .(80923.02  9/23/18 RAM  9:45a| Change JPT to LIB
-
-
-
-
-
-
-
-
-
 # .(20409.05  4/09/22 RAM  9:30a| Add askYN()
 # .(20409.05  4/09/22 RAM  9:30a| Add Begin() and End()
-
 # .(20418.01  4/18/22 RAM  9:30a| Add sayMsg()
 # .(20418.02  4/18/22 RAM  9:30a| Add getOpt()
 # .(20418.03  4/18/22 RAM  9:45a| Add getCmd()
@@ -97,6 +87,8 @@
 # .(30520.03  5/20/23 RAM  8:54p| Change RSS22-Info to RSS23_Info
 # .(40407.02  4/04/24 RAM 12:54p| Add bNoisy
 # .(40413.01  4/13/24 RAM 10:52p| info.sh is in JPTs, not FRTs)
+# .(41102.02 11/02/24 RAM  9:13a| Adjust space for $LIB
+# .(41102.04 11/02/24 RAM  9:48a| Provide some help re sayMsg switches)
 
 ##PRGM     +====================+===============================================+
 ##ID 69.600. Main               |
@@ -113,14 +105,6 @@
                    LIB_LOG=${!LIB_LOG} LIB_USER=${!LIB_USER}                                # .(80925.01.1 uses Indirect Expansion)
 
 # ----------------------------------------------------------------
-
-
-
-
-
-
-
-
 # +------- +------------------ +----------------------------------------------------------- # ------------+ ------------------- # --------------+
 
 function  setOS() {
@@ -229,6 +213,20 @@ function pause() {                                                              
          } # eof pause                                                                  # .(20409.05.3 RAM End)
 #   ------- ------------------  =  ---------------------------------------------------  #  ----------------
 
+function ask4Anything() {                                                               # .(41102.04.1 RAM Write ask4Anything Beg)
+         echo ""; read -p "    $1: " aAnswer
+         } # eof ask4Anything                                                           # .(41102.04.1 End)
+#   ------- ------------------  =  ---------------------------------------------------  #  ----------------
+
+function ask4Required() {                                                               # .(41102.04.2 RAM Write ask4Required Beg)
+                        aDefault="$3"; if [ "$3" != "" ]; then aDefault="(Press enter for: $3): " ; fi # .(41102.04.3 RAM Add Default)
+         echo "    $1"; aPrompt="$2";  if [ "$2" == "" ]; then aPrompt="Answer"; fi
+         read -p "    ${aPrompt} ${aDefault}" aAnswer;
+ if [ "${aAnswer}" == "" ]; then aAnswer="$3"; fi                                       # .(41102.04.4)
+#if [ "${aAnswer}" == "" ]; then echo ""; echo "  * You must enter something."; exit; fi
+         } # eof ask4Required                                                           # .(41102.04.2 End)
+#   ------- ------------------  =  ---------------------------------------------------  #  ----------------
+
 function askYN() {                                                                      # .(20409.05.3 RAM Beg)
          echo "    $1"
          echo ""; read -p "    Enter Yes or No: [y/n]: " aAnswer
@@ -236,7 +234,6 @@ function askYN() {                                                              
  if [ "${aAnswer}" == "" ]; then echo ""; echo "  * Please Yes or No."; exit; fi
          aAnswer=$( echo ${aAnswer} | awk '/^[yY]+$/ { print "y" }' )
 #if [ "${aAnswer}" != "y" ]; then exit; fi
-
          } # eof askYN                                                                  # .(20409.05.3 RAM End)
 #   ------- ------------------  =  ---------------------------------------------------  #  ----------------
 
@@ -268,7 +265,7 @@ function  Begin() {                                                             
 # if [ "${aCmd}" == "version"  ]; then echo ""; echo $0 | awk '{ gsub( /.+-v|.sh/, "" ); print "  JPT Version: " $0 }'; echo ""; exit; fi
 # if [ "${aCmd}" == "version"  ]; then echo ""; echo $0 | awk '{ gsub( /.+-v|.sh/, "" ); print "  '$LIB' Version: "          $0      }'; echo ""; exit; fi  # .(80923.02.4 Was "JPT-..)
   if [ "${aCmd}" == "source"   ]; then echo ""; echo $0 | awk '{                         print "  '$LIB' Script File(s): \"" $0 "\"" }';                fi  # .(80923.02.3 Was "JPT-..)
-  if [ "${aCmd}" == "source"   ]; then echo ${aFns}     | awk '{                         print "                      \""    $0 "\"" }'; echo ""; exit; fi
+  if [ "${aCmd}" == "source"   ]; then echo ${aFns}     | awk '{ f = substr( "      ", 0, length("'$LIB'") ); print f "                   \""    $0 "\"" }'; echo ""; exit; fi   # .(41102.02.1 RAM Adjust space for $LIB)
 
         } # eof Begin                                                                   # .(20409.06.1 RAM End)
 #   ------- ------------------  =  ---------------------------------------------------  #  ----------------
@@ -308,6 +305,13 @@ function sayMBugEnd() {                                                         
 
 function sayMsg( ) {  aMsg="$1"; aSP=$3;  aSp="";             bSP=0; if [ "${bMBug}" == "" ]; then bMBug=0; fi
 #                                         aSp=" -- space --";
+    if [ "$1" == "help" ]; then                                                         # .(41102.04.5 RAM Provide some help re sayMsg switches)
+       echo "    sayMsg switches: --  Always Be quiet"
+       echo "                      1  Always say msg"
+       echo "                      2  Always say error msg, then exit"
+       echo "                     -1  if bDebug = true, say msg"
+       echo "                     -2  if bDebug = true, say error msg, then exit"
+       fi                                                                               # .(41102.04.5 End)
 
             dBug2="$2"; if [ "$1" == "sp" ]; then dBug2="$3"; aSP=$4; bSP=1; aMsg="$2"; fi                  # .(20620.04.1 RAM Beg Redo sp functionality)
                         if [ "$2" == "sp" ]; then dBug2="$3"; aSP=$2; fi                                    # .(20623.09.1 RAM Don't assign bSP=1, aSP=$2)
@@ -573,12 +577,6 @@ function getCmd( ) {    # dBug="1"; # "1"                                       
 #   -----------------------------------------------------
 
     sayMsg    "JPFns[575]      Checking aCmd3:  '${aCmd3}' == '$1-$2-$3' or '$1-$3-$2' or '$2-$3-$1' or '$2-$1-$3'  or '$3-$1-$2' or '$3-$2-$1'" ${dBug}
-
-
-
-
-
-
 
     if [ "${aCmd3}" == "$1-$2-$3" ]; then aCmd="$cmd"; setLv 3; return; fi
     if [ "${aCmd3}" == "$1-$3-$2" ]; then aCmd="$cmd"; setLv 3; return; fi

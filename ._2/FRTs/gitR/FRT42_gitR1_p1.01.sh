@@ -6,7 +6,7 @@
 ##FD   FRT22_GitR1.sh           |  21714| 10/26/24 17:20|   461| v1.01.41026.1720
 ##FD   FRT42_GitR1.sh           |  24865| 10/29/24  8:52|   488| v1.01.41029.0852
 ##FD   FRT42_GitR1.sh           |  27486| 10/30/24 20:28|   513| v1.01.41030.2028
-##FD   FRT42_GitR1.sh           |  30370| 10/31/24 10:11|   544| v1.01.41031.0810
+##FD   FRT42_GitR1.sh           |  43418| 11/02/24 19:37|   688| v1.01.41102.1701
 ##DESC     .--------------------+-------+---------------+------+-----------------+
 #            This script has usefull GIT functions.
 #
@@ -46,6 +46,9 @@
 # .(41031.06 10/31/24 RAM  8:10a| Chop list last comment
 # .(41031.07 10/31/24 RAM  9:45a| Add replace remote command
 # .(41031.08 10/31/24 RAM 10:35a| Add help for Add remote commmand
+# .(41102.01 11/02/24 RAM 11:52a| Add JPT12_Main2Fns_p1.07.sh
+# .(41102.03 11/02/24 RAM  3:29p| Write setRemote and setRemote1
+# .(41102.05 11/02/24 RAM  5:01p| Wierd fix for add remote origin, based on position
 #
 ##PRGM     +====================+===============================================+
 ##ID 69.600. Main0              |
@@ -53,9 +56,15 @@
 #*/
 #========================================================================================================== #  ===============================  #
 
-     aVTitle="Useful GIT Tools by formR"
+        aVTitle="Useful GIT Tools by formR"; aVer="p0.05"; aVDt="Oct 31, 2024 9:45a" # .41023.1335"
+        aVer="$( echo $0 | awk '{  match( $0, /_[dpstuv][0-9]+\.[0-9]+/ ); print substr( $0, RSTART+1, RLENGTH-1) }' )"  # .(21031.01.1 RAM Add [d...).(20416.03.8 "_p2.02", or _d1.09)
 
-     aVer="p0.05"; aVDt="Oct 31, 2024 9:45a" # .41031.0945"
+        LIB="gitR1"; LIB_LOG=${LIB}_LOG; LIB_USER=${LIB}_USER; Lib=${LIB}; aDir=$(dirname "${BASH_SOURCE}");             # .(41102.01.1 RAM Add JPT12_Main2Fns_p1.07.sh Beg).(80923.01.1)
+        aFns="${aDir/FRTs*/JPTs}/JPT12_Main2Fns_p1.07.sh"; if [ ! -f "${aFns}" ]; then
+        echo -e "\n ** gitR2[144]  JPT Fns script, '${aFns}', NOT FOUND\n"; exit; fi; #fi
+        source "${aFns}";                                                                                                # .(41102.01.1 End)
+
+        Begin "$@"                                                                                                       # .(41102.01.2)
 
 # ---------------------------------------------------------------------------
 
@@ -124,14 +133,17 @@ function setOSvars() {
 #  echo "  aProject:    '${aProject}'"; exit
    aStgDir="$(  echo "$(pwd)"     | awk '{ sub( "'.+${aProject}'", "" ); print }' )"
    aStage="$(   echo "${aStgDir}" | awk '{ sub( "^[_/]+"        , "" ); print }' )"
+   aBranch="$( git branch | awk '/\*/ { sub( /.+at /, "" ); sub( /\)$/, "" ); print substr($0,3) }' )"      # .(41102.02.1 RAM Move to getRepoDir)
    aRepoDir="${aRepos}/${aProject}${aStgDir}"
    if [ "${aRepo}" == "" ]; then aRepo="${aProject}${aStgDir}"; fi
 
+#          bDebug=1
    if [ "${bDebug}" == "1" ]; then
    echo "  aRepos:   '${aRepos}'"
    echo "  aRepo:    '${aRepo}'"
    echo "  aProject: '${aProject}'"
    echo "  aStage:   '${aStage}'"
+   echo "  aBranch:  '${aBranch}'"                                                                          # .(41102.02.2)
    echo "  aRepoDir: '${aRepoDir}'"
    exit_withCR
    fi
@@ -199,17 +211,17 @@ done
     aSSH="git@github-ram"                                                                                   # .(41029.07.1 RAM Was git:github-ram)
     aAcct="robinmattern"
     aLocation="origin"
-#   aBranch="$( git branch | awk '/\*/ { sub( ".+at ", "" ); sub( "\)$", "" ); print }' )"
-    aBranch="$( git branch | awk '/\*/ { sub( /.+at /, "" ); sub( /\)$/, "" ); print }' )"
+#   aBranch="$( git branch | awk '/\*/ { sub( ".+at ", "" ); sub( "\)$", "" ); print }' )"                  ##.(41102.02.3)
+#   aBranch="$( git branch | awk '/\*/ { sub( /.+at /, "" ); sub( /\)$/, "" ); print }' )"                  ##.(41102.02.3 RAM Move to getRepoDir)
 
     echo ""
-#if [ "${aStage}" == "$(pwd)" ]; then
+#if [ "${aStage}"   == "$(pwd)" ]; then
  if [ "${aRepoDir}" == "" ]; then
-#if [ "${aStage}" == "" ]; then
+#if [ "${aStage}"   == "" ]; then
     echo "* You are not in a ${aProject}_/{StgDir} Git Repository"
     exit_withCR
   else
-    echo "  RepoDir is: ${aRepoDir}, branch: ${aBranch:2}";   # exit_withCR
+    echo "  RepoDir is: ${aRepoDir}, branch: ${aBranch}";   # exit_withCR
     fi
 # ---------------------------------------------------------------------------
 
@@ -379,56 +391,172 @@ function shoCommitMsg() {                                                       
      if [ "${aArg4}" != "" ]; then aAcct="${aArg4}"; fi
      if [ "${aArg5}" != "" ]; then aProject="${aArg5}"; fi
      if [ "${aArg6}" != "" ]; then aStage_="${aArg6}"; fi
+
      if [ "${aRemote_name}" == "" ]; then echo -e "\n* You must provide a remote repo name, i.e. origin or reponame"; exit_withCR; fi
-     if [ "${aRemote_name}" == 'help' ]; then 
-             echo -e "\n  The arguments are AccountName, Project, Stage, or you can do"
-             echo      "    anything-llm    for   Mintplex-Labs  anything-llm  " 
-             echo      "    anyllm          for   ${aAcct}  AnyLLM_${aStage}" 
-             echo      "    altools         for   ${aAcct}  ALTools_${aStage}" 
-             echo      "    jptools         for   ${aAcct}  JPTools_${aStage}"
+     if [ "${aRemote_name}" == 'help' ]; then
+             echo -e "\n  The arguments are Account, Project, Stage, or you can use"
+             echo      "    anything-llm   for   Mintplex-Labs"
+             echo      "    anyllm         for   AnyLLM_${aStage}"
+             echo      "    altools        for   ALTools_${aStage}"
+             echo      "    frtools        for   FRTools_${aStage}"
+#            echo      "    jptools        for   JPTools_${aStage}"
+             echo      "    jptools        for   AIDocs_${aStage}  {aAcct}, or"
+             echo      "    [origin]   for any  {Project_Stage}"
              exit_withCR
-             fi  
-             aRemoteURL=""
-     if [ "${aRemote_name}" == "anythingllm_master" ]; then aRemote_name="anything-llm"; fi
-     if [ "${aRemote_name}" == "anythingllm"        ]; then aRemote_name="anything-llm"; fi
-     if [ "${aRemote_name}" == "anything-llm"       ]; then
+             fi
+             sayMsg  "gitR1[404]  aRemote_name: '${aRemote_name}', aArg3: '${aArg3}', aArg4: ${aArg4}'"  1
+
+     if [ "${aRemote_name}" == "origin" ] && [ "${aArg4}" == "" ]; then                 # .(41102.03.1 RAM Ask for Remote Name Beg)
+             echo -e "\n    You must provide a Remote Name, e.g frtools, aidocs, anyllm, anyllm_dev03-robin";
+             ask4Required  "  or anything-llm, anything, anythingllm, anythingllm_master." "  What is it."  "${aProject}_${aStage}";
+             aArg3="${aAnswer}" # aRemote_name="${aAnswer}""
+             fi                                                                         # .(41102.03.1 End)
+     if [ "${aRemote_name}" != "origin" ]; then                                         # .(41102.05.1 RAM Wierd fix, based on position)
+             aRemote_name="${aArg3}";                                                   # .(41102.05.2)
+             fi                                                                         # .(41102.05.3)
+     if [ "${aRemote_name}" == "origin" ] && [ "${aArg4}" != "" ]; then                 # .(41102.03.2 RAM Create origin project name Beg)
+             aRemote_name="${aArg4}"; aArg4="${aArg5}"; echo "    {aArg4}: '${aArg4}'"
+             aRemoteName="origin"
+             fi                                                                         # .(41102.03.2 End)
+             aRemoteURL=""                                                              # .(41102.03.4 End)
+
+             sayMsg  "gitR1[415]  aRemote_name: '${aRemote_name}', aStage: '${aStage}', aStage_: ${aStage_}'"  1
+#    --------------------------------------------------------------------------------
+
+     if [ "${aRemote_name/_/}" != "${aRemote_name}"    ]; then   # for any  {Project_Stage}"                # .(41102.03.5 RAM Write this Beg)
+
+#            aProject="$( echo "${aRemote_name}" |  awk '{ sub( /_.+/, "" ); print }' )";   echo "    {aProject}:   '${aProject}'"
+#            if [ "${aArg3}" == "origin"  ]; then aRemote_name="${aArg4}"; else aRemote_name="${aArg3}"; fi
+             aProject="$( echo "${aRemote_name}" |  awk '{ sub( /_.+/, "" ); print }' )";   echo "    {aProject}:   '${aProject}'"
+             aStage="$(   echo "${aRemote_name}" |  awk '{ sub( /.+_/, "" ); print }' )"; # echo "    {aStage/dev}: '${aStage/dev/}'"
+             if [ "${aRemoteName}" != "origin" ]; then aRemoteName="${aProject}_${aStage/-*/}"; fi
+             if [ "${aArg4}" != ""             ]; then aAcct="${aArg4}"; else aAcct="robinmattern"; fi; # echo "    {aArg4}: '${aArg4}'"
+#            if [ "${aRemoteName}" == "origin" ] && [ "${aStage/dev}" != "${aStage}" ]; then
+             if                                     [ "${aStage/dev}" != "${aStage}" ]; then
+             aSSH="git@github.ram"; aAcct2=":${aAcct}"; else aSSH="https://github.com"; aAcct2="/${aAcct}"; fi; #  echo "    {aAcct2}: '${aAcct2}'"
+             if [ "${aArg4}" == "" ]; then
+             if [ "${aStage/rick/}"  != "${aStage}" ];  then aAcct2="/blueNSX";  aSSH="${aSSH/.ram/.rsh}"; fi
+             if [ "${aStage/bruce/}" != "${aStage}" ];  then aAcct2="/8020data"; aSSH="${aSSH/.ram/.btg}"; fi ;fi;
+             aRemoteURL="${aSSH}${aAcct2}/${aProject}_${aStage}.git";  #  echo "    aRemoteURL: '${aRemoteURL}'"
+             fi                                                                                             # .(41102.03.5 End)
+#    --------------------------------------------------------------------------------
+
+#    if [ "${aRemote_name}"     == "anythingllm_master" ]; then aRemote_name="anything-llm"; fi
+#    if [ "${aRemote_name}"     == "anythingllm"        ]; then aRemote_name="anything-llm"; fi
+     if [ "${aRemote_name:0:8}" == "anything"           ]; then
              aSSH="https://github.com"
              aAcct="Mintplex-Labs"
-             aRemoteName="AnythingLLM_master"
+             if [ "${aRemoteName}" != "origin" ]; then aRemoteName="${aRemote_name}"; fi
              aProject="anything-llm"
-             aStage_=""
-             aRemoteURL="${aSSH}${aAcct}/${aProject}${aStage_}.git"
-             fi
-     if [ "${aRemote_name}" == "anyllm"             ]; then aRemote_name="altools"; fi
-     if [ "${aRemote_name}" == "anyllm_dev03-robin" ]; then
-             aBranch="b241013.01_ALT"
-             aRemoteName="AnyLLM_${aStage/-*/}"
-             aStage_="_${aStage}"
-             aRemoteURL="${aSSH}${aAcct}/${aProject}${aStage_}.git"
-             fi
-     if [ "${aRemote_name}" == "altools" ]; then  aRemote_name="anyllm-altools"; fi
-     if [ "${aRemote_name}" == "anyllm-altools" ]; then
-#            aStage=""
-#            aProject="APTools"
-             aSSH="https://github.com"
-             aAcct="robinmattern"
-             aBranch="b241013.01_ALT"
-             aRemoteName="AnyLLM_${aStage/-*/}"
-             aStage_="dev03-robin"  # "_${aStage}"
-             aRemoteURL="${aSSH}/${aAcct}/${aProject}_${aStage_}.git"
-             fi
-     if [ "${aRemote_name}" == "frtools" ]; then                                        # .(41029.06.1 RAM Add alias: frtools Beg)
-#            aStage=""
-#            aProject="APTools"
-             aSSH="git@github.ram"
-             aAcct="robinmattern"
+             aStage_="master"; aStage="master"
              aBranch="master"
-             aRemoteName="origin"  # "FRTools_${aStage/-*/}"
-             aStage_="prod1-master"  # "_${aStage}"
-             aRemoteURL="${aSSH}:${aAcct}/${aProject}_${aStage_}.git"                                       # .(41029.07.2 RAM Use : not /)
-        fi                                                                              # .(41029.06.1 End)
-#    -------------------------------------------------------------
-#    echo "  aRemoteURL: '${aRemoteURL}'"  # Provided via aliases: frtools, altools* or anyllm*
+             aRemoteURL="${aSSH}/${aAcct}/${aProject}${aStage_}.git"
+             fi
+        fi
+#    --------------------------------------------------------------------------------
+#    sayMsg  "gitR1[446]  aRemoteURL:   '${aRemoteURL}'"  1
+
+#    if [ "${aRemote_name}" == "anyllm"             ]; then aRemote_name="altools"; fi                      ##.(41102.03.6 RAM Replace anyllm  with setRemote1 Beg)
+#    if [ "${aRemote_name:0:6}" == "anyllm"         ]; then
+#    if [ "${aRemote_name}" == "anyllm_dev03-robin" ]; then
+#            aSSH="git@github.ram"; else aSSH="https://github.com"; fi
+#            aAcct="robinmattern"
+#            aProject="AnyLLM"
+#            aStage="dev03-robin"; aStage_="_${aStage}"
+#            if [ "${aRemoteName}" != "origin" ]; then aRemoteName="${aProject}_${aStage/-*/}"; fi
+#            aBranch="b241013.01_ALT"
+#            aRemoteURL="${aSSH}${aAcct}/${aProject}${aStage_}.git"
+#       fi                                                                                                  # .(41102.03.6 End)
+#    --------------------------------------------------------------------------------
+     sayMsg  "gitR1[468]  aRemoteURL:   '${aRemoteURL}'"  1
+
+#    if [ "${aRemote_name}" == "altools" ]; then  aRemote_name="anyllm-altools"; fi                         ##.(41102.03.6 RAM Replace altools with setRemote1 Beg)
+#    if [ "${aRemote_name}" == "anyllm-altools" ]; then
+##           aStage=""
+##           aProject="APTools"
+#            aSSH="https://github.com"
+#            aAcct="robinmattern"
+#            aBranch="b241013.01_ALT"
+#            aRemoteName="AnyLLM_${aStage/-*/}"
+#            aStage_="dev03-robin"  # "_${aStage}"
+#            aRemoteURL="${aSSH}/${aAcct}/${aProject}_${aStage_}.git"
+#            fi
+#    if [ "${aRemote_name:0:7}"  == "altools"       ]; then                             # .(41029.06.1 RAM Add alias: frtools Beg)
+#    if [ "${aRemote_name}"      == "altools_dev01" ]; then aRemote_name="altools_dev01-robin"; fi
+#    if [ "${aRemote_name:0:11}" == "altools_dev"   ]; then
+#            aSSH="git@github.ram"; else aSSH="https://github.com"; fi
+#            aAcct="robinmattern"
+#            aProject="ALTools"
+#            aStage="prod1-master"; if [ "${aSSH:0:3}" == "git" ]; then aStage="${aRemote_name:8}"; fi; aStage_="_${aStage}"
+#            aBranch="master"
+#            if [ "${aRemoteName}" != "origin" ]; then aRemoteName="${aProject}_${aStage/-*/}"; fi
+#            aRemoteURL="${aSSH}${aAcct}/${aProject}${aStage_}.git"
+#       fi                                                                                                  ##.(41102.03.06 End)
+#    --------------------------------------------------------------------------------
+
+#    if [ "${aRemote_name:0:7}" == "frtools"         ]; then        ##.(41029.06.1 RAM Add alias: frtools Beg).(41102.03.6 RAM Replace frtools with setRemote1 Beg))
+#            aStage=""
+#            aProject="APTools"
+#            aSSH="git@github.ram"
+#            aAcct="robinmattern"
+#            aBranch="master"
+#            aRemoteName="origin"  # "FRTools_${aStage/-*/}"
+#            aStage_="prod1-master"  # "_${aStage}"
+#            aRemoteURL="${aSSH}:${aAcct}/${aProject}_${aStage_}.git"                   # .(41029.07.2 RAM Use : not /)
+#       fi                                                                                 ##.(41029.06.1 End).(41102.03.6 End)
+
+   function  setRemote1() {                                                                                 # .(41102.03.6 RAM Write setRemote1 Beg)
+#    if "${aArg3}" == "origin", then Dev stages to: git@github.[ram|rsh|btg], else all stages go to https://github.com
+             aPROJ=$1; aProj="$( echo "$1" | awk '{ print tolower($0) }' )"; w=${#aProj}; w1=$((w+1)); w2=$((w+4));  # echo "  ${aRemote_name}  w w1 w3: ${w} ${w1} ${w2}"
+     if [ "${aRemote_name:0:${w}}"  == "${aProj}"       ]; then                            # .(41029.06.1 RAM Add alias: frtools Beg)
+     if [ "${aRemote_name}"         == "${aProj}_dev01" ]; then aRemote_name="${aProj}_dev01-robin"; fi
+     if [ "${aRemote_name:0:${w2}}" == "${aProj}_dev"   ]; then
+             aSSH="git@github.ram"; else aSSH="https://github.com"; fi
+             aProject="${aPROJ}"
+             aBranch="master"; aStage2="${aStage}"
+             sayMsg  "gitR1[484]  aStage: '${aStage}', aStage_: ${aStage_}'" 1
+#            aStage="prod1-master"; if [ "${aSSH:0:3}" == "git" ]; then  aStage="${aRemote_name:${w1}}"; fi; aStage_="_${aStage}"
+             aStage="${aRemote_name:${w1}}"; if [ "${aStage}" == "" ]; then aStage="${aStage2}"; fi  ; # echo "aStage: '${aStage}', aStage_: '${aStage_}'"
+             aStage_="_${aStage}";  if [ "${aStage}" == "" ]; then aStage_=""; fi
+#            aAcct="/robinmattern"; if [ "${aRemoteName}"  == "origin" ]; then  aAcct=":${aAcct:1}"; fi
+             aAcct="/robinmattern"; if [ "${aSSH:0:3}" == "git" ]; then  aAcct=":${aAcct:1}"; fi
+             if [ "${aRemoteName}"  != "origin"      ]; then aRemoteName="${aProject}${aStage_/-*/}"; fi
+             aRemoteURL="${aSSH}${aAcct}/${aProject}${aStage_}.git"
+        fi
+     }                                                                                                      # .(41102.03.6 End)
+#    --------------------------------------------------------------------------------
+
+   function  setRemote() {                                                                                  # .(41102.03.5 RAM Write setRemote Beg)
+#    if "${aArg3}" == "origin", then Dev stages to: git@github.[ram|rsh|btg], else all stages go to https://github.com
+             aPROJ=$1; aProj="$( echo "$1" | awk '{ print tolower($0) }' )"; w=${#aProj}; w1=$((w+1)); w2=$((w+4));  # echo "  ${aRemote_name}  w w1 w3: ${w} ${w1} ${w2}"
+     if [ "${aRemote_name:0:${w}}"  == "${aProj}"       ]; then                         # .(41029.06.1 RAM Add alias: frtools Beg)
+#    if [ "${aRemote_name}"         == "${aProj}_dev01" ]; then aRemote_name="${aProj}_dev01-robin"; fi
+     if [ "${aRemote_name}"         == "${aProj}_dev03" ]; then aRemote_name="${aProj}_dev03-robin"; fi
+     if [ "${aRemote_name:0:${w2}}" == "${aProj}_dev"   ] && [ "${aArg3}" == "origin" ]; then
+             aSSH="git@github.ram"; else aSSH="https://github.com"; fi
+             aProject="${aPROJ}"
+             aBranch="master"
+#            aStage="prod1-master"; if [ "${aSSH:0:3}" == "git" ]; then aStage="${aRemote_name:7}"; fi; aStage_="_${aStage}"
+             aStage="${aRemote_name:${w1}}"; aStage_="_${aStage}";  if [ "${aStage}" == "" ]; then aStage_=""; fi  ; # echo "aStage: '${aStage}', aStage_: '${aStage_}'"
+             aAcct="/robinmattern"; if [ "${aStage/rick/}"  != "${aStage}" ]; then aAcct="/blueNSX";  aSSH="${aSSH/.ram/.rsh}"; fi
+                                    if [ "${aStage/bruce/}" != "${aStage}" ]; then aAcct="/8020data"; aSSH="${aSSH/.ram/.btg}"; fi
+             if [ "${aRemoteName}"  == "origin"         ]; then aAcct=":${aAcct:1}"; fi
+#            if [ "${aRemoteName}"  != "origin"         ]; then aRemoteName="${aProject}_${aStage/-*/}"; fi
+             if [ "${aRemoteName}"  != "origin"         ]; then aRemoteName="${aProject}${aStage_/-*/}"; fi
+             aRemoteURL="${aSSH}${aAcct}/${aProject}${aStage_}.git"
+        fi
+     }                                                                                                      # .(41102.03.5 End)
+#    --------------------------------------------------------------------------------
+
+    if [ "${aRemoteURL}" == "" ]; then                                                                      # .(41102.03.8 Beg)
+         setRemote  "AIDocs"                                                                                # .(41102.03.5)
+         setRemote1 "AnyLLM"                                                                                # .(41102.03.6 End)
+         setRemote1 "ALTools"                                                                               # .(41102.03.6 End)
+         setRemote1 "FRTools"                                                                               # .(41102.03.6 End)
+         fi                                                                                                 # .(41102.03.8 End)
+
+#    sayMsg  "help"
+     sayMsg  "gitR1[544]  aRemoteURL:   '${aRemoteURL}'"  1 # Provided via aliases: frtools, altools* or anyllm*
 
      if [ "${aRemoteURL}" == "" ]; then    # Provided via arguments
 #    echo "  say what: aArg3: '${aArg3}', aArg4: '${aArg4}', 'aArg5: '${aArg5}'"
@@ -453,7 +581,7 @@ function shoCommitMsg() {                                                       
 #            aAcctRepoName="${aAcct}{aProject}{aStage}"
 #            echo "  aProject: ${aProject/_/} == ${aProject}"
              if [ "${aProject/_/}"  == "${aProject}" ]; then
-             if [ "${aStage_}"     == ""  ]; then aStage_="${aStage}"; fi
+             if [ "${aStage_}"     == ""  ]; then aStage_="${aStage}";   fi
              if [ "${aStage_:0:1}" != "_" ]; then aStage_="_${aStage_}"; fi; fi
              aRemoteURL="${aSSH}${aAcct}/${aProject}${aStage_}.git"
              fi
@@ -463,21 +591,29 @@ function shoCommitMsg() {                                                       
      fi # eif no ${aRemoteURL}
 #    -------------------------------------------------------------
 
+#    sayMsg  "gitR1[576]  aProject: '${aProject}';  aStage: '${aStage}',  aBranch: '${aBranch}',  aRemoteName: ${aRemoteName/origin/origin      }, aRemoteURL: ${aRemoteURL}"  1
+     sayMsg  "gitR1[577]  '${aBranch}'  ${aRemoteName/origin/origin      }  '${aProject}_${aStage}'  '${aRemoteURL}'"  2
+#    sayMsg  "gitR1[578]  aRemoteURL:  '${aRemoteURL}'"  1; exit # Say it
+
      if [ "${aRemoteName}"   == "" ]; then echo -e "\n* You must provide a remote repo name, i.e. origin or reponame:";
         echo "  e.g. anything-llm, anythingllm_master anyllm_dev03-robin, anyllm-altools, altools"; exit_withCR; fi
 
+     aAcct="$( echo "${aAcct}" | awk '{ sub( /[:\/]/, "" ); print }' )"
 # if [ "${aStage}" == "" ]; then
 #    echo "* You must provide a Stage name."
 #    exit_withCR
 #    fi
+#    -------------------------------------------------------------
 
      if [ "${aCmd}" == "setRemote" ]; then                                              # .(41029.05.2 RAM Beg)
      echo "  Setting Remote, ${aProject}, for Account, ${aAcct} and stage, ${aStage}"
      aGIT1="git remote set-url  ${aRemoteName}  ${aRemoteURL}"
 #    aGIT2="git branch --set-upstream-to  ${aProject}/${aBranch}  ${aBranch}"
      fi                                                                                 # .(41029.05.2 End)
+# ---------------------------------------------------------------------------
+
      if [ "${aCmd}" == "addRemote" ]; then                                              # .(41029.05.3)
-     echo "  Adding a Remote, ${aProject}, for Account, ${aAcct} and stage, ${aStage}"
+     echo "  Adding a Remote, '${aProject}', for Account, '${aAcct}', and stage, '${aStage}'"
 #    aGIT1="git remote add  ${aProject} git@${aSSH}:${aAcct}/${aProject}_${aStage}.git"
 # if [ "${aSSH:0:3}" == "git" ]; then aAcct=":${aAcct}"; else aAcct="/${aAcct}"; fi
 #    aGIT1="git remote add  ${aRemoteName}  ${aSSH}${aAcct}/${aProject}${aStage_}.git"
@@ -490,7 +626,7 @@ function shoCommitMsg() {                                                       
 #    eval        "${aGIT2}"
      aCmd="shoRemote"
      fi
-     fi
+#    fi  # ???
 # ---------------------------------------------------------------------------
 
   if [ "${aCmd}" == "delRemote" ]; then
