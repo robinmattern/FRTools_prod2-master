@@ -7,7 +7,7 @@
 ##FD   FRT42_GitR2.sh           |  24865| 10/29/24  8:52|   488| v1.01.41029.0852
 ##FD   FRT42_GitR2.sh           |  27486| 10/30/24 20:28|   513| v1.01.41030.2028
 ##FD   FRT42_GitR2.sh           |  30370| 10/31/24 10:11|   544| v1.01.41031.0810
-##FD   FRT42_GitR2.sh           |  43418| 11/02/24 19:37|   688| v1.01.41102.1701
+##FD   FRT42_GitR2.sh           |  43817| 11/03/24 13:03|   692| v1.01.41103.1303
 ##DESC     .--------------------+-------+---------------+------+-----------------+
 #            This script has usefull GIT functions.
 #
@@ -50,7 +50,8 @@
 # .(41102.01 11/02/24 RAM 11:52a| Add JPT12_Main2Fns_p1.07.sh
 # .(41102.03 11/02/24 RAM  3:29p| Write setRemote and setRemote1
 # .(41102.05 11/02/24 RAM  5:01p| Wierd fix for add remote origin, based on position
-# .(41103.01 11/03/24 RAM 12:22p| Fix List last for merge commits 
+# .(41103.01 11/03/24 RAM 12:22p| Fix List last for merge commits
+# .(41103.02 11/03/24 RAM 13:03p| Change FRT22_gitR1 to gitR2
 #
 ##PRGM     +====================+===============================================+
 ##ID 69.600. Main0              |
