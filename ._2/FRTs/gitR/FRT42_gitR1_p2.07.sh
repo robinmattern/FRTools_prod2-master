@@ -3,22 +3,21 @@
 ##=========+====================+================================================+
 ##RD         gitr               | Git Helper Tools
 ##RFILE    +====================+=======+===============+======+=================+
-##FD   FRT22_gitR1.sh           |  67037|  5/04/22 19:40|  1178| p2.02-20504-1940
-##FD   FRT22_gitR1.sh           |  66693|  5/15/22 13:06|  1174| p2.02-20515-1306
-##FD   FRT22_gitR1.sh           |  69290|  6/23/22 13:03|  1227| p2.02-20623-1303
-##FD   FRT22_gitR1.sh           |  77248| 10/25/22 19:43|  1332| p2.03-21025-1943
-##FD   FRT22_gitR1.sh           |  79863| 10/27/22 10:20|  1361| p2.04-21027-1020
-##FD   FRT22_gitR1.sh           |  80647| 11/03/22 16:05|  1370| p2.04-21103-1605
-##FD   FRT22_gitR1.sh           |  81638| 11/11/22 17:09|  1387| p2.04-21111-1709
-##FD   FRT22_gitR1.sh           |  90455| 12/23/22 16:03|  1448| p2.04-21223.1603
-##FD   FRT22_gitR1.sh           |  94794| 12/04/22 09:06|  1517| p2.04-21204.0906
-##FD   FRT22_gitR1.sh           | 103287| 12/04/22 20:54|  1667| p2.04-21204.2054
-##FD   FRT22_gitR1.sh           | 114541|  1/04/23 13:50|  1777| p2.05-30104.1350
-##FD   FRT22_gitR1.sh           | 115875|  1/08/23 21:15|  1796| p2.05-30108.2115
-##FD   FRT22_gitR1.sh           | 119552|  1/19/23 16:15|  1811| p2.05-30119.1615
-##FD   FRT22_gitR1.sh           | 117959|  8/11/23 13:00|  1811| p2.06-30811.1300
-##FD   FRT22_gitR1.sh           | 118423| 10/27/24 19:34|  1817| p2.06-41027.1934
-##FD   FRT22_gitR1.sh           | 118876| 11/02/24 19:29|  1815| p2.06-41102.1926
+##FD   FRT42_gitR1.sh           |  67037|  5/04/22 19:40|  1178| p2.02-20504-1940
+##FD   FRT42_gitR1.sh           |  66693|  5/15/22 13:06|  1174| p2.02-20515-1306
+##FD   FRT42_gitR1.sh           |  69290|  6/23/22 13:03|  1227| p2.02-20623-1303
+##FD   FRT42_gitR1.sh           |  77248| 10/25/22 19:43|  1332| p2.03-21025-1943
+##FD   FRT42_gitR1.sh           |  79863| 10/27/22 10:20|  1361| p2.04-21027-1020
+##FD   FRT42_gitR1.sh           |  80647| 11/03/22 16:05|  1370| p2.04-21103-1605
+##FD   FRT42_gitR1.sh           |  81638| 11/11/22 17:09|  1387| p2.04-21111-1709
+##FD   FRT42_gitR1.sh           |  90455| 12/23/22 16:03|  1448| p2.04-21223.1603
+##FD   FRT42_gitR1.sh           |  94794| 12/04/22 09:06|  1517| p2.04-21204.0906
+##FD   FRT42_gitR1.sh           | 103287| 12/04/22 20:54|  1667| p2.04-21204.2054
+##FD   FRT42_gitR1.sh           | 115875|  1/08/23 21:15|  1796| p2.05-30108.2115
+##FD   FRT42_gitR1.sh           | 119552|  1/19/23 16:15|  1811| p2.05-30119.1615
+##FD   FRT42_gitR1.sh           | 117959|  8/11/23 13:00|  1811| p2.06-30811.1300
+##FD   FRT42_gitR1.sh           | 118423| 10/27/24 19:34|  1817| p2.06-41027.1934
+##FD   FRT42_gitR1.sh           | 118876| 11/02/24 19:29|  1815| p2.06-41102.1926
 ##DESC     .--------------------+-------+---------------+------+-----------------+
 #            Use the commands in this script to run git commands with helpfull
 #            output.
@@ -116,7 +115,7 @@
 # .(21223.03 12/23/22 RAM  2:30p| Improve Gitr list commits local/remote
 # .(21223.04 12/23/22 RAM  3:30p| List commits can only take a branch name as an arg
 # .(21223.05 12/23/22 RAM  4:03p| Sort List commits in chronological order
-# .(21231.05 12/31/22 RAM 11:58p| Merge back into FRT22_gitR1_p2.04_v21212_temp.sh
+# .(21231.05 12/31/22 RAM 11:58p| Merge back into FRT42_gitR1_p2.04_v21212_temp.sh
 # .(30104.01  1/04/23 RAM  1:50p| Improve Local Dir name in list commits
 # .(30108.01  1/08/23 RAM  9:15p| Add list commits both
 # .(30119.01  1/19/23 RAM  2:30p| Remote upstream from getCurRemote
@@ -133,7 +132,7 @@
 #*/
 #========================================================================================================== #  ===============================  #
 
-        aVTitle="Useful gitR Commands by formR Tools"; aVDt="Aug 11, 2023  1:00p";                          # .(41102.04.1 RAM Change VVar names).(21113.05.6 RAM Add aVtitle for Version in Begin)
+        aVTitle="Useful gitR1 Commands by formR"; aVDt="Aug 11, 2023 1:00p";                                # .(41102.04.1 RAM Change VVar names).(21113.05.6 RAM Add aVtitle for Version in Begin)
         aVer="$( echo $0 | awk '{  match( $0, /_[dpstuv][0-9]+\.[0-9]+/ ); print substr( $0, RSTART+1, RLENGTH-1) }' )"  # .(21031.01.1 RAM Add [d...).(20416.03.8 "_p2.02", or _d1.09)
 
         LIB="gitR1"; LIB_LOG=${LIB}_LOG; LIB_USER=${LIB}_USER; Lib=${LIB}; aDir=$(dirname "${BASH_SOURCE}");# .(41027.01.10 RAM).(80923.01.1)
@@ -141,7 +140,7 @@
 #       aFns="$( dirname "${BASH_SOURCE}"           )/JPT12_Main2Fns_p1.07.sh"; if [ ! -f "${aFns}" ]; then # .(41026.04.5 RAM Use copy in FRTs).(21113.05.9 RAM Use FRT12_Main2Fns_p1.06_v21027.sh).(41027.01.5)
 #       aFns="$( dirname "${BASH_SOURCE}"   )/../JPTs/JPT12_Main2Fns_p1.07.sh"; if [ ! -f "${aFns}" ]; then ##.(41026.04.1).(41027.01.5)
         aFns="${aDir/FRTs*/JPTs}/JPT12_Main2Fns_p1.07.sh"; if [ ! -f "${aFns}" ]; then                      # .(41027.01.5).(41026.04.1)
-        echo -e "\n ** gitR1[144]  JPT Fns script, '${aFns}', NOT FOUND\n"; exit; fi; #fi
+        echo -e "\n ** gitR1[143]  JPT Fns script, '${aFns}', NOT FOUND\n"; exit; fi; #fi
         source "${aFns}";
 
 #    -- --- ---------------  =  ------------------------------------------------------  #  ---------------- #
@@ -190,7 +189,7 @@ function Help( ) {
 #    -- --- ---------------  =  ------------------------------------------------------  #  ---------------- #
 
         echo ""
-        echo "  ${aVTitle}   (${aVer})                  (${aVDt})"
+        echo "  ${aVTitle}  (${aVer})                        (${aVDt})"
         echo "  -------------------------------------------------------------  -----------------------------------"
         echo "   gitR  Init                                                    Create a .git folder"        # .(20429.03.2 End)
         echo ""
