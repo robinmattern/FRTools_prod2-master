@@ -191,9 +191,9 @@ function Help( ) {
         echo ""
         echo "  ${aVTitle}  (${aVer})                        (${aVDt})"
         echo "  -------------------------------------------------------------  -----------------------------------"
-        echo "   gitR  Init                                                    Create a .git folder"        # .(20429.03.2 End)
+        echo "   ${LIB} Init                                                    Create a .git folder"        # .(20429.03.2 End)
         echo ""
-        echo "   gitR  Commit {Comment}                                        Stage and Commit all changes"
+        echo "   ${LIB} Commit {Comment}                                        Stage and Commit all changes"
         echo "         Push                                                    Upload changes to remote"
         echo "         Fetch                                                   Fetch remote changes (Refs only, i.e. no local changes)"
         echo "         Fetch [All]                                             Fetch remote changes for all remotes and branches"
