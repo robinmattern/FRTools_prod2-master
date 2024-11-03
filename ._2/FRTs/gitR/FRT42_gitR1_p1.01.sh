@@ -6,6 +6,7 @@
 ##FD   FRT22_GitR1.sh           |  21714| 10/26/24 17:20|   461| v1.01.41026.1720
 ##FD   FRT42_GitR1.sh           |  24865| 10/29/24  8:52|   488| v1.01.41029.0852
 ##FD   FRT42_GitR1.sh           |  27486| 10/30/24 20:28|   513| v1.01.41030.2028
+##FD   FRT42_GitR1.sh           |  30370| 10/31/24 10:11|   544| v1.01.41031.0810
 ##FD   FRT42_GitR1.sh           |  43418| 11/02/24 19:37|   688| v1.01.41102.1701
 ##DESC     .--------------------+-------+---------------+------+-----------------+
 #            This script has usefull GIT functions.
@@ -231,8 +232,8 @@ done
 
 function shoCommitMsg() {                                                                                   # .(41030.05.2 RAM Write showCommitMsg Beg)
      n=$(($1-1)); if [ "${#n}" == "1" ]; then m=" ${n}"; else m="${n}"; fi                                  # .(41031.05.1 RAM Move to here)
-     aAWK1='/^commit / { c = substr($0,8,8) }; /^Author:/ { a = substr($0,8) }; /^Date:/ { d = substr($0,6,27) }; NR == 5 { p = length($0) > 63 ? "..." : ""; m = sprintf( "\"%-61s", ($0 != "") ? substr( $0, 5, 60-(p > "" ? 3 : 0) ) p "\"" : "n/a\"" ); print " " c d"   "m" "a }'
-     aAWK2='{ m = $3; d = $4; t = $5; y = $6; m = ( 2 + index( "JanFebMarAprMayJunJulAugSepOctNovDev", m ) ) / 3; d = d > 9 ? d : "0" d; m = m > 9 ? m : "0" m; print substr( $0, 1, 15)" "y"."m"."d" "t"   "substr( $0, 40 ) }';   #echo "  aAWK2: '${aAWK2}'"; exit # .(41031.04.1)
+     aAWK1='/^commit / { c = substr($0,8,8) }; /^Author:/ { a = substr($0,8) }; /^Date:/ { d = substr($0,6,27) }; NR == 5 { m = sprintf( "\"%-50s", ($0 != "") ? substr($0,5)"\"" : "n/a\"" ); print " " c d"   "m"  "a }'
+     aAWK2='{ m = $3; d = $4; t = $5; y = $6; m = ( 2 + index( "JanFebMarAprMayJunJulAugSepOctNovDev", m ) ) / 3; print substr( $0, 1, 15)" "y"."m"."d" "t"   "substr( $0, 40 ) }';   #echo "  aAWK2: '${aAWK2}'"; exit # .(41031.04.1)
      aCommitHash=$( git rev-parse HEAD~$n 2>/dev/null ); # echo "  aCommitHash: '${aCommitHash}'"  # Get commit hash at current position
 #    echo "  aCommitHash: ${aCommitHash}"; return
 #    if [ "${#n}" == "1" ]; then m=" ${n}"; else m="${n}"; fi
@@ -523,7 +524,7 @@ function shoCommitMsg() {                                                       
              if [ "${aRemoteName}"  != "origin"      ]; then aRemoteName="${aProject}${aStage_/-*/}"; fi
              aRemoteURL="${aSSH}${aAcct}/${aProject}${aStage_}.git"
         fi
-     }                                                                                                       # .(41102.03.6 End)
+     }                                                                                                      # .(41102.03.6 End)
 #    --------------------------------------------------------------------------------
 
    function  setRemote() {                                                                                  # .(41102.03.5 RAM Write setRemote Beg)
