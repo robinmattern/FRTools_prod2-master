@@ -8,7 +8,7 @@
 ##FD   FRT42_GitR2.sh           |  27486| 10/30/24 20:28|   513| v1.01.41030.2028
 ##FD   FRT42_GitR2.sh           |  30370| 10/31/24 10:11|   544| v1.01.41031.0810
 ##FD   FRT42_GitR2.sh           |  43817| 11/03/24 13:03|   692| v1.01.41103.1303
-##FD   FRT42_GitR2.sh           |  61801| 11/04/24  9:20|   973| v1.01.41104.0915
+##FD   FRT42_GitR2.sh           |  62213| 11/04/24 10:27|   977| v1.01.41104.0915
 
 ##DESC     .--------------------+-------+---------------+------+-----------------+
 #            This script has usefull GIT functions.
@@ -54,10 +54,10 @@
 # .(41102.05 11/02/24 RAM  5:01p| Wierd fix for add remote origin, based on position
 # .(41103.01 11/03/24 RAM 12:22p| Fix List last for merge commits
 # .(41103.02 11/03/24 RAM  1:03p| Change FRT22_gitR1 to gitR2
-# .(41103.03 11/03/24 RAM  2:20p| Add gitr init
+# .(41103.03 11/03/24 RAM  2:20p| Add gitr init with chkRepo
 # .(41103.04 11/03/24 RAM  3:48p| Found dangling if .. fi
 # .(41103.05 11/03/24 RAM  5:10p| Added default commands for remote and commit
-# .(41103.06 11/03/24 RAM  8:40p| Add gitr commands clone, pull and push 
+# .(41103.06 11/03/24 RAM  8:40p| Add gitr commands clone, pull and push
 # .(41104.01 11/04/24 RAM  9:15p| Write getRemoteName and getProjectStage_fromURL
 #
 ##PRGM     +====================+===============================================+
@@ -99,7 +99,7 @@ function help() {
      echo "    Backup local                               Copy local repo to ../ZIPs"
      echo "    Track Branch                               Set tracking for origin/branch"
      echo "    Install gh                                 Install the GIT CLI"
-     echo "    Init                                       Initialize a git repository"                      # .(41103.06.5)
+     echo "    Init                                       Initialize a git repository"                      # .(41103.03.1)
      echo "    [-b]                                       Show debug messages"
      echo "    [-d]                                       Doit, i.e. execute the command"
 #    echo ""
@@ -167,14 +167,14 @@ done
 
   if [ "$1" == "ini" ];                      then aCmd="init";         fi               # .(41103.03.2)
 
-  if [ "$1" == "clo" ];                      then aCmd="cloneRemote";  fi               # .(41103.06.6)
-  if [ "$1" == "clo" ] && [ "$2" == "rem" ]; then aCmd="cloneRemote";  fi               # .(41103.06.7)
-  if [ "$1" == "clo" ] && [ "$2" == "bra" ]; then aCmd="cloneBranch";  fi               # .(41103.06.8)
+  if [ "$1" == "clo" ];                      then aCmd="cloneRemote";  fi               # .(41103.06.5)
+  if [ "$1" == "clo" ] && [ "$2" == "rem" ]; then aCmd="cloneRemote";  fi               # .(41103.06.6)
+  if [ "$1" == "clo" ] && [ "$2" == "bra" ]; then aCmd="cloneBranch";  fi               # .(41103.06.7)
 
-  if [ "$1" == "pul" ];                      then aCmd="pullRemote";   fi               # .(41103.06.9)
-  if [ "$1" == "pus" ];                      then aCmd="pushRemote";   fi               # .(41103.06.10)
+  if [ "$1" == "pul" ];                      then aCmd="pullRemote";   fi               # .(41103.06.8)
+  if [ "$1" == "pus" ];                      then aCmd="pushRemote";   fi               # .(41103.06.9)
 
-  if [ "$1" == "com" ];                      then aCmd="shoLast"; aArg3=9; fi           # .(41103.05.2 RAM Commit cmds)
+  if [ "$1" == "com" ];                      then aCmd="shoLast"; aArg3=9; fi           # .(41103.05.1 RAM Commit cmds)
   if [ "$1" == "lis" ] && [ "$2" == "las" ]; then aCmd="shoLast";      fi               # .(41031.03.4)
   if [ "$1" == "sho" ] && [ "$2" == "las" ]; then aCmd="shoLast";      fi
   if [ "$1" == "lis" ] && [ "$2" == "com" ]; then aCmd="shoLast";      fi
@@ -186,7 +186,7 @@ done
   if [ "$1" == "bac" ] && [ "$2" == "loc" ]; then aCmd="backupLocal";  fi
   if [ "$1" == "rep" ] && [ "$2" == "loc" ]; then aCmd="replaceLocal"; fi               # .(41031.07.2)
 
-  if [ "$1" == "rem" ];                      then aCmd="shoRemote";    fi               # .(41103.05.2 RAM Remote cmds)
+  if [ "$1" == "rem" ];                      then aCmd="shoRemote";    fi               # .(41103.05.3 RAM Remote cmds)
   if [ "$1" == "add" ] && [ "$2" == "rem" ]; then aCmd="addRemote";    fi
   if [ "$1" == "rem" ] && [ "$2" == "add" ]; then aCmd="addRemote";    fi
   if [ "$1" == "set" ] && [ "$2" == "rem" ]; then aCmd="setRemote";    fi
@@ -198,8 +198,8 @@ done
   if [ "$1" == "rem" ] && [ "$2" == "mer" ]; then aCmd="mergeRemote";  fi
 
   if [ "$1" == "rem" ] && [ "$2" == "rem" ]; then aCmd="delRemote";    fi
-  if [ "$1" == "del" ] && [ "$2" == "rem" ]; then aCmd="delRemote";    fi               # .(41103.05.3)
-  if [ "$1" == "rem" ] && [ "$2" == "del" ]; then aCmd="delRemote";    fi               # .(41103.05.4)
+  if [ "$1" == "del" ] && [ "$2" == "rem" ]; then aCmd="delRemote";    fi               # .(41103.05.4)
+  if [ "$1" == "rem" ] && [ "$2" == "del" ]; then aCmd="delRemote";    fi               # .(41103.05.5)
   if [ "$1" == "mak" ] && [ "$2" == "rem" ]; then aCmd="makRemote";    fi
 
   if [ "$1" == "ins" ] && [ "$2" == "gh"  ]; then aCmd="getCLI";       fi
@@ -210,7 +210,7 @@ done
      fi
 # ---------------------------------------------------------------------------
 
-function chkRepo() {                                                                                        # .(41103.03.4)
+function chkRepo() {                                                                                        # .(41103.03.3 RAM Write chkRepo Beg)
 
 #if [ "${aStage}"   == "$(pwd)" ]; then
  if [ "${aRepoDir}" == "" ]; then
@@ -220,7 +220,7 @@ function chkRepo() {                                                            
   else
     echo "  RepoDir is: ${aRepoDir}, branch: ${aBranch}";   # exit_withCR
     fi
-    }                                                                                                       # .(41103.03.5)
+    }                                                                                                       # .(41103.03.4 End)
 # ---------------------------------------------------------------------------
 
  function getRepoDir() {
@@ -274,15 +274,15 @@ function shoCommitMsg() {                                                       
 #         aCmd="shoLast"
 #         aCmd="init"
 
-  if [ "${aCmd}" == "init" ]; then                                                                          # .(41103.03.3 RAM Actually write)
-     sayMsg  "gitR1[258]  Git Init" 1
+  if [ "${aCmd}" == "init" ]; then                                                                          # .(41103.03.5 RAM Actually write Beg)
+     sayMsg  "gitR1[278]  Git Init" 1
 
   if [ -d ".git" ]; then
-
 #       getRepoDir
         echo -e "\n* This project folder already contains a git repository"
         exit_withCR
-        fi
+        fi # eif .git exists
+#  ----------------------------------------------------------------------
 
 function initGit() {
 
@@ -356,9 +356,13 @@ function initGit() {
 
 #       echo ""
         exit
-     fi # eoc Init                                                                                          # .(41103.03.3).(20430.01.3 End)
+     fi # eoc Init                                                                                          # .(41103.03.5).(20430.01.3 End)
 #    -- --- ---------------  =  ------------------------------------------------------  #  ---------------- #
 #====== =================================================================================================== #  ===========
+#       GITR2 HELP & SET GLOBALS                                                                            # .(20430.01.3 Beg RAM Added Beg)
+#====== =================================================================================================== #
+
+#         aCmd="cloneRemote"
 
   if [ "${aCmd}" == "" ] && [ ! -d ".git" ]; then help; fi
 
@@ -376,11 +380,7 @@ function initGit() {
         echo ""
         setOSvars                                                                                           # .(41103.04.2 RAM Not called per ShellCheck)
         getRepoDir
-        chkRepo
-
-#====== =================================================================================================== #  ===========
-#       GITR2 HELP                                                                                          # .(41103.03.3 RAM Actually write).(20430.01.3 Beg RAM Added Beg)
-#====== =================================================================================================== #
+        chkRepo                                                                                             # .(41103.03.6 RAM User here)
 
   if [ "${aCmd}" == "" ]; then help; fi
 
@@ -420,11 +420,14 @@ function initGit() {
 #====== =================================================================================================== #
 
 function getProjectStage_fromURL() {                                                                        # .(41104.01.1 Write getProjectStage_fromURL Beg)
-         aURL="$1"
          aProjectStage="$( echo "$1" | awk '{ sub( /.+\//, "" ); sub( /.git/, "" ); sub( /_/, " "); print }' )"
          aProject="$( echo "${aProjectStage}" | awk '{ print $1 }' )"
          aStage="$( echo "${aProjectStage}"   | awk '{ print $2 }' )"
          }                                                                                                  # .(41104.01.1 End)                                                                                                  #
+
+#    getProjectStage_fromURL "git@github-ram:robinmattern/FRTools_prod2-master.git"
+#    sayMsg  "gitR1[463]  getProjectStage_fromURL: ${aProject}_${aStage}" 1
+#    aArg2="git@github-ram:robinmattern/FRTools_prod2-master.git"
 
 function getRemoteName() {                                                                                  # .(41104.01.2 RAM Write getRemoteName Beg)
      sayMsg  "gitR2[415]  aProject: '${aProject}', aStage: '${aStage}', aArg2: '${aArg2}', aArg53: '${aArg3}', aArg54: '${aArg4}'" 1
@@ -435,32 +438,33 @@ function getRemoteName() {                                                      
      if [ "${aArg5}"  != "" ]; then aStageDir="${aArg5}"; fi
      if [ "${aArg2}"  == "" ]; then aRemoteName="$( git remote )"; fi
      if [ "${aArg4}"  == "" ]; then aBranch="$( git branch | awk '/*/ { print substr($0,3) }' )"; fi
-     if [ "${aProject}" == "anyllm"  ]; then aProject="AnyLLM";  fi
-     if [ "${aProject}" == "frtools" ]; then aProject="FRTools"; fi
-     if [ "${aProject}" == "aidocs"  ]; then aProject="AIDocs";  fi
-     if [ "${aStage}" == ""          ]; then echo "* No stage given"; exit_withCR; fi
-     if [ "${aRemoteName}" == ""     ]; then aRemoteName="${aProject}";
-     if [ "${aProject}" != "origin"  ]; then aRemoteName="$( echo "${aProject}_${aStage/-*/}" | awk '{ print tolower($0) }' )"; fi; fi
+     if [ "${aProject}" == "anyllm"     ]; then aProject="AnyLLM";  fi
+     if [ "${aProject}" == "frtools"    ]; then aProject="FRTools"; fi
+     if [ "${aProject}" == "aidocs"     ]; then aProject="AIDocs";  fi
+     if [ "${aStage}" == ""             ]; then echo "* No stage given"; exit_withCR; fi
+
+     if [ "${aRemoteName}" == ""        ]; then aRemoteName="${aProject}";
+     if [ "${aProject}" != "origin"     ]; then aRemoteName="$( echo "${aProject}_${aStage/-*/}" | awk '{ print tolower($0) }' )"; fi; fi
      if [ "${aRemoteName}" == "anyllm_prod1"        ]; then aRemoteName="anythingllm"; fi
      if [ "${aRemoteName/dev/}" != "${aRemoteName}" ]; then aRemoteName="origin"; fi
 
      if [ "$1" == "forClone" ]; then
-     if [ "${aRemoteName}" == "origin"              ]; then echo "* Need to give a remote URL"; exit_withCR; fi
-     if [ "${aRemoteName/.git}" != "${aRemoteName}" ]; then aRemoteURL="${aRemoteName}", aRemoteName="origin";
-                                                            getProjectStage_fromURL "${aRemoteURL}"
-                                                       else aRemoteURL="https://github.com/robinmattern/${aProject}_${aStage}.git"; fi
+     if [ "${aArg2}"      == "origin"   ]; then echo "* Need to give a remote URL"; exit_withCR; fi
+     if [ "${aArg2/.git}" != "${aArg2}" ]; then aRemoteURL="${aArg2}";  aRemoteName="origin";
+                                                getProjectStage_fromURL "${aRemoteURL}"; aStageDir="${aArg4}"
+                                           else aRemoteURL="https://github.com/robinmattern/${aProject}_${aStage}.git"; fi
        else
              bOK="1"; if [ "$( git remote -v | grep "${aRemoteName}" )" == "" ]; then bOK="0"; fi
      if [ "${bOK}" == "0" ]; then echo "* Invalid RemoteName: '${aRemoteName}'"; exit_withCR; fi
              aRemoteURL="$( git remote -v | awk '/\(fetch\)/ { sub( / \(fetch\)/, "" ); print substr($0,8) }' )"
         fi
 
-     sayMsg  "gitR2[449]  aProject: '${aProject}', aStage: '${aStage}', aStageDir: '${aStageDir}'" 1
-     sayMsg  "gitR2[450]  aRemoteName: '${aRemoteName}', aBranch: '${aBranch}', aRemoteURL: '${aRemoteURL}'" 1
+     sayMsg  "gitR2[462]  aProject: '${aProject}', aStage: '${aStage}', aStageDir: '${aStageDir}'" 1
+     sayMsg  "gitR2[463]  aRemoteName: '${aRemoteName}', aBranch: '${aBranch}', aRemoteURL: '${aRemoteURL}'" 1
          }                                                                                                  # .(41104.01.2 End)
 #    -- --- ---------------  =  ------------------------------------------------------  #  ---------------- #
 
-  if [ "${aCmd}" == "pullRemote" ]; then                                                                    # .(41103.06.11 RAM write it Beg)
+  if [ "${aCmd}" == "pullRemote" ]; then                                                                    # .(41103.06.10 RAM write it Beg)
      sayMsg  "gitR1[431]  Git pull" 1
      getRemoteName;                                                                                         # .(41104.01.3)
 
@@ -471,46 +475,46 @@ function getRemoteName() {                                                      
         git add .
         git commit -m ".(41103.02_Accept all incoming changes"
         fi
-     fi                                                                                                     # .(41103.06.11 End)
+     fi                                                                                                     # .(41103.06.10 End)
 #====== =================================================================================================== #  ===========
 #       GITR2 PUSH
 #====== =================================================================================================== #
 
-  if [ "${aCmd}" == "pushRemote" ]; then                                                                    # .(41103.06.12 RAM write it Beg)
+  if [ "${aCmd}" == "pushRemote" ]; then                                                                    # .(41103.06.11 RAM write it Beg)
      sayMsg  "gitR1[414]  Git push" 1
 #    aBranch=$( git branch | awk '/*/ { print substr($0,2)}' )
      getRemoteName                                                                                          # .(41104.01.4)
 
-     fi                                                                                                     # .(41103.06.12 End)
+     fi                                                                                                     # .(41103.06.11 End)
 #====== =================================================================================================== #  ===========
 #       GITR2 CLONE
 #====== =================================================================================================== #
 
-  if [ "${aCmd}" == "cloneRemote" ] || [ "${aCmd}" == "cloneBranch" ]; then                                 # .(41103.06.13 RAM write it End)
-     sayMsg  "gitR1[438]  Git clone" 1
+  if [ "${aCmd}" == "cloneRemote" ] || [ "${aCmd}" == "cloneBranch" ]; then                                 # .(41103.06.12 RAM write it End)
+     sayMsg  "gitR1[491]  Git clone" 1
 #    aBranch=$( git branch | awk '/*/ { print substr($0,2)}' )
      getRemoteName "forClone"                                                                               # .(41104.01.5)
 
-     aStageDir=" to ${aStageDir}"; if [ "${aStageDir}" == "" ]; then aStageDir=""; fi
+     toStageDir=" to stage dir, ${aStageDir},"; if [ "${aStageDir}" == "" ]; then toStageDir=""; fi
   if [ "${aArg3}" != "" ] && [ "${aBranch}" != "" ]; then # for branch
      aGIT1="git clone -b ${aBranch} --depth 1 \"${aRemoteURL}\""  # an even lighter clone with just the latest commit
-     forBranch=", from ${aProject}_${aStage}${aStageDir} for branch, ${aBranch}"
+     forBranch=", from ${aProject}_${aStage}${toStageDir} for branch, ${aBranch}"
      else
      aGIT1="git clone \"${aRemoteURL}\""
-     forBranch=", from ${aProject}_${aStage}"
+     forBranch=", from ${aProject}_${aStage}${toStageDir}"
      fi
 
   if [ "${bDoit}" != "1" ]; then
 #    echo -e "\n  ${aGIT1}\n  ${aGIT2}"
      echo -e "\n  About to clone remote name, ${aRemoteName}${forBranch}:"
-     echo -e   "  ${aGIT1} # Add -d to doit"
+     echo -e   "  ${aGIT1} # Add -d to doit"                                            # .(41029.04.1)
    else
      echo -e "\n  ${aGIT1}"
      eval        "${aGIT1}" 2>&1 | awk '{ print "  " $0 }'
 #    eval        "${aGIT2}"
      fi
 
-     fi                                                                                                     # .(41103.06.13 End)
+     fi                                                                                                     # .(41103.06.12 End)
 #====== =================================================================================================== #  ===========
 #       GITR2 MAKE REMMOTE
 #====== =================================================================================================== #
@@ -644,7 +648,7 @@ function getRemoteName() {                                                      
      if [ "${aArg5}" != "" ]; then aProject="${aArg5}"; fi
      if [ "${aArg6}" != "" ]; then aStage_="${aArg6}"; fi
 
-             aRemoteURL=""                                                              # .(41103.04.5 RAM Move it to here)
+             aRemoteURL=""                                                              # .(41103.04.4 RAM Move it to here)
 
      if [ "${aRemote_name}" == "" ]; then echo -e "\n* You must provide a remote repo name, i.e. origin or reponame"; exit_withCR; fi
      if [ "${aRemote_name}" == 'help' ]; then
@@ -674,7 +678,7 @@ function getRemoteName() {                                                      
      if [ "${aRemote_name}" != "origin" ]; then                                         # .(41102.05.1 RAM Wierd fix, based on position)
              aRemote_name="${aArg3}";                                                   # .(41102.05.2)
              fi                                                                         # .(41102.05.3)
-#            aRemoteURL=""                                                              ##.(41103.04.5)
+#            aRemoteURL=""                                                              ##.(41103.04.4)
 
      sayMsg  "gitR2[540]  aRemote_name: '${aRemote_name}', aStage: '${aStage}', aStage_: ${aStage_}'"  1
 #    --------------------------------------------------------------------------------
@@ -830,14 +834,14 @@ function getRemoteName() {                                                      
              aRemoteName="${aArg3}"
              aAcct2="/${aAcct}"; if [ "${aSSH:0:3}" == "git" ]; then aAcct2=":${aAcct}"; fi                 # .(41029.07.3)
              aRemoteURL="${aSSH}${aAcct2}/${aProject}_${aStage}.git"                                        # .(41029.07.4)
-#       fi                                                                              # .(41103.04.6 RAM Found missing fi)
+#       fi                                                                              # .(41103.04.5 RAM Found missing fi)
         fi # eif ("${aArg4}" == "" and "${aArg5}" == "")                                                    # .(41029.06.4 End)
 #       ---------------------------------------------------
 
      if [ "${aArg4}" != "" ] && [ "${aArg5}" == "" ]; then
              aAcct="${aArg4/\/*/}"
              aRemoteName="${aArg3}"
-        if [ "${aArg4/\//}" != "${aArg4}" ]; then aProject="${aArg4/*\//}"; fi          # .(41103.04.7 RAM Found missing fi)
+        if [ "${aArg4/\//}" != "${aArg4}" ]; then aProject="${aArg4/*\//}"; fi          # .(41103.04.6 RAM Found missing fi)
 
         fi # eif ("${aArg4}" != "" ] && [ "${aArg5}" == "")
 #       ---------------------------------------------------
@@ -860,7 +864,7 @@ function getRemoteName() {                                                      
 
      sayMsg  "gitR2[722]  aRemoteName: ${aRemoteName}, aRemoteURL: ${aRemoteURL}" 1
      fi # eif no ${aRemoteURL}
-#    fi # eif                                                                           # .(41103.04.8 RAM Removed)
+#    fi # eif                                                                           # .(41103.04.7 RAM Removed)
 #    -------------------------------------------------------------
 
 #    sayMsg  "gitR2[727]  aProject: '${aProject}';  aStage: '${aStage}',  aBranch: '${aBranch}',  aRemoteName: ${aRemoteName/origin/origin      }, aRemoteURL: ${aRemoteURL}"  -1
@@ -894,17 +898,17 @@ function getRemoteName() {                                                      
 #       aGIT1="git remote add  ${aRemoteName}  ${aSSH}${aAcct}/${aProject}${aStage_}.git"
         aGIT1="git remote add  ${aRemoteName}  ${aRemoteURL}"
      fi                                                                                 # .(41029.05.4)
-  if [ "${bDoit}" != "1" ]; then                                                        # .(41103.05.1)
+  if [ "${bDoit}" != "1" ]; then                                                        # .(41103.07.1)
 #    echo -e "\n  ${aGIT1}\n  ${aGIT2}"
      echo -e "\n  ${aGIT1} # Add -d to doit"                                            # .(41029.04.3)
-    else                                                                                # .(41103.05.2)
-     echo -e "\n  ${aGIT1}"                                                             # .(41103.05.3 RAM Don't add -d suggestion)
-     eval        "${aGIT1}" 2>&1 | awk '{ print "  " $0 }'                              # .(41103.05.4 RAM Indent response)
+    else                                                                                # .(41103.07.2)
+     echo -e "\n  ${aGIT1}"                                                             # .(41103.07.3 RAM Don't add -d suggestion)
+     eval        "${aGIT1}" 2>&1 | awk '{ print "  " $0 }'                              # .(41103.07.4 RAM Indent response)
 #    eval        "${aGIT2}"
      aCmd="shoRemote"
      fi
 
-     fi  # ???  // eof Add or Set Remote                                                # .(41103.04.9 RAM Finally put it back )
+     fi  # ???  // eof Add or Set Remote                                                # .(41103.04.8 RAM Finally put it back )
 # ---------------------------------------------------------------------------
 #====== =================================================================================================== #  ===========
 #       GITR2 DELETE REMMOTE
@@ -914,11 +918,11 @@ function getRemoteName() {                                                      
   if [ "${aCmd}" == "delRemote" ]; then
      aName="${aArg3}"; if [ "${aName}" == "" ]; then aName="origin"; fi
      aGIT1="git remote remove ${aName}"
-  if [ "${bDoit}" != "1" ]; then                                                        # .(41103.05.5)
+  if [ "${bDoit}" != "1" ]; then                                                        # .(41103.07.5)
      echo -e "\n  ${aGIT1} # Add -d to doit"                                            # .(41029.04.4)
-    else                                                                                # .(41103.05.6)
-     echo -e "\n  ${aGIT1}"                                                             # .(41103.05.7 RAM Don't add -d suggestion)
-     eval        "${aGIT1}" 2>&1 | awk '{ print "  " $0 }'                              # .(41103.05.8 RAM Indent response)
+    else                                                                                # .(41103.07.6)
+     echo -e "\n  ${aGIT1}"                                                             # .(41103.07.7 RAM Don't add -d suggestion)
+     eval        "${aGIT1}" 2>&1 | awk '{ print "  " $0 }'                              # .(41103.07.8 RAM Indent response)
      aCmd="shoRemote"
      fi
      fi
