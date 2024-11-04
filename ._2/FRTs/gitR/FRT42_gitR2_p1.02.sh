@@ -57,7 +57,7 @@
 # .(41103.03 11/03/24 RAM  2:20p| Add gitr init
 # .(41103.04 11/03/24 RAM  3:48p| Found dangling if .. fi
 # .(41103.05 11/03/24 RAM  5:10p| Added default commands for remote and commit
-# .(41103.06 11/03/24 RAM  8:40p| Add gitr commands clone, pull and push
+# .(41103.06 11/03/24 RAM  8:40p| Add gitr commands clone, pull and push 
 # .(41104.01 11/04/24 RAM  9:15p| Write getRemoteName and getProjectStage_fromURL
 #
 ##PRGM     +====================+===============================================+
