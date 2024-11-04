@@ -8,6 +8,8 @@
 ##FD         set-frtools.sh     |  15476| 10/30/24 21:05|   331| v1.05`41030.2105
 ##FD         set-frtools.sh     |  17992| 10/30/24 23:52|   355| v1.05`41030.2352
 ##FD         set-frtools.sh     |  18548| 10/31/24  7:15|   360| v1.05`41031.0615
+##FD         set-frtools.sh     |  18894| 11/04/24 12:28|   366| v1.05`41104.1225
+
 ##DESC     .--------------------+-------+-----------------+------+---------------+
 #            Create ._0/bin folder and copy all command scripts there as well as
 #            Update ,bashrc (or .zshrc) with PATH, THE_SERVER and OS Prompt.
@@ -37,6 +39,7 @@
 # .(41030.07 10/30/24 RAM 10:05p| Add THE_SERVER to .bashrc file
 # .(41030.06 10/30/24 RAM 11:52p| Fix doit and THE_SERVER for profile
 # .(41031.02 10/31/24 RAM  6:15a| Add set-frtools command doit
+# .(41104.03 11/04/24 RAM 12:25p| Set premissions for all scripts)
 
 ##PRGM     +====================+===============================================+
 ##ID 69.600. Main0              |
@@ -298,7 +301,7 @@ function cpyToBin() {
 
     cpyScript "frt     " "${aRepo_Dir}/._2/FRTs/FRT40_Main0.sh"
     cpyScript "keys    " "${aRepo_Dir}/._2/FRTs/keyS/FRT41_keyS1.sh"
-    cpyScript "gitr    " "${aRepo_Dir}/._2/FRTs/gitR/FRT42_gitR2.sh"
+    cpyScript "gitr    " "${aRepo_Dir}/._2/FRTs/gitR/FRT42_gitR2.sh"                    #.(41103.02.1 RAM Was: gitR1)
     cpyScript "gitr1   " "${aRepo_Dir}/._2/FRTs/gitR/FRT42_gitR1.sh"
     cpyScript "gitr2   " "${aRepo_Dir}/._2/FRTs/gitR/FRT42_gitR2.sh"
 #   cpyScript "gitclone" "${aRepo_Dir}/._2/FRTs/gitR/FRT43_gitR_clone_p1.04.sh"
@@ -322,6 +325,8 @@ function cpyToBin() {
 
 # alias gitr="${aJPTs_JDir}/gitr";      echo "  Done: created alias gitr   = ${aJPTs_JDir}/gitr"
 # alias anyllm="${aJPTs_JDir}/anyllm";  echo "  Done: created alias anyllm = ${aJPTs_JDir}/anyllm"
+
+  Sudo find . -type f -name "*.sh" -exec chmod 755 {} \;                                #.(41104.03.1 RAM Set premissions for all scripts)
   }
 # ---------------------------------------------------------------------------
 
@@ -333,7 +338,8 @@ function cpyScript() {
   if [ "${bDoScripts}" == "0" ]; then                                                            echo "  Will create script: ${aName1} for \"${aJPTs_Script}\""; return; fi
 # if [   -f "${aJPTs_Script}" ]; then cp     -p  "${aJPTs_Script}" "${aJPTs_JDir}/";             echo "  Copied  script for: ${aName1}  in \"${aJPTs_Script}\""; fi
   if [   -f "${aJPTs_Script}" ]; then makScript  "${aJPTs_Script}" "${aJPTs_JDir}" "${aName}";   echo "  Created script for: ${aName1}  in \"${aJPTs_Script}\"";
-                                 Sudo chmod  777 "${aJPTs_Script}"; fi
+                                 Sudo chmod  777 "${aJPTs_Script}";
+       fi
   }
 # ---------------------------------------------------------------------------
 

@@ -8,7 +8,7 @@
 ##FD   FRT42_GitR2.sh           |  27486| 10/30/24 20:28|   513| v1.01.41030.2028
 ##FD   FRT42_GitR2.sh           |  30370| 10/31/24 10:11|   544| v1.01.41031.0810
 ##FD   FRT42_GitR2.sh           |  43817| 11/03/24 13:03|   692| v1.01.41103.1303
-##FD   FRT42_GitR2.sh           |  62213| 11/04/24 10:27|   977| v1.01.41104.0915
+##FD   FRT42_GitR2.sh           |  62603| 11/04/24 12:27|   979| v1.01.41104.1222
 
 ##DESC     .--------------------+-------+---------------+------+-----------------+
 #            This script has usefull GIT functions.
@@ -58,7 +58,8 @@
 # .(41103.04 11/03/24 RAM  3:48p| Found dangling if .. fi
 # .(41103.05 11/03/24 RAM  5:10p| Added default commands for remote and commit
 # .(41103.06 11/03/24 RAM  8:40p| Add gitr commands clone, pull and push
-# .(41104.01 11/04/24 RAM  9:15p| Write getRemoteName and getProjectStage_fromURL
+# .(41104.01 11/04/24 RAM  9:15a| Write getRemoteName and getProjectStage_fromURL
+# .(41104.02 11/04/24 RAM 12:22p| Check for merge conflicts Beg
 #
 ##PRGM     +====================+===============================================+
 ##ID 69.600. Main0              |
@@ -66,10 +67,10 @@
 #*/
 #========================================================================================================== #  ===============================  #
 
-        aVTitle="Useful gitR2 Tools by formR"; aVer="p0.05"; aVDt="Nov 03, 2024 1:00p" # .41023.1335"
+        aVTitle="Useful gitR2 Tools by formR"; aVer="p0.05"; aVDt="Nov 03, 2024 1:00p" # .41023.1335"                      # .(41103.02.2 RAM Was: gitR1)
         aVer="$( echo "$0" | awk '{  match( $0, /_[dpstuv][0-9]+\.[0-9]+/ ); print substr( $0, RSTART+1, RLENGTH-1) }' )"  # .(21031.01.1 RAM Add [d...).(20416.03.8 "_p2.02", or _d1.09)
 
-        LIB="gitR2"; LIB_LOG=${LIB}_LOG; LIB_USER=${LIB}_USER; Lib=${LIB}; aDir=$(dirname "${BASH_SOURCE}");               # .(41102.01.1 RAM Add JPT12_Main2Fns_p1.07.sh Beg).(80923.01.1)
+        LIB="gitR2"; LIB_LOG=${LIB}_LOG; LIB_USER=${LIB}_USER; Lib=${LIB}; aDir=$(dirname "${BASH_SOURCE}");               # .(41103.02.3).(41102.01.1 RAM Add JPT12_Main2Fns_p1.07.sh Beg).(80923.01.1)
         aFns="${aDir/FRTs*/JPTs}/JPT12_Main2Fns_p1.07.sh"; if [ ! -f "${aFns}" ]; then
         echo -e "\n ** gitR2[144]  JPT Fns script, '${aFns}', NOT FOUND\n"; exit; fi; #fi
         source "${aFns}";                                                                                                  # .(41102.01.1 End)
@@ -470,11 +471,12 @@ function getRemoteName() {                                                      
 
 #    git branch --set-upstream-to="${aRemoteName}/${aBranch}" "${aBranch}"
      git pull "${aRemoteName}" "${aBranch}" --allow-unrelated-histories
-     if [ -f .git/MERGE_HEAD ]; then   # in conflict
+     if [ -f .git/MERGE_HEAD ]; then   # in conflict                                                        # .(41104.02.1 RAM Check for conflicts Beg)
+        aTS=$(date +%y%m%d); aTS="${aTS:3}"
         git checkout --theirs .   # for all comflicts
         git add .
-        git commit -m ".(41103.02_Accept all incoming changes"
-        fi
+        git commit -m ".(${aTS}.02_Accept all incoming changes"
+        fi                                                                                                  # .(41104.02.1 End)
      fi                                                                                                     # .(41103.06.10 End)
 #====== =================================================================================================== #  ===========
 #       GITR2 PUSH
