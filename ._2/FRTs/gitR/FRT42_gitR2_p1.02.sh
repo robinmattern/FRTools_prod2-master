@@ -66,6 +66,8 @@
 # .(41104.06 11/04/24 RAM 11:10p| Kludges just for AnythingLLM
 # .(41104.07 11/04/24 RAM 11:55p| Add aCloneDir to gitR 
 # .(41105.01 11/05/24 RAM  7:42p| Don't do light branch clone 
+# .(41105.02 11/05/24 RAM  8:05p| Add -force option to git pull 
+# .(41105.03 11/05/24 RAM  8:30p| Add Sudo and chmod to get pull/clone 
 #
 ##PRGM     +====================+===============================================+
 ##ID 69.600. Main0              |
@@ -94,6 +96,7 @@ function help() {
      echo "    clone [name] [stagedir]                    Clone files from remote name to stagedir"         # .(41103.06.1)
      echo "    clone branch [name] [stagedir] [branch]    Clone files from remote name/branch to stagedir"  # .(41103.06.2)
      echo "    pull [name] [branch]                       Pull files from remote name and branch"           # .(41103.06.3)
+     echo "    pull [name] [branch] [-f]                  Overwrite files from remote name and branch"      # .(41103.06.3)
      echo "    push [name] [branch]                       Push files to remote name and branch"             # .(41103.06.4)
      echo "    Show commit [nCnt|aHash]                   Show files for commit -nCnt or aHash"             # .(41030.05.1)
      echo "    List commits [nCnt]                        List last nCnt commits"                           # .(41031.03.1).(51030.05.1)
@@ -148,6 +151,11 @@ function setOSvars() {
      }
 # -----------------------------------------------------------
 
+function Sudo() {                                                                                           # .(41105.03.1 RAM Write Sudo Beg)      
+  if [[ "${OS:0:7}" != "windows" ]]; then if [ "${USERNAME}" != "root" ]; then sudo "$@"; fi; fi
+     }                                                                                                      # .(41105.03.1 End)      
+# -----------------------------------------------------------
+
 # function setFlags
 
 # Initialize variables
@@ -155,15 +163,19 @@ function setOSvars() {
   aArg1=$1; aArg2=$2; aArg3=$3; aArg4=$4; aArg5=$5; aArg6=$6; aCmd=""
 
 while [[ $# -gt 0 ]]; do  # Loop through all arguments
-    case "$1" in
-        -[bd]*)           # Handle combined flags
-            if [[ "$1" =~ "b" ]]; then  bDebug=1; fi
-            if [[ "$1" =~ "d" ]]; then  bDoit=1; fi
-            ;;
-        *)
-            mArgs+=("$( echo "${1:0:3}" | sed 'y/ABCDEFGHIJKLMNOPQRSTUVWXYZ/abcdefghijklmnopqrstuvwxyz/')")
-            mARGs+=("$1")
-            ;;
+    case "$1" in                                    
+#       -[bdf]*)           # Handle combined flags                                      ##.(41105.02.1 Beg)
+#           if [[ "$1" =~ "b" ]]; then  bDebug=1; fi
+#           if [[ "$1" =~ "d" ]]; then  bDoit=1; fi
+#           if [[ "$1" =~ "f" ]]; then  bForce=1; fi                                    ##.(41105.02.1 Beg)
+        -doit|--doit)    bDoit=1 ;;                                                     # .(41105.02.2 RAM Rewrite)
+        -debug|--debug)  bDebug=1 ;;                                                    # .(41105.02.3)
+        -force|--force)  bForce=1 ;;                                                    # .(41105.02.4)
+        -[bdf]*)         [[ "$1" =~ "b" ]] && bDebug=1; [[ "$1" =~ "d" ]] && bDoit=1; [[ "$1" =~ "f" ]] && bForce=1 ;;  # .(41105.02.5)
+        *)                
+         mArgs+=("$( echo "${1:0:3}" | sed 'y/ABCDEFGHIJKLMNOPQRSTUVWXYZ/abcdefghijklmnopqrstuvwxyz/')"); mARGs+=("$1") 
+         mARGs+=("$1")
+         ;;
     esac
     shift
 done
@@ -540,14 +552,25 @@ function getRemoteName() {                                                      
         getBranch # aBranch=$( git branch | awk '/\*/ { print substr($0,3)}' )                              # .(41104.04.5)
         getRemoteName;                                                                                      # .(41104.01.4)
 
+     if [ "${bForce}" != "1" ]; then                                                                        # .(41105.02.6)
 #       git branch --set-upstream-to="${aRemoteName}/${aBranch}" "${aBranch}"
-        git pull "${aRemoteName}" "${aBranch}" --allow-unrelated-histories 2>&1 | awk '{ print "  " $0 }'   # .(41104.04.6 RAM Add 2>&1)
+#       git pull "${aRemoteName}" "${aBranch}" --allow-unrelated-histories 2>&1 | awk '{ print "  " $0 }'   # .(41104.04.6 RAM Add 2>&1)
+        aGIT1="git pull ${aRemoteName} ${aBranch} --allow-unrelated-histories"
+        echo -e "\n  ${aGIT1}"
+        eval        "${aGIT1}" 2>&1 | awk '{ print "  " $0 }'                                               
      if [ -f .git/MERGE_HEAD ]; then   # in conflict                                                        # .(41104.02.1 RAM Check for conflicts Beg)
         aTS=$(date +%y%m%d); aTS="${aTS:3}"
         git checkout --theirs .   # for all comflicts
         git add .
         git commit -m ".(${aTS}.01_Accept all incoming changes"
         fi                                                                                                  # .(41104.02.1 End)
+      else                                                                                                  # .(41105.02.7 Beg)                      
+        aGIT2="git pull ${aRemoteName} ${aBranch} --force --allow-unrelated-histories"                      # .(41105.02.8)
+        echo -e "\n  ${aGIT2}"                                                              
+        eval        "${aGIT2}" 2>&1 | awk '{ print "  " $0 }'                              
+#       eval        "${aGIT2}"
+        fi                                                                                                  # .(41105.02.7 End)                                                                                             # .(41105.02.3)
+        Sudo find . -type f -name "*.sh" -exec chmod 777 {} +                                               # .(41105.03.2)   
      fi                                                                                                     # .(41103.06.10 End)
 #====== =================================================================================================== #  ===========
 #       GITR2 PUSH
