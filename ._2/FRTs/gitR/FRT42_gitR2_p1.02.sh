@@ -64,6 +64,7 @@
 # .(41104.04 11/04/24 RAM  7:47p| Write getBranch; awk '/*/ {}' not allowed on Mac
 # .(41104.05 11/04/24 RAM  8:33p| Move git clone and get branch
 # .(41104.06 11/04/24 RAM 11:10p| Kludges just for AnythingLLM
+# .(41104.07 11/04/24 RAM 11:55p| Add aCloneDir to gitR 
 #
 ##PRGM     +====================+===============================================+
 ##ID 69.600. Main0              |
@@ -425,18 +426,18 @@ function getRemoteName() {                                                      
      if [ "${aArg2}"      == "origin"   ]; then echo "* Need to give a remote URL"; exit_withCR; fi
      if [ "${aArg2/.git}" != "${aArg2}" ]; then aRemoteURL="${aArg2}";     aRemoteName="origin";
                                                 getProjectStage_fromURL "${aRemoteURL}";
-     if [ "${aArg4}" != ""   ]; then            aStageDir="${aArg4}"; else aStageDir="${aStage}"; fi        # .(41104.06.6)
+     if [ "${aArg4}" != ""   ]; then            aStageDir="${aArg4}"; else aStageDir="${aStage}"; fi        # .(41104.07.1 RAM Set aStageDir)
      sayMsg  "gitR2[425]  aRemoteName: '${aRemoteName}', aStage: '${aStage}', aBranch: '${aBranch}', aStageDir: '${aStageDir}'" -1
 
                                            else aRemoteURL="https://github.com/robinmattern/${aProject}_${aStage}.git"; fi
        else # not for clone
 
-     if [ "${aStage}" == ""  ]; then echo "* No stage given"; exit_withCR; fi                               # .(41104.06.7)
+     if [ "${aStage}" == ""  ]; then echo "* No stage given"; exit_withCR; fi                               # .(41104.06.6)
              bOK="1"; if [ "$( git remote -v | grep "${aRemoteName}" )" == "" ]; then bOK="0"; fi
      if [ "${bOK}" == "0"    ]; then echo "* Invalid RemoteName: '${aRemoteName}'"; exit_withCR; fi
              aRemoteURL="$( git remote -v | awk '/\(fetch\)/ { sub( / \(fetch\)/, "" ); print substr($0,8) }' )"
         fi
-     if [ "${aStage}" == ""  ]; then aStage="prod-master"; fi                                               # .(41104.06.8)
+     if [ "${aStage}" == ""  ]; then aStage="prod-master"; fi                                               # .(41104.06.7)
      sayMsg  "gitR2[440]  aProject: '${aProject}', aStage: '${aStage}', aStageDir: '${aStageDir}'" -1
      sayMsg  "gitR2[441]  aRemoteName: '${aRemoteName}', aBranch: '${aBranch}', aRemoteURL: '${aRemoteURL}'" -1
         }                                                                                                   # .(41104.01.2 End)
@@ -448,14 +449,15 @@ function getRemoteName() {                                                      
 #       getBranch # aBranch=$( git branch | awk '/\*/ { print substr($0,2)}' )                              ##.(41104.04.4)
         getRemoteName "forClone"                                                                            # .(41104.01.3)
 
-        toStageDir=" to stage, ${aStageDir},"; if [ "${aStageDir}" == "" ]; then toStageDir=""; fi
-        aCloneDir="${aProject}_/${aStageDir}"; if [ "${aStageDir}" == "" ]; then aCloneDir=""; fi
-     if [ "${aArg3}" != ""   ] && [ "${aBranch}" != "" ]; then # for branch                                 # .(41104.06.9 RAM aArg3 means user asked for it )
-        aGIT1="git clone -b ${aBranch} --depth 1 \"${aRemoteURL}\" ${aCloneDir}"   # an even lighter clone with just the latest commit
+        toStageDir=" to stage, ${aStageDir},"; if [ "${aStageDir}" == "" ]; then toStageDir=""; fi          # .(41104.07.2) 
+        aCloneDir="${aProject}_/${aStageDir}"; if [ "${aStageDir}" == "" ]; then aCloneDir=""; fi           # .(41104.07.3 RAM Add aCloneDir) 
+     if [ "${aArg3}" != ""   ] && [ "${aBranch}" != "" ]; then # for branch                                 # .(41104.06.8 RAM aArg3 means user asked for it )
         forBranch=", from ${aProject}_${aStage}${toStageDir} for branch, ${aBranch}"
+#       aGIT1="git clone -b ${aBranch} --depth 1 \"${aRemoteURL}\" ${aCloneDir}"                            ##.(41104.07.4).(41029.03.1 RAM An even lighter clone with just the latest commit).(41105.01.1) 
+        aGIT1="git clone -b ${aBranch} --depth 1 \"${aRemoteURL}\" ${aCloneDir}"                            # .(41105.01.1) 
         else
-        aGIT1="git clone \"${aRemoteURL}\" ${aCloneDir}"
-        forBranch=", from ${aProject}_${aStage}${toStageDir}"
+        forBranch=", from ${aProject}_${aStage}${toStageDir}"                                               # .(41104.07.5)
+        aGIT1="git clone \"${aRemoteURL}\" ${aCloneDir}"                                                    # .(41104.07.6)
         fi
 
      if [ "${bDoit}" != "1" ]; then
