@@ -151,9 +151,9 @@ function setOSvars() {
      }
 # -----------------------------------------------------------
 
-function Sudo() {                                                                                           # .(41105.03.1 RAM Write Sudo Beg)      
-  if [[ "${OS:0:7}" != "windows" ]]; then if [ "${USERNAME}" != "root" ]; then sudo "$@"; fi; fi
-     }                                                                                                      # .(41105.03.1 End)      
+function Sudo() {                                                                                           # .(41105.03.1 RAM Write Sudo)      
+  if [[ "${OS:0:7}" != "windows" ]]; then if [ "${USERNAME}" != "root" ]; then sudo "$@"; fi; fi            # .(41105.03.2)
+     }                                                                                                      # .(41105.03.3)      
 # -----------------------------------------------------------
 
 # function setFlags
