@@ -65,6 +65,7 @@
 # .(41104.05 11/04/24 RAM  8:33p| Move git clone and get branch
 # .(41104.06 11/04/24 RAM 11:10p| Kludges just for AnythingLLM
 # .(41104.07 11/04/24 RAM 11:55p| Add aCloneDir to gitR 
+# .(41105.01 11/05/24 RAM  7:42p| Don't do light branch clone 
 #
 ##PRGM     +====================+===============================================+
 ##ID 69.600. Main0              |
@@ -454,7 +455,7 @@ function getRemoteName() {                                                      
      if [ "${aArg3}" != ""   ] && [ "${aBranch}" != "" ]; then # for branch                                 # .(41104.06.8 RAM aArg3 means user asked for it )
         forBranch=", from ${aProject}_${aStage}${toStageDir} for branch, ${aBranch}"
 #       aGIT1="git clone -b ${aBranch} --depth 1 \"${aRemoteURL}\" ${aCloneDir}"                            ##.(41104.07.4).(41029.03.1 RAM An even lighter clone with just the latest commit).(41105.01.1) 
-        aGIT1="git clone -b ${aBranch} --depth 1 \"${aRemoteURL}\" ${aCloneDir}"                            # .(41105.01.1) 
+        aGIT1="git clone --single-branch --branch ${aBranch} \"${aRemoteURL}\" ${aCloneDir}"                # .(41105.01.1) 
         else
         forBranch=", from ${aProject}_${aStage}${toStageDir}"                                               # .(41104.07.5)
         aGIT1="git clone \"${aRemoteURL}\" ${aCloneDir}"                                                    # .(41104.07.6)
