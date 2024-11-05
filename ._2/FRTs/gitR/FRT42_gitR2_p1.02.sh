@@ -8,7 +8,8 @@
 ##FD   FRT42_GitR2.sh           |  27486| 10/30/24 20:28|   513| v1.01.41030.2028
 ##FD   FRT42_GitR2.sh           |  30370| 10/31/24 10:11|   544| v1.01.41031.0810
 ##FD   FRT42_GitR2.sh           |  43817| 11/03/24 13:03|   692| v1.01.41103.1303
-##FD   FRT42_GitR2.sh           |  62603| 11/04/24 12:27|   979| v1.01.41104.1222
+##FD   FRT42_GitR2.sh           |  62603| 11/04/24  9:45|   979| v1.01.41104.1222
+##FD   FRT42_GitR2.sh           |  67219| 11/04/24 23:10|  1023| v1.01.41104.2310
 
 ##DESC     .--------------------+-------+---------------+------+-----------------+
 #            This script has usefull GIT functions.
@@ -60,6 +61,9 @@
 # .(41103.06 11/03/24 RAM  8:40p| Add gitr commands clone, pull and push
 # .(41104.01 11/04/24 RAM  9:15a| Write getRemoteName and getProjectStage_fromURL
 # .(41104.02 11/04/24 RAM 12:22p| Check for merge conflicts Beg
+# .(41104.04 11/04/24 RAM  7:47p| Write getBranch; awk '/*/ {}' not allowed on Mac
+# .(41104.05 11/04/24 RAM  8:33p| Move git clone and get branch
+# .(41104.06 11/04/24 RAM 11:10p| Kludges just for AnythingLLM
 #
 ##PRGM     +====================+===============================================+
 ##ID 69.600. Main0              |
@@ -67,7 +71,7 @@
 #*/
 #========================================================================================================== #  ===============================  #
 
-        aVTitle="Useful gitR2 Tools by formR"; aVer="p0.05"; aVDt="Nov 03, 2024 1:00p" # .41023.1335"                      # .(41103.02.2 RAM Was: gitR1)
+        aVTitle="Useful gitR2 Tools by formR"; aVer="p0.05"; aVDt="Nov 04, 2024 9:45p" # .41023.1335"                      # .(41103.02.2 RAM Was: gitR1)
         aVer="$( echo "$0" | awk '{  match( $0, /_[dpstuv][0-9]+\.[0-9]+/ ); print substr( $0, RSTART+1, RLENGTH-1) }' )"  # .(21031.01.1 RAM Add [d...).(20416.03.8 "_p2.02", or _d1.09)
 
         LIB="gitR2"; LIB_LOG=${LIB}_LOG; LIB_USER=${LIB}_USER; Lib=${LIB}; aDir=$(dirname "${BASH_SOURCE}");               # .(41103.02.3).(41102.01.1 RAM Add JPT12_Main2Fns_p1.07.sh Beg).(80923.01.1)
@@ -224,6 +228,13 @@ function chkRepo() {                                                            
     }                                                                                                       # .(41103.03.4 End)
 # ---------------------------------------------------------------------------
 
+function getBranch( ) {                                                                                     # .(41104.04.1 RAM Create getBranch function Beg)
+     if [ -d .git ]; then                                                                                   # .(41104.05.1)
+     aBranch="$( git branch | awk '/\*/ { sub( /.+at /, "" ); sub( /\)$/, "" ); print substr($0,3) }' )"    # .(41102.02.1 RAM Move to getRepoDir)
+     fi                                                                                                     # .(41104.05.2)
+     }                                                                                                      # .(41104.04.1 End)
+# ---------------------------------------------------------------------------
+
  function getRepoDir() {
 
    aRepos="$( echo "$(pwd)"       | awk '{ match($0, /.*[Rr][Ee][Pp][Oo][Ss]/); print substr($0,1,RLENGTH) }' )"
@@ -236,9 +247,10 @@ function chkRepo() {                                                            
 #  echo "  aProject:    '${aProject}'"; exit
    aStgDir="$(  echo "$(pwd)"     | awk '{ sub( "'.+"${aProject}"'", "" ); print }' )"                      # .(41103.04.1 RAM Added "{aProject}" based on ShellCheck)
    aStage="$(   echo "${aStgDir}" | awk '{ sub( "^[_/]+", "" ); print }' )"
-   aBranch="$( git branch | awk '/\*/ { sub( /.+at /, "" ); sub( /\)$/, "" ); print substr($0,3) }' )"      # .(41102.02.1 RAM Move to getRepoDir)
+#  aBranch="$( git branch | awk '/\*/ { sub( /.+at /, "" ); sub( /\)$/, "" ); print substr($0,3) }' )"      ##.(41102.02.1 RAM Move to getRepoDir).(41104.04.2)
    aRepoDir="${aRepos}/${aProject}${aStgDir}"
    if [ "${aRepo}" == "" ]; then aRepo="${aProject}${aStgDir}"; fi
+   getBranch                                                                                                # .(41104.04.2)
 
 #          bDebug=1
    if [ "${bDebug}" == "1" ]; then
@@ -276,7 +288,7 @@ function shoCommitMsg() {                                                       
 #         aCmd="init"
 
   if [ "${aCmd}" == "init" ]; then                                                                          # .(41103.03.5 RAM Actually write Beg)
-     sayMsg  "gitR1[278]  Git Init" 1
+     sayMsg  "gitR1[286]  Git Init" 1
 
   if [ -d ".git" ]; then
 #       getRepoDir
@@ -360,6 +372,104 @@ function initGit() {
      fi # eoc Init                                                                                          # .(41103.03.5).(20430.01.3 End)
 #    -- --- ---------------  =  ------------------------------------------------------  #  ---------------- #
 #====== =================================================================================================== #  ===========
+#       GITR2 CLONE                                                                                         # .(41104.05.3 RAM Move git clone up before git init)
+#====== =================================================================================================== #
+
+function getProjectStage_fromURL() {                                                                        # .(41104.01.1 Write getProjectStage_fromURL Beg)
+         aProjectStage="$( echo "$1" | awk '{ sub( /.+\//, "" ); sub( /.git/, "" ); sub( /_/, " "); print }' )"
+         aProject="$( echo "${aProjectStage}" | awk '{ print $1 }' )"
+         aStage="$(   echo "${aProjectStage}" | awk '{ print $2 }' )"
+     if [ "${aProject}" == "anything-llm" ]; then aProject="AnyLLM"; aStage="prod1-master"; fi              # .(41104.06.1 RAM Another kludge)
+         }                                                                                                  # .(41104.01.1 End)                                                                                                  #
+#    -- --- ---------------  =  ------------------------------------------------------  #  ---------------- #
+
+#        getProjectStage_fromURL "git@github-ram:robinmattern/FRTools_prod2-master.git"
+#        sayMsg  "gitR1[481]  getProjectStage_fromURL: ${aProject}_${aStage}" 1
+#        aArg2="git@github-ram:robinmattern/FRTools_prod2-master.git"
+
+function getRemoteName() {                                                                                  # .(41104.01.2 RAM Write getRemoteName Beg)
+     sayMsg  "gitR2[389]  aProject: '${aProject}', aStage: '${aStage}', aArg2: '${aArg2}', aArg3: '${aArg3}', aArg4: '${aArg4}'" -1
+
+#        getRepoDir                                                                                         # .(41104.05.4)
+
+     if [ "${aArg2}"  != "" ]; then aProject="${aArg2}"; fi;
+     if [ "${aArg3}"  != "" ]; then aBranch="${aArg3}"; fi
+     if [ "${aArg4}"  != "" ]; then aStage="${aArg4}"; fi
+     if [ "${aArg5}"  != "" ]; then aStageDir="${aArg5}"; fi
+     if [ "${aArg2}"  == "" ]; then aRemoteName="$( git remote )"; fi
+#    if [ "${aArg4}"  == "" ]; then aBranch="$( git branch | awk '/\*/ { print substr($0,3) }' )"; fi       ##.(41104.04.2 RAM Was: /*/).(41104.04.3)
+     if [ "${aArg3}"  == "" ]; then getBranch; fi                                                           # .(41104.04.3)
+     if [ "${aProject}" == "anythingllm"  ]; then aProject="AnythingLLM"; aArg2="https://github.com/Mintplex-Labs/anything-llm.git"; fi # .(41104.06.2 RAM Provide repo URLs)
+     if [ "${aProject}" == "anyllm"       ]; then aProject="AnyLLM";      aArg2="https://github.com/robinmattern/AnyLLM_prod1-master.git";  fi
+     if [ "${aProject}" == "frtools"      ]; then aProject="FRTools";     aArg2="https://github.com/robinmattern/FRTools_prod2-master.git"; fi
+     if [ "${aProject}" == "aidocs"       ]; then aProject="AIDocs";      aArg2="https://github.com/robinmattern/AIDocs_prod1-master.git";  fi
+#    if [ "${aStage}" == ""               ]; then echo "* No stage given"; exit_withCR; fi                  ##.(41104.06.3)
+
+     sayMsg  "gitR2[405]  aProject: '${aProject}', aStage: '${aStage}', aBranch: '${aBranch}', aArg2: '${aArg2}', aArg3: '${aArg3}', aArg4: '${aArg4}'" -1
+
+     if [ "${aRemoteName}" == ""        ]; then aRemoteName="$( echo "${aProject}" | awk '{ print tolower($0) }' )";
+     sayMsg  "gitR2[409]  aRemoteName: '${aRemoteName}', aStage: '${aStage}', aBranch: '${aBranch}', aArg2: '${aArg2}', aArg3: '${aArg3}', aArg4: '${aArg4}'" -1
+     if [ "${aProject}" != "origin"                 ]; then aRemoteName="$( echo "${aProject}_${aStage/-*/}" | awk '{ print tolower($0) }' )"; fi; fi
+
+     if [ "${aRemoteName}" == "anything-llm"        ]; then aRemoteName="anythingllm"; fi                   # .(41104.06.4)
+     if [ "${aRemoteName}" == "anyllm_prod1"        ]; then aRemoteName="anythingllm"; fi
+     if [ "${aRemoteName}" == "anythingllm"         ]; then aStage="prod1-master"; aStageDir="${aStage}";fi # .(41104.06.5 RAM Just for AnythingLLM)
+     sayMsg  "gitR2[414]  aRemoteName: '${aRemoteName}', aStage: '${aStage}', aBranch: '${aBranch}', aArg2: '${aArg2}', aArg3: '${aArg3}', aArg4: '${aArg4}'" -1
+
+     if [ "${aRemoteName/dev/}" != "${aRemoteName}" ]; then aRemoteName="origin"; fi
+
+     sayMsg  "gitR2[419]  aRemoteName: '${aRemoteName}', aStage: '${aStage}', aBranch: '${aBranch}', aArg2: '${aArg2}', aArg3: '${aArg3}', aArg5: '${aArg4}'" -1
+
+     if [ "$1" == "forClone" ]; then
+
+     if [ "${aArg2}"      == "origin"   ]; then echo "* Need to give a remote URL"; exit_withCR; fi
+     if [ "${aArg2/.git}" != "${aArg2}" ]; then aRemoteURL="${aArg2}";     aRemoteName="origin";
+                                                getProjectStage_fromURL "${aRemoteURL}";
+     if [ "${aArg4}" != ""   ]; then            aStageDir="${aArg4}"; else aStageDir="${aStage}"; fi        # .(41104.06.6)
+     sayMsg  "gitR2[425]  aRemoteName: '${aRemoteName}', aStage: '${aStage}', aBranch: '${aBranch}', aStageDir: '${aStageDir}'" -1
+
+                                           else aRemoteURL="https://github.com/robinmattern/${aProject}_${aStage}.git"; fi
+       else # not for clone
+
+     if [ "${aStage}" == ""  ]; then echo "* No stage given"; exit_withCR; fi                               # .(41104.06.7)
+             bOK="1"; if [ "$( git remote -v | grep "${aRemoteName}" )" == "" ]; then bOK="0"; fi
+     if [ "${bOK}" == "0"    ]; then echo "* Invalid RemoteName: '${aRemoteName}'"; exit_withCR; fi
+             aRemoteURL="$( git remote -v | awk '/\(fetch\)/ { sub( / \(fetch\)/, "" ); print substr($0,8) }' )"
+        fi
+     if [ "${aStage}" == ""  ]; then aStage="prod-master"; fi                                               # .(41104.06.8)
+     sayMsg  "gitR2[431]  aProject: '${aProject}', aStage: '${aStage}', aStageDir: '${aStageDir}'" 1
+     sayMsg  "gitR2[432]  aRemoteName: '${aRemoteName}', aBranch: '${aBranch}', aRemoteURL: '${aRemoteURL}'" -1
+        }                                                                                                   # .(41104.01.2 End)
+#    -- --- ---------------  =  ------------------------------------------------------  #  ---------------- #
+
+     if [ "${aCmd}" == "cloneRemote" ] || [ "${aCmd}" == "cloneBranch" ]; then                              # .(41103.06.12 RAM write it End)
+        sayMsg  "gitR1[413]  Git clone" -1
+
+#       getBranch # aBranch=$( git branch | awk '/\*/ { print substr($0,2)}' )                              ##.(41104.04.4)
+        getRemoteName "forClone"                                                                            # .(41104.01.3)
+
+        toStageDir=" to stage, ${aStageDir},"; if [ "${aStageDir}" == "" ]; then toStageDir=""; fi
+        aCloneDir="${aProject}_/${aStageDir}"; if [ "${aStageDir}" == "" ]; then aCloneDir=""; fi
+     if [ "${aArg3}" != ""   ] && [ "${aBranch}" != "" ]; then # for branch                                 # .(41104.06.9 RAM aArg3 means user asked for it )
+        aGIT1="git clone -b ${aBranch} --depth 1 \"${aRemoteURL}\" ${aCloneDir}"   # an even lighter clone with just the latest commit
+        forBranch=", from ${aProject}_${aStage}${toStageDir} for branch, ${aBranch}"
+        else
+        aGIT1="git clone \"${aRemoteURL}\" ${aCloneDir}"
+        forBranch=", from ${aProject}_${aStage}${toStageDir}"
+        fi
+
+     if [ "${bDoit}" != "1" ]; then
+#       echo -e "\n  ${aGIT1}\n  ${aGIT2}"
+        echo -e "\n  About to clone remote name, ${aRemoteName}${forBranch}:"
+        echo -e   "  ${aGIT1} # Add -d to doit"                                         # .(41029.04.1)
+      else
+        echo -e "\n  ${aGIT1}"
+        eval        "${aGIT1}" 2>&1 | awk '{ print "  " $0 }'
+#       eval        "${aGIT2}"
+        fi
+        exit_withCR
+        fi                                                                                                  # .(41104.05.5 End).(41103.06.12 End)
+#====== =================================================================================================== #  ===========
 #       GITR2 HELP & SET GLOBALS                                                                            # .(20430.01.3 Beg RAM Added Beg)
 #====== =================================================================================================== #
 
@@ -410,72 +520,30 @@ function initGit() {
 #====== =================================================================================================== #
 
   if [ "${aCmd}" == "shoCommit" ]; then                                                                     # .(41030.05.4 RAM Add shoCommit Beg)
-     nCnt=${aArg3}; if [ "${nCnt}" == "" ]; then nCnt=0; fi # echo "  nCnt: ${nCnt}"
-     echo ""; nCnt=$((nCnt+1)); shoCommitMsg ${nCnt};  nCnt=$((nCnt-1))  # echo "  shoCommitMsg ${nCnt}"
-     aFilter="AMDR"; aAWK='/^['${aFilter}']/ { printf "      %-2s %s\n", substr($1,1,1), substr( $0, 6) }'; # echo "  aAWK: '${aAWK}'"
-#    echo "git show --pretty=\"\" --name-status HEAD~${nCnt} | awk ${aAWK}"
-           git show --pretty="" --name-status HEAD~${nCnt} | awk "${aAWK}"
+        nCnt=${aArg3}; if [ "${nCnt}" == "" ]; then nCnt=0; fi # echo "  nCnt: ${nCnt}"
+        echo ""; nCnt=$((nCnt+1)); shoCommitMsg ${nCnt};  nCnt=$((nCnt-1))  # echo "  shoCommitMsg ${nCnt}"
+        aFilter="AMDR"; aAWK='/^['${aFilter}']/ { printf "      %-2s %s\n", substr($1,1,1), substr( $0, 6) }'; # echo "  aAWK: '${aAWK}'"
+#       echo "git show --pretty=\"\" --name-status HEAD~${nCnt} | awk  ${aAWK}"
+              git show --pretty=""   --name-status HEAD~${nCnt} | awk "${aAWK}"
      fi                                                                                                     # .(41030.05.4 End)
 #====== =================================================================================================== #  ===========
 #       GITR2 PULL
 #====== =================================================================================================== #
 
-function getProjectStage_fromURL() {                                                                        # .(41104.01.1 Write getProjectStage_fromURL Beg)
-         aProjectStage="$( echo "$1" | awk '{ sub( /.+\//, "" ); sub( /.git/, "" ); sub( /_/, " "); print }' )"
-         aProject="$( echo "${aProjectStage}" | awk '{ print $1 }' )"
-         aStage="$( echo "${aProjectStage}"   | awk '{ print $2 }' )"
-         }                                                                                                  # .(41104.01.1 End)                                                                                                  #
-
-#    getProjectStage_fromURL "git@github-ram:robinmattern/FRTools_prod2-master.git"
-#    sayMsg  "gitR1[463]  getProjectStage_fromURL: ${aProject}_${aStage}" 1
-#    aArg2="git@github-ram:robinmattern/FRTools_prod2-master.git"
-
-function getRemoteName() {                                                                                  # .(41104.01.2 RAM Write getRemoteName Beg)
-     sayMsg  "gitR2[415]  aProject: '${aProject}', aStage: '${aStage}', aArg2: '${aArg2}', aArg53: '${aArg3}', aArg54: '${aArg4}'" 1
-
-     if [ "${aArg2}"  != "" ]; then aProject="${aArg2}"; fi;
-     if [ "${aArg3}"  != "" ]; then aBranch="${aArg3}"; fi
-     if [ "${aArg4}"  != "" ]; then aStage="${aArg4}"; fi
-     if [ "${aArg5}"  != "" ]; then aStageDir="${aArg5}"; fi
-     if [ "${aArg2}"  == "" ]; then aRemoteName="$( git remote )"; fi
-     if [ "${aArg4}"  == "" ]; then aBranch="$( git branch | awk '/*/ { print substr($0,3) }' )"; fi
-     if [ "${aProject}" == "anyllm"     ]; then aProject="AnyLLM";  fi
-     if [ "${aProject}" == "frtools"    ]; then aProject="FRTools"; fi
-     if [ "${aProject}" == "aidocs"     ]; then aProject="AIDocs";  fi
-     if [ "${aStage}" == ""             ]; then echo "* No stage given"; exit_withCR; fi
-
-     if [ "${aRemoteName}" == ""        ]; then aRemoteName="${aProject}";
-     if [ "${aProject}" != "origin"     ]; then aRemoteName="$( echo "${aProject}_${aStage/-*/}" | awk '{ print tolower($0) }' )"; fi; fi
-     if [ "${aRemoteName}" == "anyllm_prod1"        ]; then aRemoteName="anythingllm"; fi
-     if [ "${aRemoteName/dev/}" != "${aRemoteName}" ]; then aRemoteName="origin"; fi
-
-     if [ "$1" == "forClone" ]; then
-     if [ "${aArg2}"      == "origin"   ]; then echo "* Need to give a remote URL"; exit_withCR; fi
-     if [ "${aArg2/.git}" != "${aArg2}" ]; then aRemoteURL="${aArg2}";  aRemoteName="origin";
-                                                getProjectStage_fromURL "${aRemoteURL}"; aStageDir="${aArg4}"
-                                           else aRemoteURL="https://github.com/robinmattern/${aProject}_${aStage}.git"; fi
-       else
-             bOK="1"; if [ "$( git remote -v | grep "${aRemoteName}" )" == "" ]; then bOK="0"; fi
-     if [ "${bOK}" == "0" ]; then echo "* Invalid RemoteName: '${aRemoteName}'"; exit_withCR; fi
-             aRemoteURL="$( git remote -v | awk '/\(fetch\)/ { sub( / \(fetch\)/, "" ); print substr($0,8) }' )"
-        fi
-
-     sayMsg  "gitR2[462]  aProject: '${aProject}', aStage: '${aStage}', aStageDir: '${aStageDir}'" 1
-     sayMsg  "gitR2[463]  aRemoteName: '${aRemoteName}', aBranch: '${aBranch}', aRemoteURL: '${aRemoteURL}'" 1
-         }                                                                                                  # .(41104.01.2 End)
-#    -- --- ---------------  =  ------------------------------------------------------  #  ---------------- #
-
   if [ "${aCmd}" == "pullRemote" ]; then                                                                    # .(41103.06.10 RAM write it Beg)
-     sayMsg  "gitR1[431]  Git pull" 1
-     getRemoteName;                                                                                         # .(41104.01.3)
+     sayMsg  "gitR1[471]  Git pull" 1
 
-#    git branch --set-upstream-to="${aRemoteName}/${aBranch}" "${aBranch}"
-     git pull "${aRemoteName}" "${aBranch}" --allow-unrelated-histories
+        echo ""
+        getBranch # aBranch=$( git branch | awk '/\*/ { print substr($0,3)}' )                              # .(41104.04.5)
+        getRemoteName;                                                                                      # .(41104.01.4)
+
+#       git branch --set-upstream-to="${aRemoteName}/${aBranch}" "${aBranch}"
+        git pull "${aRemoteName}" "${aBranch}" --allow-unrelated-histories 2>&1 | awk '{ print "  " $0 }'   # .(41104.04.6 RAM Add 2>&1)
      if [ -f .git/MERGE_HEAD ]; then   # in conflict                                                        # .(41104.02.1 RAM Check for conflicts Beg)
         aTS=$(date +%y%m%d); aTS="${aTS:3}"
         git checkout --theirs .   # for all comflicts
         git add .
-        git commit -m ".(${aTS}.02_Accept all incoming changes"
+        git commit -m ".(${aTS}.01_Accept all incoming changes"
         fi                                                                                                  # .(41104.02.1 End)
      fi                                                                                                     # .(41103.06.10 End)
 #====== =================================================================================================== #  ===========
@@ -484,39 +552,10 @@ function getRemoteName() {                                                      
 
   if [ "${aCmd}" == "pushRemote" ]; then                                                                    # .(41103.06.11 RAM write it Beg)
      sayMsg  "gitR1[414]  Git push" 1
-#    aBranch=$( git branch | awk '/*/ { print substr($0,2)}' )
-     getRemoteName                                                                                          # .(41104.01.4)
 
+        getBranch # aBranch=$( git branch | awk '/\*/ { print substr($0,3)}' )                              # .(41104.04.7)
+        getRemoteName                                                                                       # .(41104.01.5)
      fi                                                                                                     # .(41103.06.11 End)
-#====== =================================================================================================== #  ===========
-#       GITR2 CLONE
-#====== =================================================================================================== #
-
-  if [ "${aCmd}" == "cloneRemote" ] || [ "${aCmd}" == "cloneBranch" ]; then                                 # .(41103.06.12 RAM write it End)
-     sayMsg  "gitR1[491]  Git clone" 1
-#    aBranch=$( git branch | awk '/*/ { print substr($0,2)}' )
-     getRemoteName "forClone"                                                                               # .(41104.01.5)
-
-     toStageDir=" to stage dir, ${aStageDir},"; if [ "${aStageDir}" == "" ]; then toStageDir=""; fi
-  if [ "${aArg3}" != "" ] && [ "${aBranch}" != "" ]; then # for branch
-     aGIT1="git clone -b ${aBranch} --depth 1 \"${aRemoteURL}\""  # an even lighter clone with just the latest commit
-     forBranch=", from ${aProject}_${aStage}${toStageDir} for branch, ${aBranch}"
-     else
-     aGIT1="git clone \"${aRemoteURL}\""
-     forBranch=", from ${aProject}_${aStage}${toStageDir}"
-     fi
-
-  if [ "${bDoit}" != "1" ]; then
-#    echo -e "\n  ${aGIT1}\n  ${aGIT2}"
-     echo -e "\n  About to clone remote name, ${aRemoteName}${forBranch}:"
-     echo -e   "  ${aGIT1} # Add -d to doit"                                            # .(41029.04.1)
-   else
-     echo -e "\n  ${aGIT1}"
-     eval        "${aGIT1}" 2>&1 | awk '{ print "  " $0 }'
-#    eval        "${aGIT2}"
-     fi
-
-     fi                                                                                                     # .(41103.06.12 End)
 #====== =================================================================================================== #  ===========
 #       GITR2 MAKE REMMOTE
 #====== =================================================================================================== #
@@ -565,7 +604,9 @@ function getRemoteName() {                                                      
 #    sayMsg  "gitR2[363] aCmd: '${aCmd}'" 1
 
   if [ "${aCmd}" == "trackBranch" ]; then
-     aName="origin"; aBranch="${aArg3}"; if [ "${aBranch}" == "" ]; then aBranch="$( git branch | awk '/*/ { print substr($0,3) }' )"; fi
+#    aName="origin"; aBranch="${aArg3}"; if [ "${aBranch}" == "" ]; then aBranch="$( git branch | awk '/\*/ { print substr($0,3) }' )"; fi  ##.(41104.04.8)
+     aName="origin"; aBranch="${aArg3}"; if [ "${aBranch}" == "" ]; then getBranch; fi  # .(41104.04.9)
+
      aGIT1="git push origin \"HEAD:refs/heads/${aBranch}\""
      aGIT2="git fetch origin"
      aGIT3="git branch --set-upstream-to  \"${aName}/${aBranch}\"  \"${aBranch}\""
@@ -580,7 +621,9 @@ function getRemoteName() {                                                      
 # ---------------------------------------------------------------------------
 
   if [ "${aCmd}" == "replaceLocal" ]; then                                              # .(41031.07.3 Write replace local command Beg)
-                                  aBranch="$( git branch | awk '/*/ { print substr($0,3) }' )"
+
+       getBranch # aBranch="$( git branch | awk '/\*/ { print substr($0,3)}' )          # .(41104.04.10)
+
                                   aRemote_name="origin"; if [ "${aBranch}" == "" ]; then aBranch="master"; fi
     if [ "${aArg3}" != "" ]; then aRemote_name="$( echo "${aArg3}" | awk '{ print tolower($0) }' )"; fi
     if [ "${bDoit}" != "1" ]; then
@@ -602,7 +645,7 @@ function getRemoteName() {                                                      
      if [ "${aArg4}" != "" ]; then aRemoteBranch="${aArg4}"; fi
      if [ "${aArg5}" != "" ]; then aLocalBranch="${aArg5}"; fi
 
-# echo "  aRemote_name: '${aRemote_name:0:7}'"
+#    echo "  aRemote_name: '${aRemote_name:0:7}'"
      if [ "${aRemote_name}"  == "" ]; then echo -e "\n* You must provide a remote repo name";       exit_withCR; fi
 
      if [ "${aRemote_name}" == "anythingllm_master" ]; then aRemote_name="anything-llm"; fi
@@ -956,7 +999,8 @@ function getRemoteName() {                                                      
      aPath="${aRepos}/${aProj}._/ZIPs/${aProj/_\//}_${aStage}"
      aTS=$( date '+%y%m%d.%H%M' ); aTS=${aTS:1}
      cd "${aRepoDir}"
-     aBranch="$( git branch | awk '/*/ { print substr($0,3) }' )"
+     getBranch # aBranch=$( git branch | awk '/\*/ { print substr($0,3)}' )             # .(41104.04.11)
+
      aGIT1="mkdir -p  \"${aPath}\""
      aGIT2="git checkout-index -a -f --prefix=\"${aPath}/_v${aTS}_${aBranch}/\""
      echo -e "\n  ${aGIT1} # Add -d to doit\n  ${aGIT2}"; #  exit                       # .(41029.04.5)
