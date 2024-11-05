@@ -9,7 +9,7 @@
 ##FD   FRT42_GitR2.sh           |  30370| 10/31/24 10:11|   544| v1.01.41031.0810
 ##FD   FRT42_GitR2.sh           |  43817| 11/03/24 13:03|   692| v1.01.41103.1303
 ##FD   FRT42_GitR2.sh           |  62603| 11/04/24  9:45|   979| v1.01.41104.1222
-##FD   FRT42_GitR2.sh           |  67219| 11/04/24 23:10|  1023| v1.01.41104.2310
+##FD   FRT42_GitR2.sh           |  67220| 11/04/24 23:15|  1023| v1.01.41104.2310
 
 ##DESC     .--------------------+-------+---------------+------+-----------------+
 #            This script has usefull GIT functions.
@@ -388,7 +388,7 @@ function getProjectStage_fromURL() {                                            
 #        aArg2="git@github-ram:robinmattern/FRTools_prod2-master.git"
 
 function getRemoteName() {                                                                                  # .(41104.01.2 RAM Write getRemoteName Beg)
-     sayMsg  "gitR2[389]  aProject: '${aProject}', aStage: '${aStage}', aArg2: '${aArg2}', aArg3: '${aArg3}', aArg4: '${aArg4}'" -1
+     sayMsg  "gitR2[391]  aProject: '${aProject}', aStage: '${aStage}', aArg2: '${aArg2}', aArg3: '${aArg3}', aArg4: '${aArg4}'" -1
 
 #        getRepoDir                                                                                         # .(41104.05.4)
 
@@ -437,8 +437,8 @@ function getRemoteName() {                                                      
              aRemoteURL="$( git remote -v | awk '/\(fetch\)/ { sub( / \(fetch\)/, "" ); print substr($0,8) }' )"
         fi
      if [ "${aStage}" == ""  ]; then aStage="prod-master"; fi                                               # .(41104.06.8)
-     sayMsg  "gitR2[431]  aProject: '${aProject}', aStage: '${aStage}', aStageDir: '${aStageDir}'" 1
-     sayMsg  "gitR2[432]  aRemoteName: '${aRemoteName}', aBranch: '${aBranch}', aRemoteURL: '${aRemoteURL}'" -1
+     sayMsg  "gitR2[440]  aProject: '${aProject}', aStage: '${aStage}', aStageDir: '${aStageDir}'" -1
+     sayMsg  "gitR2[441]  aRemoteName: '${aRemoteName}', aBranch: '${aBranch}', aRemoteURL: '${aRemoteURL}'" -1
         }                                                                                                   # .(41104.01.2 End)
 #    -- --- ---------------  =  ------------------------------------------------------  #  ---------------- #
 
