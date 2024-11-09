@@ -73,6 +73,7 @@
 # .(41109.01 11/09/24 RAM  9:45a| Add other Project/Stage arg combinations
 # .(41109.02 11/09/24 RAM  9:45a| Allow initGit with 1 arg
 # .(41109.03 11/09/24 RAM 10:30a| Create initGit vars
+# .(41109.04 11/09/24 RAM  1:55p| Add Docsify to initGit
 #
 ##PRGM     +====================+===============================================+
 ##ID 69.600. Main0              |
@@ -336,18 +337,23 @@ function initGit() { # assumes we're in folder to be initialized
          if [ "${aProject}" == "" ] || [ "${aStage}"   == "" ]; then
             aProject_Name="$1";
           else
-            aProject_Name="${aProject}_${aStage}"; fi
+            aProject_Name="${aProject}_${aStage}"; aStage="${aStage///}"; fi
         else
             aProject_Name="${aProject}_/${aStage}"                                      # .(41109.02.2 RAM Assign aProject_Name)
          fi                                                                             # .(41109.02.1 End)
-         echo "  Creating a repository in: '${aProject_Name}'";                         # .(41109.02.3 RAM Was: '${aProject}_/${aStage}')
 
-         sayMsg "gitR[342]  Bye" 2
-      if [ ! -z "$( ls -A "." )" ]; then echo "* But it is not empty. Unable to create reposiotry. ";
+         aSvr="${THE_SERVER:0:6}"; if [ "${aSvr}" == "" ]; then aSvr="{Svr}"; fi  
+         aOwner="$( whoami | awk '{ print $1 }' )"
+         aStage2="${aStage}";         if [ "${aStage}" == "" ]; then aStage2="all"; fi
+         aProject_="${aProject/_/}";  if [ "${aStage}" != "" ]; then aProject_="${aProject/_/}_"; fi
+         echo "  Creating a repository, '${aProject_}${aStage}', in folder: '${aProject_Name}'."; # .(41109.02.3 RAM Was: '${aProject}_/${aStage}')
+
+#        sayMsg "gitR[342]  Bye" 2
+      if [ ! -z "$( ls -A "." )" ]; then echo "* But the folder is not empty or isn't created. Unable to create reposiotry. ";
          exit_wCR;
          fi
          echo "  The current folder is empty.";
-         sayMsg  "gitR2[347]  Creating a repository: ${aProject_Name}" -1
+         sayMsg  "gitR2[347]  Creating a repository, '${aProject_}${aStage}', in folder: '${aProject_Name}'.'" -1
 
          git init                               | awk '{ print "  " $0 }'
          echo ""
@@ -355,8 +361,12 @@ function initGit() { # assumes we're in folder to be initialized
 
 #        touch README.md  # or any file                                                 # .(41109.03.1 RAM Create initGit vars Beg)
          aREADME_md="
-# ${aProject}_${aStage}
-### Created $( date +%w %b %d %Y %T )
+# Repository: ${aProject_}${aStage}   
+Created on $( date +'%a %b %d %Y at %T' )    
+Created by ${aOwner}    
+    
+## Description   
+
 "
          aGitignore='
 .env"
@@ -386,17 +396,66 @@ yarn.lock"
           }
        ]
    }'
-         aWorkspace_code="{ \"folders\": [ { \"path\": \".\" } ] }"
+                                                                                        # .(41109.03.1 End)                                                                                         
+                                                                                        # .(41109.04.1 RAM Add Docsify files Beg)
+         aRun_Docsify='
+#!/bin/bash
 
+   docsify serve
+'     
+         aDocsify_Index="
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel=\"stylesheet\" href=\"https://cdn.jsdelivr.net/npm/docsify/themes/vue.css\">
+</head>
+<body>
+    <div id=\"app\"></div>
+    <script>
+        window.\$docsify = {
+       // Docsify options (optional)
+          hideSidebar: true,
+          };
+    </script>
+    <script src=\"https://cdn.jsdelivr.net/npm/docsify/lib/docsify.min.js\"></script>
+</body>
+</html>
+"     
+                                                                                        # .(41109.04.1 End)
+         aWorkspace_code="{ \"folders\": [ { \"path\": \".\" } ] }"
+                                                                                        # .(41109.03.2 RAM Add initGit dirs & files Beg)
+#        sayMsg  "gitR2[393]  Adding files to repo, ${aProject}_${aStage}, in folder: ${aProject_Name}'" -1
+         sayMsg  "gitR2[394]  Current folder is: '$( pwd )'" -1
+
+#        !2_formR Tools for 8020's FRTools Apps in rm228d on Stage Prod2-Master  
+         aDir="!2_\${Title} for ${aOwner}'s ${aProject} Apps in ${aSvr} on Stage ${aStage2}"
+         aDirC="client/c01_client-first-app/!3_${aProject} Client No. 1 App in ${aSvr} on Stage ${aStage2}"
+         aDirS="server/s01_server-first-app/!3_${aProject} Server No. 1 App in ${aSvr} on Stage ${aStage2}"
+         mkdir "${aDir}"
+         mkdir -p "${aDirC}"
+         mkdir -p "${aDirS}"
          mkdir ".vscode"
+         mkdir "docs"
+
+         echo "" >"docs/index.html";         git add "docs/index.html"
+         echo "" >"${aDir}/.gitkeep";        git add "${aDir}/.gitkeep"
+         echo "" >"${aDirC}/.gitkeep";       git add "${aDirC}/.gitkeep"
+         echo "" >"${aDirS}/.gitkeep";       git add "${aDirS}/.gitkeep"
+         echo "" >"${aDirC:0:27}/index.js";  git add "${aDirC:0:27}/index.js"
+         echo "" >"${aDirS:0:27}/server.js"; git add "${aDirS:0:27}/server.js"
+
          echo "${aLaunch_json}"    >".vscode/launch.json"
          echo "${aGitignore}"      >".gitignore"
-         echo "${aREADME_md}"      >"README.md"
-         echo "${aWorkspace_code}" >"${aProject}_${aStage}.code-workspace"              # .(41109.03.1 End)
-
+         echo "${aWorkspace_code}" >"${aProject_}${aStage}.code-workspace"              # .(41109.03.2 End)
+         echo "${aDocsify_Index}"  >"docs/index.html"                                   # .(41109.04.2)
+         echo "${aRun_Docsify}"    >"docs/run-docsify.sh"                               # .(41109.04.3)
+         echo "${aREADME_md}"      >"docs/README.md"                                    # .(41109.04.4)
+         echo "${aREADME_md}"      >"README.md"                                         # .(41109.03.3)
+         
          aTS="$(date +%y%m%d)"; aTS="${aTS:1}"
-         git add README.md .gitignore .vscode/launch.json "${aProject}_${aStage}.code-workspace"
-         git commit -m ".(${aTS}.01_Initial commit" | awk '{ print "  " $0 }'
+         git add docs/index.html docs/run-docsify.sh docs/README.md                     # .(41104.04.5)
+         git add README.md .gitignore .vscode/launch.json "${aProject_}${aStage}.code-workspace"
+         git commit -m ".(${aTS}.01_Initial commit for ${aProject_}${aStage}" | awk '{ print "  " $0 }'
 
 #        git branch --set-upstream-to=origin/${aMainBranch} ${aMainBranch}
 
@@ -406,7 +465,7 @@ yarn.lock"
 
            echo ""
            aPath="$( pwd )"; aDir="${aPath##*/}"
-        sayMsg "gitR2[395]  git init in ${aDir}" -1
+        sayMsg "gitR2[414]  git init in ${aDir}" -1
 
         if [ "${aDir: -1}" == "_" ]; then  # in a Project_ dir
 
@@ -425,11 +484,10 @@ yarn.lock"
               echo "  Creating a folder: ${aProject}_/${aStage}"
               mkdir "${aStage}"
               fi
-           cd "${aStage}" || exit_wCR
+              cd "${aStage}" || exit_wCR
 
            initGit "${aProject}" "${aStage}"
-
-           echo -e "\n  Please cd into the folder, ${aStage}"
+           echo -e "\n  Please cd into the folder, '${aStage}'."
            exit_wCR
         fi # eif aProject_ dir
 #       --------------------------------------------------------------
@@ -438,25 +496,28 @@ yarn.lock"
            aProject="$( cd .. && pwd )"; aProject="${aProject##*/}"; aProject="${aProject/_/}";
            aStage="${aDir}"
 
-#          sayMsg "gitR2[449]  git init in ${aProject}${aStage}" 2
+#          sayMsg "gitR2[445]  git init in ${aProject}${aStage}" 2
            initGit "${aProject}" "${aStage}"
+           echo -e "\n  Please cd into the folder, '${aStage}'."
            exit_wCR
         fi # eif aDir == aStage
 #       --------------------------------------------------------------
 
         if [ "${aArg2}" != "" ] && [ "${aArg3}" != "" ]; then                                               # .(41109.01.1 RAM Add other Project/Stage arg combinations Beg)
-        sayMsg "gitR2[443]  aArg2: ${aArg2}, aArg3: ${aArg3}" 1
+        sayMsg "gitR2[453]  aArg2: ${aArg2}, aArg3: ${aArg3}" -1
                                aStage="${aArg3}"; aProject="${aArg2}_"
         if [ "${aArg2%%_}"  != "${aArg2}" ]; then aProject="${aArg2}"; fi  # _ is last char in 1st argument
         if [ "${aArg2%%/}"  != "${aArg2}" ]; then aProject="${aArg2}"; fi # / is last char in 1st argument
         if [ "${aArg2%%_/}" != "${aArg2}" ]; then aProject="${aArg2}"; fi # _/ is last two chars in 1st argument
 
            if [  !  -d "${aProject}${aStage}" ]; then
-#             mkdir -p "${aProject}${aStage}";
-              echo -e "  Creating a folder, '${aProject}${aStage}'."
+              mkdir -p "${aProject}${aStage}";
+              echo  -e "  Creating a folder, '${aProject}${aStage}'."
               fi;
-#          sayMsg "gitR2[449]  git init in ${aProject}${aStage}" 2
-           initGit "${aProject}${aStage}"
+#          sayMsg "gitR2[463]  git init in ${aProject}${aStage}" 2
+                cd     "${aProject}${aStage}" || exit_wCR; aFolder="${aProject}${aStage}"
+           initGit     "${aProject}${aStage}"
+           echo -e "\n  Please cd into the folder, '${aFolder}'."
            exit_wCR
         fi # eif aProject_aStage dir
 #       --------------------------------------------------------------
@@ -467,11 +528,13 @@ yarn.lock"
 
            m=(${aArg2//_/ }); aProject="${m[0]}"; aStage="${m[1]}"
            if [  !  -d "${aProject}_${aStage}" ]; then
-#             mkdir -p "${aProject}_${aStage}";
-              echo -e "  Creating a folder, '${aProject}_${aStage}'."
+              mkdir -p "${aProject}_${aStage}";
+              echo  -e "  Creating a folder, '${aProject}_${aStage}'."
               fi
-#          sayMsg "gitR2[470]  git init in ${aProject}_${aStage}" 2
-           initGit "${aProject}_${aStage}"
+#          sayMsg "gitR2[480]  git init in ${aProject}_${aStage}" 2
+                cd     "${aProject}_${aStage}" || exit_wCR; aFolder="${aProject}_${aStage}"
+           initGit     "${aProject}_${aStage}"
+           echo -e "\n  Please cd into the folder, '${aFolder}'."
            exit_wCR
            fi # eif aProject_aStage
 
@@ -479,23 +542,27 @@ yarn.lock"
 
            m=(${aArg2//// }); aProject="${m[0]}"; aStage="${m[1]}"
            if [  !  -d "${aProject}/${aStage}" ]; then
-#             mkdir -p "${aProject}/${aStage}";
-              echo -e "  Creating a folder, '${aProject}/${aStage}'."
+              mkdir -p "${aProject}/${aStage}";
+              echo  -e "  Creating a folder, '${aProject}/${aStage}'."
               fi
 #          sayMsg "gitR2[482]  git init in ${aProject}/${aStage}" 2
-           initGit "${aProject}/${aStage}"
+                cd     "${aProject}/${aStage}" || exit_wCR; aFolder="${aProject}/${aStage}"
+           initGit     "${aProject}/${aStage}"
+           echo -e "\n  Please cd into the folder, '${aFolder}'."
            exit_wCR
            fi # eif aProject/aStage
 
         if [ "${aArg2/_/}" == "${aArg2}" ]; then  # _ is not in 1st argument
 
            aProject="${aArg2}"
-#          sayMsg "gitR2[489]  git init in ${aProject}" 2
-           if [ ! -d "${aProject}" ]; then
-#             mkdir "${aProject}";
+#          sayMsg "gitR2[504]  git init in ${aProject}" 2
+           if [  !  -d "${aProject}" ]; then
+              mkdir    "${aProject}";
               echo -e "  Creating a folder, '${aProject}'."
               fi
-           initGit "${aProject}"
+                cd     "${aProject}" || exit_wCR; aFolder="${aProject}"
+           initGit     "${aProject}"
+           echo -e "\n  Please cd into the folder, '${aFolder}'."
            exit_wCR
            fi # eif aProject only
         fi # eif # Just a dir                                                                               # .(41109.01.1 End)
