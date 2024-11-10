@@ -77,7 +77,7 @@
 # .(41109.03 11/09/24 RAM 10:30a| Create initGit vars
 # .(41109.04 11/09/24 RAM  1:55p| Add Docsify to initGit
 # .(41109.05 11/09/24 RAM  3:00p| Add last command and update others
-
+# .(41110.01 11/10/24 RAM  8:15a| See if commit exists for list last 
 #
 ##PRGM     +====================+===============================================+
 ##ID 69.600. Main0              |
