@@ -78,7 +78,8 @@
 # .(41109.04 11/09/24 RAM  1:55p| Add Docsify to initGit
 # .(41109.05 11/09/24 RAM  3:00p| Add last command and update others
 # .(41110.01 11/10/24 RAM  8:15a| See if commit exists for list last 
-# .(41110.02 11/10/24 RAM  11:00| Fix clone command args 
+# .(41110.02 11/10/24 RAM 11:00a| Fix clone command args 
+# .(41110.03 11/10/24 RAM  6:50p| Add .code-workspace file if needed fpr clone 
 #
 ##PRGM     +====================+===============================================+
 ##ID 69.600. Main0              |
@@ -720,6 +721,12 @@ function getRemoteName() {                                                      
         echo -e "\n  ${aGIT1}"
         eval        "${aGIT1}" 2>&1 | awk '{ print "  " $0 }'
 #       eval        "${aGIT2}"
+
+#    if [ ! -f "${aCloneDir}/*.code-workspace" ]; then                                  ##.(41110.03.1)
+     if [ ! -n "$(ls ${aCloneDir}/*.code-workspace 2>/dev/null)" ]; then                # .(41110.03.1 RAM Add .code-workspace file if needed after clone)
+        aWorkspace_code="{ \"folders\": [ { \"path\": \".\" } ] }"                      # .(41110.03.2)
+        echo "${aWorkspace_code}" >"${aCloneDir}/${aProject}_${aStage}.code-workspace"  # .(41110.03.3)
+        fi                                                                              # .(41110.03.4)
         fi
         exit_wCR
         fi                                                                                                  # .(41104.05.5 End).(41103.06.12 End)
