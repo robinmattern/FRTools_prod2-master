@@ -94,6 +94,7 @@
 # .(41027.01 10/27/24 RAM  6:43p| Fix JPT12_Main2Fns_p1.07 again, and JPTs dir
 # .(41028.01 10/28/24 RAM  9:32a| Change JPT app numbers
 # .(41107.01 11/07/24 RAM  8:15a| Add Update command
+# .(41111.01 11/11/24 RAM  7:45a| Add Install ALTools command
 
 ##PRGM     +====================+===============================================+
 ##ID 69.600. Main0              |
@@ -212,7 +213,9 @@ function Help( ) {
      echo "             RSS Dir (RDir)"                                                 # .(21107.02.3)
      echo "             RSS DirList (DirList)"                                          # .(21107.02.4)
      echo ""                                                                            # .(41107.01.1)
-     echo "    FRT Update [-doit]                   Update FRTools"                     # .(41107.01.2)
+     echo "    FRT Update [-doit]                   Update [ {FRTools} ]"               # .(41107.01.2)
+     echo "        Install [ALTools] [-doit]        Install ALTools"                    # .(41111.01.1)
+     echo "                [AIDocs] [-doit]         Install AIDocs"                     # .(41111.01.2)
 
      echo ""
      echo "  Notes: Only 3 lowercase letters are needed for each command, separated by spaces"
@@ -283,6 +286,7 @@ function Help( ) {
      getCmd1   "set"     "path" "Set Var"                                                                   # .(21120.03.2)
      getCmd1   "setpath" ""     "Set Var"   1                                                               # .(21120.03.3)
      getCmd1   "upd"     ""     "Update"    1                                                               # .(41107.01.3)
+     getCmd1   "ins"     ""     "Install"   1                                                               # .(41111.01.3)
 
 #    -- --- ---------------  =  ------------------------------------------------------  #  ---------------- #
 
@@ -569,11 +573,10 @@ function Help( ) {
 #
 #====== =================================================================================================== #
 
-        sayMsg    "FRT40[565] Update Command" sp;
+        sayMsg    "FRT40[576] Update Command" sp;
 
   if [ "${aCmd}" == "Update" ]; then
-
-        sayMsg    "FRT40[570]  Update:   '${aArg1}' '${aArg2}' '${aArg3}' '${aArg4}', bDoit: '${bDoit}', bDebug: '${bDebug}', bQuiet: '${bQuiet}'" -1
+        sayMsg    "FRT40[580]  Update:   '${aArg1}' '${aArg2}' '${aArg3}' '${aArg4}', bDoit: '${bDoit}', bDebug: '${bDebug}', bQuiet: '${bQuiet}'" -1
 
         echo -e "\n  Updating FRT in $( dirname $0 )/*"
         cd "$( dirname $0 )"
@@ -588,14 +591,72 @@ function Help( ) {
 #    -- --- ---------------  =  ------------------------------------------------------  #  ---------------- #
 
 #====== =================================================================================================== #  ===========
-#       FRT UPDATE                                                                                          # .(21107.01 RAM Add Command)
+#       Install                                                                                             # .(41111.01.4 RAM Add Install Command)
 #====== =================================================================================================== #
 
-        sayMsg    "FRT40[560]  Next Command" sp;
+        sayMsg    "FRT40[598]  Next Command" sp;
 
-  if [ "${aCmd}" == "Next Command" ]; then
+  if [ "${aCmd}" == "Install" ]; then
+        sayMsg    "FRT40[603]  Install:   'aArg2: ${aArg2}' aArg3: '${aArg3}', bDoit: '${bDoit}', bDebug: '${bDebug}', bQuiet: '${bQuiet}'" 1
 
-        sayMsg    "FRT40[564]  Next Command" 1
+        if [ "${aArg2}" == "" ]; then 
+        echo -e "\n* Please provide what to install, e.g. ALTools or AIDocs."
+        exit;  ${aLstSp}
+        fi 
+
+        if [ "${aArg2}" == "altools" ]; then 
+
+                                      aProjectStage="AnyLLM_prod1-master" 
+        if [ "${aArg3}" != "" ]; then aProjectStage="$3"; fi  
+#                                else aProjectStage="$( pwd )"; aProjectStage="${aProjectStage##/}"; fi 
+        if [   -d "../${aProjectStage}" ]; then cd ../${aProjectStage}; fi                                   
+        if [   -d    "${aProjectStage}" ]; then cd   ${aProjectStage};  fi                                   
+#                                     aProjectStage="$( pwd )"; aProjectStage="${aProjectStage##/}"; fi 
+                                      aDir="$( pwd )"; aDir="${aDir##*/}"; fi 
+        sayMsg    "FRT40[614]  aProjectStage: '${aProjectStage}' aDir: '${aDir}'" 1
+
+        if [ "${aDir}" != "${aProjectStage}" ]; then 
+            echo -e "\n* The folder for ALTools, ${aProjectStage}, does not exist."
+            exit;  ${aLstSp}
+        fi 
+            echo -e "\n  Installing ALTools in ${aProjectStage}."
+        # 1. Make sure you're starting clean
+            git checkout master  >/dev/null 2>&1; # git status                                    # get to Anything-LLM's master branch
+
+                bNoFilesInWork="$( git status | awk '/working tree clean/ { print "1" }' )"       # should show clean working tree
+        if [ "${bNoFilesInWork}" != "1" ]; then 
+            echo -e "\n* The folder for ALTools, ${aProjectStage}, has uncommitted files."
+            exit;  ${aLstSp}
+        fi 
+#               bNoRemoteName="$( git remote | awk '/anyllm_prod1/  { a=1 }; END { print a ? a : "0" }' )"  # should have remote allm_prod1
+                bNoRemoteName="$( git remote | awk '/ALTools_prod1/ { a=1 }; END { print a ? a : "0" }' )"  # should have remote ALTools_prod1
+        if [ "${bNoRemoteName}" == "0" ]; then 
+            gitr remote add ALTools_prod1-robin -d 
+            fi 
+
+        # 2. Create your branch with your 22 files
+            echo -e "\ngit checkout -b altools"; aTS="$( date +%y%m%d )"; aTS="${aTS:1}"
+            git checkout -b altools                          2>&1 | awk '{ print "  " $0 }' # create your branch
+            echo -e   "checkout ALTools_prod1/ALTools -- ."; 
+            git checkout ALTools_prod1/ALTools -- .          2>&1 | awk '{ print "  " $0 }' # get your 22 files
+            echo -e   "commit -m \"${aTS}.02_Added ALTools files\""; 
+            git commit -m "${aTS}.02_Added ALTools files"    2>&1 | awk '{ print "  " $0 }' # commit them
+
+        # 3. Run set-anyllm.sh
+            echo ""
+            Sudo chmod 755 *.sh
+            echo -e   "\n  ./set-anyllm.sh"; 
+                           ./set-anyllm.sh doit 
+            echo -e   "\n  anyllm"; 
+                           anyllm 
+
+        # 4. Now you can switch between branches:
+#         git checkout master       # original 768 Anything-LLM files
+#         git checkout ALTools     # 768 files plus your 22 changes
+
+        exit;  ${aLstSp}
+        fi # eif install altools 
+
 
      ${aLstSp}
      fi # eoc Next Command                                                                                  # .(20102.01.2 End)

@@ -71,7 +71,7 @@
 # .(41105.01 11/05/24 RAM  7:42p| Don't do light branch clone
 # .(41105.02 11/05/24 RAM  8:05p| Add -force option to git pull
 # .(41105.03 11/05/24 RAM  8:30p| Add Sudo and chmod to get pull/clone
-# .(41107.01 11/07/24 RAM  7:45a| Change default StageDir for clone
+# .(41107.02 11/07/24 RAM  7:45a| Change default StageDir for clone
 # .(41109.01 11/09/24 RAM  9:45a| Add other Project/Stage arg combinations
 # .(41109.02 11/09/24 RAM  9:45a| Allow initGit with 1 arg
 # .(41109.03 11/09/24 RAM 10:30a| Create initGit vars
@@ -196,7 +196,7 @@ while [[ $# -gt 0 ]]; do  # Loop through all arguments
 done
     set -- "${mArgs[@]}"  # Restore the command arguments, lower case, three letters
     aArg1=${mARGs[0]}; aArg2=${mARGs[1]}; aArg3=${mARGs[2]}; aArg4=${mARGs[3]}; aArg5=${mARGs[4]}; aArg6=${mARGs[5]};
-    aArg7=${mARGs[6]}; aArg8=${mARGs[7]}; aArg9=${mARGs[8]}                                                 # .(41107.02.x RAM Add aArg7,,aArg9 and aArg8)
+    aArg7=${mARGs[6]}; aArg8=${mARGs[7]}; aArg9=${mARGs[8]}                                                 # .(41107.02.1 RAM Add aArg7,,aArg9 and aArg8)
 #   sayMsg  "gitR2[190]                     \$mARGs[1]: '${mARGs[1]}',  \$mARGs[2]: '${mARGs[2]}',    \$mARGs[3]: '${mARGs[3]}',  \$mARGs[4]: '${mARGs[4]}',  \$mARGs[5]: '${mARGs[5]}',  \$mARGs[6]: '${mARGs[6]}',  \$mARGs[7]: '${mARGs[7]}'" 1
 #   sayMsg  "gitR2[191]  \$1:     '$1',     \$2:        '$2',          \$3:        '$3',      \$4:        '$4',     \$5:        '$5',   \$6:        '$6',  \$7:        '$7'" 1
     sayMsg  "gitR2[192]  \$aArg1: '$aArg1',   \$aArg2:    '$aArg2',  \$aArg3:    '$aArg3',    \$aArg4:    '$aArg4',  \$aArg5:    '$aArg5',  \$aArg6:    '$aArg6',  \$aArg7:    '$aArg7'" -1
@@ -611,7 +611,7 @@ function getRemoteName() {                                                      
      if [ "${aArg3}"  != "" ]; then aBranch="${aArg3}"; fi
      if [ "${aArg4}"  != "" ]; then aStage="${aArg4}"; fi
      if [ "${aArg5}"  != "" ]; then aStageDir="${aArg5}"; fi
-#    if [ "${aArg6}"  != "" ]; then aAcct="${aArg6}"; fi                                                    # .(41107.03.1 RAM Add Acct, ot here)
+#    if [ "${aArg6}"  != "" ]; then aAcct="${aArg6}"; fi                                                    # .(41107.02.2 RAM Add Acct, not here)
      if [ "${aArg2}"  == "" ]; then aRemoteName="$( git remote | awk '{ print; exit }' )"; fi               # .(41110.02.1 RAM There can be more than one)
 #    if [ "${aArg4}"  == "" ]; then aBranch="$( git branch | awk '/\*/ { print substr($0,3) }' )"; fi       ##.(41104.04.2 RAM Was: /*/).(41104.04.3)
      if [ "${aArg3}"  == "" ]; then getBranch; fi                                                           # .(41104.04.3)
@@ -629,7 +629,7 @@ function getRemoteName() {                                                      
 
      if [ "${aRemoteName}" == "anything-llm"        ]; then aRemoteName="anythingllm"; fi                   # .(41104.06.4)
      if [ "${aRemoteName}" == "anyllm_prod1"        ]; then aRemoteName="anythingllm"; fi
-     if [ "${aRemoteName}" == "anythingllm"         ]; then aStage="prod1-master"; aStageDir=""; fi         # .(41107.02.1 RAM Was: aStageDir=${aStage).(41104.06.5 RAM Just for AnythingLLM)
+     if [ "${aRemoteName}" == "anythingllm"         ]; then aStage="prod1-master"; aStageDir=""; fi         # .(41107.02.3 RAM Was: aStageDir=${aStage).(41104.06.5 RAM Just for AnythingLLM)
      sayMsg  "gitR2[627]  aRemoteName: '${aRemoteName}', aStage: '${aStage}', aBranch: '${aBranch}', aArg2: '${aArg2}', aArg3: '${aArg3}', aArg4: '${aArg4}', aArg5: '${aArg5}', aArg6: '${aArg6}'" -1
 
      if [ "${aRemoteName/dev/}" != "${aRemoteName}" ]; then aRemoteName="origin"; fi
@@ -641,8 +641,8 @@ function getRemoteName() {                                                      
      if [ "${aArg2}"      == "origin"   ]; then echo "* Need to give a remote URL"; exit_wCR; fi
      if [ "${aArg2/.git}" != "${aArg2}" ]; then aRemoteURL="${aArg2}";     aRemoteName="origin";
                                                 getProjectStage_fromURL "${aRemoteURL}";
-#    if [ "${aArg4}" != ""   ]; then            aStageDir="${aArg4}"; else aStageDir="${aStage}"; fi        ##.(41104.07.1 RAM Set aStageDir).(41107.02.2)
-     if [ "${aArg4}" != ""   ]; then            aStageDir="${aArg4}"; else aStageDir=""; fi                 # .(41107.02.2 RAM Don't set default).(41104.07.1 RAM Set aStageDir)
+#    if [ "${aArg4}" != ""   ]; then            aStageDir="${aArg4}"; else aStageDir="${aStage}"; fi        ##.(41104.07.1 RAM Set aStageDir).(41107.02.4)
+     if [ "${aArg4}" != ""   ]; then            aStageDir="${aArg4}"; else aStageDir=""; fi                 # .(41107.02.4 RAM Don't set default).(41104.07.1 RAM Set aStageDir)
      sayMsg  "gitR2[640]  aRemoteName: '${aRemoteName}', aStage: '${aStage}', aBranch: '${aBranch}', aStageDir: '${aStageDir}'" -1
 
                                            else aRemoteURL="https://github.com/robinmattern/${aProject}_${aStage}.git"; fi
@@ -682,7 +682,7 @@ function getRemoteName() {                                                      
            fi
         sayMsg  "gitR2[677]  \$aArg1: '$aArg1',   \$aArg2:    '$aArg2',  \$aArg3:    '$aArg3',    \$aArg4:    '$aArg4',  \$aArg5:    '$aArg5'" -1
 
-        if [ "${aArg2}" == "" ]; then                                                                       # .(41110.02.2 RAM Was aArg3).(41107.02.3 Provide help)
+        if [ "${aArg2}" == "" ]; then                                                                       # .(41110.02.2 RAM Was aArg3).(41107.02.5 Provide help beg)
 #            aStage="$(   echo "${aStgDir}" | awk '{ sub( "^[_/]+", "" ); print }' )"
              echo -e "\n  Clone any of these projects, or a GitHub URL"
              echo      "    anything-llm   for   Mintplex-Labs"
@@ -692,7 +692,7 @@ function getRemoteName() {                                                      
 #            echo      "    jptools        for   JPTools_${aStage}"
              echo      "    aidocs         for   AIDocs_prod1-master {aBranch} {aStageDir} [{aAcct}]"
              exit_wCR
-             fi                                                                                             # .(41107.02.3 Provide help)
+             fi                                                                                             # .(41107.02.5 End)
 
 #       getBranch # aBranch=$( git branch | awk '/\*/ { print substr($0,2)}' )                              ##.(41104.04.4)
         getRemoteName "forClone"                                                                            # .(41104.01.3)
@@ -725,7 +725,11 @@ function getRemoteName() {                                                      
 #    if [ ! -f "${aCloneDir}/*.code-workspace" ]; then                                  ##.(41110.03.1)
      if [ ! -n "$(ls ${aCloneDir}/*.code-workspace 2>/dev/null)" ]; then                # .(41110.03.1 RAM Add .code-workspace file if needed after clone)
         aWorkspace_code="{ \"folders\": [ { \"path\": \".\" } ] }"                      # .(41110.03.2)
-        echo "${aWorkspace_code}" >"${aCloneDir}/${aProject}_${aStage}.code-workspace"  # .(41110.03.3)
+        echo "${aWorkspace_code}" >"${aCloneDir}/${aProject}_${aStage}.code-workspace"  # .(41110.03.3).(41111.02.1 RAM Don't do it for now, cuz GIT detects it)
+        cd "${aCloneDir}"; aTS="$( date +%y%m%d )"; aTS="${aTS:1}"                                          # .(41111.02.2 RAM or commit it)
+        echo ""                                                                                             # .(41111.02.3)
+        git add "${aProject}_${aStage}.code-workspace"                        2>&1| awk '{ print "  " $0 }' # .(41111.02.4)
+        git commit -m ".(${aTS}.01_Add ${aProject}_${aStage}.code-workspace)" 2>&1| awk '{ print "  " $0 }' # .(41111.02.5)
         fi                                                                              # .(41110.03.4)
         fi
         exit_wCR
