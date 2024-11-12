@@ -29,7 +29,7 @@
 ##FD   FRT10_Main0.sh           |  39638| 10/26/24 15:04|   595| p1.09`41026.1504
 ##FD   FRT10_Main0.sh           |  42008| 10/28/24 09:34|   607| p1.09`41028.0934
 ##FD   FRT10_Main0.sh           |  43323| 11/07/24 08:16|   632| p1.09`41107.0815
-##FD   FRT10_Main0.sh           |  48955| 11/11/24 18:50|   718| p1.09`41111.1850
+##FD   FRT10_Main0.sh           |  48978| 11/11/24 19:30|   718| p1.09`41111.1930
 
 ##DESC     .--------------------+-------+---------------+------+-----------------+
 #            Use the commands in this script to manage FormR app resources.
@@ -98,7 +98,7 @@
 # .(41028.01 10/28/24 RAM  9:32a| Change JPT app numbers
 # .(41107.01 11/07/24 RAM  8:15a| Add Update command
 # .(41111.01 11/11/24 RAM  7:45a| Add Install ALTools command
-# .(41111.04 11/11/24 RAM  6:50p| Copy run-anyllm to master branch
+# .(41111.04 11/11/24 RAM  7:30p| Copy run-anyllm to master branch
 
 ##PRGM     +====================+===============================================+
 ##ID 69.600. Main0              |
@@ -598,7 +598,7 @@ function Help( ) {
 #       Install Command                                                                                     # .(41111.01.5 RAM Add Install Command beg)
 #====== =================================================================================================== #
 
-        sayMsg    "FRT40[599]  Install Command" sp;
+        sayMsg    "FRT40[601]  Install Command" sp;
 
   if [ "${aCmd}" == "Install" ]; then
 
@@ -612,7 +612,7 @@ function copyFile() {                                                           
         git commit -m ".(${aTS}.03_Add file, $2, from $1 branch" 2>&1 >/dev/null        # Commit it
         git checkout "$1"                                        2>&1 >/dev/null        # Switch back to ALTools
         }                                                                               # .(41111.04.1 End)
-        sayMsg    "FRT40[603]  Install:   'aArg2: ${aArg2}' aArg3: '${aArg3}', bDoit: '${bDoit}', bDebug: '${bDebug}', bQuiet: '${bQuiet}'" 1
+        sayMsg    "FRT40[615]  Install:   'aArg2: ${aArg2}' aArg3: '${aArg3}', bDoit: '${bDoit}', bDebug: '${bDebug}', bQuiet: '${bQuiet}'" 1
 
         if [ "${aArg2}" == "" ]; then
         echo -e "\n* Please provide what to install, e.g. ALTools or AIDocs."
@@ -695,11 +695,11 @@ function copyFile() {                                                           
 #
 #====== =================================================================================================== #
 
-        sayMsg    "FRT40[560]  Next Command" sp;
+        sayMsg    "FRT40[698]  Next Command" sp;
 
   if [ "${aCmd}" == "Next Command" ]; then
 
-        sayMsg    "FRT40[564]  Next Command" 1
+        sayMsg    "FRT40[702]  Next Command" 1
 
      ${aLstSp}
      fi # eoc Next Command                                                                                  # .(20102.01.2 End)

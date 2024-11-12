@@ -12,7 +12,7 @@
 ##FD   FRT42_GitR2.sh           |  67220| 11/07/24  9:15|  1023| v1.01`.41107.0745
 ##FD   FRT42_GitR2.sh           |  78987| 11/09/24 10:32|  1196| v1.01`.41109.1355
 ##FD   FRT42_GitR2.sh           |  86844| 11/09/24 15:00|  1291| v1.01`.41109.1500
-##FD   FRT42_GitR2.sh           |  86844| 11/09/24 15:00|  1291| v1.01`.41109.1500
+##FD   FRT42_GitR2.sh           |  88115| 11/11/24 19:15|  1305| v1.01`.41111.1915
 
 ##DESC     .--------------------+-------+---------------+------+-----------------+
 #            This script has usefull GIT functions.
@@ -77,10 +77,10 @@
 # .(41109.03 11/09/24 RAM 10:30a| Create initGit vars
 # .(41109.04 11/09/24 RAM  1:55p| Add Docsify to initGit
 # .(41109.05 11/09/24 RAM  3:00p| Add last command and update others
-# .(41110.01 11/10/24 RAM  8:15a| See if commit exists for list last 
-# .(41110.02 11/10/24 RAM 11:00a| Fix clone command args 
-# .(41110.03 11/10/24 RAM  6:50p| Add .code-workspace file if needed for clone 
-# .(41111.02 11/11/24 RAM  7:15p| Commit .code-workspace file after clone 
+# .(41110.01 11/10/24 RAM  8:15a| See if commit exists for list last
+# .(41110.02 11/10/24 RAM 11:00a| Fix clone command args
+# .(41110.03 11/10/24 RAM  6:50p| Add .code-workspace file if needed for clone
+# .(41111.02 11/11/24 RAM  7:15p| Commit .code-workspace file after clone
 #
 ##PRGM     +====================+===============================================+
 ##ID 69.600. Main0              |
@@ -669,14 +669,14 @@ function getRemoteName() {                                                      
 #    ------------------------------------------------------------------------------------------------------
 
      if [ "${aStage}" == ""  ]; then aStage="prod-master"; fi                                               # .(41104.06.7)
-     sayMsg  "gitR2[655]  aProject:    '${aProject}', aStage: '${aStage}', aStageDir: '${aStageDir}'" -1
-     sayMsg  "gitR2[666]  aRemoteName: '${aRemoteName}', aBranch: '${aBranch}', aRemoteURL: '${aRemoteURL}'" -1
+     sayMsg  "gitR2[672]  aProject:    '${aProject}', aStage: '${aStage}', aStageDir: '${aStageDir}'" -1
+     sayMsg  "gitR2[673]  aRemoteName: '${aRemoteName}', aBranch: '${aBranch}', aRemoteURL: '${aRemoteURL}'" -1
         }                                                                                                   # .(41104.01.2 End)
 #    -- --- ---------------  =  ------------------------------------------------------  #  ---------------- #
 
      if [ "${aCmd}" == "cloneRemote" ] || [ "${aCmd}" == "cloneBranch" ]; then                              # .(41103.06.12 RAM write it End)
-        sayMsg  "gitR1[671]  Git clone" -1
-        sayMsg  "gitR2[672]  \$aArg1: '$aArg1',   \$aArg2:    '$aArg2',  \$aArg3:    '$aArg3',    \$aArg4:    '$aArg4',  \$aArg5:    '$aArg5',  \$aArg6:    '$aArg6',  \$aArg7:    '$aArg7'" -1
+        sayMsg  "gitR1[678]  Git clone" -1
+        sayMsg  "gitR2[679]  \$aArg1: '$aArg1',   \$aArg2:    '$aArg2',  \$aArg3:    '$aArg3',    \$aArg4:    '$aArg4',  \$aArg5:    '$aArg5',  \$aArg6:    '$aArg6',  \$aArg7:    '$aArg7'" -1
 
         if [ "${aArg2/_/}" != "${aArg2}" ]; then
              aArg4="${aArg2/*_/}"; aArg2="${aArg2/_*/}"
@@ -697,7 +697,7 @@ function getRemoteName() {                                                      
 
 #       getBranch # aBranch=$( git branch | awk '/\*/ { print substr($0,2)}' )                              ##.(41104.04.4)
         getRemoteName "forClone"                                                                            # .(41104.01.3)
-        sayMsg  "gitR2[694]  \$aProject: '${aProject}', \$aStageDir: '${aStageDir}', \$aBranch: '${aBranch}', \$aArg3: '$aArg3'" -1
+        sayMsg  "gitR2[700]  \$aProject: '${aProject}', \$aStageDir: '${aStageDir}', \$aBranch: '${aBranch}', \$aArg3: '$aArg3'" -1
 
         toStageDir=" to stage, ${aStageDir},"; if [ "${aStageDir}" == "" ]; then toStageDir=""; fi          # .(41104.07.2)
 #       aCloneDir="${aProject}_/${aStageDir}"; if [ "${aStageDir}" == "" ]; then aCloneDir=""; fi           ##.(41104.07.3 RAM Add aCloneDir).(41110.02.3)
@@ -707,11 +707,11 @@ function getRemoteName() {                                                      
         forBranch=", from ${aProject}_${aStage}${toStageDir} for branch, ${aBranch}"
 #       aGIT1="git clone -b ${aBranch} --depth 1 \"${aRemoteURL}\" ${aCloneDir}"                            ##.(41104.07.4).(41029.03.1 RAM An even lighter clone with just the latest commit).(41105.01.1)
         aGIT1="git clone --single-branch --branch ${aBranch} \"${aRemoteURL}\" ${aCloneDir}"                # .(41105.01.1)
-        sayMsg  "gitR2[704]  git clone --single-branch '$aArg3' \$aProject: '${aRemoteURL##*/}', \$aStageDir: '${aStageDir}', \$aBranch: '${aBranch}'" 1
+        sayMsg  "gitR2[710]  git clone --single-branch '$aArg3' \$aProject: '${aRemoteURL##*/}', \$aStageDir: '${aStageDir}', \$aBranch: '${aBranch}'" -1
         else
         forBranch=", from ${aProject}_${aStage}${toStageDir}"                                               # .(41104.07.5)
         aGIT1="git clone \"${aRemoteURL}\" ${aCloneDir}"                                                    # .(41104.07.6)
-        sayMsg  "gitR2[708]  git clone                          \$aProject: '${aRemoteURL##*/}', \$aStageDir: '${aStageDir}', \$aBranch: '${aBranch}'" 1
+        sayMsg  "gitR2[714]  git clone                          \$aProject: '${aRemoteURL##*/}', \$aStageDir: '${aStageDir}', \$aBranch: '${aBranch}'" -1
         fi
 
      if [ "${bDoit}" != "1" ]; then
