@@ -29,7 +29,7 @@
 ##FD   FRT10_Main0.sh           |  39638| 10/26/24 15:04|   595| p1.09`41026.1504
 ##FD   FRT10_Main0.sh           |  42008| 10/28/24 09:34|   607| p1.09`41028.0934
 ##FD   FRT10_Main0.sh           |  43323| 11/07/24 08:16|   632| p1.09`41107.0815
-##FD   FRT10_Main0.sh           |  48978| 11/11/24 19:30|   718| p1.09`41111.1930
+##FD   FRT10_Main0.sh           |  49033| 11/11/24 19:30|   719| p1.09`41111.1930
 
 ##DESC     .--------------------+-------+---------------+------+-----------------+
 #            Use the commands in this script to manage FormR app resources.
@@ -603,16 +603,17 @@ function Help( ) {
   if [ "${aCmd}" == "Install" ]; then
 
 function Sudo() {
-        if [[ "${OS:0:7}" != "windows" ]]; then if [ "${USERNAME}" != "root" ]; then sudo "$@"; fi; fi
+        if [[ "${OS:0:7}" != "Windows" ]]; then if [ "${USERNAME}" != "root" ]; then sudo "$@"; fi; fi
         }
+#        copyFile "ALTools" "run-anyllm.sh" "master"
 function copyFile() {                                                                   # .(41111.04.1 RAM Write copyFile Beg)
         git checkout "$3"                                        2>&1 >/dev/null        # Switch to master branch
         git checkout "$1" -- "$2"                                2>&1 >/dev/null        # Get file from ALTools branch
-        git add "$1"; aTS="$( date +%y%m%d )"; aTS="${aTS:1}"    2>&1 >/dev/null        # Add and commit in master
+        git add "$2"; aTS="$( date +%y%m%d )"; aTS="${aTS:1}"    2>&1 >/dev/null        # Add and commit in master
         git commit -m ".(${aTS}.03_Add file, $2, from $1 branch" 2>&1 >/dev/null        # Commit it
         git checkout "$1"                                        2>&1 >/dev/null        # Switch back to ALTools
         }                                                                               # .(41111.04.1 End)
-        sayMsg    "FRT40[615]  Install:   'aArg2: ${aArg2}' aArg3: '${aArg3}', bDoit: '${bDoit}', bDebug: '${bDebug}', bQuiet: '${bQuiet}'" 1
+        sayMsg    "FRT40[616]  Install:   'aArg2: ${aArg2}' aArg3: '${aArg3}', bDoit: '${bDoit}', bDebug: '${bDebug}', bQuiet: '${bQuiet}'" 11
 
         if [ "${aArg2}" == "" ]; then
         echo -e "\n* Please provide what to install, e.g. ALTools or AIDocs."
@@ -629,7 +630,7 @@ function copyFile() {                                                           
         if [   -d    "${aProjectStage}" ]; then cd   ${aProjectStage};  fi
 #                                     aProjectStage="$( pwd )"; aProjectStage="${aProjectStage##/}"; fi
                                       aDir="$( pwd )"; aDir="${aDir##*/}"; fi
-        sayMsg    "FRT40[614]  aProjectStage: '${aProjectStage}' aDir: '${aDir}'" 1
+        sayMsg    "FRT40[633]  aProjectStage: '${aProjectStage}' aDir: '${aDir}'" -1
 
         if [ "${aDir}" != "${aProjectStage}" ]; then
             echo -e "\n* The folder for ALTools, ${aProjectStage}, does not exist."
@@ -666,7 +667,7 @@ function copyFile() {                                                           
             echo -e "\ncommit -m \"${aTS}.02_Added ALTools files\"";
             git commit -m ".(${aTS}.02_Added ALTools files"  2>&1 | awk '{ print "  " $0 }'   # commit them
 
-            copyFile ALTools "run-anyllm.sh" "master"                                   # .(41111.04.2 RAM Use it to copy anyllm command to master so that it is always available)
+            copyFile "ALTools" "run-anyllm.sh" "master"                                 # .(41111.04.2 RAM Use it to copy anyllm command to master so that it is always available)
 
        # 3. Run set-anyllm.sh
             echo ""

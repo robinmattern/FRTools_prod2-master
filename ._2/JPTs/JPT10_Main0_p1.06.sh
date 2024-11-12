@@ -52,7 +52,7 @@
 # .(30917.01  9/17/23 RAM  1:02p| Add killPort
 # .(30917.02  9/17/23 RAM  2:00p| Fix up Help
 # .(40406.03  4/06/24 RAM  8:28p| New version of JPT13_reNum_p1.08.sh
-# .(40407.02  4/04/24 RAM 12:54p| Add bNoisy
+# .(40407.02  4/04/24 RAM 13:29p| Add bNoisy
 
 ##PRGM     +====================+===============================================+
 ##ID 69.600. Main0              |
@@ -192,8 +192,8 @@ function Help( ) {
 
      if [ "${aCmd}" == "Make Project Dirs" ]; then
 
-        sayMsg sp "JPT10[196]  ${aCmd} '${aArg1}' '${aArg2}' '${aArg3}' '${aArg4}'" 1
-        sayMsg    "JPT10[197]  aArg1: '${aArg1}' '${aArg2}' '${aArg3}' '${aArg4}', bDoit: '${bDoit}', bDebug: '${bDebug}', bQuiet: '${bQuiet}'"
+        sayMsg sp "JPT10[195]  ${aCmd} '${aArg1}' '${aArg2}' '${aArg3}' '${aArg4}'" -1
+        sayMsg    "JPT10[196]  aArg1: '${aArg1}' '${aArg2}' '${aArg3}' '${aArg4}', bDoit: '${bDoit}', bDebug: '${bDebug}', bQuiet: '${bQuiet}'" -1
 
         shift
        "$( dirname $0)/JPT21_Dirs1_p1.01.sh"  "$@"
@@ -299,7 +299,7 @@ function Help( ) {
 
 #    -- --- ---------------  =  ------------------------------------------------------  #  ---------------- #
 
-        sayMsg "JPT10[303] \"$( dirname $0 )/{Command1_Script}\" \"$@\"" 1
+        sayMsg "JPT10[303] \"$( dirname $0 )/{Command1_Script}\" \"$@\"" -1
 #       $( dirname $0 )/{Command1_Script} "$@"
 
         ${aLstSp}
@@ -316,7 +316,7 @@ function Help( ) {
 
 function subFunction() {                                                                                    # .(20416.01.4 Beg RAM Added)
 
-        sayMsg "JPT10[320]  subFunction[1]  Begin" 1
+        sayMsg "JPT10[320]  subFunction[1]  Begin" -1
 
      } # eof subFunction
 #    -- --- ---------------  =  ------------------------------------------------------  #  ---------------- #

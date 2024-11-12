@@ -12,7 +12,7 @@
 ##FD   FRT42_GitR2.sh           |  67220| 11/07/24  9:15|  1023| v1.01`.41107.0745
 ##FD   FRT42_GitR2.sh           |  78987| 11/09/24 10:32|  1196| v1.01`.41109.1355
 ##FD   FRT42_GitR2.sh           |  86844| 11/09/24 15:00|  1291| v1.01`.41109.1500
-##FD   FRT42_GitR2.sh           |  88115| 11/11/24 19:15|  1305| v1.01`.41111.1915
+##FD   FRT42_GitR2.sh           |  88127| 11/11/24 19:15|  1305| v1.01`.41111.1915
 
 ##DESC     .--------------------+-------+---------------+------+-----------------+
 #            This script has usefull GIT functions.
@@ -833,7 +833,7 @@ function getRemoteName() {                                                      
 #====== =================================================================================================== #
 
   if [ "${aCmd}" == "pushRemote" ]; then                                                                    # .(41103.06.11 RAM write it Beg)
-     sayMsg  "gitR1[414]  Git push" 1
+     sayMsg  "gitR1[414]  Git push" -1
 
         getBranch # aBranch=$( git branch | awk '/\*/ { print substr($0,3)}' )                              # .(41104.04.7)
         getRemoteName                                                                                       # .(41104.01.5)
@@ -989,7 +989,7 @@ function getRemoteName() {                                                      
              echo      "    [origin]   for any  {Project_Stage}"
              exit_wCR
              fi
-     sayMsg  "gitR2[465]  aRemote_name: '${aRemote_name}', aArg3: '${aArg3}', aArg4: '${aArg4}'"  1
+     sayMsg  "gitR2[992]  aRemote_name: '${aRemote_name}', aArg3: '${aArg3}', aArg4: '${aArg4}'"  -1
 
      if [ "${aRemote_name}" == "origin" ] && [ "${aArg4}" != "" ]; then                 # .(41102.03.2 RAM Create origin project name Beg)
              aRemote_name="${aArg4}"; aArg4="${aArg5}"; echo "    {aArg4}: '${aArg4}'"
@@ -1007,7 +1007,7 @@ function getRemoteName() {                                                      
              fi                                                                         # .(41102.05.3)
 #            aRemoteURL=""                                                              ##.(41103.04.4)
 
-     sayMsg  "gitR2[540]  aRemote_name: '${aRemote_name}', aStage: '${aStage}', aStage_: ${aStage_}'"  1
+     sayMsg  "gitR2[1010]  aRemote_name: '${aRemote_name}', aStage: '${aStage}', aStage_: ${aStage_}'"  -1
 #    --------------------------------------------------------------------------------
 
      if [ "${aRemote_name/_/}" != "${aRemote_name}"    ]; then   # for any  {Project_Stage}"                # .(41102.03.5 RAM Write this Beg)
@@ -1146,7 +1146,7 @@ function getRemoteName() {                                                      
          fi                                                                                                 # .(41102.03.8 End)
 
 #    sayMsg  "help"
-     sayMsg  "gitR2[679]  aRemoteURL:   '${aRemoteURL}'"  1      # Provided via aliases: frtools, altools* or anyllm*
+     sayMsg  "gitR2[1149]  aRemoteURL:   '${aRemoteURL}'"  -1      # Provided via aliases: frtools, altools* or anyllm*
 
 #    --------------------------------------------------------------------------------
 
@@ -1189,14 +1189,14 @@ function getRemoteName() {                                                      
 #       ---------------------------------------------------
              aRemoteName="${aArg3}"
 
-     sayMsg  "gitR2[722]  aRemoteName: ${aRemoteName}, aRemoteURL: ${aRemoteURL}" 1
+     sayMsg  "gitR2[1192]  aRemoteName: ${aRemoteName}, aRemoteURL: ${aRemoteURL}" -1
      fi # eif no ${aRemoteURL}
 #    fi # eif                                                                           # .(41103.04.7 RAM Removed)
 #    -------------------------------------------------------------
 
-#    sayMsg  "gitR2[727]  aProject: '${aProject}';  aStage: '${aStage}',  aBranch: '${aBranch}',  aRemoteName: ${aRemoteName/origin/origin      }, aRemoteURL: ${aRemoteURL}"  -1
-     sayMsg  "gitR2[668]  '${aBranch}'  ${aRemoteName/origin/origin      }  '${aProject}_${aStage}'  '${aRemoteURL}'"  1
-#    sayMsg  "gitR2[669]  aRemoteURL:  '${aRemoteURL}'"  -1; exit # Say it
+#    sayMsg  "gitR2[1197]  aProject: '${aProject}';  aStage: '${aStage}',  aBranch: '${aBranch}',  aRemoteName: ${aRemoteName/origin/origin      }, aRemoteURL: ${aRemoteURL}"  -1
+     sayMsg  "gitR2[1198]  '${aBranch}'  ${aRemoteName/origin/origin      }  '${aProject}_${aStage}'  '${aRemoteURL}'"  -1
+#    sayMsg  "gitR2[1199]  aRemoteURL:  '${aRemoteURL}'"  -1; exit # Say it
 
      if [ "${aRemoteName}"   == "" ]; then
         echo -e "\n* You must provide a remote repo name, i.e. origin or reponame:";
