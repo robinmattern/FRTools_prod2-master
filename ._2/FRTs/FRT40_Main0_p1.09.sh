@@ -30,6 +30,7 @@
 ##FD   FRT10_Main0.sh           |  42008| 10/28/24 09:34|   607| p1.09`41028.0934
 ##FD   FRT10_Main0.sh           |  43323| 11/07/24 08:16|   632| p1.09`41107.0815
 ##FD   FRT10_Main0.sh           |  49033| 11/11/24 19:30|   719| p1.09`41111.1930
+##FD   FRT10_Main0.sh           |  49627| 11/12/24 10:00|   726| p1.09`41112.1000
 
 ##DESC     .--------------------+-------+---------------+------+-----------------+
 #            Use the commands in this script to manage FormR app resources.
@@ -99,6 +100,9 @@
 # .(41107.01 11/07/24 RAM  8:15a| Add Update command
 # .(41111.01 11/11/24 RAM  7:45a| Add Install ALTools command
 # .(41111.04 11/11/24 RAM  7:30p| Copy run-anyllm to master branch
+# .(41112.04 11/12/24 RAM  9:05a| Remove trailing quotes from .gitignore
+# .(41112.05 11/12/24 RAM  9:05a| Remove git git from install command
+# .(41112.06 11/12/24 RAM 10:00a| Add / fix Sudo
 
 ##PRGM     +====================+===============================================+
 ##ID 69.600. Main0              |
@@ -106,7 +110,7 @@
 #*/
 #========================================================================================================== #  ===============================  #
 
-     aVdt="Nov 11, 2024 6:22p"; aVtitle="formR Tools"                                                      # .(21113.05.8 RAM Add aVtitle for Version in Begin)
+     aVdt="Nov 12, 2024 10:00a"; aVtitle="formR Tools"                                                      # .(21113.05.8 RAM Add aVtitle for Version in Begin)
      aVer="$( echo $0 | awk '{  match( $0, /_[dpstuv][0-9]+\.[0-9]+/ ); print substr( $0, RSTART+1, RLENGTH-1) }' )"  # .(21031.01.1 RAM Add [d...).(20416.03.8 "_p2.02", or _d1.09)
 
      LIB="FRT"; LIB_LOG=${LIB}_LOG; LIB_USER=${LIB}_USER; Lib=${LIB}; aDir=$( dirname "${BASH_SOURCE}" );   # .(41027.01.1 RAM).(80923.01.1)
@@ -603,15 +607,18 @@ function Help( ) {
   if [ "${aCmd}" == "Install" ]; then
 
 function Sudo() {
+#       echo "   sudo[1] \${OS:0:7}: '${OS:0:7}'"
         if [[ "${OS:0:7}" != "Windows" ]]; then if [ "${USERNAME}" != "root" ]; then sudo "$@"; fi; fi
         }
 #        copyFile "ALTools" "run-anyllm.sh" "master"
 function copyFile() {                                                                   # .(41111.04.1 RAM Write copyFile Beg)
-        git checkout "$3"                                        2>&1 >/dev/null        # Switch to master branch
-        git checkout "$1" -- "$2"                                2>&1 >/dev/null        # Get file from ALTools branch
-        git add "$2"; aTS="$( date +%y%m%d )"; aTS="${aTS:1}"    2>&1 >/dev/null        # Add and commit in master
-        git commit -m ".(${aTS}.03_Add file, $2, from $1 branch" 2>&1 >/dev/null        # Commit it
-        git checkout "$1"                                        2>&1 >/dev/null        # Switch back to ALTools
+        git checkout "$3"                                        >/dev/null 2>&1        # Switch to master branch
+        git checkout "$1" -- "$2"                                >/dev/null 2>&1        # Get file from ALTools branch
+        Sudo 755 "$2"; aTS="$( date +%y%m%d )"; aTS="${aTS:1}"                          # .(41112.06.1)
+        git add "$2"                                             >/dev/null 2>&1        # Add and commit in master
+        git commit -m ".(${aTS}.03_Add file, $2, from $1 branch" >/dev/null 2>&1        # Commit it
+        git checkout "$1"                                        >/dev/null 2>&1        # Switch back to ALTools
+        echo -e "\n  Copied fiile $2 to branch $1"                                      # .(41112.06.2)
         }                                                                               # .(41111.04.1 End)
         sayMsg    "FRT40[616]  Install:   'aArg2: ${aArg2}' aArg3: '${aArg3}', bDoit: '${bDoit}', bDebug: '${bDebug}', bQuiet: '${bQuiet}'" 11
 
@@ -639,11 +646,11 @@ function copyFile() {                                                           
 
             echo -e "\n  Installing ALTools in ${aProjectStage}."
        # 1. Make sure you're starting clean
-            git checkout master  >/dev/null 2>&1; # git status                                # get into Anything-LLM's master branch
+            git checkout master                                  >/dev/null 2>&1;             # get into Anything-LLM's master branch
 
                 bNoFilesInWork="$( git status | awk '/working tree clean/ { print "1" }' )"   # should show clean working tree
         if [ "${bNoFilesInWork}" != "1" ]; then
-            echo -e "\n* The folder for ALTools, ${aProjectStage}, has uncommitted files."
+            echo -e "\n* The folder for branch ALTools in ${aProjectStage}, has uncommitted files."
             exit;  ${aLstSp}
             fi # eif bNoFilesInWork
 
@@ -654,7 +661,7 @@ function copyFile() {                                                           
             fi # eif bNoRemoteName == 0
 
        # 2. Create your branch with your 22 files
-            echo -e "\ngit git fetch ALTools_prod1";
+            echo -e "\ngit fetch ALTools_prod1";                                        # .(41112.04.1 )
             git fetch ALTools_prod1                          2>&1 | awk '{ print "  " $0 }'   # create your branch
 
             echo -e "\ngit checkout -b altools"; aTS="$( date +%y%m%d )"; aTS="${aTS:1}"
@@ -670,7 +677,6 @@ function copyFile() {                                                           
             copyFile "ALTools" "run-anyllm.sh" "master"                                 # .(41111.04.2 RAM Use it to copy anyllm command to master so that it is always available)
 
        # 3. Run set-anyllm.sh
-            echo ""
             Sudo chmod 755 *.sh
             echo -e   "\n ./set-anyllm.sh";
                           ./set-anyllm.sh doit

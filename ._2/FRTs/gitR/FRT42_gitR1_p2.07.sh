@@ -1433,8 +1433,8 @@ function setA() { chmod 755 "$1"; echo "$1"; }
 #                 git ls-remote ${aGit_Host}:${aGit_User}/${aGit_Repo}.git | awk '{ printf "    %7s  %s\n", substr($1,1,7), $2 }'
 
         aCmd="git ls-remote ${aGit_Host}:${aGit_User}/${aGit_Repo}.git";
-        mResults=$( bash -c "( ${aCmd} )" 2>&1               );
-#       mResults=$( bash -c "( ${aCmd} )" 2>&1 | sort -k1.47 ) # .(21128.05.3 RAM Sort)
+        mResults=$( bash -c "( ${aCmd} )"    2>&1               );
+#       mResults=$( bash -c "( ${aCmd} )"    2>&1 | sort -k1.47 ) # .(21128.05.3 RAM Sort)
 
 # if [ ${?} -ne 0 ]; then
 #       echo " ** Git Repo, ${aGit_Repo}, not found for Account, ${aGit_User}, using SSH_Key, ${aGit_Host}."

@@ -13,6 +13,7 @@
 ##FD   FRT42_GitR2.sh           |  78987| 11/09/24 10:32|  1196| v1.01`.41109.1355
 ##FD   FRT42_GitR2.sh           |  86844| 11/09/24 15:00|  1291| v1.01`.41109.1500
 ##FD   FRT42_GitR2.sh           |  88127| 11/11/24 19:15|  1305| v1.01`.41111.1915
+##FD   FRT42_GitR2.sh           |  88208| 11/12/24 10:00|  1306| v1.01`.41112.1000
 
 ##DESC     .--------------------+-------+---------------+------+-----------------+
 #            This script has usefull GIT functions.
@@ -88,7 +89,7 @@
 #*/
 #========================================================================================================== #  ===============================  #
 
-        aVTitle="Useful gitR2 Tools by formR"; aVer="p0.05"; aVDt="Nov 04, 2024 9:45p" # .41023.1335"                      # .(41103.02.2 RAM Was: gitR1)
+        aVTitle="Useful gitR2 Tools by formR"; aVer="p0.05"; aVDt="Nov 12, 2024 10:00a" # .41023.1335"                      # .(41103.02.2 RAM Was: gitR1)
         aVer="$( echo "$0" | awk '{  match( $0, /_[dpstuv][0-9]+\.[0-9]+/ ); print substr( $0, RSTART+1, RLENGTH-1) }' )"  # .(21031.01.1 RAM Add [d...).(20416.03.8 "_p2.02", or _d1.09)
 
         LIB="gitR2"; LIB_LOG=${LIB}_LOG; LIB_USER=${LIB}_USER; Lib=${LIB}; aDir=$(dirname "${BASH_SOURCE}");               # .(41103.02.3).(41102.01.1 RAM Add JPT12_Main2Fns_p1.07.sh Beg).(80923.01.1)
@@ -385,13 +386,13 @@ Created by ${aOwner}
 
 "
          aGitignore='
-.env"
-node_modules"
-.DS_Store"
-yarn.lock"
-*.bak"
-*_v[0-9]*"
-*_t[0-9]*"
+.env
+node_modules
+.DS_Store
+yarn.lock
+*.bak
+*_v[0-9]*
+*_t[0-9]*
 '
          aLaunch_json='
 { // Use IntelliSense to learn about possible attributes.
@@ -1014,8 +1015,8 @@ function getRemoteName() {                                                      
 
 #            aProject="$( echo "${aRemote_name}" |  awk '{ sub( /_.+/, "" ); print }' )";   echo "    {aProject}:   '${aProject}'"
 #            if [ "${aArg3}" == "origin"  ]; then aRemote_name="${aArg4}"; else aRemote_name="${aArg3}"; fi
-             aProject="$( echo "${aRemote_name}" |  awk '{ sub( /_.+/, "" ); print }' )";   echo "    {aProject}:   '${aProject}'"
-             aStage="$(   echo "${aRemote_name}" |  awk '{ sub( /.+_/, "" ); print }' )"; # echo "    {aStage/dev}: '${aStage/dev/}'"
+             aProject="$( echo "${aRemote_name}" |  awk '{ sub( /_.+/, "" ); print }' )"; # echo "    \${aProject}:   '${aProject}'"
+             aStage="$(   echo "${aRemote_name}" |  awk '{ sub( /.+_/, "" ); print }' )"; # echo "    \${aStage/dev}: '${aStage/dev/}'"
           if [ "${aRemoteName}" != "origin"   ]; then aRemoteName="${aProject}_${aStage/-*/}"; fi
           if [ "${aArg4}" != ""               ]; then aAcct="${aArg4}"; else aAcct="robinmattern"; fi; # echo "    {aArg4}: '${aArg4}'"
 #            if [ "${aRemoteName}" == "origin" ] && [ "${aStage/dev}" != "${aStage}" ]; then
