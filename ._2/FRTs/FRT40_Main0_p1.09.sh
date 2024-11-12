@@ -29,23 +29,26 @@
 ##FD   FRT10_Main0.sh           |  39638| 10/26/24 15:04|   595| p1.09`41026.1504
 ##FD   FRT10_Main0.sh           |  42008| 10/28/24 09:34|   607| p1.09`41028.0934
 ##FD   FRT10_Main0.sh           |  43323| 11/07/24 08:16|   632| p1.09`41107.0815
+##FD   FRT10_Main0.sh           |  48955| 11/11/24 18:50|   718| p1.09`41111.1850
 
 ##DESC     .--------------------+-------+---------------+------+-----------------+
 #            Use the commands in this script to manage FormR app resources.
-#
 #
 ##LIC      .--------------------+----------------------------------------------+
 #            Copyright (c) 2022 8020Data-FormR * Released under
 #            MIT License: http://www.opensource.org/licenses/mit-license.php
 ##FNCS     .--------------------+----------------------------------------------+
 #            sayMsg             | ["sp"] {aMsg} ({bDebug}: 1)echo  2)echo then quit, 3) echo with no indent) ["sp"]
-#            Help               | {aCmd} != "", echo {aCmd} error
-#            docR               |                                                                           # .(21128.02.1)
-#            dokR               |                                                                           # .(30716.01.1)
-#            appR               |
-#            gitR               |
-#            keyS               |
-#            proX               |
+#            help commands      | {aCmd} != "", echo {aCmd} error
+#            docR commands      |                                                                           # .(21128.02.1)
+#            dokR commands      |                                                                           # .(30716.01.1)
+#            appR commands      |
+#            gitR commands      |
+#            keyS commands      |
+#            proX commands      |
+#            update command     |                                                                           # .(41107.01.1)
+#            install command    |                                                                           # .(41111.01.1)
+#            set var command    |
 #                               |
 ##CHGS     .--------------------+----------------------------------------------+
 # .(01001.01 10/01/20 RAM 10:00p| Created
@@ -95,6 +98,7 @@
 # .(41028.01 10/28/24 RAM  9:32a| Change JPT app numbers
 # .(41107.01 11/07/24 RAM  8:15a| Add Update command
 # .(41111.01 11/11/24 RAM  7:45a| Add Install ALTools command
+# .(41111.04 11/11/24 RAM  6:50p| Copy run-anyllm to master branch
 
 ##PRGM     +====================+===============================================+
 ##ID 69.600. Main0              |
@@ -102,7 +106,7 @@
 #*/
 #========================================================================================================== #  ===============================  #
 
-     aVdt="Apr 13, 2024 11:07a"; aVtitle="formR Tools"                                                      # .(21113.05.8 RAM Add aVtitle for Version in Begin)
+     aVdt="Nov 11, 2024 6:22p"; aVtitle="formR Tools"                                                      # .(21113.05.8 RAM Add aVtitle for Version in Begin)
      aVer="$( echo $0 | awk '{  match( $0, /_[dpstuv][0-9]+\.[0-9]+/ ); print substr( $0, RSTART+1, RLENGTH-1) }' )"  # .(21031.01.1 RAM Add [d...).(20416.03.8 "_p2.02", or _d1.09)
 
      LIB="FRT"; LIB_LOG=${LIB}_LOG; LIB_USER=${LIB}_USER; Lib=${LIB}; aDir=$( dirname "${BASH_SOURCE}" );   # .(41027.01.1 RAM).(80923.01.1)
@@ -212,10 +216,10 @@ function Help( ) {
      echo "         JPT RSS {Cmd}"                                                      # .(21107.02.2)
      echo "             RSS Dir (RDir)"                                                 # .(21107.02.3)
      echo "             RSS DirList (DirList)"                                          # .(21107.02.4)
-     echo ""                                                                            # .(41107.01.1)
-     echo "    FRT Update [-doit]                   Update [ {FRTools} ]"               # .(41107.01.2)
-     echo "        Install [ALTools] [-doit]        Install ALTools"                    # .(41111.01.1)
-     echo "                [AIDocs] [-doit]         Install AIDocs"                     # .(41111.01.2)
+     echo ""                                                                            # .(41107.01.2)
+     echo "    FRT Update [-doit]                   Update [ {FRTools} ]"               # .(41107.01.3)
+     echo "        Install [ALTools] [-doit]        Install ALTools"                                        # .(41111.01.2)
+     echo "                [AIDocs] [-doit]         Install AIDocs"                                         # .(41111.01.3)
 
      echo ""
      echo "  Notes: Only 3 lowercase letters are needed for each command, separated by spaces"
@@ -285,8 +289,8 @@ function Help( ) {
      getCmd1   "set"     "var"  "Set Var"                                                                   # .(21120.03.2)
      getCmd1   "set"     "path" "Set Var"                                                                   # .(21120.03.2)
      getCmd1   "setpath" ""     "Set Var"   1                                                               # .(21120.03.3)
-     getCmd1   "upd"     ""     "Update"    1                                                               # .(41107.01.3)
-     getCmd1   "ins"     ""     "Install"   1                                                               # .(41111.01.3)
+     getCmd1   "upd"     ""     "Update"    1                                                               # .(41107.01.4)
+     getCmd1   "ins"     ""     "Install"   1                                                               # .(41111.01.4)
 
 #    -- --- ---------------  =  ------------------------------------------------------  #  ---------------- #
 
@@ -497,11 +501,11 @@ function Help( ) {
 
      if [ "${bDoit}" == "0" ] ; then
 
-#       aBashrc=".bashrc";  if [ ! -f    "~/${aBashrc}" ]; then aBashrc="profile";  fi                      ##.(21121.03.9)
-#       aBashrc=".bashrc";  if [ ! -f -a "~/${aBashrc}" ]; then aBashrc="profile";  fi                      ##.(21121.03.9  RAM Use alternate hidden profile file).(21121.03.11)
-#       aBashrc=".profile"; if [ ! -f -a "~/${aBashrc}" ]; then aBashrc=".bashrc";  fi                      ##.(21121.03.11 RAM Use .profile if it exists).(21121.03.21)
-#       aBashrc=".profile"; if [   -f -a  ~/.bashrc     ]; then aBashrc=".bashrc";  fi                      ##.(21121.03.21 RAM Good Grief).(21121.03.31)
-        aBashrc=".bashrc";  if [   -f -a  ~/.profile    ]; then aBashrc=".profile"; fi                      # .(21121.03.31 RAM More Good Grief)
+#       aBashrc=".bashrc";  if [ ! -f     "~/${aBashrc}" ]; then aBashrc="profile";  fi                      ##.(21121.03.9)
+#       aBashrc=".bashrc";  if [ ! -f -a  "~/${aBashrc}" ]; then aBashrc="profile";  fi                      ##.(21121.03.9  RAM Use alternate hidden profile file).(21121.03.11)
+#       aBashrc=".profile"; if [ ! -f -a  "~/${aBashrc}" ]; then aBashrc=".bashrc";  fi                      ##.(21121.03.11 RAM Use .profile if it exists).(21121.03.21)
+#       aBashrc=".profile"; if [   -f -a   ~/.bashrc     ]; then aBashrc=".bashrc";  fi                      ##.(21121.03.21 RAM Good Grief).(21121.03.31)
+        aBashrc=".bashrc";  if [   -f "$HOME/.profile"   ]; then aBashrc=".profile"; fi                      # .(21121.03.1 RAM More Good Grief).(41111.05.1 RAM -a is for AND, not all)
 
 #       aWhere="the ~/${aBashrc} file"; if [ "${aOSv:0:1}" == "w" ]; then aWhere="the Windows System"; fi   ##.(21121.03.10).(21126.09.1)
         aWhere="${aOS} Shell"; if [ "${aOSv:0:1}" == "w" ]; then aWhere="Windows System Environment"; fi    # .(21121.03.10).(21126.09.1)
@@ -569,7 +573,7 @@ function Help( ) {
 
 # ------------------------------------------------------------------------------------
 #
-#       Update Command                                                                                      # .(41107.01.4 RAM Beg Add Update Command Beg)
+#       Update Command                                                                                      # .(41107.01.5 RAM Beg Add Update Command Beg)
 #
 #====== =================================================================================================== #
 
@@ -587,79 +591,100 @@ function Help( ) {
           fi
 
      ${aLstSp}
-     fi # eoc Update Command                                                                                # .(41107.01.4 RAM End)
+     fi # eoc Update Command                                                                                # .(41107.01.5 End)
 #    -- --- ---------------  =  ------------------------------------------------------  #  ---------------- #
 
 #====== =================================================================================================== #  ===========
-#       Install                                                                                             # .(41111.01.4 RAM Add Install Command)
+#       Install Command                                                                                     # .(41111.01.5 RAM Add Install Command beg)
 #====== =================================================================================================== #
 
-        sayMsg    "FRT40[598]  Next Command" sp;
+        sayMsg    "FRT40[599]  Install Command" sp;
 
   if [ "${aCmd}" == "Install" ]; then
+
+function Sudo() {
+        if [[ "${OS:0:7}" != "windows" ]]; then if [ "${USERNAME}" != "root" ]; then sudo "$@"; fi; fi
+        }
+function copyFile() {                                                                   # .(41111.04.1 RAM Write copyFile Beg)
+        git checkout "$3"                                        2>&1 >/dev/null        # Switch to master branch
+        git checkout "$1" -- "$2"                                2>&1 >/dev/null        # Get file from ALTools branch
+        git add "$1"; aTS="$( date +%y%m%d )"; aTS="${aTS:1}"    2>&1 >/dev/null        # Add and commit in master
+        git commit -m ".(${aTS}.03_Add file, $2, from $1 branch" 2>&1 >/dev/null        # Commit it
+        git checkout "$1"                                        2>&1 >/dev/null        # Switch back to ALTools
+        }                                                                               # .(41111.04.1 End)
         sayMsg    "FRT40[603]  Install:   'aArg2: ${aArg2}' aArg3: '${aArg3}', bDoit: '${bDoit}', bDebug: '${bDebug}', bQuiet: '${bQuiet}'" 1
 
-        if [ "${aArg2}" == "" ]; then 
+        if [ "${aArg2}" == "" ]; then
         echo -e "\n* Please provide what to install, e.g. ALTools or AIDocs."
         exit;  ${aLstSp}
-        fi 
+        fi
+#       ---------------------------------------------------------------------
 
-        if [ "${aArg2}" == "altools" ]; then 
+        if [ "${aArg2}" == "altools" ]; then
 
-                                      aProjectStage="AnyLLM_prod1-master" 
-        if [ "${aArg3}" != "" ]; then aProjectStage="$3"; fi  
-#                                else aProjectStage="$( pwd )"; aProjectStage="${aProjectStage##/}"; fi 
-        if [   -d "../${aProjectStage}" ]; then cd ../${aProjectStage}; fi                                   
-        if [   -d    "${aProjectStage}" ]; then cd   ${aProjectStage};  fi                                   
-#                                     aProjectStage="$( pwd )"; aProjectStage="${aProjectStage##/}"; fi 
-                                      aDir="$( pwd )"; aDir="${aDir##*/}"; fi 
+                                      aProjectStage="AnyLLM_prod1-master"
+        if [ "${aArg3}" != "" ]; then aProjectStage="$3"; fi
+#                                else aProjectStage="$( pwd )"; aProjectStage="${aProjectStage##/}"; fi
+        if [   -d "../${aProjectStage}" ]; then cd ../${aProjectStage}; fi
+        if [   -d    "${aProjectStage}" ]; then cd   ${aProjectStage};  fi
+#                                     aProjectStage="$( pwd )"; aProjectStage="${aProjectStage##/}"; fi
+                                      aDir="$( pwd )"; aDir="${aDir##*/}"; fi
         sayMsg    "FRT40[614]  aProjectStage: '${aProjectStage}' aDir: '${aDir}'" 1
 
-        if [ "${aDir}" != "${aProjectStage}" ]; then 
+        if [ "${aDir}" != "${aProjectStage}" ]; then
             echo -e "\n* The folder for ALTools, ${aProjectStage}, does not exist."
             exit;  ${aLstSp}
-        fi 
-            echo -e "\n  Installing ALTools in ${aProjectStage}."
-        # 1. Make sure you're starting clean
-            git checkout master  >/dev/null 2>&1; # git status                                    # get to Anything-LLM's master branch
+            fi # aDir != aProjectStage
 
-                bNoFilesInWork="$( git status | awk '/working tree clean/ { print "1" }' )"       # should show clean working tree
-        if [ "${bNoFilesInWork}" != "1" ]; then 
+            echo -e "\n  Installing ALTools in ${aProjectStage}."
+       # 1. Make sure you're starting clean
+            git checkout master  >/dev/null 2>&1; # git status                                # get into Anything-LLM's master branch
+
+                bNoFilesInWork="$( git status | awk '/working tree clean/ { print "1" }' )"   # should show clean working tree
+        if [ "${bNoFilesInWork}" != "1" ]; then
             echo -e "\n* The folder for ALTools, ${aProjectStage}, has uncommitted files."
             exit;  ${aLstSp}
-        fi 
+            fi # eif bNoFilesInWork
+
 #               bNoRemoteName="$( git remote | awk '/anyllm_prod1/  { a=1 }; END { print a ? a : "0" }' )"  # should have remote allm_prod1
                 bNoRemoteName="$( git remote | awk '/ALTools_prod1/ { a=1 }; END { print a ? a : "0" }' )"  # should have remote ALTools_prod1
-        if [ "${bNoRemoteName}" == "0" ]; then 
-            gitr remote add ALTools_prod1-robin -d 
-            fi 
+        if [ "${bNoRemoteName}" == "0" ]; then
+            gitr remote add ALTools_prod1-robin -d
+            fi # eif bNoRemoteName == 0
 
-        # 2. Create your branch with your 22 files
+       # 2. Create your branch with your 22 files
+            echo -e "\ngit git fetch ALTools_prod1";
+            git fetch ALTools_prod1                          2>&1 | awk '{ print "  " $0 }'   # create your branch
+
             echo -e "\ngit checkout -b altools"; aTS="$( date +%y%m%d )"; aTS="${aTS:1}"
-            git checkout -b altools                          2>&1 | awk '{ print "  " $0 }' # create your branch
-            echo -e   "checkout ALTools_prod1/ALTools -- ."; 
-            git checkout ALTools_prod1/ALTools -- .          2>&1 | awk '{ print "  " $0 }' # get your 22 files
-            echo -e   "commit -m \"${aTS}.02_Added ALTools files\""; 
-            git commit -m "${aTS}.02_Added ALTools files"    2>&1 | awk '{ print "  " $0 }' # commit them
+            git checkout -b altools                          2>&1 | awk '{ print "  " $0 }'   # create your branch
 
-        # 3. Run set-anyllm.sh
+            echo -e "\ncheckout ALTools_prod1/ALTools -- .";
+            git checkout ALTools_prod1/ALTools -- .          2>&1 | awk '{ print "  " $0 }'   # get your 22 files
+            rm  AnyLLM_prod1-robin.code-workspace                                             # erase VSCode workspace file
+
+            echo -e "\ncommit -m \"${aTS}.02_Added ALTools files\"";
+            git commit -m ".(${aTS}.02_Added ALTools files"  2>&1 | awk '{ print "  " $0 }'   # commit them
+
+            copyFile ALTools "run-anyllm.sh" "master"                                   # .(41111.04.2 RAM Use it to copy anyllm command to master so that it is always available)
+
+       # 3. Run set-anyllm.sh
             echo ""
             Sudo chmod 755 *.sh
-            echo -e   "\n  ./set-anyllm.sh"; 
-                           ./set-anyllm.sh doit 
-            echo -e   "\n  anyllm"; 
-                           anyllm 
+            echo -e   "\n ./set-anyllm.sh";
+                          ./set-anyllm.sh doit
+            echo -e   "\n  anyllm help";
+                           anyllm
 
-        # 4. Now you can switch between branches:
-#         git checkout master       # original 768 Anything-LLM files
-#         git checkout ALTools     # 768 files plus your 22 changes
+       # 4. Now you can switch between branches:
+#           git checkout master       # original 768 Anything-LLM files
+#           git checkout ALTools     # 768 files plus your 22 changes
 
         exit;  ${aLstSp}
-        fi # eif install altools 
-
+        fi # eif install altools
 
      ${aLstSp}
-     fi # eoc Next Command                                                                                  # .(20102.01.2 End)
+     fi # eoc Install Command                                                                               # .(41111.01.5 End)
 #    -- --- ---------------  =  ------------------------------------------------------  #  ---------------- #
 
 #====== =================================================================================================== #  ===========

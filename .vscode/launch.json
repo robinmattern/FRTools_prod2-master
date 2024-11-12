@@ -5,16 +5,16 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Launch Program",
-            "program": "${workspaceFolder}/app.js",
+            "type": "node",
+            "name": "Debug NodeJS Script",
             "request": "launch",
+            "program": "${file}",
             "skipFiles": [ "<node_internals>/**" ],
-            "type": "node"
         },
         {
             "type": "bashdb",
+            "name": "Debug Bash Script",
             "request": "launch",
-            "name": "Bash-Debug (simplest configuration)",
             "program": "${file}"
         }
     ]
