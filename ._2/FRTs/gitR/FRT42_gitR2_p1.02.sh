@@ -79,7 +79,8 @@
 # .(41109.05 11/09/24 RAM  3:00p| Add last command and update others
 # .(41110.01 11/10/24 RAM  8:15a| See if commit exists for list last 
 # .(41110.02 11/10/24 RAM 11:00a| Fix clone command args 
-# .(41110.03 11/10/24 RAM  6:50p| Add .code-workspace file if needed fpr clone 
+# .(41110.03 11/10/24 RAM  6:50p| Add .code-workspace file if needed for clone 
+# .(41111.02 11/11/24 RAM  7:15p| Commit .code-workspace file after clone 
 #
 ##PRGM     +====================+===============================================+
 ##ID 69.600. Main0              |
@@ -725,7 +726,7 @@ function getRemoteName() {                                                      
 #    if [ ! -f "${aCloneDir}/*.code-workspace" ]; then                                  ##.(41110.03.1)
      if [ ! -n "$(ls ${aCloneDir}/*.code-workspace 2>/dev/null)" ]; then                # .(41110.03.1 RAM Add .code-workspace file if needed after clone)
         aWorkspace_code="{ \"folders\": [ { \"path\": \".\" } ] }"                      # .(41110.03.2)
-        echo "${aWorkspace_code}" >"${aCloneDir}/${aProject}_${aStage}.code-workspace"  # .(41110.03.3).(41111.02.1 RAM Don't do it for now, cuz GIT detects it)
+        echo "${aWorkspace_code}" >"${aCloneDir}/${aProject}_${aStage}.code-workspace"                      # .(41111.02.1 RAM Don't do it for now, cuz GIT detects it).(41110.03.3)
         cd "${aCloneDir}"; aTS="$( date +%y%m%d )"; aTS="${aTS:1}"                                          # .(41111.02.2 RAM or commit it)
         echo ""                                                                                             # .(41111.02.3)
         git add "${aProject}_${aStage}.code-workspace"                        2>&1| awk '{ print "  " $0 }' # .(41111.02.4)
