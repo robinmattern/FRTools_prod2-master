@@ -31,7 +31,7 @@
 ##FD   FRT10_Main0.sh           |  43323| 11/07/24 08:16|   632| p1.09`41107.0815
 ##FD   FRT10_Main0.sh           |  49033| 11/11/24 19:30|   719| p1.09`41111.1930
 ##FD   FRT10_Main0.sh           |  49627| 11/12/24 10:00|   726| p1.09`41112.1000
-##FD   FRT10_Main0.sh           |  49905| 11/13/24  9:35|   728| p1.09`41113.0930
+##FD   FRT10_Main0.sh           |  50055| 11/13/24 10:01|   728| p1.09`41113.1000
 
 ##DESC     .--------------------+-------+---------------+------+-----------------+
 #            Use the commands in this script to manage FormR app resources.
@@ -104,7 +104,7 @@
 # .(41112.04 11/12/24 RAM  9:05a| Remove trailing quotes from .gitignore
 # .(41112.05 11/12/24 RAM  9:05a| Remove git git from install command
 # .(41112.06 11/12/24 RAM 10:00a| Add / fix Sudo
-# .(41113.01 11/13/24 RAM  9:30a| Delete right .code-workspace file
+# .(41113.01 11/13/24 RAM 10:00a| Delete right .code-workspace file
 
 ##PRGM     +====================+===============================================+
 ##ID 69.600. Main0              |
@@ -112,7 +112,7 @@
 #*/
 #========================================================================================================== #  ===============================  #
 
-     aVdt="Nov 13, 2024 9:30a"; aVtitle="formR Tools"                                                      # .(21113.05.8 RAM Add aVtitle for Version in Begin)
+     aVdt="Nov 13, 2024 10:00a"; aVtitle="formR Tools"                                                      # .(21113.05.8 RAM Add aVtitle for Version in Begin)
      aVer="$( echo $0 | awk '{  match( $0, /_[dpstuv][0-9]+\.[0-9]+/ ); print substr( $0, RSTART+1, RLENGTH-1) }' )"  # .(21031.01.1 RAM Add [d...).(20416.03.8 "_p2.02", or _d1.09)
 
      LIB="FRT"; LIB_LOG=${LIB}_LOG; LIB_USER=${LIB}_USER; Lib=${LIB}; aDir=$( dirname "${BASH_SOURCE}" );   # .(41027.01.1 RAM).(80923.01.1)
@@ -617,11 +617,11 @@ function Sudo() {
 function copyFile() {                                                                   # .(41111.04.1 RAM Write copyFile Beg)
         git checkout "$3"                                        >/dev/null 2>&1        # Switch to master branch
         git checkout "$1" -- "$2"                                >/dev/null 2>&1        # Get file from ALTools branch
-        Sudo "$2"; aTS="$( date +%y%m%d )"; aTS="${aTS:1}"                              # .(41113.01.3).(41112.06.1)
+        Sudo chmod 775 "$2"; aTS="$( date +%y%m%d )"; aTS="${aTS:1}"                    # .(41113.01.3).(41112.06.1)
         git add "$2"                                             >/dev/null 2>&1        # Add and commit in master
         git commit -m ".(${aTS}.03_Add file, $2, from $1 branch" >/dev/null 2>&1        # Commit it
         git checkout "$1"                                        >/dev/null 2>&1        # Switch back to ALTools
-        echo -e "\n  Copied fiile $2 to branch $1"                                      # .(41112.06.2)
+        echo -e "\n  Copied file $2 to branch $1"                                       # .(41112.06.2)
         }                                                                               # .(41111.04.1 End)
         sayMsg    "FRT40[616]  Install:   'aArg2: ${aArg2}' aArg3: '${aArg3}', bDoit: '${bDoit}', bDebug: '${bDebug}', bQuiet: '${bQuiet}'" 11
 
@@ -681,9 +681,9 @@ function copyFile() {                                                           
 
        # 3. Run set-anyllm.sh
             Sudo chmod 755 *.sh
-            echo -e   "\n ./set-anyllm.sh";
+            echo -e   "\n./set-anyllm.sh";                                              # .(41113.01.4 RAM Remove leading spaces)
                           ./set-anyllm.sh doit
-            echo -e   "\n  anyllm help";
+            echo -e   "\nanyllm help";                                                  # .(41113.01.5)
                            anyllm
 
        # 4. Now you can switch between branches:
