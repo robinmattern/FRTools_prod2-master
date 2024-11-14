@@ -3,18 +3,18 @@
 ##=========+====================+================================================+
 ##RD         Main0              | GitR Tools
 ##RFILE    +====================+=======+===============+======+=================+
-##FD   FRT22_GitR1.sh           |  21714| 10/26/24 17:20|   461| v1.01`.41026.1720
-##FD   FRT42_GitR2.sh           |  24865| 10/29/24  8:52|   488| v1.01`.41029.0852
-##FD   FRT42_GitR2.sh           |  27486| 10/30/24 20:28|   513| v1.01`.41030.2028
-##FD   FRT42_GitR2.sh           |  30370| 10/31/24 10:11|   544| v1.01`.41031.0810
-##FD   FRT42_GitR2.sh           |  43817| 11/03/24 13:03|   692| v1.01`.41103.1303
-##FD   FRT42_GitR2.sh           |  62603| 11/04/24  9:45|   979| v1.01`.41104.1222
-##FD   FRT42_GitR2.sh           |  67220| 11/07/24  9:15|  1023| v1.01`.41107.0745
-##FD   FRT42_GitR2.sh           |  78987| 11/09/24 10:32|  1196| v1.01`.41109.1355
-##FD   FRT42_GitR2.sh           |  86844| 11/09/24 15:00|  1291| v1.01`.41109.1500
-##FD   FRT42_GitR2.sh           |  88127| 11/11/24 19:15|  1305| v1.01`.41111.1915
-##FD   FRT42_GitR2.sh           |  88208| 11/12/24 10:00|  1306| v1.01`.41112.1000
-##FD   FRT42_GitR2.sh           |  91105| 11/14/24 12:43|  1346| v1.01`.41114.1230
+##FD   FRT22_GitR1.sh           |  21714| 10/26/24 17:20|   461| p1.02`.41026.1720
+##FD   FRT42_GitR2.sh           |  24865| 10/29/24  8:52|   488| p1.02`.41029.0852
+##FD   FRT42_GitR2.sh           |  27486| 10/30/24 20:28|   513| p1.02`.41030.2028
+##FD   FRT42_GitR2.sh           |  30370| 10/31/24 10:11|   544| p1.02`.41031.0810
+##FD   FRT42_GitR2.sh           |  43817| 11/03/24 13:03|   692| p1.02`.41103.1303
+##FD   FRT42_GitR2.sh           |  62603| 11/04/24  9:45|   979| p1.02`.41104.1222
+##FD   FRT42_GitR2.sh           |  67220| 11/07/24  9:15|  1023| p1.02`.41107.0745
+##FD   FRT42_GitR2.sh           |  78987| 11/09/24 10:32|  1196| p1.02`.41109.1355
+##FD   FRT42_GitR2.sh           |  86844| 11/09/24 15:00|  1291| p1.02`.41109.1500
+##FD   FRT42_GitR2.sh           |  88127| 11/11/24 19:15|  1305| p1.02`.41111.1915
+##FD   FRT42_GitR2.sh           |  88208| 11/12/24 10:00|  1306| p1.02`.41112.1000
+##FD   FRT42_GitR2.sh           |  91105| 11/14/24 18:00|  1346| p1.02`.41114.1800
 
 ##DESC     .--------------------+-------+---------------+------+-----------------+
 #            This script has usefull GIT functions.
@@ -85,6 +85,8 @@
 # .(41111.02 11/11/24 RAM  7:15p| Commit .code-workspace file after clone
 # .(41114.03 11/14/24 RAM 11:00a| Get branch name another way
 # .(41114.04 11/14/24 RAM 12:30p| Added gitr show branch and gitr branch command
+# .(41114.05 11/14/24 RAM  5.15p| Display branches if none given
+# .(41114.06 11/14/24 RAM  6.00p| Write function chkUser 
 #
 ##PRGM     +====================+===============================================+
 ##ID 69.600. Main0              |
@@ -92,8 +94,8 @@
 #*/
 #========================================================================================================== #  ===============================  #
 
-        aVDt="Nov 14, 2024 12:30p"; aVer="p0.05"; aVTitle="Useful gitR2 Tools by formR";                                   # .(41103.02.2 RAM Was: gitR1)
-#       aVer="$( echo "$0" | awk '{  match( $0, /_[dpstuv][0-9]+\.[0-9]+/ ); print substr( $0, RSTART+1, RLENGTH-1) }' )"  # .(21031.01.1 RAM Add [d...).(20416.03.8 "_p2.02", or _d1.09)
+        aVDt="Nov 14, 2024 6:00p"; aVer="p1.02"; aVTitle="Useful gitR2 Tools by formR";                                   # .(41103.02.2 RAM Was: gitR1)
+        aVer="$( echo "$0" | awk '{ match( $0, /_[dpstuv][0-9]+\.[0-9]+/ ); print substr( $0, RSTART+1, RLENGTH-1) }' )"  # .(21031.01.1 RAM Add [d...).(20416.03.8 "_p2.02", or _d1.09)
 
         LIB="gitR2"; LIB_LOG=${LIB}_LOG; LIB_USER=${LIB}_USER; Lib=${LIB}; aDir=$(dirname "${BASH_SOURCE}");               # .(41103.02.3).(41102.01.1 RAM Add JPT12_Main2Fns_p1.07.sh Beg).(80923.01.1)
         aFns="${aDir/FRTs*/JPTs}/JPT12_Main2Fns_p1.07.sh"; if [ ! -f "${aFns}" ]; then
@@ -264,6 +266,27 @@ done
 #   echo -e "\n  aCmd: ${aCmd}, bDoit: ${bDoit}, bDebug: ${bDebug}; 1)${aArg1}, 2)${aArg2}, 3)${aArg3}, 4)${aArg4}, 5)${aArg5}, 6)${aArg6}."; # exit_wCR
     sayMsg  "gitR2[240]  aCmd: ${aCmd}, aArg1: '$aArg1', aArg2: '$aArg2', aArg3: '$aArg4', aArg4: '$aArg4', bDoit: '$bDoit', bForce: '$bForce'" -1
 #    fi
+# ---------------------------------------------------------------------------
+
+function ask4Required1() {                                                               # .(41102.04.2 RAM Write ask4Required Beg)
+         aPrompt="$1"
+       while [ -z "${aAnswer}" ]; do
+         read  -p "${aPrompt} (required): " aAnswer
+         done
+         echo "${aAnswer}"
+         } # eof ask4Required   
+# ---------------------------------------------------------------------------
+
+function chkUser() {                                                                     # .(41114.05)
+           aGitUserName="$( git config --get user.name )"
+   if [ "${aGitUserName}" == "" ]; then 
+         echo -e "\n  * You haven't told Git who you are. Please do so now."
+         aGitUserName="$(  ask4Required1 "    Enter your name. " )"
+         aGitUserEmail="$( ask4Required1 "    Enter your email." )"
+         git config --global user.name "${aGitUserName}"
+         git config --global user.email "${aGitUserEmail}"
+         fi 
+    }
 # ---------------------------------------------------------------------------
 
 function chkRepo() {                                                                                        # .(41103.03.3 RAM Write chkRepo Beg)
@@ -493,7 +516,7 @@ yarn.lock
 
            echo ""
            aPath="$( pwd )"; aDir="${aPath##*/}"
-        sayMsg "gitR2[414]  git init in ${aDir}" -1
+        sayMsg "gitR2[516]  git init in ${aDir}" -1
 
         if [ "${aDir: -1}" == "_" ]; then  # in a Project_ dir
 
@@ -515,6 +538,7 @@ yarn.lock
               cd "${aStage}" || exit_wCR
 
            initGit "${aProject}" "${aStage}"
+           chkUser                                                                            # .(41114.0x.x RAM Use it)
            echo -e "\n  Please cd into the folder, '${aStage}'."
            exit_wCR
         fi # eif aProject_ dir
@@ -775,6 +799,8 @@ function getRemoteName() {                                                      
 
   if [ "${aCmd}" == "" ]; then help; fi
 
+        chkUser                                                                                             # .(41114.0x.x)  
+
 #====== =================================================================================================== #  ===========
 #       GITR2 SHOW LAST                                                                                     # .(20430.01.3 Beg RAM Added)
 #====== =================================================================================================== #
@@ -851,7 +877,7 @@ function getRemoteName() {                                                      
         getRemoteName                                                                                       # .(41104.01.5)
      fi                                                                                                     # .(41103.06.11 End)
 #====== =================================================================================================== #  ===========
-#       GITR2 PUSH
+#       GITR2 LIST BRANCHES
 #====== =================================================================================================== #
 
   if [ "${aCmd}" == "listBranches" ]; then                                                                  # .(41114.04.5 RAM write listBranches)
@@ -860,7 +886,7 @@ function getRemoteName() {                                                      
         git branch -vva | awk '{ print "  " $0 }'
      fi                                                                                                     # .(41114.04.5 End)
 #====== =================================================================================================== #  ===========
-#       GITR2 PUSH
+#       GITR2 CHECKOUT BRANCHES
 #====== =================================================================================================== #
 
   if [ "${aCmd}" == "checkoutBranch" ]; then                                                                # .(41114.04.6 RAM write checkoutBranch)
@@ -868,7 +894,9 @@ function getRemoteName() {                                                      
 
         getBranch
      if [ "$aArg2" == "" ]; then
-        echo -e "\n  The current branch is ${aBranch}."
+#       echo -e "\n  The current branch is ${aBranch}."                                                     ##.(41114.05.2
+        echo ""                                                                                             # .(41114.05.1
+        git branch -vva | awk '{ print "  " $0 }'                                                           # .(41114.05.2 RAM Display branches if none given)
       else
                 bFilesInWork="$( git status | awk '/working tree clean/ { b = "1" }; End { print b ? b : 0} ' )"
         if [ "${bFilesInWork}" != "1" ]; then
