@@ -14,7 +14,7 @@
 ##FD   FRT42_GitR2.sh           |  86844| 11/09/24 15:00|  1291| p1.02`.41109.1500
 ##FD   FRT42_GitR2.sh           |  88127| 11/11/24 19:15|  1305| p1.02`.41111.1915
 ##FD   FRT42_GitR2.sh           |  88208| 11/12/24 10:00|  1306| p1.02`.41112.1000
-##FD   FRT42_GitR2.sh           |  91105| 11/14/24 18:00|  1346| p1.02`.41114.1800
+##FD   FRT42_GitR2.sh           |  92817| 11/14/24 18:32|  1367| p1.02`.41114.1830
 
 ##DESC     .--------------------+-------+---------------+------+-----------------+
 #            This script has usefull GIT functions.
@@ -86,7 +86,8 @@
 # .(41114.03 11/14/24 RAM 11:00a| Get branch name another way
 # .(41114.04 11/14/24 RAM 12:30p| Added gitr show branch and gitr branch command
 # .(41114.05 11/14/24 RAM  5.15p| Display branches if none given
-# .(41114.06 11/14/24 RAM  6.00p| Write function chkUser 
+# .(41114.06 11/14/24 RAM  6.00p| Use askRequired
+# .(41114.07 11/14/24 RAM  6.30p| Write function chkUser
 #
 ##PRGM     +====================+===============================================+
 ##ID 69.600. Main0              |
@@ -268,25 +269,16 @@ done
 #    fi
 # ---------------------------------------------------------------------------
 
-function ask4Required1() {                                                               # .(41102.04.2 RAM Write ask4Required Beg)
-         aPrompt="$1"
-       while [ -z "${aAnswer}" ]; do
-         read  -p "${aPrompt} (required): " aAnswer
-         done
-         echo "${aAnswer}"
-         } # eof ask4Required   
-# ---------------------------------------------------------------------------
-
-function chkUser() {                                                                     # .(41114.05)
+function chkUser() {                                                                    # .(41114.07.1 RAM Write it)
            aGitUserName="$( git config --get user.name )"
-   if [ "${aGitUserName}" == "" ]; then 
+   if [ "${aGitUserName}" == "" ]; then
          echo -e "\n  * You haven't told Git who you are. Please do so now."
-         aGitUserName="$(  ask4Required1 "    Enter your name. " )"
-         aGitUserEmail="$( ask4Required1 "    Enter your email." )"
+         aGitUserName="$(  ask4Required "    Enter your name. " )"                      # .(41114.06.3 RAM Use it)
+         aGitUserEmail="$( ask4Required "    Enter your email." )"                      # .(41114.06.4 RAM Use it)
          git config --global user.name "${aGitUserName}"
          git config --global user.email "${aGitUserEmail}"
-         fi 
-    }
+         fi
+    } # eof chkUser                                                                     # .(41114.07.1 End)
 # ---------------------------------------------------------------------------
 
 function chkRepo() {                                                                                        # .(41103.03.3 RAM Write chkRepo Beg)
@@ -524,7 +516,7 @@ yarn.lock
            echo "  The current folder is a Project folder: '${aProject}_";
 
            if [ "${aArg2}" == "" ]; then
-              ask4Required "Please provide a stage name. e.g. " "" "dev01-robin"
+              ask4Default "Please provide a stage name. e.g. " "" "dev01-robin"         # .(41114.06.5 RAM Was: ask4Required)
               aStage="${aAnswer}"
             else
               aStage="${aArg2}"
@@ -538,7 +530,8 @@ yarn.lock
               cd "${aStage}" || exit_wCR
 
            initGit "${aProject}" "${aStage}"
-           chkUser                                                                            # .(41114.0x.x RAM Use it)
+           chkUser                                                                      # .(41114.07.2 RAM Use it here too)
+
            echo -e "\n  Please cd into the folder, '${aStage}'."
            exit_wCR
         fi # eif aProject_ dir
@@ -799,7 +792,7 @@ function getRemoteName() {                                                      
 
   if [ "${aCmd}" == "" ]; then help; fi
 
-        chkUser                                                                                             # .(41114.0x.x)  
+        chkUser                                                                                             # .(41114.07.3)
 
 #====== =================================================================================================== #  ===========
 #       GITR2 SHOW LAST                                                                                     # .(20430.01.3 Beg RAM Added)
@@ -1066,7 +1059,7 @@ function getRemoteName() {                                                      
              fi                                                                         # .(41102.03.2 End)
      if [ "${aRemote_name}" == "origin" ] && [ "${aArg4}" == "" ]; then                 # .(41102.03.1 RAM Ask for Remote Name Beg)
              echo -e "\n    You must provide a Remote Name, e.g frtools, aidocs, anyllm, anyllm_dev03-robin";
-             ask4Required  "  or anything-llm, anything, anythingllm, anythingllm_master." "  What is it."  "${aProject}_${aStage}";
+             ask4Default  "  or anything-llm, anything, anythingllm, anythingllm_master." "  What is it."  "${aProject}_${aStage}";  #.(41114.06.6 RAM Was; ask4Required)
 #            aArg3="${aAnswer}" # aRemote_name="${aAnswer}"
              aRemote_name="${aAnswer}"; aArg3="${aAnswer}"
              aRemoteName="origin"
