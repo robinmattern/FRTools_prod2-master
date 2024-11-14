@@ -82,6 +82,7 @@
 # .(41110.02 11/10/24 RAM 11:00a| Fix clone command args
 # .(41110.03 11/10/24 RAM  6:50p| Add .code-workspace file if needed for clone
 # .(41111.02 11/11/24 RAM  7:15p| Commit .code-workspace file after clone
+# .(41114.03 11/14/24 RAM 11:00a| Get branch name another way
 #
 ##PRGM     +====================+===============================================+
 ##ID 69.600. Main0              |
@@ -271,7 +272,8 @@ function chkRepo() {                                                            
 
 function getBranch( ) {                                                                                     # .(41104.04.1 RAM Create getBranch function Beg)
      if [ -d .git ]; then                                                                                   # .(41104.05.1)
-     aBranch="$( git branch | awk '/\*/ { sub( /.+at /, "" ); sub( /\)$/, "" ); print substr($0,3) }' )"    # .(41102.02.1 RAM Move to getRepoDir)
+#    aBranch="$( git branch | awk '/\*/ { sub( /.+at /, "" ); sub( /\)$/, "" ); print substr($0,3) }' )"    ##.(41102.02.1 RAM Move to getRepoDir).(41114.03.1)
+     aBranch="$( git symbolic-ref --short HEAD )"                                                           # .(41114.03.1 RAM More reliable)
      fi                                                                                                     # .(41104.05.2)
      }                                                                                                      # .(41104.04.1 End)
 # ---------------------------------------------------------------------------
