@@ -19,6 +19,8 @@
 ##FD   JPT12_Main2Fns.sh        |  46128|  4/07/24 13:34|   631| p1.07`40407.1334
 ##FD   JPT12_Main2Fns.sh        |  46481|  4/13/24 10:52|   634| p1.07`40413.1052
 ##FD   JPT12_Main2Fns.sh        |  46500| 11/02/24 19:31|   632| p1.07`41102.0948
+##FD   JPT12_Main2Fns.sh        |  49205| 11/14/24 18:33|   644| p1.07`41114.1825
+
 ##DESC     .--------------------+-------+---------------+------+-----------------+
 #            Common function for JScriptWare Tools
 #
@@ -89,6 +91,7 @@
 # .(40413.01  4/13/24 RAM 10:52p| info.sh is in JPTs, not FRTs)
 # .(41102.02 11/02/24 RAM  9:13a| Adjust space for $LIB
 # .(41102.04 11/02/24 RAM  9:48a| Provide some help re sayMsg switches)
+# .(41114.06 11/14/24 RAM  6.25p| Write new function askRequired, rename askDefault
 
 ##PRGM     +====================+===============================================+
 ##ID 69.600. Main               |
@@ -218,13 +221,22 @@ function ask4Anything() {                                                       
          } # eof ask4Anything                                                           # .(41102.04.1 End)
 #   ------- ------------------  =  ---------------------------------------------------  #  ----------------
 
-function ask4Required() {                                                               # .(41102.04.2 RAM Write ask4Required Beg)
+function ask4Required() {                                                               # .(41114.06.1 RAM Write it again).(41102.04.2 RAM Write ask4Required Beg)
+         aPrompt="$1"
+       while [ -z "${aAnswer}" ]; do
+         read  -p "${aPrompt} (required): " aAnswer
+         done
+         echo "${aAnswer}"
+    } # eof ask4Required                                                                # .(41114.06.1 End)
+# ---------------------------------------------------------------------------
+
+function ask4Default() {                                                                # .(41114.06.2 RAM Was: ask4Required).(41102.04.2 RAM Write ask4Required Beg)
                         aDefault="$3"; if [ "$3" != "" ]; then aDefault="(Press enter for: $3): " ; fi # .(41102.04.3 RAM Add Default)
          echo "    $1"; aPrompt="$2";  if [ "$2" == "" ]; then aPrompt="Answer"; fi
          read -p "    ${aPrompt} ${aDefault}" aAnswer;
  if [ "${aAnswer}" == "" ]; then aAnswer="$3"; fi                                       # .(41102.04.4)
 #if [ "${aAnswer}" == "" ]; then echo ""; echo "  * You must enter something."; exit; fi
-         } # eof ask4Required                                                           # .(41102.04.2 End)
+         } # eof ask4Default                                                            # .(41102.04.2 End)
 #   ------- ------------------  =  ---------------------------------------------------  #  ----------------
 
 function askYN() {                                                                      # .(20409.05.3 RAM Beg)
