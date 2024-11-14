@@ -14,6 +14,7 @@
 ##FD   FRT42_GitR2.sh           |  86844| 11/09/24 15:00|  1291| v1.01`.41109.1500
 ##FD   FRT42_GitR2.sh           |  88127| 11/11/24 19:15|  1305| v1.01`.41111.1915
 ##FD   FRT42_GitR2.sh           |  88208| 11/12/24 10:00|  1306| v1.01`.41112.1000
+##FD   FRT42_GitR2.sh           |  91105| 11/14/24 12:43|  1346| v1.01`.41114.1230
 
 ##DESC     .--------------------+-------+---------------+------+-----------------+
 #            This script has usefull GIT functions.
@@ -32,7 +33,7 @@
 #            getCLI"            |
 #            backupLocal        |
 #            help               |
-#            exit_wCR        |
+#            exit_wCR           |
 #            setOSvars          |
 #            getRepoDir         |
 #            setFlags           |
@@ -83,6 +84,7 @@
 # .(41110.03 11/10/24 RAM  6:50p| Add .code-workspace file if needed for clone
 # .(41111.02 11/11/24 RAM  7:15p| Commit .code-workspace file after clone
 # .(41114.03 11/14/24 RAM 11:00a| Get branch name another way
+# .(41114.04 11/14/24 RAM 12:30p| Added gitr show branch and gitr branch command
 #
 ##PRGM     +====================+===============================================+
 ##ID 69.600. Main0              |
@@ -90,8 +92,8 @@
 #*/
 #========================================================================================================== #  ===============================  #
 
-        aVTitle="Useful gitR2 Tools by formR"; aVer="p0.05"; aVDt="Nov 12, 2024 10:00a" # .41023.1335"                      # .(41103.02.2 RAM Was: gitR1)
-        aVer="$( echo "$0" | awk '{  match( $0, /_[dpstuv][0-9]+\.[0-9]+/ ); print substr( $0, RSTART+1, RLENGTH-1) }' )"  # .(21031.01.1 RAM Add [d...).(20416.03.8 "_p2.02", or _d1.09)
+        aVDt="Nov 14, 2024 12:30p"; aVer="p0.05"; aVTitle="Useful gitR2 Tools by formR";                                   # .(41103.02.2 RAM Was: gitR1)
+#       aVer="$( echo "$0" | awk '{  match( $0, /_[dpstuv][0-9]+\.[0-9]+/ ); print substr( $0, RSTART+1, RLENGTH-1) }' )"  # .(21031.01.1 RAM Add [d...).(20416.03.8 "_p2.02", or _d1.09)
 
         LIB="gitR2"; LIB_LOG=${LIB}_LOG; LIB_USER=${LIB}_USER; Lib=${LIB}; aDir=$(dirname "${BASH_SOURCE}");               # .(41103.02.3).(41102.01.1 RAM Add JPT12_Main2Fns_p1.07.sh Beg).(80923.01.1)
         aFns="${aDir/FRTs*/JPTs}/JPT12_Main2Fns_p1.07.sh"; if [ ! -f "${aFns}" ]; then
@@ -105,7 +107,7 @@
 function help() {
      echo ""
 #    echo "  GitR Commands (${aVer})"
-     echo "  ${aVTitle} (${aVer})          (${aVDt})"
+     echo "  ${aVTitle} (${aVer})         (${aVDt})"
      echo "  -------------------------------------------  ---------------------------------"
 #    echo ""
      echo "    clone [name] [stagedir]                    Clone files from remote name to stagedir"         # .(41103.06.1)
@@ -116,6 +118,8 @@ function help() {
      echo "    Show commit  [nCnt|aHash]                  Show files for commit -nCnt or aHash"             # .(41030.05.1)
      echo "    List commits [nCnt]                        List last nCnt commits"                           # .(41031.03.1).(51030.05.1)
      echo "    List remotes                               List current remote repositories"                 # .(41031.03.2)
+     echo "    List branches                              List current remote repositories"                 # .(41114.04.1)
+     echo "    branch [branch]                            Checkout branch"                                  # .(41114.04.2)
      echo "    Set remote  {name} [{acct}] [{repo}] [-d]  Set current remote repository"
      echo "    Add remote  {name} [{acct}] [{repo}] [-d]  Add new origin remote repository"
      echo "    Make remote {name} [{acct}] [{repo}] [-d]  Create new remote repository in github"
@@ -227,8 +231,13 @@ done
   if [ "$1" == "sho" ] && [ "$2" == "com" ]; then aCmd="shoCommit";    fi               # .(51030.05.2)
   if [ "$1" == "com" ] && [ "$2" == "sho" ]; then aCmd="shoCommit";    fi               # .(51030.05.3)
 
-  if [ "$1" == "bra" ];                      then aCmd="shoBranches";  fi               # .(41103.05.2 RAM Branch cmds)
+  if [ "$1" == "bra" ];                      then aCmd="checkoutBranch";  fi                                # .(41114.04.3 RAM Checkout Branch).(41103.05.2)
+  if [ "$1" == "che" ];                      then aCmd="checkoutBranch";  fi                                # .(41114.04.4 RAM Checkout Branch).(41103.05.2)
+  if [ "$1" == "lis" ] && [ "$2" == "bra" ]; then aCmd="listBranches";  fi              # .(41103.05.2 RAM List Branchs)
+  if [ "$1" == "bra" ] && [ "$2" == "lis" ]; then aCmd="listBranches";  fi              # .(41103.05.2 RAM List Branchs)
   if [ "$1" == "tra" ] && [ "$2" == "bra" ]; then aCmd="trackBranch";  fi
+  if [ "$1" == "bra" ] && [ "$2" == "tra" ]; then aCmd="trackBranch";  fi
+
   if [ "$1" == "bac" ] && [ "$2" == "loc" ]; then aCmd="backupLocal";  fi
   if [ "$1" == "rep" ] && [ "$2" == "loc" ]; then aCmd="replaceLocal"; fi               # .(41031.07.2)
 
@@ -841,6 +850,35 @@ function getRemoteName() {                                                      
         getBranch # aBranch=$( git branch | awk '/\*/ { print substr($0,3)}' )                              # .(41104.04.7)
         getRemoteName                                                                                       # .(41104.01.5)
      fi                                                                                                     # .(41103.06.11 End)
+#====== =================================================================================================== #  ===========
+#       GITR2 PUSH
+#====== =================================================================================================== #
+
+  if [ "${aCmd}" == "listBranches" ]; then                                                                  # .(41114.04.5 RAM write listBranches)
+     sayMsg  "gitR1[857]  listBranches" -1
+        echo ""
+        git branch -vva | awk '{ print "  " $0 }'
+     fi                                                                                                     # .(41114.04.5 End)
+#====== =================================================================================================== #  ===========
+#       GITR2 PUSH
+#====== =================================================================================================== #
+
+  if [ "${aCmd}" == "checkoutBranch" ]; then                                                                # .(41114.04.6 RAM write checkoutBranch)
+     sayMsg  "gitR1[866]  checkoutBranch '${aArg2}'" -1
+
+        getBranch
+     if [ "$aArg2" == "" ]; then
+        echo -e "\n  The current branch is ${aBranch}."
+      else
+                bFilesInWork="$( git status | awk '/working tree clean/ { b = "1" }; End { print b ? b : 0} ' )"
+        if [ "${bFilesInWork}" != "1" ]; then
+            echo -e "\n* The current branch ${aBranch} has uncommitted files."
+            git status --short | awk '{ print "  " $0 }'
+            ${aLstSp}; exit
+            fi # eif bNoFilesInWork
+        git checkout | awk '{ print "  $0" }'
+        fi
+     fi                                                                                                     # .(41114.04.6 End)
 #====== =================================================================================================== #  ===========
 #       GITR2 MAKE REMMOTE
 #====== =================================================================================================== #

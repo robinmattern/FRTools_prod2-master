@@ -611,13 +611,13 @@ function Help( ) {
 function Sudo() {
 #       echo "   sudo[1] \${OS:0:7}: '${OS:0:7}'"
         if [[ "${OS:0:7}" != "Windows" ]]; then if [ "${USERNAME}" != "root" ]; then sudo "$@"; fi; fi
-#                sudo "$@"; echo "sudo[2]  sudo \"$@\""; fi; fi                         ##.(41113.01.2)
+#                sudo "$@"; echo "sudo[2]  sudo \"$@\""; fi; fi                         ##.(41113.01.1)
         }
 #        copyFile "ALTools" "run-anyllm.sh" "master"
 function copyFile() {                                                                   # .(41111.04.1 RAM Write copyFile Beg)
         git checkout "$3"                                        >/dev/null 2>&1        # Switch to master branch
         git checkout "$1" -- "$2"                                >/dev/null 2>&1        # Get file from ALTools branch
-        Sudo chmod 775 "$2"; aTS="$( date +%y%m%d )"; aTS="${aTS:1}"                    # .(41113.01.3).(41112.06.1)
+        Sudo chmod 775 "$2"; aTS="$( date +%y%m%d )"; aTS="${aTS:1}"                    # .(41113.01.2).(41112.06.1)
         git add "$2"                                             >/dev/null 2>&1        # Add and commit in master
         git commit -m ".(${aTS}.03_Add file, $2, from $1 branch" >/dev/null 2>&1        # Commit it
         git checkout "$1"                                        >/dev/null 2>&1        # Switch back to ALTools
@@ -672,7 +672,7 @@ function copyFile() {                                                           
 
             echo -e "\ncheckout ALTools_prod1/ALTools -- .";
             git checkout ALTools_prod1/ALTools -- .          2>&1 | awk '{ print "  " $0 }'   # get your 22 files
-            rm  ALTools_prod1-robin.code-workspace                                            # erase VSCode workspace file # .(41113.01.1 RAM Was: AnyLLM_)
+            rm  ALTools_prod1-robin.code-workspace                                      # .(41113.01.3 RAM Was: AnyLLM_; Erase corrent VSCode workspace file )
 
             echo -e "\ncommit -m \"${aTS}.02_Added ALTools files\"";
             git commit -m ".(${aTS}.02_Added ALTools files"  2>&1 | awk '{ print "  " $0 }'   # commit them
