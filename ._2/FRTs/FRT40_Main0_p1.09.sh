@@ -32,12 +32,13 @@
 ##FD   FRT10_Main0.sh           |  49033| 11/11/24 19:30|   719| p1.09`41111.1930
 ##FD   FRT10_Main0.sh           |  49627| 11/12/24 10:00|   726| p1.09`41112.1000
 ##FD   FRT10_Main0.sh           |  50055| 11/13/24 10:01|   728| p1.09`41113.1000
+##FD   FRT10_Main0.sh           |  51713| 11/15/24 12:10|   745| p1.09`41115.1210
 
 ##DESC     .--------------------+-------+---------------+------+-----------------+
 #            Use the commands in this script to manage FormR app resources.
 #
 ##LIC      .--------------------+----------------------------------------------+
-#            Copyright (c) 2022 8020Data-FormR * Released under
+#            Copyright (c) 2022-2024 8020Data-FormR * Released under
 #            MIT License: http://www.opensource.org/licenses/mit-license.php
 ##FNCS     .--------------------+----------------------------------------------+
 #            sayMsg             | ["sp"] {aMsg} ({bDebug}: 1)echo  2)echo then quit, 3) echo with no indent) ["sp"]
@@ -105,6 +106,7 @@
 # .(41112.05 11/12/24 RAM  9:05a| Remove git git from install command
 # .(41112.06 11/12/24 RAM 10:00a| Add / fix Sudo
 # .(41113.01 11/13/24 RAM 10:00a| Delete right .code-workspace file
+# .(41107.01 11/13/24 RAM 12:10p| Deal with updating dirty repo
 
 ##PRGM     +====================+===============================================+
 ##ID 69.600. Main0              |
@@ -112,7 +114,7 @@
 #*/
 #========================================================================================================== #  ===============================  #
 
-     aVdt="Nov 13, 2024 10:00a"; aVtitle="formR Tools"                                                      # .(21113.05.8 RAM Add aVtitle for Version in Begin)
+     aVdt="Nov 15, 2024 12:10p"; aVtitle="formR Tools"                                                      # .(21113.05.8 RAM Add aVtitle for Version in Begin)
      aVer="$( echo $0 | awk '{  match( $0, /_[dpstuv][0-9]+\.[0-9]+/ ); print substr( $0, RSTART+1, RLENGTH-1) }' )"  # .(21031.01.1 RAM Add [d...).(20416.03.8 "_p2.02", or _d1.09)
 
      LIB="FRT"; LIB_LOG=${LIB}_LOG; LIB_USER=${LIB}_USER; Lib=${LIB}; aDir=$( dirname "${BASH_SOURCE}" );   # .(41027.01.1 RAM).(80923.01.1)
@@ -590,13 +592,28 @@ function Help( ) {
 
         echo -e "\n  Updating FRT in $( dirname $0 )/*"
         cd "$( dirname $0 )"
+                aBranch="$( git symbolic-ref --short HEAD )"                                                # .(41107.01.6)
+                bFilesInWork="$( git status | awk '/working tree clean/ { b = "1" }; End { print b ? b : 0} ' )"
+        if [ "${bFilesInWork}" != "1" ]; then                                                               # .(41107.01.7 RAM Deal with updating dirty repo Beg)
+            echo -e "\n* The current branch ${aBranch} has uncommitted files."
+            git status --short | awk '{ print "  " $0 }'
+            aTS=$(date +%y%m%d.%H)
+            aStashIt="git stash -u save \".(${aTS} Stash of $(git status --short | wc -l) files\"\n      "
+          else
+            aStashIt=""
+            fi # eif bNoFilesInWork                                                                         # .(41107.01.7 End)
+
         if [ "${bDoit}" == "1" ]; then
-                         gitr pull
+#                        git pull                                                                           ##.(41107.01.8)
+                         ${aStashIt}git fetch origin                                                        # .(41107.01.8)
+                         git reset --hard origin/${aBranch}                                                 # .(41107.01.9)
         else
-        echo -e "\n      gitr pull   # add -doit to doit"
+#       echo -e "\n      git pull"                                                                          ##.(41107.01.10)
+        echo -e "\n      ${aStashIt}git fetch origin"                                                       # .(41107.01.10)
+        echo      "      git reset --hard origin/${aBranch}  # add -doit to doit"                           # .(41107.01.11)
           fi
 
-     ${aLstSp}
+     ${aLstSp}; exit
      fi # eoc Update Command                                                                                # .(41107.01.5 End)
 #    -- --- ---------------  =  ------------------------------------------------------  #  ---------------- #
 
