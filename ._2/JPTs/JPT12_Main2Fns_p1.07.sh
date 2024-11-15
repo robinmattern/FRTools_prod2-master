@@ -20,6 +20,7 @@
 ##FD   JPT12_Main2Fns.sh        |  46481|  4/13/24 10:52|   634| p1.07`40413.1052
 ##FD   JPT12_Main2Fns.sh        |  46500| 11/02/24 19:31|   632| p1.07`41102.0948
 ##FD   JPT12_Main2Fns.sh        |  49205| 11/14/24 18:33|   644| p1.07`41114.1825
+##FD   JPT12_Main2Fns.sh        |  50668| 11/15/24 11:57|   659| p1.07`41115.1150
 
 ##DESC     .--------------------+-------+---------------+------+-----------------+
 #            Common function for JScriptWare Tools
@@ -91,13 +92,14 @@
 # .(40413.01  4/13/24 RAM 10:52p| info.sh is in JPTs, not FRTs)
 # .(41102.02 11/02/24 RAM  9:13a| Adjust space for $LIB
 # .(41102.04 11/02/24 RAM  9:48a| Provide some help re sayMsg switches)
-# .(41114.06 11/14/24 RAM  6.25p| Write new function askRequired, rename askDefault
+# .(41114.06 11/14/24 RAM  6:25p| Write new function askRequired, rename askDefault
+# .(41115.01 11/15/24 RAM 11:50a| Add THE_SERVER to .bashrc
 
 ##PRGM     +====================+===============================================+
 ##ID 69.600. Main               |
 ##SRCE     +====================+===============================================+
 #*/
-#    aVdt_x="Apr 13, 2024 10:52p"; aVtitle_x="JavaScriptware Tools Utility Fns"             # .(21113.05.4 RAM Add aVtitle for Version in Begin)
+#    aVdt_x="Apr 15, 2024 11:50a"; aVtitle_x="JavaScriptware Tools Utility Fns"             # .(21113.05.4 RAM Add aVtitle for Version in Begin)
 #    aVer_x="$( echo $0 | awk '{  match( $0, /_[dpstuv][0-9]+\.[0-9]+/ ); print substr( $0, RSTART+1, RLENGTH-1) }' )"  # .(21031.01.1 RAM Add [d...).(20416.03.8 "_p2.02", or _d1.09)
 
 #          if [ "${LIB}" == "" ]; then LIB=JPT; Lib=RSS; fi                                 ##.(80926.01.1)
@@ -112,24 +114,36 @@
 
 function  setOS() {
 
-     if [ "${OS:0:7}"     == "Windows" ]; then aOSv="w10p"; aName="Windows"; fi                                                 # .(21112.05.2 RAM Is it Windows)
-     if [ "${OSTYPE:0:5}" == "linux"   ]; then aOSv="linx"; aName="Linux";   fi                                                 # .(21112.05.3 RAM Is it Linux)
-     if [ -f "/etc/issue" ]; then aOSv=$( cat "/etc/issue" | awk '/Ubuntu/ { print "ub" substr($0,8,2) }' ); fi                 # .(21112.05.4 RAM Is it Ubuntu)
-     if [ "${aOSv:0:2}"   == "ub"      ]; then              aName="Ubuntu";  fi                                                 # .(21112.05.5)
+     if [ "${OS:0:7}"     == "Windows" ]; then aOSv="w10p";   aName="Windows"; aBashRC=".bashrc"; fi                            # .(41115.01.1).(21112.05.2 RAM Is it Windows)
+     if [ "${OSTYPE:0:5}" == "linux"   ]; then aOSv="linx";   aName="Linux";   aBashRC=".bashrc"; fi                            # .(41115.01.2)..(21112.05.3 RAM Is it Linux)
+     if [ "${OSTYPE:0:6}" == "darwin"  ]; then aOSv="darwin"; aName="Darwin";  aBashRC=".zshrc"; fi                             # .(41115.01.3)..(21112.05.3 RAM Is it Linux)
+     if [ -f "/etc/issue"              ]; then aOSv=$( cat "/etc/issue" | awk '/Ubuntu/ { print "ub" substr($0,8,2) }' ); fi    # .(21112.05.4 RAM Is it Ubuntu)
+     if [ "${aOSv:0:2}"   == "ub"      ]; then                aName="Ubuntu";  fi                                               # .(21112.05.5)
 
 #       -------------------------------------------------------------
 
 # if [ "${THE_DRIVES}" == "" ]; then echo ""; echo  "* \$THE_DRIVES is NOT DEFINED; NFS Vol won't be correct";  exit; fi        # .(90321.02.1)
   if [ "${THE_SERVER}" == "" ]; then echo ""; echo  "* THE_SERVER is NOT Defined; The OS, '${aOSv}', may not be correct."
-        THE_SERVER="${HOSTNAME:0:6}-${aOSv}_${aName}-Prod1 (127.0.0.1)";  pause "  Setting it to \"${THE_SERVER}\"."            # .(21112.05.6)
+        export THE_SERVER="${HOSTNAME:0:6}-${aOSv}_${aName}-Prod1 (127.0.0.1)";  pause "  Setting it to \"${THE_SERVER}\"."     # .(21112.05.6)
+        export aOSv; aThe_Server="$(cat "${HOME}/${aBashRC}"  | awk '/THE_SERVER/' )"                                           # .(21112.05.7 RAM Needed for set vars)
 #                             echo "./RSS/Info/RSS23_Info.sh vars set THE_SERVER  ${THE_SERVER}"
-        export aOSv                                                                                                             # .(21112.05.7 RAM Needed for set vars)
 #       $( dirname "${BASH_SOURCE}"     )/Info/RSS23_Info.sh vars set THE_SERVER  "${THE_SERVER}"                               ##.(21113.01.2)
 #       $( dirname "${BASH_SOURCE}" )/RSS/Info/RSS23_Info.sh vars set THE_SERVER  "${THE_SERVER}"                               ##.(21113.01.2 RAM it's always JPT).(30520.03.1)
 #       $( dirname "$0"                 )/Info/RSS23_Info.sh vars set THE_SERVER  "${THE_SERVER}"                               ##.(30520.03.1 RAM ???).(40413.01.1 RAM It's not in FRTs)
-        $( dirname "${BASH_SOURCE}" )/RSS/Info/RSS23_Info.sh vars set THE_SERVER  "${THE_SERVER}"                               # .(40413.01.1 RAM it's always JPT)
-        exit
+#       sayMsg    "JPFns[131]  \"${HOME}/${aBashRC}\"" -1
+#       $( dirname "${BASH_SOURCE}" )/RSS/Info/RSS23_Info.sh vars set THE_SERVER  "${THE_SERVER}"                               # .(40413.01.1 RAM it's always JPT)
+     if [ "${aThe_Server}" == "" ]; then                                                                                        # .(41115.01.4 RAM Put THE_SERVER into bashrc Beg)
+        echo -e                  "export THE_SERVER=\"${THE_SERVER}\"" >>"${HOME}/${aBashRC}"; aVerb="added to"
+#       sayMsg    "JPFns[135]  Added THE_SERVER to \"${HOME}/${aBashRC}\"" -1
+      else
+        sed -i   "/THE_SERVER=/ c\export THE_SERVER=\"${THE_SERVER}\""   "${HOME}/${aBashRC}"; aVerb="replaced in"
+#       sayMsg    "JPFns[138]  Replaced THE_SERVER in \"${HOME}/${aBashRC}\"" -1
         fi
+        echo -e "\n  THE_SERVER ${aVerb} \"${HOME}/${aBashRC}\""
+        echo "* Remember to run: source ~/${aBashRC}"
+        if [ "${aOS}" == "windows" ]; then echo ""; fi                                                                          # .(41115.01.4 End)
+        exit
+        fi #
         # exit; fi                                                                                                              # .(21112.04.2)
 #       -------------------------------------------------------------
 
@@ -159,10 +173,10 @@ function  setOS() {
      aOSv="gfw2"
      fi                                                                                 # .(21126.05.2 RAM End)
  #  echo "bGFW1: ${bGFW1}, bGFW2: ${bGFW2}"; exit
-
                                        aDrv=""
   if [ "${aOSv:0:1}" == "g"    ]; then aDrv="/c"  ; fi    # Windows Git Bash
   if [ "${aOSv:0:1}" == "m"    ]; then aDrv=""    ; fi    # MacOS                       # .(20623.03.1)
+  if [ "${aOSv:0:1}" == "d"    ]; then aDrv=""    ; fi    # MacOS darwin                # .(41115.01.x)
   if [ "${aOSv:0:1}" == "u"    ]; then aDrv=""    ; fi    # Ubuntu                      # .(20623.03.2)
   if [ "${aOSv:0:2}" == "rh"   ]; then aDrv=""    ; fi    # Red Hat                     # .(20623.03.3)
   if [ "${aOSv:0:1}" == "w"    ]; then aDrv="C:"  ; fi    # Windows
@@ -183,6 +197,7 @@ function  setOS() {
      export aOSv                                                                                                                # .(21112.02.1 RAM Export aOSv)
 
      aOS="linux"; if [ "${aOSv:0:1}" == "w" ]; then aOS="windows"; fi                   # .(20623.03.4)
+                  if [ "${aOSv:0:1}" == "d" ]; then aOS="darwin";  fi                   # .(41115.01.2)
                   if [ "${aOSv:0:1}" == "m" ]; then aOS="macOS";   fi                   # .(20623.03.5)
                   if [ "${aOSv:0:1}" == "g" ]; then aOS="GitBash"; fi                   # .(20623.03.6)
 
