@@ -159,7 +159,7 @@ else                                                                            
 
 if [ "${aIncl}" == "" ]; then                                                                                                   # .(11010.01.8)
 # echo "${aCmd}${aExclude}${aSort}";  exit
-# eval "${aCmd}${aExclude}${aSort}";  exit                                                                                      # .(10707.,07.2)
+# eval "${aCmd}${aExclude}${aSort}";  exit                                                                                      # .(10707.07.2)
 # eval "${aCmd}${aExclude}${aSort}" | awk '{ t=substr($3,1,5);                 printf "%12d  %10s %5s  %s\n", $1, $2, t,        $4    }'              ##.(10707.07.2).(10903.03.1)
 # eval "${aCmd}${aExclude}${aSort}" | awk '$4 != "." { t=substr($3,1,5); i=index($0,$4); printf "%12d  %10s %5s  %s\n", $1, $2, t, substr($0,i) }'    # .(10707.07.2).(10903.03.1 RAM Print filename with spaces)
   eval "${aCmd}${aExclude}${aSort}" | awk '$4 != "." { t=substr($3,1,5); i=index($0,$4); printf "%12d  %10s %5s  %s\n", $1, $2, t, substr($0,i) }'    # .(21117.02.1 RAM Added $4 != ".")

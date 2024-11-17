@@ -9,7 +9,8 @@
 #       RSS_Scr=RSS21-FileList_v1.7.10923.sh
 #       RSS_Scr=RSS21-FileList_v1.7`40404.1843.sh
 #       RSS_Scr=RSS21-FileList_p1.07.sh   #`40520.0843.sh  Works on a Mac
-        RSS_Scr=RSS21_FileList_p1.08.sh   #`41026.0900.sh
+#       RSS_Scr=RSS21_FileList_p1.08.sh   #`41026.0900.sh
+        RSS_Scr=RSS21_FileList_p1.09.sh   #`41117.1430.sh  Works on both
 
         RSS_Dir=$( dirname "$0" )
         RSS21_FileList=$RSS_Dir/$RSS_Scr
