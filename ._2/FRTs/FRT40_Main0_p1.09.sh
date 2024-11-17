@@ -224,8 +224,8 @@ function Help( ) {
      echo "         JPT RSS {Cmd}"                                                      # .(21107.02.2)
      echo "             RSS Dir (RDir)"                                                 # .(21107.02.3)
      echo "             RSS DirList (DirList)"                                          # .(21107.02.4)
-     echo ""                                                                            # .(41107.01.2)
-     echo "    FRT Update [-doit]                   Update [ {FRTools} ]"               # .(41107.01.3)
+     echo ""                                                                                                # .(41107.01.2)
+     echo "    FRT Update [-doit]                   Update [ {FRTools} ]"                                   # .(41107.01.3)
      echo "        Install [ALTools] [-doit]        Install ALTools"                                        # .(41111.01.2)
      echo "                [AIDocs] [-doit]         Install AIDocs"                                         # .(41111.01.3)
 
@@ -597,7 +597,7 @@ function Help( ) {
         if [ "${bFilesInWork}" != "1" ]; then                                                               # .(41107.01.7 RAM Deal with updating dirty repo Beg)
             echo -e "\n* The current branch ${aBranch} has uncommitted files."
             git status --short | awk '{ print "  " $0 }'
-            aTS=$(date +%y%m%d.%H)
+            aTS=$(date +%y%m%d.%H); aTS="${aTS:1}"
             aStashIt="git stash -u save \".(${aTS} Stash of $(git status --short | wc -l) files\"\n      "
           else
             aStashIt=""

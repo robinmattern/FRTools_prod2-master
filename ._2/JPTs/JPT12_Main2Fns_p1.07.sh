@@ -90,7 +90,7 @@
 # .(30520.03  5/20/23 RAM  8:54p| Change RSS22-Info to RSS23_Info
 # .(40407.02  4/04/24 RAM 12:54p| Add bNoisy
 # .(40413.01  4/13/24 RAM 10:52p| info.sh is in JPTs, not FRTs)
-# .(41102.02 11/02/24 RAM  9:13a| Adjust space for $LIB
+# .(41102.06 11/02/24 RAM  9:13a| Adjust space for $LIB
 # .(41102.04 11/02/24 RAM  9:48a| Provide some help re sayMsg switches)
 # .(41114.06 11/14/24 RAM  6:25p| Write new function askRequired, rename askDefault
 # .(41115.01 11/15/24 RAM 11:50a| Add THE_SERVER to .bashrc
@@ -292,7 +292,7 @@ function  Begin() {                                                             
 # if [ "${aCmd}" == "version"  ]; then echo ""; echo $0 | awk '{ gsub( /.+-v|.sh/, "" ); print "  JPT Version: " $0 }'; echo ""; exit; fi
 # if [ "${aCmd}" == "version"  ]; then echo ""; echo $0 | awk '{ gsub( /.+-v|.sh/, "" ); print "  '$LIB' Version: "          $0      }'; echo ""; exit; fi  # .(80923.02.4 Was "JPT-..)
   if [ "${aCmd}" == "source"   ]; then echo ""; echo $0 | awk '{                         print "  '$LIB' Script File(s): \"" $0 "\"" }';                fi  # .(80923.02.3 Was "JPT-..)
-  if [ "${aCmd}" == "source"   ]; then echo ${aFns}     | awk '{ f = substr( "      ", 0, length("'$LIB'") ); print f "                   \""    $0 "\"" }'; echo ""; exit; fi   # .(41102.02.1 RAM Adjust space for $LIB)
+  if [ "${aCmd}" == "source"   ]; then echo ${aFns}     | awk '{ f = substr( "      ", 0, length("'$LIB'") ); print f "                   \""    $0 "\"" }'; echo ""; exit; fi   # .(41102.06.1 RAM Adjust space for $LIB)
 
         } # eof Begin                                                                   # .(20409.06.1 RAM End)
 #   ------- ------------------  =  ---------------------------------------------------  #  ----------------

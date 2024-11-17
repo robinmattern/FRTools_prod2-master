@@ -15,6 +15,7 @@
 ##FD   FRT42_GitR2.sh           |  88127| 11/11/24 19:15|  1305| p1.02`.41111.1915
 ##FD   FRT42_GitR2.sh           |  88208| 11/12/24 10:00|  1306| p1.02`.41112.1000
 ##FD   FRT42_GitR2.sh           |  92817| 11/14/24 18:32|  1367| p1.02`.41114.1830
+##FD   FRT42_GitR2.sh           |  96740| 11/16/24 11:25|  1423| p1.02`.41116.1125
 
 ##DESC     .--------------------+-------+---------------+------+-----------------+
 #            This script has usefull GIT functions.
@@ -88,6 +89,7 @@
 # .(41114.05 11/14/24 RAM  5.15p| Display branches if none given
 # .(41114.06 11/14/24 RAM  6.00p| Use askRequired
 # .(41114.07 11/14/24 RAM  6.30p| Write function chkUser
+# .(41116.01 11/16/24 RAM 11.25a| Add gitR update command
 #
 ##PRGM     +====================+===============================================+
 ##ID 69.600. Main0              |
@@ -95,7 +97,7 @@
 #*/
 #========================================================================================================== #  ===============================  #
 
-        aVDt="Nov 14, 2024 6:00p"; aVer="p1.02"; aVTitle="Useful gitR2 Tools by formR";                                   # .(41103.02.2 RAM Was: gitR1)
+        aVDt="Nov 16, 2024 11:25a"; aVer="p1.02"; aVTitle="Useful gitR2 Tools by formR";                                   # .(41103.02.2 RAM Was: gitR1)
         aVer="$( echo "$0" | awk '{ match( $0, /_[dpstuv][0-9]+\.[0-9]+/ ); print substr( $0, RSTART+1, RLENGTH-1) }' )"  # .(21031.01.1 RAM Add [d...).(20416.03.8 "_p2.02", or _d1.09)
 
         LIB="gitR2"; LIB_LOG=${LIB}_LOG; LIB_USER=${LIB}_USER; Lib=${LIB}; aDir=$(dirname "${BASH_SOURCE}");               # .(41103.02.3).(41102.01.1 RAM Add JPT12_Main2Fns_p1.07.sh Beg).(80923.01.1)
@@ -122,14 +124,15 @@ function help() {
      echo "    List commits [nCnt]                        List last nCnt commits"                           # .(41031.03.1).(51030.05.1)
      echo "    List remotes                               List current remote repositories"                 # .(41031.03.2)
      echo "    List branches                              List current remote repositories"                 # .(41114.04.1)
-     echo "    branch [branch]                            Checkout branch"                                  # .(41114.04.2)
+     echo "    Branch {branch}                            Checkout branch {branch}"                         # .(41114.04.2)
+     echo "    Track Branch                               Set tracking for origin/branch"
      echo "    Set remote  {name} [{acct}] [{repo}] [-d]  Set current remote repository"
      echo "    Add remote  {name} [{acct}] [{repo}] [-d]  Add new origin remote repository"
      echo "    Make remote {name} [{acct}] [{repo}] [-d]  Create new remote repository in github"
      echo "    Remove remote [{name}]               [-d]  Remove origin or {name} remote"
-     echo "    Replace [local] [{name}]             [-d]  Replace all files with origin or {name} remote"   # .(41031.07.1)
+     echo "    Replace [local] [{name}]             [-d]  Replace all files from origin or remote {name}"   # .(41031.07.1)
+     echo "    Update [{branch}] [{name}]      [-f] [-d]  Update all files from {name} [-f for no stash]"   # .(41116.01.1)
      echo "    Backup local                               Copy local repo to ../ZIPs"
-     echo "    Track Branch                               Set tracking for origin/branch"
      echo "    Install gh                                 Install the GIT CLI"
      echo "    Init                                       Initialize a git repository"                      # .(41103.03.1)
      echo "    [-b]                                       Show debug messages"
@@ -243,6 +246,7 @@ done
 
   if [ "$1" == "bac" ] && [ "$2" == "loc" ]; then aCmd="backupLocal";  fi
   if [ "$1" == "rep" ] && [ "$2" == "loc" ]; then aCmd="replaceLocal"; fi               # .(41031.07.2)
+  if [ "$1" == "upd" ];                      then aCmd="update";       fi                                   # .(41116.01.2)
 
   if [ "$1" == "rem" ];                      then aCmd="shoRemote";    fi               # .(41103.05.3 RAM Remote cmds)
   if [ "$1" == "add" ] && [ "$2" == "rem" ]; then aCmd="addRemote";    fi
@@ -296,8 +300,8 @@ function chkRepo() {                                                            
 
 function getBranch( ) {                                                                                     # .(41104.04.1 RAM Create getBranch function Beg)
      if [ -d .git ]; then                                                                                   # .(41104.05.1)
-#    aBranch="$( git branch | awk '/\*/ { sub( /.+at /, "" ); sub( /\)$/, "" ); print substr($0,3) }' )"    ##.(41102.02.1 RAM Move to getRepoDir).(41114.03.1)
-     aBranch="$( git symbolic-ref --short HEAD )"                                                           # .(41114.03.1 RAM More reliable)
+#       aBranch="$( git branch | awk '/\*/ { sub( /.+at /, "" ); sub( /\)$/, "" ); print substr($0,3) }' )" ##.(41114.03.1)
+        aBranch="$( git symbolic-ref --short HEAD )"                                                        # .(41114.03.1 RAM More reliable).(41102.02.1)
      fi                                                                                                     # .(41104.05.2)
      }                                                                                                      # .(41104.04.1 End)
 # ---------------------------------------------------------------------------
@@ -314,19 +318,19 @@ function getBranch( ) {                                                         
 #  echo "  aProject:    '${aProject}'"; exit
    aStgDir="$(  echo "$(pwd)"     | awk '{ sub( "'.+"${aProject}"'", "" ); print }' )"                      # .(41103.04.1 RAM Added "{aProject}" based on ShellCheck)
    aStage="$(   echo "${aStgDir}" | awk '{ sub( "^[_/]+", "" ); print }' )"
-#  aBranch="$( git branch | awk '/\*/ { sub( /.+at /, "" ); sub( /\)$/, "" ); print substr($0,3) }' )"      ##.(41102.02.1 RAM Move to getRepoDir).(41104.04.2)
    aRepoDir="${aRepos}/${aProject}${aStgDir}"
    if [ "${aRepo}" == "" ]; then aRepo="${aProject}${aStgDir}"; fi
    getBranch                                                                                                # .(41104.04.2)
 
 #          bDebug=1
    if [ "${bDebug}" == "1" ]; then
-   echo "  aRepos:   '${aRepos}'"
-   echo "  aRepo:    '${aRepo}'"
-   echo "  aProject: '${aProject}'"
-   echo "  aStage:   '${aStage}'"
-   echo "  aBranch:  '${aBranch}'"                                                                          # .(41102.02.2)
-   echo "  aRepoDir: '${aRepoDir}'"
+   echo "  - aRepos:   '${aRepos}'"
+   echo "  - aRepo:    '${aRepo}'"
+   echo "  - aProject: '${aProject}'"
+   echo "  - aStage:   '${aStage}'"
+   echo "  - aBranch:  '${aBranch}'"                                                                          # .(41102.02.2)
+   echo "  - aRepoDir: '${aRepoDir}'"
+   echo ""
 #  exit_wCR
    fi
    }
@@ -635,7 +639,7 @@ function getProjectStage_fromURL() {                                            
 function getRemoteName() {                                                                                  # .(41104.01.2 RAM Write getRemoteName Beg)
      sayMsg  "gitR2[600]  aProject: '${aProject}', aStage: '${aStage}', aArg2: '${aArg2}', aArg3: '${aArg3}', aArg4: '${aArg4}'" -1
 
-#        getRepoDir                                                                                         # .(41104.05.4)
+#       getRepoDir                                                                                          # .(41104.05.4)
 
      if [ "${aArg2}"  != "" ]; then aProject="${aArg2}"; fi;
      if [ "${aArg3}"  != "" ]; then aBranch="${aArg3}"; fi
@@ -777,8 +781,7 @@ function getRemoteName() {                                                      
         aSSH="git@github-ram"                                                                               # .(41029.07.1 RAM Was git:github-ram)
         aAcct="robinmattern"
         aLocation="origin"
-#       aBranch="$( git branch | awk '/\*/ { sub( ".+at ", "" ); sub( "\)$", "" ); print }' )"              ##.(41102.02.3)
-#       aBranch="$( git branch | awk '/\*/ { sub( /.+at /, "" ); sub( /\)$/, "" ); print }' )"              ##.(41102.02.3 RAM Move to getRepoDir)
+#       aBranch="$( git branch | awk '/\*/ { sub( /.+at /, "" ); sub( /\)$/, "" ); print }' )"              ##.(41102.02.3 RAM Move to getBranch)
 
      if [ ! -d ".git" ]; then
         echo -e "\n* You are not in a Git Repository"
@@ -787,12 +790,65 @@ function getRemoteName() {                                                      
 
         echo ""
         setOSvars                                                                                           # .(41103.04.2 RAM Not called per ShellCheck)
-        getRepoDir
+        getRepoDir  # aRepo, aRepoDir, aProject, aStage, aBranch
         chkRepo                                                                                             # .(41103.03.6 RAM User here)
 
   if [ "${aCmd}" == "" ]; then help; fi
 
         chkUser                                                                                             # .(41114.07.3)
+
+#====== =================================================================================================== #  ===========
+#       gitR Update Command                                                                                 # .(41116.01.3)
+#====== =================================================================================================== #
+
+        sayMsg    "FRT40[803] Update Command" sp;
+
+  if [ "${aCmd}" == "update" ]; then                                                                        # .(41116.01.3 RAM Add Update Command Beg)
+        sayMsg    "FRT40[807]  Update:   '${aArg1}' '${aArg2}' '${aArg3}' '${aArg4}', bDoit: '${bDoit}', bDebug: '${bDebug}', bQuiet: '${bQuiet}'" -1
+
+        if [ "${aArg2}" != "" ]; then
+                aBranch="$( git branch | awk '/'"${aArg2}"'/ { sub( "*", "" ); print $1; exit }' )"
+        if [ "${aBranch}" == "" ]; then echo -e "\n* The branch, '${aArg2}', doesn't exist."; exit_wCR; fi
+           fi
+
+        if [ "${aArg3}" == "" ]; then aRemote_name="origin"; else aRemote_name="${aArg3}"; fi
+                aRemote="$( git remote -v | awk '/'"${aRemote_name}"'/ { sub( /\.git.+$/, "" ); print; exit }' )"
+        sayMsg "FRT40[816]  aRemote: '${aRemote}', aRemote_name: '${aRemote_name}'" -1
+        if [ "${aRemote}" == "" ]; then echo -e "\n* The remote name, '${aRemote_name}', doesn't exist."; exit_wCR; fi
+                aRemote_name="$( echo "${aRemote}" | awk '{ print $1 }' )"
+
+#               aRepo="${aRemote/${aRemote_name}/}"; aRepo="${aRepo%%*/}"; aRepo="${aRepo/.git}"
+#               aRepo="$(echo "$aRemote" | sed -n 's/.*github\/\([^.]*\).*/\1/p' )"
+                aRepo="$( echo "${aRemote}" | awk '{ n = split( $2, m, /[/:]/ ); print m[ n-1 ]"/"m[ n ] }' )"
+
+          echo -e "\n  Updating repo, '${aRemote_name}', for branch, '${aBranch}', from remote, '${aRepo}'."; # exit
+#         cd    "$(  dirname $0  )"
+#               aBranch="$( git symbolic-ref --short HEAD )"                                                # .(41116.01.4)
+                bFilesInWork="$( git status | awk '/working tree clean/ { b = "1" }; End { print b ? b : 0} ' )"
+        if [ "${bFilesInWork}" != "1" ]; then                                                               # .(41116.01.5).(41107.01.7 RAM Deal with updating dirty repo Beg)
+            aVerb="will"; if [ "${bForce}" == "1" ]; then aVerb="won't"; fi
+            echo -e "\n* The current branch, '${aBranch}', has uncommitted files, that ${aVerb} be stashed."
+            git status --short | awk '{ print "   " $1 "  " substr( $0, 4) }'
+            aTS=$(date +%y%m%d.%H); aTS="${aTS:1}"
+            aStashEm="git stash -u save \".(${aTS} Stash of $(git status --short | wc -l) files\"\n      ";
+            if [ "${bForce}" == "1" ]; then aStashEm=""; fi                                                 # .(41116.01.6 RAM Don't stash them if bForce)
+          else
+            aStashEm=""
+            fi # eif bNoFilesInWork                                                                         # .(41107.01.7 End)
+
+        if [ "${bDoit}" == "1" ]; then
+#                        git pull
+                         ${aStashEm}git fetch ${aRemote_name}
+                         git reset --hard ${aRemote_name}/${aBranch}
+        else
+#       echo -e "\n      git pull"
+        echo -e "\n      ${aStashEm}git fetch ${aRemote_name}"
+        echo      "      git reset --hard ${aRemote_name}/${aBranch}  # add -doit to doit"
+          fi
+
+        ${aLstSp}; exit
+     fi # eoc Update Command                                                                                # .(41116.01.3 End)
+#    -- --- ---------------  =  ------------------------------------------------------  #  ---------------- #
 
 #====== =================================================================================================== #  ===========
 #       GITR2 SHOW LAST                                                                                     # .(20430.01.3 Beg RAM Added)
@@ -1090,7 +1146,7 @@ function getRemoteName() {                                                      
              fi;
              aRemoteURL="${aSSH}${aAcct2}/${aProject}_${aStage}.git";  #  echo "    aRemoteURL: '${aRemoteURL}'"
 
-        fi # eif "${aRemote_name/_/}" != "${aRemote_name}"                                             # .(41102.03.5 End)
+        fi # eif "${aRemote_name/_/}" != "${aRemote_name}"                                                  # .(41102.03.5 End)
 #    --------------------------------------------------------------------------------
 
 #    if [ "${aRemote_name}"     == "anythingllm_master" ]; then aRemote_name="anything-llm"; fi
@@ -1118,7 +1174,7 @@ function getRemoteName() {                                                      
 #            if [ "${aRemoteName}" != "origin" ]; then aRemoteName="${aProject}_${aStage/-*/}"; fi
 #            aBranch="b241013.01_ALT"
 #            aRemoteURL="${aSSH}${aAcct}/${aProject}${aStage_}.git"
-#       fi                                                                                                  # .(41102.03.6 End)
+#       fi                                                                                                  ##.(41102.03.6 End)
 #    --------------------------------------------------------------------------------
 #    sayMsg  "gitR2[528]  aRemoteURL:   '${aRemoteURL}'"  1
 
@@ -1155,7 +1211,7 @@ function getRemoteName() {                                                      
 #            aRemoteName="origin"  # "FRTools_${aStage/-*/}"
 #            aStage_="prod1-master"  # "_${aStage}"
 #            aRemoteURL="${aSSH}:${aAcct}/${aProject}_${aStage_}.git"                   # .(41029.07.2 RAM Use : not /)
-#       fi                                                                              ##.(41029.06.1 End).(41102.03.6 End)
+#       fi                                                                                                  ##.(41029.06.1 End).(41102.03.6 End)
 
    function  setRemote1() {                                                                                 # .(41102.03.6 RAM Write setRemote1 Beg)
 #    if "${aArg3}" == "origin", then Dev stages to: git@github.[ram|rsh|btg], else all stages go to https://github.com
