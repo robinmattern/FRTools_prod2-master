@@ -16,7 +16,7 @@
 ##FD   FRT42_GitR2.sh           |  88208| 11/12/24 10:00|  1306| p1.02`.41112.1000
 ##FD   FRT42_GitR2.sh           |  92817| 11/14/24 18:32|  1367| p1.02`.41114.1830
 ##FD   FRT42_GitR2.sh           |  96740| 11/16/24 11:25|  1423| p1.02`.41116.1125
-##FD   FRT42_GitR2.sh           |  98054| 11/18/24  8:48|  1434| p1.02`.41118.0845
+##FD   FRT42_GitR2.sh           |  98952| 11/18/24 10:15|  1444| p1.02`.41118.1015
 
 ##DESC     .--------------------+-------+---------------+------+-----------------+
 #            This script has usefull GIT functions.
@@ -93,6 +93,7 @@
 # .(41116.01 11/16/24 RAM 11.25a| Add gitR update command
 # .(41118.01 11/18/24 RAM  8:30a| Fix AIDocs URL and clone help
 # .(41118.02 11/18/24 RAM  8:45a| Fix clone args processing
+# .(41116.01 11/18/24 RAM 10:15a| Fix gitR update issues
 #
 ##PRGM     +====================+===============================================+
 ##ID 69.600. Main0              |
@@ -830,9 +831,9 @@ function getRemoteName() {                                                      
 
 #               aRepo="${aRemote/${aRemote_name}/}"; aRepo="${aRepo%%*/}"; aRepo="${aRepo/.git}"
 #               aRepo="$(echo "$aRemote" | sed -n 's/.*github\/\([^.]*\).*/\1/p' )"
-                aRepo="$( echo "${aRemote}" | awk '{ n = split( $2, m, /[/:]/ ); print m[ n-1 ]"/"m[ n ] }' )"
+                aRepo="$( echo "${aRemote}" | awk '{ n = split( $2, m, "/" ); print m[ n-1 ]"/"m[ n ] }' )" # .(41116.01.11 RAM Was: /[/:]/)
 
-          echo -e "\n  Updating repo, '${aRemote_name}', for branch, '${aBranch}', from remote, '${aRepo}'."; # exit
+#       echo -e "\n  Updating repo, '${aRemote_name}', for branch, '${aBranch}', from remote, '${aRepo}'."; # .(41116.01.12 RAM Moved to below)
 #         cd    "$(  dirname $0  )"
 #               aBranch="$( git symbolic-ref --short HEAD )"                                                # .(41116.01.4)
                 bFilesInWork="$( git status | awk '/working tree clean/ { b = "1" }; End { print b ? b : 0} ' )"
@@ -841,7 +842,9 @@ function getRemoteName() {                                                      
             echo -e "\n* The current branch, '${aBranch}', has uncommitted files, that ${aVerb} be stashed."
             git status --short | awk '{ print "   " $1 "  " substr( $0, 4) }'
             aTS=$(date +%y%m%d.%H); aTS="${aTS:1}"
-            aStashEm="git stash -u save \".(${aTS} Stash of $(git status --short | wc -l) files\"\n      ";
+            aNum="$(git status --short | wc -l | awk '{ gsub( " ", "" ); print }' )";                       # .(41116.01.13)
+#           aStashEm="git stash -u save \".(${aTS} Stash of ${aNum} files\"\n      ";                       # .(41116.01.14)
+            aStashEm="git stash push -u -m \".(${aTS} Stash of ${aNum} files\"\n      ";                    # .(41116.01.15)
             if [ "${bForce}" == "1" ]; then aStashEm=""; fi                                                 # .(41116.01.6 RAM Don't stash them if bForce)
           else
             aStashEm=""
@@ -851,13 +854,18 @@ function getRemoteName() {                                                      
 #                        git pull
                          ${aStashEm}git fetch ${aRemote_name}
                          git reset --hard ${aRemote_name}/${aBranch}
+                    Sudo find . -type f -name "*.sh" -exec chmod 755 {} +
+        aVerb="Updated"
         else
+        aVerb="About to update"
 #       echo -e "\n      git pull"
         echo -e "\n      ${aStashEm}git fetch ${aRemote_name}"
         echo      "      git reset --hard ${aRemote_name}/${aBranch}  # add -doit to doit"
           fi
 
-        ${aLstSp}; exit
+        echo -e "\n  ${aVerb} repo, '${aRemote_name}', for branch, '${aBranch}', from remote, '${aRepo}'."; # .(41116.01.12)
+
+        exit_wCR  #${aLstSp}; exit
      fi # eoc Update Command                                                                                # .(41116.01.3 End)
 #    -- --- ---------------  =  ------------------------------------------------------  #  ---------------- #
 
@@ -944,6 +952,7 @@ function getRemoteName() {                                                      
      sayMsg  "gitR1[857]  listBranches" -1
         echo ""
         git branch -vva | awk '{ print "  " $0 }'
+        exit_wCR                                                                                            # .(41116.01.16)
      fi                                                                                                     # .(41114.04.5 End)
 #====== =================================================================================================== #  ===========
 #       GITR2 CHECKOUT BRANCHES
@@ -966,6 +975,7 @@ function getRemoteName() {                                                      
             fi # eif bNoFilesInWork
         git checkout | awk '{ print "  $0" }'
         fi
+        exit_wCR                                                                                            # .(41116.01.17)
      fi                                                                                                     # .(41114.04.6 End)
 #====== =================================================================================================== #  ===========
 #       GITR2 MAKE REMMOTE
