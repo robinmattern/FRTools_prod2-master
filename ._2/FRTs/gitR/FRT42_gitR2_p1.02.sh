@@ -17,7 +17,7 @@
 ##FD   FRT42_GitR2.sh           |  92817| 11/14/24 18:32|  1367| p1.02`.41114.1830
 ##FD   FRT42_GitR2.sh           |  96740| 11/16/24 11:25|  1423| p1.02`.41116.1125
 ##FD   FRT42_GitR2.sh           |  98952| 11/18/24 10:15|  1444| p1.02`.41118.1015
-##FD   FRT42_GitR2.sh           | 100765| 11/19/24  9:10|  1466| p1.02`.41119.0910
+##FD   FRT42_GitR2.sh           | 101519| 11/19/24  9:57|  1472| p1.02`.41119.0950
 
 ##DESC     .--------------------+-------+---------------+------+-----------------+
 #            This script has usefull GIT functions.
@@ -96,7 +96,8 @@
 # .(41118.02 11/18/24 RAM  8:45a| Fix clone args processing
 # .(41116.01 11/18/24 RAM 10:15a| Fix gitR update issues
 # .(20420.07 11/19/24 RAM  8:10a| Add Version vars
-# .(41119.01 11/19/24 RAM  9:10a| Check for MT gitR clone dir
+# .(41119.01 11/19/24 RAM  9:30a| Check for MT gitR clone dir
+# .(41119.01 11/19/24 RAM  9:50a| Fix clone afteremath
 #
 ##PRGM     +====================+===============================================+
 ##ID 69.600. Main0              |
@@ -104,7 +105,7 @@
 #*/
 #========================================================================================================== #  ===============================  #
 
-        aVDt="Nov 19, 2024 9:10a"; aVer="p1.02"; aVTitle="Useful gitR2 Tools by formR";                                   # .(41103.02.2 RAM Was: gitR1)
+        aVDt="Nov 19, 2024 9:50a"; aVer="p1.02"; aVTitle="Useful gitR2 Tools by formR";                                   # .(41103.02.2 RAM Was: gitR1)
         aVer="$( echo "$0" | awk '{ match( $0, /_[dpstuv][0-9]+\.[0-9]+/ ); print substr( $0, RSTART+1, RLENGTH-1) }' )"  # .(21031.01.1 RAM Add [d...).(20416.03.8 "_p2.02", or _d1.09)
 
         LIB="gitR2"; LIB_LOG=${LIB}_LOG; LIB_USER=${LIB}_USER; Lib=${LIB}; aDir=$(dirname "${BASH_SOURCE}");              # .(41103.02.3).(41102.01.1 RAM Add JPT12_Main2Fns_p1.07.sh Beg).(80923.01.1)
@@ -766,13 +767,13 @@ function getRemoteName() {                                                      
         fi
 
      if [ "${aCloneDir}" == "" ]; then aDir="${aRemoteURL##*/}"; aDir="${aDir/.git/}"; else aDir="${aCloneDir}"; fi # .(41119.01.1 RAM Check if clone dir is empty Beg)
-        sayMsg  "gitR2[762]  aCloneDir : '${aDir}', aBranch: '${aBranch}'" 1
-     if [ -d "${aDir}" ]; then echo "* The folder, '${aDir}', is not empty. Unable to clone repository.";   # .(41119.01.2)
+        sayMsg  "gitR2[769]  aCloneDir : '${aDir}', aBranch: '${aBranch}'" 1
+     if [ -d "${aDir}" ]; then echo -e "\n* The folder, '${aDir}', is not empty. Unable to clone repository.";   # .(41119.01.2)
          exit_wCR;
          fi                                                                                                 # .(41119.01.1 End)
-     if [ -d ".git" ]; then echo "* The current folder is already a repository.";                           # .(41119.01.3)
+     if [ -d ".git" ]; then echo -e "\n* The current folder is already a repository.";                      # .(41119.01.3)
          exit_wCR;
-         fi                                                                                                 # .(41119.01.1 End)
+         fi                                                                                                 # .(41119.01.3 End)
 
      if [ "${bDoit}" != "1" ]; then
 #       echo -e "\n  ${aGIT1}\n  ${aGIT2}"
@@ -782,16 +783,21 @@ function getRemoteName() {                                                      
         echo -e "\n  ${aGIT1}"
         eval        "${aGIT1}" 2>&1 | awk '{ print "  " $0 }'
 #       eval        "${aGIT2}"
+                Sudo find . -type f -name "*.sh" -exec chmod 755 {} +                                       # .(41119.01.4
 
-#    if [ ! -f "${aCloneDir}/*.code-workspace" ]; then                                  ##.(41110.03.1)
-     if [ ! -n "$(ls ${aCloneDir}/*.code-workspace 2>/dev/null)" ]; then                # .(41110.03.1 RAM Add .code-workspace file if needed after clone)
-        aWorkspace_code="{ \"folders\": [ { \"path\": \".\" } ] }"                      # .(41110.03.2)
-        echo "${aWorkspace_code}" >"${aCloneDir}/${aProject}_${aStage}.code-workspace"                      # .(41111.02.1 RAM Don't do it for now, cuz GIT detects it).(41110.03.3)
-        cd "${aCloneDir}"; aTS="$( date +%y%m%d )"; aTS="${aTS:1}"                                          # .(41111.02.2 RAM or commit it)
+        sayMsg  "gitR2[786]  aCloneDir : '${aDir}', aBranch: '${aBranch}'" -1
+        cd "${aDir}"; aTS="$( date +%y%m%d )"; aTS="${aTS:1}"                                               # .(41119.01.5 RAM Move to here).(41111.02.2 RAM or commit it)
+#    if [ ! -f "${aCloneDir}/*.code-workspace" ]; then                                                      ##.(41110.03.1)
+     if [ ! -n "$(ls *.code-workspace 2>/dev/null)" ]; then                                                 # .(41119.01.6 RAM Was ls "${aCloneDir}/*.."").(41110.03.1 RAM Add .code-workspace file if needed after clone)
+        aWorkspace_code="{ \"folders\": [ { \"path\": \".\" } ] }"                                          # .(41110.03.2)
+        sayMsg  "gitR2[791]  Creating '${aProject}_${aStage}.code-workspace'" -1
+        echo "${aWorkspace_code}" >"${aProject}_${aStage}.code-workspace"                                   # .(41119.01.7).(41111.02.1 RAM Don't do it for now, cuz GIT detects it).(41110.03.3)
         echo ""                                                                                             # .(41111.02.3)
         git add "${aProject}_${aStage}.code-workspace"                        2>&1| awk '{ print "  " $0 }' # .(41111.02.4)
         git commit -m ".(${aTS}.01_Add ${aProject}_${aStage}.code-workspace)" 2>&1| awk '{ print "  " $0 }' # .(41111.02.5)
-        fi                                                                              # .(41110.03.4)
+#       git add "${aProject}_${aStage}.code-workspace"                        2>&1| awk '{ print "  " $0 }' ##.(41119.01.8)
+#       git commit -m ".(${aTS}.01_Add ${aProject}_${aStage}.code-workspace)" 2>&1| awk '{ print "  " $0 }' ##(41119.01.9)
+        fi                                                                                                  # .(41110.03.4)
         fi
         exit_wCR
         fi                                                                                                  # .(41104.05.5 End).(41103.06.12 End)
