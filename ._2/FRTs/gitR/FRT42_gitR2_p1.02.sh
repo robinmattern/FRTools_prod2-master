@@ -17,7 +17,7 @@
 ##FD   FRT42_GitR2.sh           |  92817| 11/14/24 18:32|  1367| p1.02`.41114.1830
 ##FD   FRT42_GitR2.sh           |  96740| 11/16/24 11:25|  1423| p1.02`.41116.1125
 ##FD   FRT42_GitR2.sh           |  98952| 11/18/24 10:15|  1444| p1.02`.41118.1015
-##FD   FRT42_GitR2.sh           | 101643| 11/20/24  9:00|  1472| p1.02`.41120.0900
+##FD   FRT42_GitR2.sh           | 101830| 11/20/24 11:45|  1474| p1.02`.41120.1145
 
 ##DESC     .--------------------+-------+---------------+------+-----------------+
 #            This script has usefull GIT functions.
@@ -99,6 +99,7 @@
 # .(41119.01 11/19/24 RAM  9:10a| Check for MT gitR clone dir
 # .(41119.01 11/19/24 RAM  9:50a| Fix clone afteremath
 # .(41120.01 11/20/24 RAM  9:00a| Fix exit_CR
+# .(41120.02 11/20/24 RAM 11:45a| Ignore file permissions
 #
 ##PRGM     +====================+===============================================+
 ##ID 69.600. Main0              |
@@ -106,7 +107,7 @@
 #*/
 #========================================================================================================== #  ===============================  #
 
-        aVDt="Nov 20, 2024 9:00a"; aVer="p1.02"; aVTitle="Useful gitR2 Tools by formR";                                   # .(41103.02.2 RAM Was: gitR1)
+        aVDt="Nov 20, 2024 11:45a"; aVer="p1.02"; aVTitle="Useful gitR2 Tools by formR";                                  # .(41103.02.2 RAM Was: gitR1)
         aVer="$( echo "$0" | awk '{ match( $0, /_[dpstuv][0-9]+\.[0-9]+/ ); print substr( $0, RSTART+1, RLENGTH-1) }' )"  # .(21031.01.1 RAM Add [d...).(20416.03.8 "_p2.02", or _d1.09)
 
         LIB="gitR2"; LIB_LOG=${LIB}_LOG; LIB_USER=${LIB}_USER; Lib=${LIB}; aDir=$(dirname "${BASH_SOURCE}");              # .(41103.02.3).(41102.01.1 RAM Add JPT12_Main2Fns_p1.07.sh Beg).(80923.01.1)
@@ -283,14 +284,15 @@ done
 # ---------------------------------------------------------------------------
 
 function chkUser() {                                                                    # .(41114.07.1 RAM Write it)
-           aGitUserName="$( git config --get user.name )"
-   if [ "${aGitUserName}" == "" ]; then
+         aGitUserName="$( git config --get user.name )"
+ if [ "${aGitUserName}" == "" ]; then
          echo -e "\n  * You haven't told Git who you are. Please do so now."
          aGitUserName="$(  ask4Required "    Enter your name. " )"                      # .(41114.06.3 RAM Use it)
          aGitUserEmail="$( ask4Required "    Enter your email." )"                      # .(41114.06.4 RAM Use it)
-         git config --global user.name "${aGitUserName}"
+         git config --global user.name  "${aGitUserName}"
          git config --global user.email "${aGitUserEmail}"
          fi
+         git config --global core.fileMode false                                        # .(41120.02.1 RAM Ignore file permissions)
     } # eof chkUser                                                                     # .(41114.07.1 End)
 # ---------------------------------------------------------------------------
 
