@@ -17,7 +17,7 @@
 ##FD   FRT42_GitR2.sh           |  92817| 11/14/24 18:32|  1367| p1.02`.41114.1830
 ##FD   FRT42_GitR2.sh           |  96740| 11/16/24 11:25|  1423| p1.02`.41116.1125
 ##FD   FRT42_GitR2.sh           |  98952| 11/18/24 10:15|  1444| p1.02`.41118.1015
-##FD   FRT42_GitR2.sh           | 101519| 11/19/24  9:57|  1472| p1.02`.41119.0950
+##FD   FRT42_GitR2.sh           | 101643| 11/20/24  9:00|  1472| p1.02`.41120.0900
 
 ##DESC     .--------------------+-------+---------------+------+-----------------+
 #            This script has usefull GIT functions.
@@ -96,8 +96,9 @@
 # .(41118.02 11/18/24 RAM  8:45a| Fix clone args processing
 # .(41116.01 11/18/24 RAM 10:15a| Fix gitR update issues
 # .(20420.07 11/19/24 RAM  8:10a| Add Version vars
-# .(41119.01 11/19/24 RAM  9:30a| Check for MT gitR clone dir
+# .(41119.01 11/19/24 RAM  9:10a| Check for MT gitR clone dir
 # .(41119.01 11/19/24 RAM  9:50a| Fix clone afteremath
+# .(41120.01 11/20/24 RAM  9:00a| Fix exit_CR
 #
 ##PRGM     +====================+===============================================+
 ##ID 69.600. Main0              |
@@ -105,7 +106,7 @@
 #*/
 #========================================================================================================== #  ===============================  #
 
-        aVDt="Nov 19, 2024 9:50a"; aVer="p1.02"; aVTitle="Useful gitR2 Tools by formR";                                   # .(41103.02.2 RAM Was: gitR1)
+        aVDt="Nov 20, 2024 9:00a"; aVer="p1.02"; aVTitle="Useful gitR2 Tools by formR";                                   # .(41103.02.2 RAM Was: gitR1)
         aVer="$( echo "$0" | awk '{ match( $0, /_[dpstuv][0-9]+\.[0-9]+/ ); print substr( $0, RSTART+1, RLENGTH-1) }' )"  # .(21031.01.1 RAM Add [d...).(20416.03.8 "_p2.02", or _d1.09)
 
         LIB="gitR2"; LIB_LOG=${LIB}_LOG; LIB_USER=${LIB}_USER; Lib=${LIB}; aDir=$(dirname "${BASH_SOURCE}");              # .(41103.02.3).(41102.01.1 RAM Add JPT12_Main2Fns_p1.07.sh Beg).(80923.01.1)
@@ -161,9 +162,8 @@ function help() {
 # ---------------------------------------------------------------------------
 
 function exit_wCR() {
-  if [ "${OSTYPE:0:6}" == "darwin" ]; then echo ""; fi
-# if [ "${aOS}" != "windows"       ]; then echo ""; fi
-# if [ "$1" == "exit" ]; then exit; fi
+# if [ "${OSTYPE:0:6}" == "darwin"  ]; then echo ""; fi                                 ##.(41120.01.1)
+  if [ "${OS:0:7}"     != "Windows" ]; then echo ""; fi                                 # .(41120.01.1 RAM Fix exit_wCR)
      exit
      }
 # ---------------------------------------------------------------------------

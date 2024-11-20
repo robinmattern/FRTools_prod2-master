@@ -21,6 +21,7 @@
 ##FD   JPT12_Main2Fns.sh        |  46500| 11/02/24 19:31|   632| p1.07`41102.0948
 ##FD   JPT12_Main2Fns.sh        |  49205| 11/14/24 18:33|   644| p1.07`41114.1825
 ##FD   JPT12_Main2Fns.sh        |  50668| 11/15/24 11:57|   659| p1.07`41115.1150
+##FD   JPT12_Main2Fns.sh        |  51417| 11/20/24 09:00|   667| p1.07`41120.0900
 
 ##DESC     .--------------------+-------+---------------+------+-----------------+
 #            Common function for JScriptWare Tools
@@ -94,12 +95,13 @@
 # .(41102.04 11/02/24 RAM  9:48a| Provide some help re sayMsg switches)
 # .(41114.06 11/14/24 RAM  6:25p| Write new function askRequired, rename askDefault
 # .(41115.01 11/15/24 RAM 11:50a| Add THE_SERVER to .bashrc
+# .(41120.01 11/20/24 RAM  9:00a| Add exit_CR
 
 ##PRGM     +====================+===============================================+
 ##ID 69.600. Main               |
 ##SRCE     +====================+===============================================+
 #*/
-#    aVdt_x="Apr 15, 2024 11:50a"; aVtitle_x="JavaScriptware Tools Utility Fns"             # .(21113.05.4 RAM Add aVtitle for Version in Begin)
+#    aVdt_x="Nov 20, 2024 9:00a"; aVtitle_x="JavaScriptware Tools Utility Fns"             # .(21113.05.4 RAM Add aVtitle for Version in Begin)
 #    aVer_x="$( echo $0 | awk '{  match( $0, /_[dpstuv][0-9]+\.[0-9]+/ ); print substr( $0, RSTART+1, RLENGTH-1) }' )"  # .(21031.01.1 RAM Add [d...).(20416.03.8 "_p2.02", or _d1.09)
 
 #          if [ "${LIB}" == "" ]; then LIB=JPT; Lib=RSS; fi                                 ##.(80926.01.1)
@@ -109,8 +111,14 @@
                    LIB_LOG=${LIB}_LOG; LIB_USER=${LIB}_USER                                 # .(80925.01.2
                    LIB_LOG=${!LIB_LOG} LIB_USER=${!LIB_USER}                                # .(80925.01.1 uses Indirect Expansion)
 
-# ----------------------------------------------------------------
 # +------- +------------------ +----------------------------------------------------------- # ------------+ ------------------- # --------------+
+
+function exit_wCR() {                                                                       # .(41120.01.2 RAM Add exit_CR Beg)
+# if [ "${OSTYPE:0:6}" == "darwin"  ]; then echo ""; fi
+  if [ "${OS:0:7}"     != "Windows" ]; then echo ""; fi
+     exit
+     }                                                                                      # .(41120.01.2 End)
+# ---------------------------------------------------------------------------
 
 function  setOS() {
 
@@ -268,8 +276,8 @@ function  Begin() {                                                             
 
           aArgs="";  aWhat=""; bRan=0;
       for aArg in "$@"; do
-          if [ "${aArg/[ *]/}" != "${aArg}" ]; then aArg="\"${aArg}\""; fi;        # Quote arg with "*" or " "
-          if [ "${aArg}"       != "${aCmd}" ]; then aArgs="${aArgs} ${aArg}"; fi   # delete "${aCmd} "
+          if [ "${aArg/[ *]/}" != "${aArg}" ]; then aArg="\"${aArg}\""; fi;             # Quote arg with "*" or " "
+          if [ "${aArg}"       != "${aCmd}" ]; then aArgs="${aArgs} ${aArg}"; fi        # delete "${aCmd} "
           done
 
   if [ "${aCmd}"     == "help" ]; then bTest=0; fi
@@ -285,9 +293,9 @@ function  Begin() {                                                             
      echo ""
 #    echo "  Robin's Shell Scripts Version: ${aVer}   ($( date "+%b %-d %Y %H:%M" ))"                       ##.(20429.04.1)
      echo "  ${aVtitle}: ${aVer}   (${aVdt})"                                                               # .(21113.05.2)
-     if [ "${1:0:3}" == "-ve" ]; then echo "    $0"; fi                                                     # .(20620.01.1 RAM)
-     echo ""
-     exit
+#    if [ "${1:0:3}" == "-ve" ]; then echo "    $0"; fi                                                     ##.(41120.01.3).(20620.01.1 RAM)
+#    echo ""; exit                                                                                          ##.(41120.01.3)
+     exit_wCR                                                                                               # .(41120.01.3)
      fi                                                                                                     # .(21113.05.1 RAM End)
 # if [ "${aCmd}" == "version"  ]; then echo ""; echo $0 | awk '{ gsub( /.+-v|.sh/, "" ); print "  JPT Version: " $0 }'; echo ""; exit; fi
 # if [ "${aCmd}" == "version"  ]; then echo ""; echo $0 | awk '{ gsub( /.+-v|.sh/, "" ); print "  '$LIB' Version: "          $0      }'; echo ""; exit; fi  # .(80923.02.4 Was "JPT-..)
