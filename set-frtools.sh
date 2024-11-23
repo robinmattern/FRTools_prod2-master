@@ -9,6 +9,7 @@
 ##FD         set-frtools.sh     |  17992| 10/30/24 23:52|   355| v1.05`41030.2352
 ##FD         set-frtools.sh     |  18548| 10/31/24  7:15|   360| v1.05`41031.0615
 ##FD         set-frtools.sh     |  18894| 11/04/24 12:28|   366| v1.05`41104.1225
+##FD         set-frtools.sh     |  19164| 11/23/24  8:51|   369| v1.05`41123.0850
 
 ##DESC     .--------------------+-------+-----------------+------+---------------+
 #            Create ._0/bin folder and copy all command scripts there as well as
@@ -40,6 +41,7 @@
 # .(41030.06 10/30/24 RAM 11:52p| Fix doit and THE_SERVER for profile
 # .(41031.02 10/31/24 RAM  6:15a| Add set-frtools command doit
 # .(41104.03 11/04/24 RAM 12:25p| Set premissions for all scripts)
+# .(41123.01 11/23/24 RAM  8:50a| Change setopt for MacOS
 
 ##PRGM     +====================+===============================================+
 ##ID 69.600. Main0              |
@@ -47,7 +49,7 @@
 #*/
 #========================================================================================================== #  ===============================  #
 
-  aVer="v1.05\`41031.0615"
+  aVer="v1.05\`41123.0850"
 
   echo ""
 
@@ -187,11 +189,12 @@ function setBashrc() {
      echo "  }"                                             >>"${aBashrc}"
      echo ""                                                >>"${aBashrc}"
   if [ "${aOS}" != "darwin" ]; then                                                     # .(41030.06.1 Beg)
-     echo "setopt PROMPT_SUBST"                             >>"${aBashrc}"
+     echo "  setopt PROMPT_SUBST"                           >>"${aBashrc}"
      fi
   if [ "${aOS}" == "darwin" ]; then
-     echo "PROMPT_SUBST=true"                               >>"${aBashrc}"
-     echo "setopt prompt_subst"                             >>"${aBashrc}"
+     echo "  PROMPT_SUBST=true"                             >>"${aBashrc}"
+     echo "# setopt prompt_subst"                           >>"${aBashrc}"
+     echo "  set -o PROMPT_SUBST"                           >>"${aBashrc}"              # .(41123.01 RAM Change setopt for MacOS)
      fi                                                                                 # .(41030.06.1 End)
      echo "PROMPT='%n@%m %1~\$(git_branch_name): '"         >>"${aBashrc}"
      echo ""                                                >>"${aBashrc}"
