@@ -33,6 +33,7 @@
 ##FD   FRT10_Main0.sh           |  49627| 11/12/24 10:00|   726| p1.09`41112.1000
 ##FD   FRT10_Main0.sh           |  50055| 11/13/24 10:01|   728| p1.09`41113.1000
 ##FD   FRT10_Main0.sh           |  51713| 11/15/24 12:10|   745| p1.09`41115.1210
+##FD   FRT10_Main0.sh           |  50507| 11/23/24 10:45|   730| p1.09`41123.1045
 
 ##DESC     .--------------------+-------+---------------+------+-----------------+
 #            Use the commands in this script to manage FormR app resources.
@@ -106,7 +107,8 @@
 # .(41112.05 11/12/24 RAM  9:05a| Remove git git from install command
 # .(41112.06 11/12/24 RAM 10:00a| Add / fix Sudo
 # .(41113.01 11/13/24 RAM 10:00a| Delete right .code-workspace file
-# .(41107.01 11/13/24 RAM 12:10p| Deal with updating dirty repo
+# .(41107.01 11/15/24 RAM 12:10p| Deal with updating dirty repo
+# .(41123.04 11/23/24 RAM 10:45p| Use gitr update
 
 ##PRGM     +====================+===============================================+
 ##ID 69.600. Main0              |
@@ -114,7 +116,7 @@
 #*/
 #========================================================================================================== #  ===============================  #
 
-     aVdt="Nov 15, 2024 12:10p"; aVtitle="formR Tools"                                                      # .(21113.05.8 RAM Add aVtitle for Version in Begin)
+     aVdt="Nov 23, 2024 10:45p"; aVtitle="formR Tools"                                                      # .(21113.05.8 RAM Add aVtitle for Version in Begin)
      aVer="$( echo $0 | awk '{  match( $0, /_[dpstuv][0-9]+\.[0-9]+/ ); print substr( $0, RSTART+1, RLENGTH-1) }' )"  # .(21031.01.1 RAM Add [d...).(20416.03.8 "_p2.02", or _d1.09)
 
      LIB="FRT"; LIB_LOG=${LIB}_LOG; LIB_USER=${LIB}_USER; Lib=${LIB}; aDir=$( dirname "${BASH_SOURCE}" );   # .(41027.01.1 RAM).(80923.01.1)
@@ -592,26 +594,9 @@ function Help( ) {
 
         echo -e "\n  Updating FRT in $( dirname $0 )/*"
         cd "$( dirname $0 )"
-                aBranch="$( git symbolic-ref --short HEAD )"                                                # .(41107.01.6)
-                bFilesInWork="$( git status | awk '/working tree clean/ { b = "1" }; End { print b ? b : 0} ' )"
-        if [ "${bFilesInWork}" != "1" ]; then                                                               # .(41107.01.7 RAM Deal with updating dirty repo Beg)
-            echo -e "\n* The current branch ${aBranch} has uncommitted files."
-            git status --short | awk '{ print "  " $0 }'
-            aTS=$(date +%y%m%d.%H); aTS="${aTS:1}"
-            aStashIt="git stash -u save \".(${aTS} Stash of $(git status --short | wc -l) files\"\n      "
-          else
-            aStashIt=""
-            fi # eif bNoFilesInWork                                                                         # .(41107.01.7 End)
-
-        if [ "${bDoit}" == "1" ]; then
-#                        git pull                                                                           ##.(41107.01.8)
-                         ${aStashIt}git fetch origin                                                        # .(41107.01.8)
-                         git reset --hard origin/${aBranch}                                                 # .(41107.01.9)
-        else
-#       echo -e "\n      git pull"                                                                          ##.(41107.01.10)
-        echo -e "\n      ${aStashIt}git fetch origin"                                                       # .(41107.01.10)
-        echo      "      git reset --hard origin/${aBranch}  # add -doit to doit"                           # .(41107.01.11)
-          fi
+        aBranch="$( git symbolic-ref --short HEAD )"                                                        # .(41107.01.6)
+        gitr update ${aBranch}                                                                              # .(41123.04.1 RAM Use gitr update)
+        fi
 
      ${aLstSp}; exit
      fi # eoc Update Command                                                                                # .(41107.01.5 End)
@@ -643,7 +628,7 @@ function copyFile() {                                                           
         sayMsg    "FRT40[616]  Install:   'aArg2: ${aArg2}' aArg3: '${aArg3}', bDoit: '${bDoit}', bDebug: '${bDebug}', bQuiet: '${bQuiet}'" 11
 
         if [ "${aArg2}" == "" ]; then
-        echo -e "\n* Please provide what to install, e.g. ALTools or AIDocs."
+        echo -e "\n* Please provide repo to install, e.g. ALTools or AIDocs."
         exit;  ${aLstSp}
         fi
 #       ---------------------------------------------------------------------
