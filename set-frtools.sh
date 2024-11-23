@@ -9,7 +9,7 @@
 ##FD         set-frtools.sh     |  17992| 10/30/24 23:52|   355| v1.05`41030.2352
 ##FD         set-frtools.sh     |  18548| 10/31/24  7:15|   360| v1.05`41031.0615
 ##FD         set-frtools.sh     |  18894| 11/04/24 12:28|   366| v1.05`41104.1225
-##FD         set-frtools.sh     |  19381| 11/23/24  9:20|   371| v1.05`41123.0920
+##FD         set-frtools.sh     |  19574| 11/23/24  9:46|   373| v1.05`41123.0945
 
 ##DESC     .--------------------+-------+-----------------+------+---------------+
 #            Create ._0/bin folder and copy all command scripts there as well as
@@ -42,7 +42,8 @@
 # .(41031.02 10/31/24 RAM  6:15a| Add set-frtools command doit
 # .(41104.03 11/04/24 RAM 12:25p| Set premissions for all scripts
 # .(41123.01 11/23/24 RAM  8:10a| Change setopt for MacOS
-# .(41120.02 11/23/24 RAM  9:20a| Ignore file permissions for this repo
+# .(41120.02 11/23/24 RAM  9:15a| Ignore file permissions for this repo
+# .(41120.02 11/23/24 RAM  9:45a| Must be in FRTools repo
 
 ##PRGM     +====================+===============================================+
 ##ID 69.600. Main0              |
@@ -50,7 +51,7 @@
 #*/
 #========================================================================================================== #  ===============================  #
 
-  aVer="v1.05\`41123.0920"
+  aVer="v1.05\`41123.0945"
 
   echo ""
 
@@ -330,6 +331,7 @@ function cpyToBin() {
 # alias gitr="${aJPTs_JDir}/gitr";      echo "  Done: created alias gitr   = ${aJPTs_JDir}/gitr"
 # alias anyllm="${aJPTs_JDir}/anyllm";  echo "  Done: created alias anyllm = ${aJPTs_JDir}/anyllm"
 
+   cd "${aRepo_Dir}"                                                                    # .(41120.02.3 RAM Need to be in FRTools repo)
    git config core.fileMode false                                                       # .(41120.02.2 RAM Ignore file permissions in this repo)
   Sudo find . -type f -name "*.sh" -exec chmod 755 {} \;                                # .(41104.03.1 RAM Set premissions for all scripts)
   }
