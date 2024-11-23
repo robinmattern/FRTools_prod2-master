@@ -18,7 +18,7 @@
 ##FD   FRT42_GitR2.sh           |  96740| 11/16/24 11:25|  1423| p1.02`.41116.1125
 ##FD   FRT42_GitR2.sh           |  98952| 11/18/24 10:15|  1444| p1.02`.41118.1015
 ##FD   FRT42_GitR2.sh           | 101830| 11/20/24 11:45|  1474| p1.02`.41120.1145
-##FD   FRT42_GitR2.sh           | 102017| 11/23/24  9:20|  1476| p1.02`.41123.0920
+##FD   FRT42_GitR2.sh           | 103700| 11/23/24 10:06|  1498| p1.02`.41123.1000
 
 ##DESC     .--------------------+-------+---------------+------+-----------------+
 #            This script has usefull GIT functions.
@@ -102,6 +102,7 @@
 # .(41120.01 11/20/24 RAM  9:00a| Fix exit_CR
 # .(41120.02 11/20/24 RAM 11:45a| Ignore file permissions globally
 # .(41120.02 11/23/24 RAM  9:20a| Don't Ignore file permissions globally
+# .(41123.02 11/23/24 RAM 10:00a| Add gitr status command
 #
 ##PRGM     +====================+===============================================+
 ##ID 69.600. Main0              |
@@ -109,7 +110,7 @@
 #*/
 #========================================================================================================== #  ===============================  #
 
-        aVDt="Nov 23, 2024 9:20a"; aVer="p1.02"; aVTitle="Useful gitR2 Tools by formR";                                  # .(41103.02.2 RAM Was: gitR1)
+        aVDt="Nov 23, 2024 10:00a"; aVer="p1.02"; aVTitle="Useful gitR2 Tools by formR";                                  # .(41103.02.2 RAM Was: gitR1)
         aVer="$( echo "$0" | awk '{ match( $0, /_[dpstuv][0-9]+\.[0-9]+/ ); print substr( $0, RSTART+1, RLENGTH-1) }' )"  # .(21031.01.1 RAM Add [d...).(20416.03.8 "_p2.02", or _d1.09)
 
         LIB="gitR2"; LIB_LOG=${LIB}_LOG; LIB_USER=${LIB}_USER; Lib=${LIB}; aDir=$(dirname "${BASH_SOURCE}");              # .(41103.02.3).(41102.01.1 RAM Add JPT12_Main2Fns_p1.07.sh Beg).(80923.01.1)
@@ -130,9 +131,7 @@ function help() {
 #    echo ""
      echo "    clone [name] [stagedir]                    Clone files from remote name to stagedir"         # .(41103.06.1)
      echo "    clone branch [name] [stagedir] [branch]    Clone files from remote name/branch to stagedir"  # .(41103.06.2)
-     echo "    pull  [name] [branch]                      Pull files from remote name and branch"           # .(41103.06.3)
-     echo "    pull  [name] [branch] [-f]                 Overwrite files from remote name and branch"      # .(41103.06.3)
-     echo "    push  [name] [branch]                      Push files to remote name and branch"             # .(41103.06.4)
+     echo "    Status                                     Show uncommitted files in working tree, if any"   # .(41123.02.1)
      echo "    Show commit  [nCnt|aHash]                  Show files for commit -nCnt or aHash"             # .(41030.05.1)
      echo "    List commits [nCnt]                        List last nCnt commits"                           # .(41031.03.1).(51030.05.1)
      echo "    List remotes                               List current remote repositories"                 # .(41031.03.2)
@@ -143,6 +142,9 @@ function help() {
      echo "    Add remote  {name} [{acct}] [{repo}] [-d]  Add new origin remote repository"
      echo "    Make remote {name} [{acct}] [{repo}] [-d]  Create new remote repository in github"
      echo "    Remove remote [{name}]               [-d]  Remove origin or {name} remote"
+     echo "    pull  [name] [branch]                      Pull files from remote name and branch"           # .(41103.06.3)
+     echo "    pull  [name] [branch] [-f]                 Overwrite files from remote name and branch"      # .(41103.06.3)
+     echo "    push  [name] [branch]                      Push files to remote name and branch"             # .(41103.06.4)
      echo "    Replace [local] [{name}]             [-d]  Replace all files from origin or remote {name}"   # .(41031.07.1)
      echo "    Update [{branch}] [{name}]      [-f] [-d]  Update all files from {name} [-f for no stash]"   # .(41116.01.1)
      echo "    Backup local                               Copy local repo to ../ZIPs"
@@ -231,6 +233,7 @@ done
 # ---------------------------------------------------------------------------
 
   if [ "$1" == "ini" ];                      then aCmd="init";         fi               # .(41103.03.2)
+  if [ "$1" == "sta" ];                      then aCmd="status";       fi                                   # .(41123.02.2)
 
   if [ "$1" == "clo" ];                      then aCmd="cloneRemote";  fi               # .(41103.06.5)
   if [ "$1" == "clo" ] && [ "$2" == "rem" ]; then aCmd="cloneRemote";  fi               # .(41103.06.6)
@@ -833,6 +836,25 @@ function getRemoteName() {                                                      
   if [ "${aCmd}" == "" ]; then help; fi
 
         chkUser                                                                                             # .(41114.07.3)
+
+#====== =================================================================================================== #  ===========
+#       gitR Status Command                                                                                 # .(41123.02.3)
+#====== =================================================================================================== #
+
+        sayMsg    "FRT40[803] Update Command" sp;
+
+  if [ "${aCmd}" == "status" ]; then                                                                        # .(41123.02.4 RAM Add Status Command Beg)
+                bFilesInWork="$( git status | awk '/working tree clean/ { b = "1" }; End { print b ? b : 0} ' )"
+        if [ "${bFilesInWork}" != "1" ]; then
+            nCnt="$(git status --short | wc -l)"; s="s"; if [ "${nCnt}" == "1" ]; then s=""; fi
+            echo -e "\n* The current branch, '${aBranch}', has ${nCnt} uncommitted file${s}."
+            git status --short | awk '{ print "   " $1 "  " substr( $0, 4) }'
+         else
+            echo -e "\n  The current branch, '${aBranch}', has a clean working tree."
+            fi
+        exit_wCR  #${aLstSp}; exit
+     fi # eoc Status Command                                                                                # .(41123.02.4 End)
+#    -- --- ---------------  =  ------------------------------------------------------  #  ---------------- #
 
 #====== =================================================================================================== #  ===========
 #       gitR Update Command                                                                                 # .(41116.01.3)
