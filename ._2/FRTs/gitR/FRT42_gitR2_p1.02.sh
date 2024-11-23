@@ -18,7 +18,7 @@
 ##FD   FRT42_GitR2.sh           |  96740| 11/16/24 11:25|  1423| p1.02`.41116.1125
 ##FD   FRT42_GitR2.sh           |  98952| 11/18/24 10:15|  1444| p1.02`.41118.1015
 ##FD   FRT42_GitR2.sh           | 101830| 11/20/24 11:45|  1474| p1.02`.41120.1145
-##FD   FRT42_GitR2.sh           | 103700| 11/23/24 10:06|  1498| p1.02`.41123.1000
+##FD   FRT42_GitR2.sh           | 104123| 11/23/24 10:20|  1501| p1.02`.41123.1020
 
 ##DESC     .--------------------+-------+---------------+------+-----------------+
 #            This script has usefull GIT functions.
@@ -103,6 +103,7 @@
 # .(41120.02 11/20/24 RAM 11:45a| Ignore file permissions globally
 # .(41120.02 11/23/24 RAM  9:20a| Don't Ignore file permissions globally
 # .(41123.02 11/23/24 RAM 10:00a| Add gitr status command
+# .(41123.03 11/23/24 RAM 10:20a| Fix git status awk END
 #
 ##PRGM     +====================+===============================================+
 ##ID 69.600. Main0              |
@@ -110,7 +111,7 @@
 #*/
 #========================================================================================================== #  ===============================  #
 
-        aVDt="Nov 23, 2024 10:00a"; aVer="p1.02"; aVTitle="Useful gitR2 Tools by formR";                                  # .(41103.02.2 RAM Was: gitR1)
+        aVDt="Nov 23, 2024 10:20a"; aVer="p1.02"; aVTitle="Useful gitR2 Tools by formR";                                  # .(41103.02.2 RAM Was: gitR1)
         aVer="$( echo "$0" | awk '{ match( $0, /_[dpstuv][0-9]+\.[0-9]+/ ); print substr( $0, RSTART+1, RLENGTH-1) }' )"  # .(21031.01.1 RAM Add [d...).(20416.03.8 "_p2.02", or _d1.09)
 
         LIB="gitR2"; LIB_LOG=${LIB}_LOG; LIB_USER=${LIB}_USER; Lib=${LIB}; aDir=$(dirname "${BASH_SOURCE}");              # .(41103.02.3).(41102.01.1 RAM Add JPT12_Main2Fns_p1.07.sh Beg).(80923.01.1)
@@ -844,7 +845,7 @@ function getRemoteName() {                                                      
         sayMsg    "FRT40[803] Update Command" sp;
 
   if [ "${aCmd}" == "status" ]; then                                                                        # .(41123.02.4 RAM Add Status Command Beg)
-                bFilesInWork="$( git status | awk '/working tree clean/ { b = "1" }; End { print b ? b : 0} ' )"
+            bFilesInWork="$( git status | awk '/working tree clean/ { b = 1 }; END { print b ? b : 0 }' )"  # .(41123.03.1 RAM Was End)
         if [ "${bFilesInWork}" != "1" ]; then
             nCnt="$(git status --short | wc -l)"; s="s"; if [ "${nCnt}" == "1" ]; then s=""; fi
             echo -e "\n* The current branch, '${aBranch}', has ${nCnt} uncommitted file${s}."
@@ -882,11 +883,12 @@ function getRemoteName() {                                                      
 
 #       echo -e "\n  Updating repo, '${aRemote_name}', for branch, '${aBranch}', from remote, '${aRepo}'."; # .(41116.01.12 RAM Moved to below)
 #         cd    "$(  dirname $0  )"
-#               aBranch="$( git symbolic-ref --short HEAD )"                                                # .(41116.01.4)
-                bFilesInWork="$( git status | awk '/working tree clean/ { b = "1" }; End { print b ? b : 0} ' )"
+#           aBranch="$( git symbolic-ref --short HEAD )"                                                    # .(41116.01.4)
+            bFilesInWork="$( git status | awk '/working tree clean/ { b = 1 }; END { print b ? b : 0 }' )"  # .(41123.03.2)
         if [ "${bFilesInWork}" != "1" ]; then                                                               # .(41116.01.5).(41107.01.7 RAM Deal with updating dirty repo Beg)
             aVerb="will"; if [ "${bForce}" == "1" ]; then aVerb="won't"; fi
-            echo -e "\n* The current branch, '${aBranch}', has uncommitted files, that ${aVerb} be stashed."
+            nCnt="$(git status --short | wc -l)"; s="s"; if [ "${nCnt}" == "1" ]; then s=""; fi             # .(41123.03.3)
+            echo -e "\n* The current branch, '${aBranch}', has ${nCnt} uncommitted file${s}, that ${aVerb} be stashed."  # .(41123.03.4)
             git status --short | awk '{ print "   " $1 "  " substr( $0, 4) }'
             aTS=$(date +%y%m%d.%H); aTS="${aTS:1}"
             aNum="$(git status --short | wc -l | awk '{ gsub( " ", "" ); print }' )";                       # .(41116.01.13)
@@ -1014,9 +1016,10 @@ function getRemoteName() {                                                      
         echo ""                                                                                             # .(41114.05.1
         git branch -vva | awk '{ print "  " $0 }'                                                           # .(41114.05.2 RAM Display branches if none given)
       else
-                bFilesInWork="$( git status | awk '/working tree clean/ { b = "1" }; End { print b ? b : 0} ' )"
+            bFilesInWork="$( git status | awk '/working tree clean/ { b = 1 }; END { print b ? b : 0 }' )"  # .(41123.03.5)
         if [ "${bFilesInWork}" != "1" ]; then
-            echo -e "\n* The current branch ${aBranch} has uncommitted files."
+            nCnt="$(git status --short | wc -l)"; s="s"; if [ "${nCnt}" == "1" ]; then s=""; fi             # .(41123.03.6)
+            echo -e "\n* The current branch, '${aBranch}', has ${nCnt} uncommitted file${s}."               # .(41123.03.7)
             git status --short | awk '{ print "  " $0 }'
             ${aLstSp}; exit
             fi # eif bNoFilesInWork
