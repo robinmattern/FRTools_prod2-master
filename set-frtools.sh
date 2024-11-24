@@ -44,6 +44,7 @@
 # .(41123.01 11/23/24 RAM  8:10a| Change setopt for MacOS
 # .(41120.02 11/23/24 RAM  9:15a| Ignore file permissions for this repo
 # .(41120.02 11/23/24 RAM  9:45a| Must be in FRTools repo
+# .(41123.01 11/23/24 RAM 17:15p| Change prompt : to # 
 
 ##PRGM     +====================+===============================================+
 ##ID 69.600. Main0              |
@@ -196,9 +197,9 @@ function setBashrc() {
   if [ "${aOS}" == "darwin" ]; then
      echo "  PROMPT_SUBST=true"                             >>"${aBashrc}"
      echo "# setopt prompt_subst"                           >>"${aBashrc}"
-     echo "  set -o PROMPT_SUBST"                           >>"${aBashrc}"              # .(41123.01 RAM Change setopt for MacOS)
+     echo "  set -o PROMPT_SUBST"                           >>"${aBashrc}"              # .(41123.01.1 RAM Change setopt for MacOS)
      fi                                                                                 # .(41030.06.1 End)
-     echo "PROMPT='%n@%m %1~\$(git_branch_name): '"         >>"${aBashrc}"
+     echo "PROMPT='%n@%m %1~\$(git_branch_name)# '"         >>"${aBashrc}"              # .(41123.01.2 RAM Was {prompt}:)
      echo ""                                                >>"${aBashrc}"
      fi
      echo "# Add timestamps and user to history"            >>"${aBashrc}"

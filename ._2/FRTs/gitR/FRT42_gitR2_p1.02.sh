@@ -105,7 +105,7 @@
 # .(41123.02 11/23/24 RAM 10:00a| Add gitr status command
 # .(41123.03 11/23/24 RAM 10:20a| Fix git status awk END
 # .(41123.05 11/23/24 RAM  5:30p| Update a different remote/branch
-# .(41123.07 11/23/24 RAM  6:30p| Add List nCnt commits from nBeg
+# .(41123.07 11/23/24 RAM  6:30p| Add List nCnt commits from nBeg 
 # .(41123.08 11/23/24 RAM  7:00p| Add Show nCnt commits from nBeg
 #
 ##PRGM     +====================+===============================================+
