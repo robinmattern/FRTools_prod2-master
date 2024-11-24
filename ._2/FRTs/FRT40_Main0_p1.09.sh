@@ -34,6 +34,7 @@
 ##FD   FRT10_Main0.sh           |  50055| 11/13/24 10:01|   728| p1.09`41113.1000
 ##FD   FRT10_Main0.sh           |  51713| 11/15/24 12:10|   745| p1.09`41115.1210
 ##FD   FRT10_Main0.sh           |  50875| 11/23/24 19:00|   731| p1.09`41123.1045
+##FD   FRT10_Main0.sh           |  56445| 11/24/24 14:45|   817| p1.09`41124.1445
 
 ##DESC     .--------------------+-------+---------------+------+-----------------+
 #            Use the commands in this script to manage FormR app resources.
@@ -109,6 +110,10 @@
 # .(41113.01 11/13/24 RAM 10:00a| Delete right .code-workspace file
 # .(41107.01 11/15/24 RAM 12:10p| Deal with updating dirty repo
 # .(41123.04 11/23/24 RAM 10:45a| Use gitr update
+# .(41124.02 11/24/24 RAM  9:50a| Add install "" for set-frtools command
+# .(41124.03 11/24/24 RAM 11:30a| Add Install AIDocs command
+# .(41124.04 11/24/24 RAM 11:45a| Fix Install ALTools command
+# .(41124.05 11/24/24 RAM 14:45a| Add netr command
 
 ##PRGM     +====================+===============================================+
 ##ID 69.600. Main0              |
@@ -116,7 +121,7 @@
 #*/
 #========================================================================================================== #  ===============================  #
 
-     aVdt="Nov 23, 2024 10:45a"; aVtitle="formR Tools"                                                      # .(21113.05.8 RAM Add aVtitle for Version in Begin)
+     aVdt="Nov 24, 2024 14:45a"; aVtitle="formR Tools"                                                      # .(21113.05.8 RAM Add aVtitle for Version in Begin)
      aVer="$( echo $0 | awk '{  match( $0, /_[dpstuv][0-9]+\.[0-9]+/ ); print substr( $0, RSTART+1, RLENGTH-1) }' )"  # .(21031.01.1 RAM Add [d...).(20416.03.8 "_p2.02", or _d1.09)
 
      LIB="FRT"; LIB_LOG=${LIB}_LOG; LIB_USER=${LIB}_USER; Lib=${LIB}; aDir=$( dirname "${BASH_SOURCE}" );   # .(41027.01.1 RAM).(80923.01.1)
@@ -188,6 +193,10 @@ function Help( ) {
      echo "         gitR Clone"                                                         # .(21027.04.1 RAM Add)
      echo "         gitR Pull"                                                          # .(21119.01.1 RAM Add)
      echo ""
+     echo "     FRT netR [ help ]                   Manage Git Local and Remote Repos"  # .(41124.05.1 RAM Add netR Command Beg)
+     echo "         netR List"                                                          # .(41124.05.2)
+     echo "         netR Clone"                                                         # .(41124.05.1 End)
+     echo ""
      echo "     FRT dokR [ help ]                   Manage Docker Containers"           # .(30716.01.2 RAM Beg Add)
      echo "         dokR [ but | build ]"                                               # .(30716.01.3)
      echo "         dokR [ psa | ps -a ]"                                               # .(30716.01.4)
@@ -228,6 +237,7 @@ function Help( ) {
      echo "             RSS DirList (DirList)"                                          # .(21107.02.4)
      echo ""                                                                                                # .(41107.01.2)
      echo "    FRT Update [-doit]                   Update [ {FRTools} ]"                                   # .(41107.01.3)
+     echo "        Install                          Run ./set-frtools.sh"                                   # .(41124.02.1)
      echo "        Install [ALTools] [-doit]        Install ALTools"                                        # .(41111.01.2)
      echo "                [AIDocs] [-doit]         Install AIDocs"                                         # .(41111.01.3)
 
@@ -285,6 +295,7 @@ function Help( ) {
 #    getCmd    "he"             "Help"
      getCmd1   "doc"     ""     "DOC"     1                                                                 # .(21128.02.1)
      getCmd1   "proxy"   ""     "proX"                                                                      # .(20620.03.1 RAM).(20620.10.1 RAM was Proxy)(20622.2.5 RAM Beg Use getCmd1)
+     getCmd1   "netr"    ""     "netR"  # 1                                                                 # .(41124.05.3)
      getCmd1   "dokr"    ""     "dokR"  # 1                                                                 # .(30716.01.7)
      getCmd1   "gitr1"   ""     "gitR1" # 1                                                                 # .(41026.06.1 RAM Add gitR1, my lastest)
      getCmd1   "gitr"    ""     "gitR2" # 1                                                                 # .(41026.06.2 RAM Add gitR2, the original).(20620.10.2 RAM was GitR)
@@ -319,7 +330,8 @@ function Help( ) {
 #
 #====== =================================================================================================== #
 
-#       sayMsg "FRT40[287]  JPT Commands (${aArg1:0:3}) aCmd: '${aCmd}', \$@: '$@'" 1
+        sayMsg "FRT40[324]  JPT  Commands (${aArg2:0:3}); aCmd: '${aCmd}'" -1
+#     echo "    FRT40[325]  JPT  Commands (${aArg2:0:3}); aCmd: '${aCmd}', \$@: [$@]"
 
      if [ "${aCmd:0:3}" == "JPT" ]; then
 
@@ -362,9 +374,10 @@ function Help( ) {
 #
 #====== =================================================================================================== #
 
-#       sayMsg "FRT40[322]  gitR Commands (${aArg1:0:3}) aCmd: '${aCmd}'" 1                                 # .(20429.03.2 Beg RAM Added)
+        sayMsg "FRT40[368]  gitR Commands (${aArg2:0:3}); aCmd: '${aCmd}'" -1
+#     echo "    FRT40[369]  gitR Commands (${aArg2:0:3}); aCmd: '${aCmd}', \$@: [$@]"
 
-     if [ "${aCmd:0:4}" == "gitR" ]; then                                                                   #  (42026.01.x RAM Was just gitR)
+     if [ "${aCmd:0:4}" == "gitR" ]; then                                                                   # .(20429.03.2 RAM Add gitR Beg).(42026.01.x RAM Was just gitR)
 
         sayMsg "FRT40[339]  gitR:  '${aArg1}' '${aArg2}' '${aArg3}' '${aArg4}', bDoit: '${bDoit}', bDebug: '${bDebug}', bQuiet: '${bQuiet}'" -1
         aGitR_Ver="gitR1_p1.01"; if [ "${aArg1}" == "gitr2" ]; then aGitR_Ver="gitR2_p2.06"; fi             # .(41026.06.x)
@@ -380,9 +393,31 @@ function Help( ) {
 
         ${aLstSp}
         exit
-     fi # eoc gitR Commands
+     fi # eoc gitR Commands                                                                                 # .(20429.03.2 End)
 #    -- --- ---------------  =  ------------------------------------------------------  #  ---------------- #
 
+#====== =================================================================================================== #  ===========
+
+# ------------------------------------------------------------------------------------                      # .(41124.05.4)
+#
+#       NETR Commands
+#
+#====== =================================================================================================== #
+
+#       sayMsg "FRT40[407]  dokS Commands (${aArg2:0:3})" -1                                                # .(41124.05.5 RAM Add netR)
+
+     if [ "${aCmd}"     == "netR" ]; then
+
+        sayMsg "FRT40[411]  netR: '${aArg1}' '${aArg2}' '${aArg3}' '${aArg4}', bDoit: '${bDoit}', bDebug: '${bDebug}', bQuiet: '${bQuiet}'" 1
+        sayMsg "FRT40[412]  netR script: $( dirname $0 )/dokR/FRT25_dokR1.sh";
+
+        shift
+       "$( dirname $0 )/netR/FRT44_netR1.sh"  "$@"
+
+        ${aLstSp}
+        exit
+     fi # eoc netR Commands                                                                                 # .(41124.05.5 End)
+#    -- --- ---------------  =  ------------------------------------------------------  #  ---------------- #
 #====== =================================================================================================== #  ===========
 
 # ------------------------------------------------------------------------------------                      # .(30716.01.8 Beg Add)
@@ -486,7 +521,7 @@ function Help( ) {
 #
 #====== =================================================================================================== #
 
-        sayMsg    "FRT40[438]  Set Var Command" sp;
+        sayMsg    "FRT40[493]  Set Var Command" sp -1;
 
   if [ "${aCmd}" == "Set Var" ]; then
 
@@ -527,7 +562,7 @@ function Help( ) {
 
         if [ "$?" != "1" ]; then echo -e "\n    Add -doit to the command line to add the path to FRTools."; fi
         ${aLstSp}; exit
-        fi
+        fi # eif not bDoit
 #       --------------------------------------------------------
 
      if [ "${bDoit}" == "1" ] ; then
@@ -571,7 +606,7 @@ function Help( ) {
      fi # eoc set path
 #       --------------------------------------------------------
 
-        sayMsg    "FRT40[522]  set var path ${aArg2} '${aArg3}' '${aArg4}'" sp;
+        sayMsg    "FRT40[578]  set var path ${aArg2} '${aArg3}' '${aArg4}'" sp -1;
   if [ "${aArg2}" == "path" ]; then                                                                         # .(21120.03.6 RAM Beg ?? Why here s.b. rss info var set aVar aVal)
        "${aInfoScr}" vars set -doit "${aArg3}" "${aArg4}"
      fi # eoc set var
@@ -587,7 +622,7 @@ function Help( ) {
 #
 #====== =================================================================================================== #
 
-        sayMsg    "FRT40[576] Update Command" sp;
+        sayMsg    "FRT40[594]  Update Command" sp -1;
 
   if [ "${aCmd}" == "Update" ]; then
         sayMsg    "FRT40[580]  Update:   '${aArg1}' '${aArg2}' '${aArg3}' '${aArg4}', bDoit: '${bDoit}', bDebug: '${bDebug}', bQuiet: '${bQuiet}'" -1
@@ -597,9 +632,8 @@ function Help( ) {
 #       echo "pwd: $( pwd )"; exit
         aBranch="$( git symbolic-ref --short HEAD )"                                                        # .(41107.01.6)
         gitr update ${aBranch}                                                                              # .(41123.04.4 RAM Use gitr update)
-        fi
 
-     ${aLstSp}; exit
+        ${aLstSp}; exit
      fi # eoc Update Command                                                                                # .(41107.01.5 End)
 #    -- --- ---------------  =  ------------------------------------------------------  #  ---------------- #
 
@@ -607,16 +641,18 @@ function Help( ) {
 #       Install Command                                                                                     # .(41111.01.5 RAM Add Install Command beg)
 #====== =================================================================================================== #
 
-        sayMsg    "FRT40[601]  Install Command" sp;
+        sayMsg    "FRT40[613]  Install Command" sp -1;
 
   if [ "${aCmd}" == "Install" ]; then
+
+        sayMsg    "FRT40[617]  Install:   '${aArg1}' '${aArg2}' '${aArg3}' '${aArg4}', bDoit: '${bDoit}', bDebug: '${bDebug}', bQuiet: '${bQuiet}'" -1
 
 function Sudo() {
 #       echo "   sudo[1] \${OS:0:7}: '${OS:0:7}'"
         if [[ "${OS:0:7}" != "Windows" ]]; then if [ "${USERNAME}" != "root" ]; then sudo "$@"; fi; fi
 #                sudo "$@"; echo "sudo[2]  sudo \"$@\""; fi; fi                         ##.(41113.01.1)
         }
-#        copyFile "ALTools" "run-anyllm.sh" "master"
+#       ---------------------------------------------------------------------
 function copyFile() {                                                                   # .(41111.04.1 RAM Write copyFile Beg)
         git checkout "$3"                                        >/dev/null 2>&1        # Switch to master branch
         git checkout "$1" -- "$2"                                >/dev/null 2>&1        # Get file from ALTools branch
@@ -626,29 +662,77 @@ function copyFile() {                                                           
         git checkout "$1"                                        >/dev/null 2>&1        # Switch back to ALTools
         echo -e "\n  Copied file $2 to branch $1"                                       # .(41112.06.2)
         }                                                                               # .(41111.04.1 End)
-        sayMsg    "FRT40[616]  Install:   'aArg2: ${aArg2}' aArg3: '${aArg3}', bDoit: '${bDoit}', bDebug: '${bDebug}', bQuiet: '${bQuiet}'" 11
+#       copyFile "ALTools" "run-anyllm.sh" "master"
+#       ---------------------------------------------------------------------
 
-        if [ "${aArg2}" == "" ]; then
-        echo -e "\n* Please provide repo to install, e.g. ALTools or AIDocs."
-        exit;  ${aLstSp}
-        fi
+        sayMsg    "FRT40[634]  Install:   'aArg2: ${aArg2}' aArg3: '${aArg3}', bDoit: '${bDoit}', bDebug: '${bDebug}', bQuiet: '${bQuiet}'" -1
+
+        if [ "$aArg2" == "help"    ]; then aArgs="help"; else aArgs=""; fi                                  # .(41124.02.2 RAM Add install that runs set-frtools.sh Beg)
+        if [ "$aArg2" == "show"    ]; then aArgs="show"; fi
+        if [ "$aArg2" == "doit"    ]; then aArgs="doit"; fi
+        if [ "$aArg2" == "scripts" ]; then aArgs="scripts ${aArg3}"; fi
+        if [ "$aArg2" == "profile" ]; then aArgs="profile ${aArg3}"; fi
+        if [ "$aArg2" == "wipe" ]; then aArgs="wipe ${aArg3}"; fi
+        if [ "${aArg2}" == "" ] || [ "${aArgs}" != "" ]; then
+#       echo -e "\n* Please provide repo to install, e.g. ALTools or AIDocs."                               # .(41124.02.3)
+        aDir="$( dirname $0 )"; cd "${aDir%%/._2*}";
+        ./set-frtools.sh "${aArgs}"
+        if [ "${aArgs}" == "" ]; then
+        if [ "${OS:0:7}" == "Windows" ]; then echo ""; fi ;
+        echo "  You can also install a repo, e.g. ALTools or AIDocs."; ${aLstSp}; fi
+        exit
+        fi #  ${aArg2}" == ""                                                                               # .(41124.02.2 End)
+#       ---------------------------------------------------------------------
+
+        if [ "${aArg2}" == "aidocs" ]; then                                             # .(41124.03.1 RAM Add install aidocs Beg)
+        if [ "${bDoit}" != 1 ]; then
+           echo -e "\n  About to install AIDocs"
+           echo "    gitr clone aidocs -doit"
+           ${aLstSp}; exit
+           fi
+           echo -e "\n  Installing AIDocs"
+           gitr clone aidocs ${aArg3} -d
+#          ${aLstSp}; exit
+           exit
+        fi # eif install aidocs                                                         # .(41124.03.1 End)
+
 #       ---------------------------------------------------------------------
 
         if [ "${aArg2}" == "altools" ]; then
+        sayMsg    "FRT40[674]  aArg2: '${aArg2}'" -1
 
                                       aProjectStage="AnyLLM_prod1-master"
         if [ "${aArg3}" != "" ]; then aProjectStage="$3"; fi
 #                                else aProjectStage="$( pwd )"; aProjectStage="${aProjectStage##/}"; fi
-        if [   -d "../${aProjectStage}" ]; then cd ../${aProjectStage}; fi
-        if [   -d    "${aProjectStage}" ]; then cd   ${aProjectStage};  fi
+        if [ -d "../${aProjectStage}" ]; then cd ../${aProjectStage}; fi
+        if [ -d    "${aProjectStage}" ]; then cd    ${aProjectStage};  fi
 #                                     aProjectStage="$( pwd )"; aProjectStage="${aProjectStage##/}"; fi
-                                      aDir="$( pwd )"; aDir="${aDir##*/}"; fi
-        sayMsg    "FRT40[633]  aProjectStage: '${aProjectStage}' aDir: '${aDir}'" -1
+                                      aDir="$( pwd )"; aDir="${aDir##*/}";
+        sayMsg    "FRT40[683]  aProjectStage: '${aProjectStage}' aDir: '${aDir}'" -1
 
         if [ "${aDir}" != "${aProjectStage}" ]; then
-            echo -e "\n* The folder for ALTools, ${aProjectStage}, does not exist."
-            exit;  ${aLstSp}
+            echo -e "\n* The folder for ${aProjectStage}, does not exist. Can't install ALTools."           # .(41124.04.1)
+            ${aLstSp}; exit
             fi # aDir != aProjectStage
+            aBranch=$( git branch | grep "altools" )                                                        # .(41124.04.2 RAM Check if ALTools exists Beg)
+        if [ "${aBranch}" != "" ]; then
+            echo -e "\n* The branch, 'altools', for ${aProjectStage} already exists. Use frt update altools."
+            ${aLstSp}; exit
+            fi # aBranch altools exists                                                                     # .(41124.04.2 End)
+
+         if [ "${bDoit}" != 1 ]; then
+            aTS="$( date +%y%m%d )"; aTS="${aTS:1}"
+            echo -e "\n  About to install ALTools with these commands. Add -d to doit\n"
+            echo "    gitr remote add ALTools_prod1-robin -d"
+            echo "    git fetch ALTools_prod1"
+            echo "    git checkout -b altools"
+            echo "    git checkout ALTools_prod1/ALTools -- ."
+            echo "    git commit -m \".(${aTS}.02_Added ALTools files\""
+            echo "    copyFile \"ALTools\" \"run-anyllm.sh\" \"master\""
+            echo "    ./set-anyllm.sh doit"
+            echo -e "\n  The command, anyllm, will also be installed."
+            ${aLstSp}; exit
+            fi # bDoit == 0
 
             echo -e "\n  Installing ALTools in ${aProjectStage}."
        # 1. Make sure you're starting clean
@@ -656,7 +740,7 @@ function copyFile() {                                                           
 
                 bNoFilesInWork="$( git status | awk '/working tree clean/ { print "1" }' )"   # should show clean working tree
         if [ "${bNoFilesInWork}" != "1" ]; then
-            echo -e "\n* The folder for branch ALTools in ${aProjectStage}, has uncommitted files."
+            echo -e "\n* The branch 'master', in ${aProjectStage}, has uncommitted files."
             ${aLstSp}; exit
             fi # eif bNoFilesInWork
 
@@ -693,10 +777,12 @@ function copyFile() {                                                           
 #           git checkout master       # original 768 Anything-LLM files
 #           git checkout ALTools     # 768 files plus your 22 changes
 
-        exit;  ${aLstSp}
+        ${aLstSp}; exit;
         fi # eif install altools
 
-     ${aLstSp}
+        echo -e "\n* Please provide a valid repo to install, e.g. ALTools or AIDocs."                       # .(41124.04.3)
+
+       ${aLstSp}; exit
      fi # eoc Install Command                                                                               # .(41111.01.5 End)
 #    -- --- ---------------  =  ------------------------------------------------------  #  ---------------- #
 
