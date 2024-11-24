@@ -19,6 +19,7 @@
 ##FD   FRT42_GitR2.sh           |  98952| 11/18/24 10:15|  1444| p1.02`.41118.1015
 ##FD   FRT42_GitR2.sh           | 101830| 11/20/24 11:45|  1474| p1.02`.41120.1145
 ##FD   FRT42_GitR2.sh           | 108122| 11/23/24 19:00|  1534| p1.02`.41123.1900
+##FD   FRT42_GitR2.sh           | 112394| 11/24/24 18:55|  1584| p1.02`.41124.1855
 
 ##DESC     .--------------------+-------+---------------+------+-----------------+
 #            This script has usefull GIT functions.
@@ -105,8 +106,9 @@
 # .(41123.02 11/23/24 RAM 10:00a| Add gitr status command
 # .(41123.03 11/23/24 RAM 10:20a| Fix git status awk END
 # .(41123.05 11/23/24 RAM  5:30p| Update a different remote/branch
-# .(41123.07 11/23/24 RAM  6:30p| Add List nCnt commits from nBeg 
-# .(41123.08 11/23/24 RAM  7:00p| Add Show nCnt commits from nBeg 
+# .(41123.07 11/23/24 RAM  6:30p| Add List nCnt commits from nBeg
+# .(41123.08 11/23/24 RAM  7:00p| Add Show nCnt commits from nBeg
+# .(41123.05 11/24/24 RAM  4:15p| Fix gitr update for MacOS
 #
 ##PRGM     +====================+===============================================+
 ##ID 69.600. Main0              |
@@ -114,7 +116,7 @@
 #*/
 #========================================================================================================== #  ===============================  #
 
-        aVDt="Nov 23, 2024 7:00p"; aVer="p1.02"; aVTitle="Useful gitR2 Tools by formR";                                  # .(41103.02.2 RAM Was: gitR1)
+        aVDt="Nov 24, 2024 4:15p"; aVer="p1.02"; aVTitle="Useful gitR2 Tools by formR";                                  # .(41103.02.2 RAM Was: gitR1)
         aVer="$( echo "$0" | awk '{ match( $0, /_[dpstuv][0-9]+\.[0-9]+/ ); print substr( $0, RSTART+1, RLENGTH-1) }' )"  # .(21031.01.1 RAM Add [d...).(20416.03.8 "_p2.02", or _d1.09)
 
         LIB="gitR2"; LIB_LOG=${LIB}_LOG; LIB_USER=${LIB}_USER; Lib=${LIB}; aDir=$(dirname "${BASH_SOURCE}");              # .(41103.02.3).(41102.01.1 RAM Add JPT12_Main2Fns_p1.07.sh Beg).(80923.01.1)
@@ -356,10 +358,11 @@ function getBranch( ) {                                                         
    echo ""
 #  exit_wCR
    fi
-   }
+   } # eof getRepoDir
 # ---------------------------------------------------------------------------
 
 function shoCommitMsg() {                                                                                   # .(41030.05.2 RAM Write showCommitMsg Beg)
+
      n=$(($1-1)); if [ "${#n}" == "1" ]; then m=" ${n}"; else m="${n}"; fi                                  # .(41031.05.1 RAM Move to here)
 #    aAWK1='/^commit / { c = substr($0,8,8)        };                     /^Author:/ { a = substr($0,8) }; /^Date:/ { d = substr($0,6,27) }; NR == 5 {                                   m = sprintf( "\"%-50s", ($0 != "") ? substr( $0, 5                      )   "\"" : "n/a\"" ); print " " c d"   "m"  "a }' ##.(41031.06.1)
 #    aAWK1='/^commit / { c = substr($0,8,8)        };                     /^Author:/ { a = substr($0,8) }; /^Date:/ { d = substr($0,6,27) }; NR == 5 { p = length($0) > 63 ? "..." : ""; m = sprintf( "\"%-61s", ($0 != "") ? substr( $0, 5, 60-(p > "" ? 3 : 0) ) p "\"" : "n/a\"" ); print " " c d"   "m" "a  }' ##.(41031.06.1).(41103.01.1)
@@ -378,8 +381,39 @@ function shoCommitMsg() {                                                       
 #    sayMsg  "gitR2[240]  ${m}. \$( git show \$(git rev-parse HEAD~$n) | awk '${aAWK1}' ) '${aComHash}'" 2  ##.(41031.04.2 RAM git show $aCommitHash | awk "${aAWK}" )
      if [ "${aComHash}" == "" ]; then echo -e "* ${m}.  There are no more commits (HEAD~$n)!"; exit_wCR; fi # .(41110.01.4 RAM Move to here).(41031.05.2 RAM Was ${1})
      echo "  ${m}. $( git show "${aComHash}" | awk "${aAWK1}" | awk "${aAWK2}" )"                           # .(41110.01.5).(41031.04.2)
-     }                                                                                                      # .(41030.05.2 End)
-#    -- --- ---------------  =  ------------------------------------------------------  #  ---------------- #
+                                                                                                            # .(41030.05.2 End)
+   } # eof shoCommitMsg
+# ---------------------------------------------------------------------------
+
+function shoWorkingFiles() {                                                                                # .(41124.06.1 RAM Write showWorkingFiles Beg)
+#    aAWKpgm='                                                                                              ##.(41124.06.2)
+#function getDate( aFile ) { return "2024-11-24 16:40" }; { d = getDate( substr($0,4) ); print d " " $0 }'  ##.(41124.06.2)
+#    aAWK_GetDate( aFile )='                                                                                # .(41124.06.2 RAM Show Date of git uncommitted files Beg)
+          GetDate='
+ function getDate( aFile ) {
+#    if ((getline < aFile) < 0) { return "Not Found        " };  close( aFile )
+     if ( ENVIRON["OS"] ~ /Windows/ ) {
+#         cmd = "stat --format=\"%Y-%m-%d %H:%M\" \""      aFile "\" 2>/dev/null"
+          cmd = "stat -c \"%y\" \""                        aFile "\" 2>/dev/null"
+     if ((cmd | getline lastmod) <= 0) { close( cmd ); return "Not Found        " }
+          split( lastmod, dt, ".")       # Remove fractional seconds
+          return substr( dt[1], 1, 16 )  # Get just YYYY-MM-DD HH:MM
+      } else {
+          cmd = "stat -f \"%Sm\" -t \"%Y-%m-%d %H:%M\" \"" aFile "\" 2>/dev/null" }
+#         cmd | getline lastmod
+#    if ((cmd | getline lastmod) <= 0) { close( cmd ); return "Access Error     " }
+     if ((cmd | getline lastmod) <= 0) { close( cmd ); return "Not Found        " }
+                                         close( cmd ); return lastmod }
+     !/`/ { d = getDate( substr( $0, 4 ) );   print d " " $0 }                                              # .(41124.06.3 RAM Remove files with "`")
+    '                                                                                                       # .(41124.06.2 End)
+#      git status --short | awk '{ print "   " $1 "  " substr( $0, 4) }'                                    ##.(41124.06.4)
+       git status --short | awk "${GetDate}" | awk '{ printf "%4s  %-16s  %s\n",$3,$1" "$2, substr($0,21)}' # .(41124.06.4)
+#      git status --short | awk "${GetDate}"                                                                ##.(41124.06.4)
+#      git status --short                                                                                   ##.(41124.06.4)
+
+   } # eof shoWorkingFiles                                                                                  # .(41124.06.1 End)
+# ---------------------------------------------------------------------------
+
 #====== =================================================================================================== #  ===========
 #       GITR2 INIT                                                                                          # .(20430.01.3 Beg RAM Added Beg)
 #====== =================================================================================================== #
@@ -763,7 +797,7 @@ function getRemoteName() {                                                      
 
 #       getBranch # aBranch=$( git branch | awk '/\*/ { print substr($0,2)}' )                              ##.(41104.04.4)
         getRemoteName "forClone"                                                                            # .(41104.01.3)
-        sayMsg  "gitR2[746]  aProject:    '${aProject}', aStage: '${aStage}', aStageDir: '${aStageDir}', aBranch: '${aBranch}', aAcct: '${aAcct}'" -1
+        sayMsg  "gitR2[766]  aProject:    '${aProject}', aStage: '${aStage}', aStageDir: '${aStageDir}', aBranch: '${aBranch}', aAcct: '${aAcct}'" -1
 
         toStageDir=" to stage, ${aStageDir},"; if [ "${aStageDir}" == "" ]; then toStageDir=""; fi          # .(41104.07.2)
 #       aCloneDir="${aProject}_/${aStageDir}"; if [ "${aStageDir}" == "" ]; then aCloneDir=""; fi           ##.(41104.07.3 RAM Add aCloneDir).(41110.02.3)
@@ -774,15 +808,15 @@ function getRemoteName() {                                                      
 #       aGIT1="git clone -b ${aBranch} --depth 1 \"${aRemoteURL}\" ${aCloneDir}"                            ##.(41104.07.4).(41029.03.1 RAM An even lighter clone with just the latest commit).(41105.01.1)
         aGIT1="git clone --single-branch --branch ${aBranch} \"${aRemoteURL}\" ${aCloneDir}"                # .(41105.01.1)
         aGIT2="git branch -u origin/${aBranch} ${aBranch}"
-        sayMsg  "gitR2[756]  git clone --single-branch '$aArg3' \$aProject: '${aRemoteURL##*/}', \$aStageDir: '${aStageDir}', \$aBranch: '${aBranch}'" -1
+        sayMsg  "gitR2[777]  git clone --single-branch '$aArg3' \$aProject: '${aRemoteURL##*/}', \$aStageDir: '${aStageDir}', \$aBranch: '${aBranch}'" -1
         else
         forBranch=", from ${aProject}_${aStage}${toStageDir}"                                               # .(41104.07.5)
         aGIT1="git clone \"${aRemoteURL}\" ${aCloneDir}"                                                    # .(41104.07.6)
-        sayMsg  "gitR2[760]  git clone " +                       "aProject: '${aRemoteURL##*/}', aStageDir: '${aStageDir}', aBranch: '${aBranch}'" -1
+        sayMsg  "gitR2[781]  git clone " +                       "aProject: '${aRemoteURL##*/}', aStageDir: '${aStageDir}', aBranch: '${aBranch}'" -1
         fi
 
      if [ "${aCloneDir}" == "" ]; then aDir="${aRemoteURL##*/}"; aDir="${aDir/.git/}"; else aDir="${aCloneDir}"; fi # .(41119.01.1 RAM Check if clone dir is empty Beg)
-        sayMsg  "gitR2[769]  aCloneDir : '${aDir}', aBranch: '${aBranch}'" 1
+        sayMsg  "gitR2[785]  aCloneDir : '${aDir}', aBranch: '${aBranch}'" -1
      if [ -d "${aDir}" ]; then echo -e "\n* The folder, '${aDir}', is not empty. Unable to clone repository.";   # .(41119.01.2)
          exit_wCR;
          fi                                                                                                 # .(41119.01.1 End)
@@ -800,12 +834,12 @@ function getRemoteName() {                                                      
 #       eval        "${aGIT2}"
                 Sudo find . -type f -name "*.sh" -exec chmod 755 {} +                                       # .(41119.01.4
 
-        sayMsg  "gitR2[786]  aCloneDir : '${aDir}', aBranch: '${aBranch}'" -1
+        sayMsg  "gitR2[803]  aCloneDir : '${aDir}', aBranch: '${aBranch}'" -1
         cd "${aDir}"; aTS="$( date +%y%m%d )"; aTS="${aTS:1}"                                               # .(41119.01.5 RAM Move to here).(41111.02.2 RAM or commit it)
 #    if [ ! -f "${aCloneDir}/*.code-workspace" ]; then                                                      ##.(41110.03.1)
      if [ ! -n "$(ls *.code-workspace 2>/dev/null)" ]; then                                                 # .(41119.01.6 RAM Was ls "${aCloneDir}/*.."").(41110.03.1 RAM Add .code-workspace file if needed after clone)
         aWorkspace_code="{ \"folders\": [ { \"path\": \".\" } ] }"                                          # .(41110.03.2)
-        sayMsg  "gitR2[791]  Creating '${aProject}_${aStage}.code-workspace'" -1
+        sayMsg  "gitR2[808]  Creating '${aProject}_${aStage}.code-workspace'" -1
         echo "${aWorkspace_code}" >"${aProject}_${aStage}.code-workspace"                                   # .(41119.01.7).(41111.02.1 RAM Don't do it for now, cuz GIT detects it).(41110.03.3)
         echo ""                                                                                             # .(41111.02.3)
         git add "${aProject}_${aStage}.code-workspace"                        2>&1| awk '{ print "  " $0 }' # .(41111.02.4)
@@ -849,14 +883,16 @@ function getRemoteName() {                                                      
 #       gitR Status Command                                                                                 # .(41123.02.3)
 #====== =================================================================================================== #
 
-        sayMsg    "FRT40[803] Update Command" sp;
+#       sayMsg    "FRT40[852] Update Command" sp 1;
 
   if [ "${aCmd}" == "status" ]; then                                                                        # .(41123.02.4 RAM Add Status Command Beg)
             bFilesInWork="$( git status | awk '/working tree clean/ { b = 1 }; END { print b ? b : 0 }' )"  # .(41123.03.1 RAM Was End)
         if [ "${bFilesInWork}" != "1" ]; then
             nCnt="$(git status --short | wc -l)"; s="s"; if [ "${nCnt}" == "1" ]; then s=""; fi
             echo -e "\n* The current branch, '${aBranch}', has ${nCnt} uncommitted file${s}."
-            git status --short | awk '{ print "   " $1 "  " substr( $0, 4) }'
+
+#           git status --short | awk '{ print "   " $1 "  " substr( $0, 4) }'                               ##.(41124.06.5)
+            shoWorkingFiles                                                                                 # .(41124.06.5 RAM Use it)
          else
             echo -e "\n  The current branch, '${aBranch}', has a clean working tree."
             fi
@@ -868,32 +904,36 @@ function getRemoteName() {                                                      
 #       gitR Update Command                                                                                 # .(41116.01.3)
 #====== =================================================================================================== #
 
-        sayMsg    "FRT40[803] Update Command" sp;
+#       sayMsg    "FRT40[873] Update Command" sp 1;
 
   if [ "${aCmd}" == "update" ]; then                                                                        # .(41116.01.3 RAM Add Update Command Beg)
-        sayMsg    "FRT40[807]  Update:   '${aArg1}' '${aArg2}' '${aArg3}' '${aArg4}', bDoit: '${bDoit}', bDebug: '${bDebug}', bQuiet: '${bQuiet}'" -1
+        sayMsg    "FRT40[876]  Update:   '${aArg1}' '${aArg2}' '${aArg3}' '${aArg4}', bDoit: '${bDoit}', bDebug: '${bDebug}', bForce: '${bForce}'" -1
 
-                aNewBranch="${aArg2}"                                                                       # .(41123.05.1 RAM Update a different branch Beg)
-                aCurBranch="$( git branch | awk '/'"${aArg2}"'/ { sub( "*", "" ); print $1; exit }' )"
+            aNewBranch="${aArg2}"                                                                           # .(41123.05.1 RAM Update a different branch Beg)
+#           aCurBranch="$( git branch | awk '/'"${aArg2}"'/ { sub(  "*",   "" ); print $1; exit }' )"       ##.(41123.05.11)
+            aCurBranch="$( git branch | awk '/'"${aArg2}"'/ { sub( /[* ]/, "" ); print $1; exit }' )"       # .(41123.05.11 RAM Fix for MacOS)
+        sayMsg    "FRT40[881]  Update:   aNewBranch: '${aNewBranch}', aCurBranch: '${aCurBranch}', bDoit: '${bDoit}', bDebug: '${bDebug}', bForce: '${bForce}'" -1
         if [ "${aNewBranch}" != "" ]; then
-                aNewBranch="$( git branch | awk '/'"${aNewBranch}"'/ { sub( "*", "" ); print $1; exit }' )"
+#           aNewBranch="$( git branch | awk '/'"${aNewBranch}"'/ { sub(  "*",   "" ); print $1; exit }' )"  ##.(41123.05.12)
+            aNewBranch="$( git branch | awk '/'"${aNewBranch}"'/ { sub( /[* ]/, "" ); print $1; exit }' )"  # .(41123.05.12)
         if [ "${aNewBranch}" == "" ]; then echo -e "\n* The branch, '${aArg2}', doesn't exist."; exit_wCR; fi
            else aNewBranch="${aCurBranch}"
-                fi                                                                                          # .(41123.05.1 End)
+             fi                                                                                             # .(41123.05.1 End)
+        sayMsg    "FRT40[888]  Update:   aNewBranch: '${aNewBranch}', aCurBranch: '${aCurBranch}', bDoit: '${bDoit}', bDebug: '${bDebug}', bForce: '${bForce}'" -1
 
 #       if [ "${aNewBranch}" != "${aCurBranch}" ]; then                                                     ##.(41123.05.2)
-                aRemote="$( git config --list | grep "branch\.${aNewBranch}\.remote" | awk -F= '{ print $2 }' )"    # .(41123.05.3)
+            aRemote="$( git config --list | grep "branch\.${aNewBranch}\.remote" | awk -F= '{ print $2 }')" # .(41123.05.3)
           if [ "aRemote" == "" ]; then aRemote_name="origin";   fi                                          # .(41123.05.4
         if [ "${aArg3}"  != "" ]; then aRemote_name="${aArg3}"; fi                                          # .(41123.05.5 RAM Was origin if = "" )
-                aRemote="$( git remote -v | awk '/'"${aRemote_name}"'/ { sub( /\.git.+$/, "" ); print; exit }' )"
-        sayMsg "FRT40[816]  aRemote: '${aRemote}', aRemote_name: '${aRemote_name}'" -1
+            aRemote="$( git remote -v | awk '/'"${aRemote_name}"'/ { sub( /\.git.+$/, "" ); print; exit }' )"
+        sayMsg "FRT40[895]  aRemote: '${aRemote}', aRemote_name: '${aRemote_name}'" -1
         if [ "${aRemote}" == "" ]; then echo -e "\n* The remote name, '${aRemote_name}', doesn't exist."; exit_wCR; fi
-                aRemote_name="$( echo "${aRemote}" | awk '{ print $1 }' )"
+            aRemote_name="$( echo "${aRemote}" | awk '{ print $1 }' )"
 
-
-#               aRepo="${aRemote/${aRemote_name}/}"; aRepo="${aRepo%%*/}"; aRepo="${aRepo/.git}"
-#               aRepo="$(echo "$aRemote" | sed -n 's/.*github\/\([^.]*\).*/\1/p' )"
-                aRepo="$( echo "${aRemote}" | awk '{ n = split( $2, m, "/" ); print m[ n-1 ]"/"m[ n ] }' )" # .(41116.01.11 RAM Was: /[/:]/)
+#           aRepo="${aRemote/${aRemote_name}/}"; aRepo="${aRepo%%*/}"; aRepo="${aRepo/.git}"
+#           aRepo="$(echo "$aRemote" | sed -n 's/.*github\/\([^.]*\).*/\1/p' )"
+            aRepo="$( echo "${aRemote}" | awk '{ n = split( $2, m, "/" ); print m[ n-1 ]"/"m[ n ] }' )"     # .(41116.01.11 RAM Was: /[/:]/)
+        sayMsg    "FRT40[902]  Update:   aNewBranch: '${aNewBranch}', aCurBranch: '${aCurBranch}', bDoit: '${bDoit}', bDebug: '${bDebug}', bForce: '${bForce}'" -1
 
 #       echo -e "\n  Updating repo, '${aRemote_name}', for branch, '${aBranch}', from remote, '${aRepo}'."; # .(41116.01.12 RAM Moved to below)
 #         cd    "$(  dirname $0  )"
@@ -901,14 +941,20 @@ function getRemoteName() {                                                      
             bFilesInWork="$( git status | awk '/working tree clean/ { b = 1 }; END { print b ? b : 0 }' )"  # .(41123.03.2)
         if [ "${bFilesInWork}" != "1" ]; then                                                               # .(41116.01.5).(41107.01.7 RAM Deal with updating dirty repo Beg)
             aVerb="will"; if [ "${bForce}" == "1" ]; then aVerb="won't"; fi
-            nCnt="$(git status --short | wc -l)"; s="s"; if [ "${nCnt}" == "1" ]; then s=""; fi             # .(41123.03.3)
-            echo -e "\n* The branch, '${aCurBranch}', has ${nCnt} uncommitted file${s}, that ${aVerb} be stashed."  # .(41123.05.6).(41123.03.4)
-            git status --short | awk '{ print "   " $1 "  " substr( $0, 4) }'
+            aNum="$(git status --short | wc -l)"; s="s"; if [ "${aNum}" == "1" ]; then s=""; fi             # .(41116.01.21).(41123.03.3)
+
+        sayMsg    "FRT40[912]  Update:   aNewBranch: '${aNewBranch}', aCurBranch: '${aCurBranch}', bDoit: '${bDoit}', bDebug: '${bDebug}', bForce: '${bForce}'" -1
+
+            echo -e "\n* The branch, '${aCurBranch}', has ${aNum// /} uncommitted file${s}, that ${aVerb} be stashed."    # .(41116.01.22).(41123.05.6).(41123.03.4)
+
+#           git status --short | awk '{ print "  " $0 }'                                                    ##.(41124.06.6)
+            shoWorkingFiles                                                                                 # .(41124.06.6 RAM Use it)
+
             aTS=$(date +%y%m%d.%H); aTS="${aTS:1}"
-            aNum="$(git status --short | wc -l | awk '{ gsub( " ", "" ); print }' )";                       # .(41116.01.13)
+#           aNum="$(git status --short | wc -l | awk '{ gsub( " ", "" ); print }' )";                       ##.(41116.01.13).(41116.01.21)
 #           aStashEm="git stash -u save \".(${aTS} Stash of ${aNum} files\"\n      ";                       ##.(41116.01.14)
-#           aStashEm="git stash push -u -m \".(${aTS} Stash of ${aNum} files\"\n      ";                    ##.(41116.01.14).(41123.05.7)
-            aStashEm="git stash push -u -m \".(${aTS} Stash of ${aNum} files\"";                            # .(41123.05.7 RAM Was files\n).(41116.01.14)
+#           aStashEm="git stash push -u -m \".(${aTS} Stash of ${aNum} files\"\n      ";                    ##.(41116.01.14).(41123.05.7).(41116.01.23)
+            aStashEm="git stash push -u -m \".(${aTS} Stash of ${aNum// /} file${s}\"";                     # .(41116.01.23).(41123.05.7 RAM Was files\n).(41116.01.14)
             if [ "${bForce}" == "1" ]; then aStashEm=""; fi                                                 # .(41116.01.6 RAM Don't stash them if bForce)
           else
             aStashEm=""
@@ -932,7 +978,7 @@ function getRemoteName() {                                                      
         echo "      git reset hard"                                                                         # .(41123.05.15)
         echo "      git checkout ${aNewBranch}"; fi                                                         # .(41123.05.16)
         echo "      git fetch ${aRemote_name}"
-        echo "      git reset --hard ${aRemote_name}/${aNewBranch}  # add -doit to doit"
+        echo "      git reset --hard ${aRemote_name}/${aNewBranch}  # add -d to doit"
           fi
 
         echo -e "\n  ${aVerb} repo, '${aRemote_name}', for branch, '${aBranch}', from remote, '${aRepo}'."; # .(41116.01.12)
@@ -1053,7 +1099,10 @@ function getRemoteName() {                                                      
         if [ "${bFilesInWork}" != "1" ]; then
             nCnt="$(git status --short | wc -l)"; s="s"; if [ "${nCnt}" == "1" ]; then s=""; fi             # .(41123.03.6)
             echo -e "\n* The current branch, '${aBranch}', has ${nCnt} uncommitted file${s}."               # .(41123.03.7)
-            git status --short | awk '{ print "  " $0 }'
+
+#           git status --short | awk '{ print "  " $0 }'                                                    ##.(41124.06.7)
+            shoWorkingFiles                                                                                 # .(41124.06.7 RAM Use it)
+
             ${aLstSp}; exit
             fi # eif bNoFilesInWork
         git checkout | awk '{ print "  $0" }'
