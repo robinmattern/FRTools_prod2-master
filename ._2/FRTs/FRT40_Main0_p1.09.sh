@@ -33,7 +33,7 @@
 ##FD   FRT10_Main0.sh           |  49627| 11/12/24 10:00|   726| p1.09`41112.1000
 ##FD   FRT10_Main0.sh           |  50055| 11/13/24 10:01|   728| p1.09`41113.1000
 ##FD   FRT10_Main0.sh           |  51713| 11/15/24 12:10|   745| p1.09`41115.1210
-##FD   FRT10_Main0.sh           |  50507| 11/23/24 10:45|   730| p1.09`41123.1045
+##FD   FRT10_Main0.sh           |  50875| 11/23/24 19:00|   731| p1.09`41123.1045
 
 ##DESC     .--------------------+-------+---------------+------+-----------------+
 #            Use the commands in this script to manage FormR app resources.
@@ -108,7 +108,7 @@
 # .(41112.06 11/12/24 RAM 10:00a| Add / fix Sudo
 # .(41113.01 11/13/24 RAM 10:00a| Delete right .code-workspace file
 # .(41107.01 11/15/24 RAM 12:10p| Deal with updating dirty repo
-# .(41123.04 11/23/24 RAM 10:45p| Use gitr update
+# .(41123.04 11/23/24 RAM 10:45a| Use gitr update
 
 ##PRGM     +====================+===============================================+
 ##ID 69.600. Main0              |
@@ -116,7 +116,7 @@
 #*/
 #========================================================================================================== #  ===============================  #
 
-     aVdt="Nov 23, 2024 10:45p"; aVtitle="formR Tools"                                                      # .(21113.05.8 RAM Add aVtitle for Version in Begin)
+     aVdt="Nov 23, 2024 10:45a"; aVtitle="formR Tools"                                                      # .(21113.05.8 RAM Add aVtitle for Version in Begin)
      aVer="$( echo $0 | awk '{  match( $0, /_[dpstuv][0-9]+\.[0-9]+/ ); print substr( $0, RSTART+1, RLENGTH-1) }' )"  # .(21031.01.1 RAM Add [d...).(20416.03.8 "_p2.02", or _d1.09)
 
      LIB="FRT"; LIB_LOG=${LIB}_LOG; LIB_USER=${LIB}_USER; Lib=${LIB}; aDir=$( dirname "${BASH_SOURCE}" );   # .(41027.01.1 RAM).(80923.01.1)
@@ -591,11 +591,12 @@ function Help( ) {
 
   if [ "${aCmd}" == "Update" ]; then
         sayMsg    "FRT40[580]  Update:   '${aArg1}' '${aArg2}' '${aArg3}' '${aArg4}', bDoit: '${bDoit}', bDebug: '${bDebug}', bQuiet: '${bQuiet}'" -1
-
-        echo -e "\n  Updating FRT in $( dirname $0 )/*"
-        cd "$( dirname $0 )"
+        aProject_dir="$( dirname $0 )"; aProject_dir="${aProject_dir%%/._2*}"                               # .(41123.04.1)
+        echo -e "\n  Updating FRT in ${aProject_dir}."; # exit                                              # .(41123.04.2 RAM Use correct repo dir)
+        cd "${aProject_dir}"                                                                                # .(41123.04.3 RAM Was $(dirname $0))
+#       echo "pwd: $( pwd )"; exit
         aBranch="$( git symbolic-ref --short HEAD )"                                                        # .(41107.01.6)
-        gitr update ${aBranch}                                                                              # .(41123.04.1 RAM Use gitr update)
+        gitr update ${aBranch}                                                                              # .(41123.04.4 RAM Use gitr update)
         fi
 
      ${aLstSp}; exit
