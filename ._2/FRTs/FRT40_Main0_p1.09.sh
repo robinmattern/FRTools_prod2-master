@@ -112,6 +112,7 @@
 # .(41123.04 11/23/24 RAM 10:45a| Use gitr update
 # .(41124.02 11/24/24 RAM  9:50a| Add install "" for set-frtools command
 # .(41124.03 11/24/24 RAM 11:30a| Add Install AIDocs command
+# .(41124.04 11/24/24 RAM 11:45a| Fix Install ALTools command
 
 ##PRGM     +====================+===============================================+
 ##ID 69.600. Main0              |
@@ -119,7 +120,7 @@
 #*/
 #========================================================================================================== #  ===============================  #
 
-     aVdt="Nov 24, 2024 11:30a"; aVtitle="formR Tools"                                                      # .(21113.05.8 RAM Add aVtitle for Version in Begin)
+     aVdt="Nov 24, 2024 11:45a"; aVtitle="formR Tools"                                                      # .(21113.05.8 RAM Add aVtitle for Version in Begin)
      aVer="$( echo $0 | awk '{  match( $0, /_[dpstuv][0-9]+\.[0-9]+/ ); print substr( $0, RSTART+1, RLENGTH-1) }' )"  # .(21031.01.1 RAM Add [d...).(20416.03.8 "_p2.02", or _d1.09)
 
      LIB="FRT"; LIB_LOG=${LIB}_LOG; LIB_USER=${LIB}_USER; Lib=${LIB}; aDir=$( dirname "${BASH_SOURCE}" );   # .(41027.01.1 RAM).(80923.01.1)
