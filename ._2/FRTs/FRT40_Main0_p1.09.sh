@@ -34,7 +34,7 @@
 ##FD   FRT10_Main0.sh           |  50055| 11/13/24 10:01|   728| p1.09`41113.1000
 ##FD   FRT10_Main0.sh           |  51713| 11/15/24 12:10|   745| p1.09`41115.1210
 ##FD   FRT10_Main0.sh           |  50875| 11/23/24 19:00|   731| p1.09`41123.1045
-##FD   FRT10_Main0.sh           |  56445| 11/24/24 14:53|   817| p1.09`41124.1445
+##FD   FRT10_Main0.sh           |  57213| 11/24/24 15:45|   825| p1.09`41124.1545
 
 ##DESC     .--------------------+-------+---------------+------+-----------------+
 #            Use the commands in this script to manage FormR app resources.
@@ -114,6 +114,7 @@
 # .(41124.03 11/24/24 RAM 11:30a| Add Install AIDocs command
 # .(41124.04 11/24/24 RAM 11:45a| Fix Install ALTools command
 # .(41124.05 11/24/24 RAM 14:45a| Add netr command
+# .(41123.04 11/24/24 RAM 15:45a| Pass -f and -doit args to gitr update
 
 ##PRGM     +====================+===============================================+
 ##ID 69.600. Main0              |
@@ -121,7 +122,7 @@
 #*/
 #========================================================================================================== #  ===============================  #
 
-     aVdt="Nov 24, 2024 11:45a"; aVtitle="formR Tools"                                                      # .(21113.05.8 RAM Add aVtitle for Version in Begin)
+     aVdt="Nov 24, 2024 15:45a"; aVtitle="formR Tools"                                                      # .(21113.05.8 RAM Add aVtitle for Version in Begin)
      aVer="$( echo $0 | awk '{  match( $0, /_[dpstuv][0-9]+\.[0-9]+/ ); print substr( $0, RSTART+1, RLENGTH-1) }' )"  # .(21031.01.1 RAM Add [d...).(20416.03.8 "_p2.02", or _d1.09)
 
      LIB="FRT"; LIB_LOG=${LIB}_LOG; LIB_USER=${LIB}_USER; Lib=${LIB}; aDir=$( dirname "${BASH_SOURCE}" );   # .(41027.01.1 RAM).(80923.01.1)
@@ -236,11 +237,11 @@ function Help( ) {
      echo "             RSS Dir (RDir)"                                                 # .(21107.02.3)
      echo "             RSS DirList (DirList)"                                          # .(21107.02.4)
      echo ""                                                                                                # .(41107.01.2)
-     echo "    FRT Update [-doit]                   Update [ {FRTools} ]"                                   # .(41107.01.3)
-     echo "        Install                          Run ./set-frtools.sh"                                   # .(41124.02.1)
+     echo "    FRT Install                          Run ./set-frtools.sh"                                   # .(41124.02.1)
      echo "        Install [ALTools] [-doit]        Install ALTools"                                        # .(41111.01.2)
      echo "                [AIDocs] [-doit]         Install AIDocs"                                         # .(41111.01.3)
-
+     echo ""
+     echo "    FRT Update [-doit]                   Update [ {FRTools} ]"                                   # .(41107.01.3)
      echo ""
      echo "  Notes: Only 3 lowercase letters are needed for each command, separated by spaces"
      echo "         One or more command options follow. Help for the command is dispayed if no options are given"
@@ -330,8 +331,8 @@ function Help( ) {
 #
 #====== =================================================================================================== #
 
-        sayMsg "FRT40[324]  JPT  Commands (${aArg2:0:3}); aCmd: '${aCmd}'" -1
-#     echo "    FRT40[325]  JPT  Commands (${aArg2:0:3}); aCmd: '${aCmd}', \$@: [$@]"
+#       sayMsg "FRT40[333]  JPT  Commands (${aArg2:0:3}); aCmd: '${aCmd}'" 1
+#     echo "    FRT40[334]  JPT  Commands (${aArg2:0:3}); aCmd: '${aCmd}', \$@: [$@]"
 
      if [ "${aCmd:0:3}" == "JPT" ]; then
 
@@ -374,8 +375,8 @@ function Help( ) {
 #
 #====== =================================================================================================== #
 
-        sayMsg "FRT40[368]  gitR Commands (${aArg2:0:3}); aCmd: '${aCmd}'" -1
-#     echo "    FRT40[369]  gitR Commands (${aArg2:0:3}); aCmd: '${aCmd}', \$@: [$@]"
+#       sayMsg "FRT40[377]  gitR Commands (${aArg2:0:3}); aCmd: '${aCmd}'" 1
+#     echo "    FRT40[378]  gitR Commands (${aArg2:0:3}); aCmd: '${aCmd}', \$@: [$@]"
 
      if [ "${aCmd:0:4}" == "gitR" ]; then                                                                   # .(20429.03.2 RAM Add gitR Beg).(42026.01.x RAM Was just gitR)
 
@@ -404,15 +405,15 @@ function Help( ) {
 #
 #====== =================================================================================================== #
 
-#       sayMsg "FRT40[407]  dokS Commands (${aArg2:0:3})" -1                                                # .(41124.05.5 RAM Add netR)
+        sayMsg "FRT40[407]  netR Commands ( ${aArg2} ${aArg3} ${aArg4} )" -1                                                # .(41124.05.5 RAM Add netR Beg)
 
      if [ "${aCmd}"     == "netR" ]; then
 
-        sayMsg "FRT40[411]  netR: '${aArg1}' '${aArg2}' '${aArg3}' '${aArg4}', bDoit: '${bDoit}', bDebug: '${bDebug}', bQuiet: '${bQuiet}'" 1
-        sayMsg "FRT40[412]  netR script: $( dirname $0 )/dokR/FRT25_dokR1.sh";
+        sayMsg "FRT40[411]  netR: '${aArg1}' '${aArg2}' '${aArg3}' '${aArg4}', bDoit: '${bDoit}', bDebug: '${bDebug}', bQuiet: '${bQuiet}'" -1
 
         shift
-       "$( dirname $0 )/netR/FRT44_netR1.sh"  "$@"
+        sayMsg "FRT40[414]  netR script: $( dirname $0 )/netR/FRT44_netR1.sh \"$1 $2 $3\"" -1;
+       "$( dirname $0 )/netR/FRT44_netR1.sh"  "$1 $2 $3"
 
         ${aLstSp}
         exit
@@ -426,12 +427,12 @@ function Help( ) {
 #
 #====== =================================================================================================== #
 
-#       sayMsg "FRT40[348]  dokS Commands (${aArg1:0:3})"                                                   # .(20429.02.2 Beg RAM Added)
+#       sayMsg "FRT40[429]  dokS Commands (${aArg1:0:3})"                                                   # .(20429.02.2 Beg RAM Added)
 
      if [ "${aCmd}"     == "dokR" ]; then
 
-        sayMsg "FRT40[355]  dokR: '${aArg1}' '${aArg2}' '${aArg3}' '${aArg4}', bDoit: '${bDoit}', bDebug: '${bDebug}', bQuiet: '${bQuiet}'"
-        sayMsg "FRT40[356]  dokR script: $( dirname $0 )/dokR/FRT25_dokR1.sh";                              # .(41026.04.2)
+        sayMsg "FRT40[433]  dokR: '${aArg1}' '${aArg2}' '${aArg3}' '${aArg4}', bDoit: '${bDoit}', bDebug: '${bDebug}', bQuiet: '${bQuiet}'"
+        sayMsg "FRT40[434]  dokR script: $( dirname $0 )/dokR/FRT25_dokR1.sh";                              # .(41026.04.2)
 
         shift
 #      "$( dirname $0 )/dokR/FRT25_dokR1.sh"  "$@"                                                          ##.(41026.03.3 RAM Was FRT24).(41028.01.3)
@@ -449,11 +450,11 @@ function Help( ) {
 #
 #====== =================================================================================================== #
 
-#       sayMsg "FRT40[369]  keyS Commands (${aArg1:0:3})"                                                   # .(20429.02.2 Beg RAM Added)
+#       sayMsg "FRT40[452]  keyS Commands (${aArg1:0:3})"                                                   # .(20429.02.2 Beg RAM Added)
 
      if [ "${aCmd}"     == "keyS" ]; then
 
-        sayMsg "FRT40[373]  keyS: '${aArg1}' '${aArg2}' '${aArg3}' '${aArg4}', bDoit: '${bDoit}', bDebug: '${bDebug}', bQuiet: '${bQuiet}'"
+        sayMsg "FRT40[456]  keyS: '${aArg1}' '${aArg2}' '${aArg3}' '${aArg4}', bDoit: '${bDoit}', bDebug: '${bDebug}', bQuiet: '${bQuiet}'"
 
         shift
 #      "$( dirname $0 )/keyS/FRT21_Keys1_p2.01.sh"  "$@"                                                    ##.(41028.01.4)
@@ -472,11 +473,11 @@ function Help( ) {
 #
 #====== =================================================================================================== #
 
-#       sayMsg "FRT40[391]  appR Commands (${aArg1:0:3})"                                                   # .(20429.02.2 Beg RAM Added)
+#       sayMsg "FRT40[475]  appR Commands (${aArg1:0:3})"                                                   # .(20429.02.2 Beg RAM Added)
 
      if [ "${aCmd}"     == "appR" ]; then
 
-        sayMsg "FRT40[395]  appR:   '${aArg1}' '${aArg2}' '${aArg3}' '${aArg4}', bDoit: '${bDoit}', bDebug: '${bDebug}', bQuiet: '${bQuiet}'" 1
+        sayMsg "FRT40[479]  appR:   '${aArg1}' '${aArg2}' '${aArg3}' '${aArg4}', bDoit: '${bDoit}', bDebug: '${bDebug}', bQuiet: '${bQuiet}'" 1
 
         shift
 # echo "$( dirname $0 )/appR/FRT23_FRApp1_p1.06.sh"  "$@"                                                   ##.(20601.01.5)
@@ -500,7 +501,7 @@ function Help( ) {
 #    if [ "${1:0:3}" == "pro" ]; then                                                                       ##.(20429.02.2)
      if [ "${aCmd}"     == "proX" ]; then                                                                   # .(20429.02.2 RAM Beg Added)
 
-        sayMsg "FRT40[418]  proX: '${aArg1}' '${aArg2}' '${aArg3}' '${aArg4}', bDoit: '${bDoit}', bDebug: '${bDebug}', bQuiet: '${bQuiet}'"
+        sayMsg "FRT40[503]  proX: '${aArg1}' '${aArg2}' '${aArg3}' '${aArg4}', bDoit: '${bDoit}', bDebug: '${bDebug}', bQuiet: '${bQuiet}'"
 
         shift
 #      "$( dirname $0 )/proX/FRT24_Proxy_v1.06\`20620-1041.sh"  "$@"
@@ -521,7 +522,7 @@ function Help( ) {
 #
 #====== =================================================================================================== #
 
-        sayMsg    "FRT40[493]  Set Var Command" sp -1;
+#       sayMsg    "FRT40[524]  Set Var Command" sp 1;
 
   if [ "${aCmd}" == "Set Var" ]; then
 
@@ -606,7 +607,7 @@ function Help( ) {
      fi # eoc set path
 #       --------------------------------------------------------
 
-        sayMsg    "FRT40[578]  set var path ${aArg2} '${aArg3}' '${aArg4}'" sp -1;
+        sayMsg    "FRT40[609]  set var path ${aArg2} '${aArg3}' '${aArg4}'" sp -1;
   if [ "${aArg2}" == "path" ]; then                                                                         # .(21120.03.6 RAM Beg ?? Why here s.b. rss info var set aVar aVal)
        "${aInfoScr}" vars set -doit "${aArg3}" "${aArg4}"
      fi # eoc set var
@@ -622,17 +623,24 @@ function Help( ) {
 #
 #====== =================================================================================================== #
 
-        sayMsg    "FRT40[594]  Update Command" sp -1;
+#       sayMsg   "FRT40[625]  Update Command" 1;
 
   if [ "${aCmd}" == "Update" ]; then
-        sayMsg    "FRT40[580]  Update:   '${aArg1}' '${aArg2}' '${aArg3}' '${aArg4}', bDoit: '${bDoit}', bDebug: '${bDebug}', bQuiet: '${bQuiet}'" -1
+        sayMsg    "FRT40[628]  Update:   '${aArg1}' '${aArg2}' '${aArg3}' '${aArg4}', bDoit: '${bDoit}', bDebug: '${bDebug}', bQuiet: '${bQuiet}'" -1
         aProject_dir="$( dirname $0 )"; aProject_dir="${aProject_dir%%/._2*}"                               # .(41123.04.1)
-        echo -e "\n  Updating FRT in ${aProject_dir}."; # exit                                              # .(41123.04.2 RAM Use correct repo dir)
-        cd "${aProject_dir}"                                                                                # .(41123.04.3 RAM Was $(dirname $0))
+        cd "${aProject_dir}"                                                                                # .(41123.04.3 RAM Was $(dirname $0)).(41123.04.2 RAM Use correct repo dir)
 #       echo "pwd: $( pwd )"; exit
         aBranch="$( git symbolic-ref --short HEAD )"                                                        # .(41107.01.6)
-        gitr update ${aBranch}                                                                              # .(41123.04.4 RAM Use gitr update)
-
+  if [ "${bDoit}" != "1" ]; then                                                                            # .(41123.04.11 RAM Account for bDoit Beg)
+        aArgs="$( echo "${aBranch} $2 $3 $4 $5 -doit" | awk '{ gsub( / +/, " " ); print }' )"
+        echo -e "\n  About to update FRT in ${aProject_dir}."; # exit
+        echo "      gitR update ${aArgs}"
+        gitr update ${aBranch} $2 $3 $4 $5
+      else
+        echo -e "\n  Updating FRT in ${aProject_dir}."; # exit                                              # .(41123.04.11 RAM Move to here End)
+        sayMsg "FRT40[635]  gitR \" ${aBranch} $2 $3 $4 $5\"" -1;
+        gitr update ${aBranch} $2 $3 $4 $5                                                                  # .(41123.04.12).(41123.04.4 RAM Use gitr update)
+        fi                                                                                                  # .(41123.04.13)
         ${aLstSp}; exit
      fi # eoc Update Command                                                                                # .(41107.01.5 End)
 #    -- --- ---------------  =  ------------------------------------------------------  #  ---------------- #
@@ -641,7 +649,7 @@ function Help( ) {
 #       Install Command                                                                                     # .(41111.01.5 RAM Add Install Command beg)
 #====== =================================================================================================== #
 
-        sayMsg    "FRT40[613]  Install Command" sp -1;
+        sayMsg    "FRT40[644]  Install Command" sp 1;
 
   if [ "${aCmd}" == "Install" ]; then
 
