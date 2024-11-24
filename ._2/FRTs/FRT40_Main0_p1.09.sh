@@ -34,7 +34,7 @@
 ##FD   FRT10_Main0.sh           |  50055| 11/13/24 10:01|   728| p1.09`41113.1000
 ##FD   FRT10_Main0.sh           |  51713| 11/15/24 12:10|   745| p1.09`41115.1210
 ##FD   FRT10_Main0.sh           |  50875| 11/23/24 19:00|   731| p1.09`41123.1045
-##FD   FRT10_Main0.sh           |  56445| 11/24/24 14:45|   817| p1.09`41124.1445
+##FD   FRT10_Main0.sh           |  56445| 11/24/24 14:53|   817| p1.09`41124.1445
 
 ##DESC     .--------------------+-------+---------------+------+-----------------+
 #            Use the commands in this script to manage FormR app resources.
@@ -113,6 +113,7 @@
 # .(41124.02 11/24/24 RAM  9:50a| Add install "" for set-frtools command
 # .(41124.03 11/24/24 RAM 11:30a| Add Install AIDocs command
 # .(41124.04 11/24/24 RAM 11:45a| Fix Install ALTools command
+# .(41124.05 11/24/24 RAM 14:45a| Add netr command
 
 ##PRGM     +====================+===============================================+
 ##ID 69.600. Main0              |

@@ -9,7 +9,7 @@
 ##FD         set-frtools.sh     |  17992| 10/30/24 23:52|   355| v1.05`41030.2352
 ##FD         set-frtools.sh     |  18548| 10/31/24  7:15|   360| v1.05`41031.0615
 ##FD         set-frtools.sh     |  18894| 11/04/24 12:28|   366| v1.05`41104.1225
-##FD         set-frtools.sh     |  19574| 11/23/24  9:46|   373| v1.05`41123.0945
+##FD         set-frtools.sh     |  19928| 11/24/24 14:45|   377| v1.05`41124.1445
 
 ##DESC     .--------------------+-------+-----------------+------+---------------+
 #            Create ._0/bin folder and copy all command scripts there as well as
@@ -44,7 +44,8 @@
 # .(41123.01 11/23/24 RAM  8:10a| Change setopt for MacOS
 # .(41120.02 11/23/24 RAM  9:15a| Ignore file permissions for this repo
 # .(41120.02 11/23/24 RAM  9:45a| Must be in FRTools repo
-# .(41123.01 11/23/24 RAM 17:15p| Change prompt : to # 
+# .(41124.01 11/24/24 RAM  9:25a| Allow -d and -doit
+# .(41124.05 11/24/24 RAM 14:45a| Add netr command
 
 ##PRGM     +====================+===============================================+
 ##ID 69.600. Main0              |
@@ -52,7 +53,7 @@
 #*/
 #========================================================================================================== #  ===============================  #
 
-  aVer="v1.05\`41123.0945"
+  aVer="v1.05\`41124.1445"
 
   echo ""
 
@@ -98,12 +99,13 @@ function exit_withCR() {
 
                                     aCmd="help";    bDoScripts="0"; bDoProfile="0";  bDoWipe="0"
 #  if [[ "$1" == ""        ]]; then aCmd="help";    fi
-   if [[ "$1" == "help"    ]]; then aCmd="help";    fi
-   if [[ "$1" == "show"    ]]; then aCmd="showEm";  fi
-   if [[ "$1" == "doit"    ]]; then aCmd="doit";                    bDoProfile="1";  bDoScripts="1";     fi # .(41031.02.2 Add doit command)
-   if [[ "$1" == "wipe"    ]]; then aCmd="wipeIt";  if [[    "$2" == "doit" ]]; then bDoWipe="1";    fi; fi # .(41030.03.2 Add doit option)
-   if [[ "$1" == "profile" ]]; then aCmd="profile"; if [[ "${!#}" == "doit" ]]; then bDoProfile="1"; fi; fi
-   if [[ "$1" == "scripts" ]]; then aCmd="copyEm";  if [[    "$2" == "doit" ]]; then bDoScripts="1"; fi; fi
+   if [[ "${1:0:3}" == "hel" ]]; then aCmd="help";    fi
+   if [[ "${1:0:3}" == "sho" ]]; then aCmd="showEm";  fi
+   if [[ "${1:0:2}" == "-d"  ]]; then aCmd="doit";                    bDoProfile="1";  bDoScripts="1";  fi  # .(41124.01.1)
+   if [[ "${1:0:3}" == "doi" ]]; then aCmd="doit";                    bDoProfile="1";  bDoScripts="1";  fi  # .(41031.02.2 Add doit command)
+   if [[ "${1:0:3}" == "wip" ]]; then aCmd="wipeIt";  if [[    "$2" == "doit" ]]; then bDoWipe="1"; fi; fi  # .(41030.03.2 Add doit option)
+   if [[ "${1:0:3}" == "pro" ]]; then aCmd="profile"; if [[ "${!#}" == "doit" ]]; then bDoProfile="1";  fi; fi
+   if [[ "${1:0:3}" == "scr" ]]; then aCmd="copyEm";  if [[    "$2" == "doit" ]]; then bDoScripts="1";  fi; fi
 
 # ---------------------------------------------------------------------------
 
@@ -197,9 +199,9 @@ function setBashrc() {
   if [ "${aOS}" == "darwin" ]; then
      echo "  PROMPT_SUBST=true"                             >>"${aBashrc}"
      echo "# setopt prompt_subst"                           >>"${aBashrc}"
-     echo "  set -o PROMPT_SUBST"                           >>"${aBashrc}"              # .(41123.01.1 RAM Change setopt for MacOS)
+     echo "  set -o PROMPT_SUBST"                           >>"${aBashrc}"              # .(41123.01 RAM Change setopt for MacOS)
      fi                                                                                 # .(41030.06.1 End)
-     echo "PROMPT='%n@%m %1~\$(git_branch_name)# '"         >>"${aBashrc}"              # .(41123.01.2 RAM Was {prompt}:)
+     echo "PROMPT='%n@%m %1~\$(git_branch_name): '"         >>"${aBashrc}"
      echo ""                                                >>"${aBashrc}"
      fi
      echo "# Add timestamps and user to history"            >>"${aBashrc}"
@@ -311,9 +313,10 @@ function cpyToBin() {
     cpyScript "gitr1   " "${aRepo_Dir}/._2/FRTs/gitR/FRT42_gitR1.sh"
     cpyScript "gitr2   " "${aRepo_Dir}/._2/FRTs/gitR/FRT42_gitR2.sh"
 #   cpyScript "gitclone" "${aRepo_Dir}/._2/FRTs/gitR/FRT43_gitR_clone_p1.04.sh"
-#   cpyScript "dokrun  " "${aRepo_Dir}/._2/FRTs/gitR/FRT44_run-docker_p1.02.sh"
+    cpyScript "netr    " "${aRepo_Dir}/._2/FRTs/netR/FRT44_netR1.sh"                    #.(41124.05.6 RAM Add netR)
     cpyScript "dokr    " "${aRepo_Dir}/._2/FRTs/dokR/FRT45_dokR1.sh"
     cpyScript "docr    " "${aRepo_Dir}/._2/FRTs/FRT46_docR0.sh"
+#   cpyScript "dokrun  " "${aRepo_Dir}/._2/FRTs/gitR/FRT44_run-docker_p1.02.sh"
 #   cpyScript "killport" "${aRepo_Dir}/._2/FRTs/RSS/portR/killPort"
 #   cpyScript "appr    " "${aRepo_Dir}/._2/FRTs/appR/FRT47_FRApp1_u1.07.sh
 #   cpyScript "prox    " "${aRepo_Dir}/._2/FRTs/proX/FRT48_Proxy1_u1.07.sh
