@@ -1,4 +1,37 @@
 #!/bin/bash
+#*\
+##=========+====================+================================================+
+##RD         netR1              | FormR Network tools
+##RFILE    +====================+=======+===============+======+=================+
+##FD   FRT44_netR1.sh           |  12756| 11/22/24 16:27|   325| p1.01`41122.1625
+##FD   FRT44_netR1.sh           |  15115| 11/22/24 17:04|   379| p1.01`41122.1704
+
+##DESC     .--------------------+-------+---------------+------+-----------------+
+#            Use the commands in this script to manage Network resources.
+#
+##LIC      .--------------------+----------------------------------------------+
+#            Copyright (c) 2022-2024 8020Data-FormR * Released under
+#            MIT License: http://www.opensource.org/licenses/mit-license.php
+##FNCS     .--------------------+----------------------------------------------+
+             exit_wCR           |
+             setOSvars          |
+             listIPs_Windows    |
+             listIPs_Linux      |
+             wifi_off           | Turn WiFi off
+             wifi_on            | Turn WiFi on
+             disable_internet   | Disable internet
+             enable_internet    | Enable internet
+             netCmds            |
+#                               |
+##CHGS     .--------------------+----------------------------------------------+
+# .(41122.01 11/22/24 RAM 14:25p| Created
+# .(41122.02 11/22/24 RAM 17:04p| Wrote listIPs_Linux
+
+##PRGM     +====================+===============================================+
+##ID 69.600. Main0              |
+##SRCE     +====================+===============================================+
+#*/
+#========================================================================================================== #  ===============================  #
 
 function exit_wCR() {
 #   echo "  aOS: '${aOS}'"
@@ -56,12 +89,23 @@ BEGIN { b = 0 }
 # ----------------------------------------------------------------------
 
 function listIPs_Linux() {
-
+aAWKpgm='
+BEGIN { b = 0 }
+    /Error:/ { aIP = "n/a"; aGateway="n/a" }
+#   /IPv6/        { next }
+    /^IP address:/ { aIP = $3 }
+    /^Router:/     { aGateway = $2 }
+END   {  printf "  %7s  %-15s  %-15s %s\n", substr( aLine, 3, 7 ), aIP, aGateway, substr( aLine, 10 ) }
+'
       networksetup -listallhardwareports | grep  -A 2 "Hardware Port" | awk '/Hardware/ { a = substr( $0, 16) }; /Device/ { printf "  %-7s %s\n", $2, a }' >temp_interfaces.txt
+#     cat temp_interfaces.txt
+#   15  192.168.1.228    192.168.1.1      Ethernet
+#  ---  ---------------  ---------------  --------------------------------
 
 while IFS= read -r aLine; do
-      aInf=${aLine:2:7}; aInf=${aInf/ /}; echo "  aInf: ${aInf}"; echo "-------------------------"
-      ifconfig ${aInf} # | awk '/^[a-z]/ { inf=$1; sub( /:/, "", inf ) }; /inet /  { printf "  %-5s %-15s %s\n", inf, $2, $6 }'
+      aInf=${aLine:2:7}; aInf=${aInf/ /}; # echo "  aInf: '${aLine:10}'"; echo "-------------------------"
+#     ifconfig ${aInf} # | awk '/^[a-z]/ { inf=$1; sub( /:/, "", inf ) }; /inet /  { printf "  %-5s %-15s %s\n", inf, $2, $6 }'
+      networksetup -getinfo "${aLine:10}" | awk -v aLine="${aLine}" "${aAWKpgm}"
    done <temp_interfaces.txt
    rm temp_interfaces.txt
 
@@ -188,9 +232,9 @@ if has_default_route; then    # Check if default route exists
         echo "  ---  ---------------  ---------------  --------------------------------"
         listIPs_Windows
        else
-        echo "  Inf    IP Address / Device Name"
-        echo "  ---  ------------------------------"
-        listIPs_Linux
+        echo "  Inf        IP Address        Gateway       Device Name"
+        echo "  -------  ---------------  ---------------  --------------------------------"
+        listIPs_Linux | sort
         fi
         exit_wCR
 
