@@ -4,8 +4,8 @@
 ##RD         netR1              | FormR Network tools
 ##RFILE    +====================+=======+===============+======+=================+
 ##FD   FRT44_netR1.sh           |  12756| 11/22/24 16:27|   325| p1.01`41122.1625
-##FD   FRT44_netR1.sh           |  13021| 11/22/24 17:04|   379| p1.01`41122.1704
-##FD   FRT44_netR1.sh           |  15466| 11/25/24  8:31|   382| p1.01`41125.0830
+##FD   FRT44_netR1.sh           |  13021| 11/22/24 17:04|   331| p1.01`41122.1704
+##FD   FRT44_netR1.sh           |  15841| 11/25/24  8:41|   393| p1.01`41125.0840
 
 ##DESC     .--------------------+-------+---------------+------+-----------------+
 #            Use the commands in this script to manage Network resources.
@@ -28,6 +28,7 @@
 # .(41122.01 11/22/24 RAM 14:25p| Created
 # .(41122.02 11/22/24 RAM 17:04p| Wrote listIPs_Linux
 # .(41125.01 11/25/24 RAM  8:30p| Add file header info
+# .(41125.02 11/25/24 RAM  8:40p| Add version
 
 ##PRGM     +====================+===============================================+
 ##ID 69.600. Main0              |
@@ -35,7 +36,8 @@
 #*/
 #========================================================================================================== #  ===============================  #
 
-     aVer="1.01`41125.0830"
+#    aVer="1.01.41125.0830"
+     aVer="1.01p"; aVDate="Nov 25, 2024 8:40a"; aVTitle="netR Tools";
 
 function exit_wCR() {
 #   echo "  aOS: '${aOS}'"
@@ -214,7 +216,7 @@ if has_default_route; then    # Check if default route exists
 
   if [ "${1:0:3}" == "hel" ] || [ "$1" == "" ]; then
 #       echo ""
-        echo "  Network commands"
+        echo "  Network commands for MacOS"
         echo "    netr list                List current and available IPs and Interfaces"
         echo "    netr set {IP} [{Inf}]    Set private IP Address {IP} to Ethernet Interface {Inf}"
         echo "    netr keep alive {secs}   Set SSH Server Keep Alive interval"
@@ -224,8 +226,17 @@ if has_default_route; then    # Check if default route exists
         echo "    netr toggle internet     Turn Internet on and Off"
         echo "    netr check  internet     Check status of Internet"
         echo "    netr sleep {mins}        Set Desktop sleep parameters, 0 == never"
+        echo "    netr version             Display version"
+
         exit_wCR
      fi # // eof aCmd Help
+#    -----------------------------------------------------
+
+  if [ "${1:0:3}" == "ver" ]; then
+     echo "  ${aVTitle}: ${aVer}   (${aVDate})"
+        exit_wCR
+
+     fi # // eof aCmd List
 #    -----------------------------------------------------
 
   if [ "${1:0:3}" == "lis" ]; then
@@ -241,7 +252,7 @@ if has_default_route; then    # Check if default route exists
         fi
         exit_wCR
 
-     fi # // eof aCmd Show
+     fi # // eof aCmd List
 #    -----------------------------------------------------
 
   if [ "${1:0:3}" == "kee" ]; then
