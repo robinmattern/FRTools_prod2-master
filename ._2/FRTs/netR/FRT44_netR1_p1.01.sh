@@ -4,7 +4,8 @@
 ##RD         netR1              | FormR Network tools
 ##RFILE    +====================+=======+===============+======+=================+
 ##FD   FRT44_netR1.sh           |  12756| 11/22/24 16:27|   325| p1.01`41122.1625
-##FD   FRT44_netR1.sh           |  15115| 11/22/24 17:04|   379| p1.01`41122.1704
+##FD   FRT44_netR1.sh           |  13021| 11/22/24 17:04|   379| p1.01`41122.1704
+##FD   FRT44_netR1.sh           |  15466| 11/25/24  8:31|   382| p1.01`41125.0830
 
 ##DESC     .--------------------+-------+---------------+------+-----------------+
 #            Use the commands in this script to manage Network resources.
@@ -13,25 +14,28 @@
 #            Copyright (c) 2022-2024 8020Data-FormR * Released under
 #            MIT License: http://www.opensource.org/licenses/mit-license.php
 ##FNCS     .--------------------+----------------------------------------------+
-             exit_wCR           |
-             setOSvars          |
-             listIPs_Windows    |
-             listIPs_Linux      |
-             wifi_off           | Turn WiFi off
-             wifi_on            | Turn WiFi on
-             disable_internet   | Disable internet
-             enable_internet    | Enable internet
-             netCmds            |
+#            exit_wCR           |
+#            setOSvars          |
+#            listIPs_Windows    |
+#            listIPs_Linux      |
+#            wifi_off           | Turn WiFi off
+#            wifi_on            | Turn WiFi on
+#            disable_internet   | Disable internet
+#            enable_internet    | Enable internet
+#            netCmds            |
 #                               |
 ##CHGS     .--------------------+----------------------------------------------+
 # .(41122.01 11/22/24 RAM 14:25p| Created
 # .(41122.02 11/22/24 RAM 17:04p| Wrote listIPs_Linux
+# .(41125.01 11/25/24 RAM  8:30p| Add file header info
 
 ##PRGM     +====================+===============================================+
 ##ID 69.600. Main0              |
 ##SRCE     +====================+===============================================+
 #*/
 #========================================================================================================== #  ===============================  #
+
+     aVer="1.01`41125.0830"
 
 function exit_wCR() {
 #   echo "  aOS: '${aOS}'"
@@ -88,7 +92,7 @@ BEGIN { b = 0 }
    } # eof listIP_Windows
 # ----------------------------------------------------------------------
 
-function listIPs_Linux() {
+function listIPs_Linux() {                                                              # .(41122.02 RAM Write listIPs_Linux Beg)
 aAWKpgm='
 BEGIN { b = 0 }
     /Error:/ { aIP = "n/a"; aGateway="n/a" }
@@ -109,7 +113,7 @@ while IFS= read -r aLine; do
    done <temp_interfaces.txt
    rm temp_interfaces.txt
 
-   } # eof listIP_Unix
+   } # eof listIP_Unix                                                                  # .(41122.02 End)
 # ----------------------------------------------------------------------
 
 # networksetup -listallhardwareports | grep -A 1 "Wi-Fi"
@@ -220,7 +224,6 @@ if has_default_route; then    # Check if default route exists
         echo "    netr toggle internet     Turn Internet on and Off"
         echo "    netr check  internet     Check status of Internet"
         echo "    netr sleep {mins}        Set Desktop sleep parameters, 0 == never"
-
         exit_wCR
      fi # // eof aCmd Help
 #    -----------------------------------------------------
