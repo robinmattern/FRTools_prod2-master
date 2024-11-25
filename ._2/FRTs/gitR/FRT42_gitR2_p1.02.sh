@@ -19,7 +19,7 @@
 ##FD   FRT42_GitR2.sh           |  98952| 11/18/24 10:15|  1444| p1.02`.41118.1015
 ##FD   FRT42_GitR2.sh           | 101830| 11/20/24 11:45|  1474| p1.02`.41120.1145
 ##FD   FRT42_GitR2.sh           | 108122| 11/23/24 19:00|  1534| p1.02`.41123.1900
-##FD   FRT42_GitR2.sh           | 112393| 11/24/24 18:56|  1584| p1.02`.41124.1855
+##FD   FRT42_GitR2.sh           | 113886| 11/24/24 19:45|  1596| p1.02`.41124.1945
 
 ##DESC     .--------------------+-------+---------------+------+-----------------+
 #            This script has usefull GIT functions.
@@ -110,6 +110,7 @@
 # .(41123.08 11/23/24 RAM  7:00p| Add Show nCnt commits from nBeg
 # .(41123.05 11/24/24 RAM  4:15p| Fix gitr update for MacOS
 # .(41124.06 11/24/24 RAM  6:55p| Add Date to git status
+# .(41124.06 11/24/24 RAM  7:45p| Add Date to git show commit
 
 ##PRGM     +====================+===============================================+
 ##ID 69.600. Main0              |
@@ -117,7 +118,7 @@
 #*/
 #========================================================================================================== #  ===============================  #
 
-        aVDt="Nov 24, 2024 6:55p"; aVer="p1.02"; aVTitle="Useful gitR2 Tools by formR";                                  # .(41103.02.2 RAM Was: gitR1)
+        aVDt="Nov 24, 2024 7:45p"; aVer="p1.02"; aVTitle="Useful gitR2 Tools by formR";                                  # .(41103.02.2 RAM Was: gitR1)
         aVer="$( echo "$0" | awk '{ match( $0, /_[dpstuv][0-9]+\.[0-9]+/ ); print substr( $0, RSTART+1, RLENGTH-1) }' )"  # .(21031.01.1 RAM Add [d...).(20416.03.8 "_p2.02", or _d1.09)
 
         LIB="gitR2"; LIB_LOG=${LIB}_LOG; LIB_USER=${LIB}_USER; Lib=${LIB}; aDir=$(dirname "${BASH_SOURCE}");              # .(41103.02.3).(41102.01.1 RAM Add JPT12_Main2Fns_p1.07.sh Beg).(80923.01.1)
@@ -406,12 +407,22 @@ function shoWorkingFiles() {                                                    
      if ((cmd | getline lastmod) <= 0) { close( cmd ); return "Not Found        " }
                                          close( cmd ); return lastmod }
      !/`/ { d = getDate( substr( $0, 4 ) );   print d " " $0 }                                              # .(41124.06.3 RAM Remove files with "`")
+#    !/`/ {      aFile = substr( $0, 4 );     print "  aFile: [" aFile "]" }                                ##.(41124.06.3)
     '                                                                                                       # .(41124.06.2 End)
 #      git status --short | awk '{ print "   " $1 "  " substr( $0, 4) }'                                    ##.(41124.06.4)
-       git status --short | awk "${GetDate}" | awk '{ printf "%4s  %-16s  %s\n",$3,$1" "$2, substr($0,21)}' # .(41124.06.4)
+    if [ "$1" == "" ]; then                                                                                 # .(41124.06.11 RAM For status)
+       git status --short | awk "${GetDate}" | awk '{printf "%20s  %-16s  %s\n",$3,$1" "$2, substr($0,21)}' # .(41124.06.4)
 #      git status --short | awk "${GetDate}"                                                                ##.(41124.06.4)
 #      git status --short                                                                                   ##.(41124.06.4)
-
+       fi                                                                                                   # .(41124.06.12)
+    if [ "$1" == "commit" ]; then                                                                           # .(41124.06.13 RAM For commit)
+       aAWK1='{ print " " $0 }'
+       aAWK2='{ printf "%20s  %-16s  %s\n",$3,$1" "$2, substr( $0, 21 ) }'
+#      git status --short | awk "${GetDate}" | awk '{ printf "%4s  %-16s  %s\n",$3,$1" "$2, substr($0,21)}' ##.(41124.06.4).(41124.06.14)
+       git show --pretty="" --name-status HEAD~$2 | awk "${aAWK1}" | awk "${GetDate}" | awk "${aAWK2}"      # .(41124.06.14)
+#      git show --pretty="" --name-status HEAD~$2 | awk "${aAWK1}" | awk "${GetDate}"                       ##.(41124.06.14)
+#      git show --pretty="" --name-status HEAD~$2 | awk "${aAWK1}"                                          ##.(41124.06.14)
+       fi                                                                                                   # .(41124.06.15)
    } # eof shoWorkingFiles                                                                                  # .(41124.06.1 End)
 # ---------------------------------------------------------------------------
 
@@ -1019,7 +1030,7 @@ function getRemoteName() {                                                      
 #      nCnt=${aArg3}; if [ "${nCnt}" == "" ]; then nCnt=0; fi # echo "  nCnt: ${nCnt}"                      ##.(41123.08.4)
        nBeg=${aArg3}; if [ "${nBeg}" == "" ]; then nBeg=0; fi;                                              # .(41123.08.4)
        if [ "${aArg4}" != "" ]; then nCnt=${aArg4}; else nCnt=1; fi                                         # .(41123.08.5)
-     sayMsg  "gitR[975]  aArg3: '${aArg3}', aArg4: '${aArg4}', nBeg: '${nBeg}', nCnt: '${nCnt}', " -1
+     sayMsg  "gitR[1022]  aArg3: '${aArg3}', aArg4: '${aArg4}', nBeg: '${nBeg}', nCnt: '${nCnt}', " -1
 
      i=${nBeg}; nEnd=$(( nBeg + nCnt ))                                                                     # .(41123.08.6)
      while [[ $i -lt $nEnd ]]; do                                                                           # .(41123.08.7)
@@ -1027,9 +1038,10 @@ function getRemoteName() {                                                      
 #      sayMsg  "gitR[980]  i: $i, nEnd: $nEnd; nCnt: '${nCnt}'" 1
        echo ""; i=$(( i+1 )); shoCommitMsg $i  # echo "  shoCommitMsg ${nCnt}"                              # .(41123.08.8 RAM Was: nCnt)
 #      aFilter="AMDR"; aAWK='/^['${aFilter}']/ {                                        printf "      %-2s %s\n", substr($1,1,1), substr( $0, 6) }'; # echo "  aAWK: '${aAWK}'"  ##.(41109.05.5)
-       aFilter="AMDR"; aAWK='/^['${aFilter}']/ { a = substr($2,1); sub( /^ +/, "", a ); printf   "     %1s %s\n", substr($1,1,1),          a     }'; # echo "  aAWK: '${aAWK}'"  # .(41109.05.5 RAM Was: 6)
-#      echo "git show --pretty=\"\" --name-status HEAD~${nCnt} | awk  ${aAWK}"
-             git show --pretty=""   --name-status HEAD~$(( i - 1 )) | awk "${aAWK}"                         # .(41123.08.9 RAM Was: nCnt)
+#      aFilter="AMDR"; aAWK='/^['${aFilter}']/ { a = substr($2,1); sub( /^ +/, "", a ); printf   "     %1s %s\n", substr($1,1,1),          a     }'; # echo "  aAWK: '${aAWK}'"  # .(41109.05.5 RAM Was: 6)
+#      echo"git show --pretty=\"\" --name-status HEAD~${nCnt} | awk  ${aAWK}"
+#           git show --pretty=""   --name-status HEAD~$(( i - 1 )) | awk "${aAWK}"                          # .(41124.06.7).(41123.08.9 RAM Was: nCnt)
+            shoWorkingFiles commit $(( i - 1 ))                                                             # .(41124.06.6 RAM Use this instead)
        done
      fi                                                                                                     # .(41030.05.4 End)
 #====== =================================================================================================== #  ===========
@@ -1101,8 +1113,8 @@ function getRemoteName() {                                                      
             nCnt="$(git status --short | wc -l)"; s="s"; if [ "${nCnt}" == "1" ]; then s=""; fi             # .(41123.03.6)
             echo -e "\n* The current branch, '${aBranch}', has ${nCnt} uncommitted file${s}."               # .(41123.03.7)
 
-#           git status --short | awk '{ print "  " $0 }'                                                    ##.(41124.06.7)
-            shoWorkingFiles                                                                                 # .(41124.06.7 RAM Use it)
+#           git status --short | awk '{ print "  " $0 }'                                                    ##.(41124.06.8)
+            shoWorkingFiles                                                                                 # .(41124.06.8 RAM Use it)
 
             ${aLstSp}; exit
             fi # eif bNoFilesInWork
