@@ -35,7 +35,7 @@
 ##FD   FRT10_Main0.sh           |  51713| 11/15/24 12:10|   745| p1.09`41115.1210
 ##FD   FRT10_Main0.sh           |  50875| 11/23/24 19:00|   731| p1.09`41123.1045
 ##FD   FRT10_Main0.sh           |  57213| 11/24/24 15:45|   825| p1.09`41124.1545
-##FD   FRT10_Main0.sh           |  57831| 11/25/24  9:28|   833| p1.09`41125.0925
+##FD   FRT10_Main0.sh           |  57987| 11/25/24  9:37|   833| p1.09`41125.0935
 
 ##DESC     .--------------------+-------+---------------+------+-----------------+
 #            Use the commands in this script to manage FormR app resources.
@@ -117,6 +117,7 @@
 # .(41124.05 11/24/24 RAM 14:45a| Add netr command
 # .(41123.04 11/24/24 RAM 15:45a| Pass -f and -doit args to gitr update
 # .(41125.03 11/25/24 RAM  9:25a| Stash docker/docker-healthcheck.sh ??
+# .(41125.03 11/25/24 RAM  9:35a| Don't exit
 
 ##PRGM     +====================+===============================================+
 ##ID 69.600. Main0              |
@@ -124,7 +125,7 @@
 #*/
 #========================================================================================================== #  ===============================  #
 
-     aVdt="Nov 25, 2024 9:25a"; aVtitle="formR Tools"                                                      # .(21113.05.8 RAM Add aVtitle for Version in Begin)
+     aVdt="Nov 25, 2024 9:35a"; aVtitle="formR Tools"                                                      # .(21113.05.8 RAM Add aVtitle for Version in Begin)
      aVer="$( echo $0 | awk '{  match( $0, /_[dpstuv][0-9]+\.[0-9]+/ ); print substr( $0, RSTART+1, RLENGTH-1) }' )"  # .(21031.01.1 RAM Add [d...).(20416.03.8 "_p2.02", or _d1.09)
 
      LIB="FRT"; LIB_LOG=${LIB}_LOG; LIB_USER=${LIB}_USER; Lib=${LIB}; aDir=$( dirname "${BASH_SOURCE}" );   # .(41027.01.1 RAM).(80923.01.1)
@@ -756,8 +757,7 @@ function copyFile() {                                                           
 #           shoWorkingFiles
             aTS=$(date +%y%m%d.%H); aTS="${aTS:1}"
             git stash push -u -m ".(${aTS} Stash of ${aNum// /} file${s}";                                  # .(41125.03.1 End )
-
-            ${aLstSp}; exit
+            ${aLstSp}; # exit                                                                               # .(41125.03.2 RAM Don't Exit )
             fi # eif bNoFilesInWork
 
 #               bNoRemoteName="$( git remote | awk '/anyllm_prod1/  { a=1 }; END { print a ? a : "0" }' )"  # should have remote allm_prod1
