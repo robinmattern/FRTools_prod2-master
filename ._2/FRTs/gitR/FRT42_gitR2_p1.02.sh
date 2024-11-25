@@ -19,7 +19,7 @@
 ##FD   FRT42_GitR2.sh           |  98952| 11/18/24 10:15|  1444| p1.02`.41118.1015
 ##FD   FRT42_GitR2.sh           | 101830| 11/20/24 11:45|  1474| p1.02`.41120.1145
 ##FD   FRT42_GitR2.sh           | 108122| 11/23/24 19:00|  1534| p1.02`.41123.1900
-##FD   FRT42_GitR2.sh           | 112394| 11/24/24 18:55|  1584| p1.02`.41124.1855
+##FD   FRT42_GitR2.sh           | 112393| 11/24/24 18:56|  1584| p1.02`.41124.1855
 
 ##DESC     .--------------------+-------+---------------+------+-----------------+
 #            This script has usefull GIT functions.
@@ -109,14 +109,15 @@
 # .(41123.07 11/23/24 RAM  6:30p| Add List nCnt commits from nBeg
 # .(41123.08 11/23/24 RAM  7:00p| Add Show nCnt commits from nBeg
 # .(41123.05 11/24/24 RAM  4:15p| Fix gitr update for MacOS
-#
+# .(41124.06 11/24/24 RAM  6:55p| Add Date to git status
+
 ##PRGM     +====================+===============================================+
 ##ID 69.600. Main0              |
 ##SRCE     +====================+===============================================+
 #*/
 #========================================================================================================== #  ===============================  #
 
-        aVDt="Nov 24, 2024 4:15p"; aVer="p1.02"; aVTitle="Useful gitR2 Tools by formR";                                  # .(41103.02.2 RAM Was: gitR1)
+        aVDt="Nov 24, 2024 6:55p"; aVer="p1.02"; aVTitle="Useful gitR2 Tools by formR";                                  # .(41103.02.2 RAM Was: gitR1)
         aVer="$( echo "$0" | awk '{ match( $0, /_[dpstuv][0-9]+\.[0-9]+/ ); print substr( $0, RSTART+1, RLENGTH-1) }' )"  # .(21031.01.1 RAM Add [d...).(20416.03.8 "_p2.02", or _d1.09)
 
         LIB="gitR2"; LIB_LOG=${LIB}_LOG; LIB_USER=${LIB}_USER; Lib=${LIB}; aDir=$(dirname "${BASH_SOURCE}");              # .(41103.02.3).(41102.01.1 RAM Add JPT12_Main2Fns_p1.07.sh Beg).(80923.01.1)
