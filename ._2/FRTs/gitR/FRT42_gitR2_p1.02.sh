@@ -20,7 +20,8 @@
 ##FD   FRT42_GitR2.sh           | 101830| 11/20/24 11:45|  1474| p1.02`.41120.1145
 ##FD   FRT42_GitR2.sh           | 108122| 11/23/24 19:00|  1534| p1.02`.41123.1900
 ##FD   FRT42_GitR2.sh           | 113886| 11/24/24 19:45|  1596| p1.02`.41124.1945
- 
+##FD   FRT42_GitR2.sh           | 121112| 12/01/24 12:32|  1705| p1.02`.41201.1232
+
 ##DESC     .--------------------+-------+---------------+------+-----------------+
 #            This script has usefull GIT functions.
 #
@@ -114,7 +115,8 @@
 # .(41129.02 11/29/24 RAM  1:00p| Change git status -u to get all working files
 # .(41129.03 11/29/24 RAM  1:15p| Add add command
 # .(41129.04 11/29/24 RAM  2:50p| Fix make remote args
-  
+# .(41031.04 12/01/24 RAM 12:32p| Fix List Commits Dec<-"Dev" date calc
+
 ##PRGM     +====================+===============================================+
 ##ID 69.600. Main0              |
 ##SRCE     +====================+===============================================+
@@ -369,7 +371,7 @@ function getBranch( ) {                                                         
    echo "  - aStage:   '${aStage}'"
    echo "  - aBranch:  '${aBranch}'"                                                                          # .(41102.02.2)
    echo "  - aRepoDir: '${aRepoDir}'"
-   echo "  - aAcct:    '${aAcct}'"                                                                            
+   echo "  - aAcct:    '${aAcct}'"
    echo ""
 #  exit_wCR
    fi
@@ -383,8 +385,8 @@ function shoCommitMsg() {                                                       
 #    aAWK1='/^commit / { c = substr($0,8,8)        };                     /^Author:/ { a = substr($0,8) }; /^Date:/ { d = substr($0,6,27) }; NR == 5 { p = length($0) > 63 ? "..." : ""; m = sprintf( "\"%-61s", ($0 != "") ? substr( $0, 5, 60-(p > "" ? 3 : 0) ) p "\"" : "n/a\"" ); print " " c d"   "m" "a  }' ##.(41031.06.1).(41103.01.1)
      aAWK1='/^commit / { c = substr($0,8,8); n = 5 }; /^Merge/ { n = 6 }; /^Author:/ { a = substr($0,8) }; /^Date:/ { d = substr($0,6,27) }; NR == n { p = length($0) > 63 ? "..." : ""; m = sprintf( "\"%-61s", ($0 != "") ? substr( $0, 5, 60-(p > "" ? 3 : 0) ) p "\"" : "n/a\"" ); print " " c d"   "m"  "a }' # .(41103.01.1).(41031.06.1)
 #    aAWK2='{ m = $3;                       d = $4;                       t = $5; y = $6; m = ( 2 + index( "JanFebMarAprMayJunJulAugSepOctNovDev", m ) ) / 3;   print substr($0,1,15)" "y"."m"."d" "t"   "substr( $0, 40 ) }'; # echo "  aAWK2: '${aAWK2}'"; exit # .(41031.04.1)
-#    aAWK2='{ m = $3; m = m > 9 ? m : "0"m; d = $4; d = d > 9 ? d : "0"d; t = $5; y = $6; m = ( 2 + index( "JanFebMarAprMayJunJulAugSepOctNovDev", m ) ) / 3;   print substr($0,1,15)" "y"."m"."d" "t"   "substr( $0, 40 ) }';   sayMsg "gitR2[307]  aAWK2: '${aAWK2}'" 2; # .(41031.04.1)
-     aAWK2='{ d = $4; d = d > 9 ? d : "0"d; t = $5; y = $6;   m = ( 2 + index( "JanFebMarAprMayJunJulAugSepOctNovDev", $3 ) ) / 3; m = m > 9 ? m : "0"m;        print substr($0,1,15)" "y"."m"."d" "t"   "substr( $0, 40 ) }'; #  sayMsg "gitR2[307]  aAWK2: '${aAWK2}'" 2; # .(41031.04.2)
+#    aAWK2='{ m = $3; m = m > 9 ? m : "0"m; d = $4; d = d > 9 ? d : "0"d; t = $5; y = $6; m = ( 2 + index( "JanFebMarAprMayJunJulAugSepOctNovDev", m ) ) / 3;   print substr($0,1,15)" "y"."m"."d" "t"   "substr( $0, 40 ) }';   sayMsg "gitR2[387]  aAWK2: '${aAWK2}'" 2; # .(41031.04.1)
+     aAWK2='{ d = $4; d = d > 9 ? d : "0"d; t = $5; y = $6;   m = ( 2 + index( "JanFebMarAprMayJunJulAugSepOctNovDec", $3 ) ) / 3; m = m > 9 ? m : "0"m;        print substr($0,1,15)" "y"."m"."d" "t"   "substr( $0, 40 ) }'; # sayMsg "gitR2[388]  aAWK2: '${aAWK2}'" 1; # .(41031.04.12 RAM Was Dev).(41031.04.2)
 #    aCommitHash="$( git rev-parse HEAD~$n 2>/dev/null )"; # echo "  aCommitHash: '${aCommitHash}'"         # Get commit hash at current position
 #    echo "  aCommitHash: ${aCommitHash}"; return
 #    if [ "${#n}" == "1" ]; then m=" ${n}"; else m="${n}"; fi
@@ -395,6 +397,7 @@ function shoCommitMsg() {                                                       
      aComHash="$( git rev-parse HEAD~${n} 2>/dev/null | awk '! /HEAD/ { print $0 }' )"                      # .(41110.01.3
 #    sayMsg  "gitR2[240]  ${m}. \$( git show \$(git rev-parse HEAD~$n) | awk '${aAWK1}' ) '${aComHash}'" 2  ##.(41031.04.2 RAM git show $aCommitHash | awk "${aAWK}" )
      if [ "${aComHash}" == "" ]; then echo -e "* ${m}.  There are no more commits (HEAD~$n)!"; exit_wCR; fi # .(41110.01.4 RAM Move to here).(41031.05.2 RAM Was ${1})
+#    sayMsg "gitR2[399] git show \"${aComHash}\" | awk '${aAWK2}'" 1; echo ""
      echo "  ${m}. $( git show "${aComHash}" | awk "${aAWK1}" | awk "${aAWK2}" )"                           # .(41110.01.5).(41031.04.2)
                                                                                                             # .(41030.05.2 End)
    } # eof shoCommitMsg
@@ -915,7 +918,7 @@ function getRemoteName() {                                                      
   if [ "${aCmd}" == "status" ]; then                                                                        # .(41123.02.4 RAM Add Status Command Beg)
             bFilesInWork="$( git status | awk '/working tree clean/ { b = 1 }; END { print b ? b : 0 }' )"  # .(41123.03.1 RAM Was End)
         if [ "${bFilesInWork}" != "1" ]; then
-            nCnt="$(git status -u --short | wc -l)"; s="s"; if [ "${nCnt}" == "1" ]; then s=""; fi          # .(41129.02.4) 
+            nCnt="$(git status -u --short | wc -l)"; s="s"; if [ "${nCnt}" == "1" ]; then s=""; fi          # .(41129.02.4)
             echo -e "\n* The current branch, '${aBranch}', has ${nCnt} uncommitted file${s}."
 
 #           git status --short | awk '{ print "   " $1 "  " substr( $0, 4) }'                               ##.(41124.06.5)
@@ -934,51 +937,51 @@ function getRemoteName() {                                                      
 #       sayMsg    "FRT40[926] Update Command" sp 1;
 
   if [ "${aCmd}" == "addCommit" ]; then                                                                     # .(41129.03.6 RAM Add Add CommitCommand Beg)
-                                   aCMsg="";         aCN="" 
+                                   aCMsg="";         aCN=""
 #    sayMsg  sp "FRT40[946] aArg2: '${aArg2}', aArg3: '${aArg3}', \$2: '$2', \$3: '$3'" 1;
 
-     if [[ ${aArg2} =~ ^[0-9] ]]; then  aArg2="${aArg3}"; aArg3="$2"; fi    
-     if [ "${aArg2}" != "" ]; then aCMsg="${aArg2}"; fi 
-     if [ "${aArg3}" != "" ]; then aCMsg="${aArg3}"; aCN="${aArg2}"; fi 
+     if [[ ${aArg2} =~ ^[0-9] ]]; then  aArg2="${aArg3}"; aArg3="$2"; fi
+     if [ "${aArg2}" != "" ]; then aCMsg="${aArg2}"; fi
+     if [ "${aArg3}" != "" ]; then aCMsg="${aArg3}"; aCN="${aArg2}"; fi
 
-     if [ "${aArg3}" != "" ]; then aCMsg="${aArg2}"; aCN="${aArg3}"; fi 
-     if [ "${aArg4}" != "" ]; then 
+     if [ "${aArg3}" != "" ]; then aCMsg="${aArg2}"; aCN="${aArg3}"; fi
+     if [ "${aArg4}" != "" ]; then
          echo -e "\n* Please put the commit message in quotes."
          exit_wCR
-         fi 
-     if [ "${aCMsg}"  == "" ]; then 
+         fi
+     if [ "${aCMsg}"  == "" ]; then
          echo -e "\n* Please supply a commit message."
          exit_wCR
-         fi 
+         fi
            aTS="$( date '+%y%m%d')"; aTS="${aTS:1}"
-     if [ "${#aCN}" == "1" ] || [ "${#aCN}" == "2" ]; then 
-           if [ "${#aCN}" == "1" ]; then aCN="0${aCN}"; fi  
+     if [ "${#aCN}" == "1" ] || [ "${#aCN}" == "2" ]; then
+           if [ "${#aCN}" == "1" ]; then aCN="0${aCN}"; fi
            aCN=".(${aTS}.${aCN}"
            fi
 #      sayMsg sp "FRT40[946] aMsg: '${aCMsg}', aCN: '${aCN}'" 1;
-           
-     if [ "${aCN}"  == "" ]; then 
+
+     if [ "${aCN}"  == "" ]; then
            aNxt=$( git log --since="midnight" --oneline | awk '{ sub( /.+\.\(/, "" ); print substr($0,7,2) }' | sort | awk 'END{ print $0 + 1 }' )
        sayMsg sp "FRT40[954] aNxt: '${aNxt}'" 1;
-#          if [ "${aNxt}"  == ""  ]; then aNxt="01"; fi  
-           if [ "${#aNxt}" == "1" ]; then aNxt="0${aNxt}"; fi  
+#          if [ "${aNxt}"  == ""  ]; then aNxt="01"; fi
+           if [ "${#aNxt}" == "1" ]; then aNxt="0${aNxt}"; fi
            aCN=".(${aTS}.${aNxt}"
-           fi 
-#          aGIT1="git commit -am \"${aCN}_${aCMsg}\"" 
+           fi
+#          aGIT1="git commit -am \"${aCN}_${aCMsg}\""
            aGIT1="git add -A"
            aGIT2="git commit -m \"${aCN}_${aCMsg}\""
-     if [ "${bDoit}" != "1" ]; then   
+     if [ "${bDoit}" != "1" ]; then
            aNum="$(git status -u --short | wc -l)"; s="s"; if [ "${aNum}" == "1" ]; then s=""; fi
            echo -e "\n* There are ${aNum// /} uncommitted file${s} that will be committed."
-           echo -e "\n  ${aGIT1}"     
-           echo -e   "  ${aGIT2} # Add -d to doit"    
-         else                                            
-           echo -e "\n  ${aGIT1}"                     
-           echo      "  ${aGIT2}"                     
+           echo -e "\n  ${aGIT1}"
+           echo -e   "  ${aGIT2} # Add -d to doit"
+         else
+           echo -e "\n  ${aGIT1}"
+           echo      "  ${aGIT2}"
 #          eval        "${aGIT1}"
 #          eval        "${aGIT2}"
-           eval        "${aGIT1}" 2>&1 | awk '{ print "  " $0 }'  
-           eval        "${aGIT2}" 2>&1 | awk '{ print "  " $0 }'  
+           eval        "${aGIT1}" 2>&1 | awk '{ print "  " $0 }'
+           eval        "${aGIT2}" 2>&1 | awk '{ print "  " $0 }'
            fi
          exit_wCR  #${aLstSp}; exit
      fi # eoc Add Commit Command                                                                            # .(41129.03.6 End)
@@ -1155,18 +1158,18 @@ function getRemoteName() {                                                      
      sayMsg  "gitR1[1153]  Git push" -1
 
         getBranch # aBranch=$( git branch | awk '/\*/ { print substr($0,3)}' )                              # .(41104.04.7)
-        getRemoteName  
+        getRemoteName
 
-        aGIT1="git push --set-upstream ${aRemoteName} ${aBranch}"                                           # .(41129.06.5 RAM Revise command if not the first time)                                   
-  if [ "${bDoit}" != "1" ]; then                                                         
+        aGIT1="git push --set-upstream ${aRemoteName} ${aBranch}"                                           # .(41129.06.5 RAM Revise command if not the first time)
+  if [ "${bDoit}" != "1" ]; then
 #    echo -e "\n  ${aGIT1}\n  ${aGIT2}"
-     echo -e "\n  ${aGIT1} # Add -d to doit"                                             
-    else                                                                                 
-     echo -e "\n  ${aGIT1} \n"                                                              
-#    eval        "${aGIT1}" 2>&1 | awk '{ print "  " $0 }'                               
-     eval        "${aGIT1}" 
-     fi        
-     exit_wCR 
+     echo -e "\n  ${aGIT1} # Add -d to doit"
+    else
+     echo -e "\n  ${aGIT1} \n"
+#    eval        "${aGIT1}" 2>&1 | awk '{ print "  " $0 }'
+     eval        "${aGIT1}"
+     fi
+     exit_wCR
      fi                                                                                                     # .(41129.06.4 End)
 #====== =================================================================================================== #  ===========
 #       GITR2 LIST BRANCHES
@@ -1214,8 +1217,8 @@ function getRemoteName() {                                                      
   if ! command -v gh >/dev/null 2>&1; then echo "  You need to install, gh.  Please run: gitr install gh"; exit_wCR; fi
 
 #    if [ "${aArg3}" == "" ]; then aStage="${aArg3}"; fi                                                    # .(41129.04.2 RAM Fix make rem args Beg)
-     if [ "${aArg3}"  != "" ]; then aProj="${aArg3}"; fi;     
-     if [ "${aArg3/_/}" != "${aArg3}" ]; then aArg5=${aArg4}; aArg4=""; aStage=""; fi 
+     if [ "${aArg3}"  != "" ]; then aProj="${aArg3}"; fi;
+     if [ "${aArg3/_/}" != "${aArg3}" ]; then aArg5=${aArg4}; aArg4=""; aStage=""; fi
      if [ "${aArg4}"  != "" ]; then aStage="${aArg4}"; fi
      if [ "${aArg5}"  != "" ]; then aAcct="${aArg5}"; fi
 
