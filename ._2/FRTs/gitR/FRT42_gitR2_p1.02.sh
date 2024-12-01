@@ -1065,7 +1065,7 @@ function getRemoteName() {                                                      
         else
         aVerb="About to update"
 #       echo -e "\n      git pull"
-#       if [ "${bForce}" != "1" ]; then echo -e "\n      ${aStashEm}"; else echo ""; fi                     # .(41123.05.13).(41123.05.33)
+#       if [ "${bForce}" != "1" ]; then echo -e "\n      ${aStashEm}"; else echo ""; fi                     ##.(41123.05.13).(41123.05.33)
         if [ "${bForce}" != "1" ]; then echo -e "\n      ${aStashEm}"; fi                                   # .(41123.05.33 RAM Remove else echo "")
         if [ "${aNewBranch}" != "${aCurBranch}" ]; then                                                     # .(41123.05.14)
         echo "      git reset hard"                                                                         # .(41123.05.15)
