@@ -50,11 +50,11 @@
 # .(21120.01 11/20/22 RAM 10:00a| Add Backup Command
 # .(21120.02 11/20/22 RAM  1:55p| Fix aOSv and aLstSp
 # .(30523.02  5/23/23 RAM  8:25a| Skip THE_SERVER Test
-# .(30917.01  9/17/23 RAM  1:02p| Add killPort
+# .(30917.01  9/17/23 RAM  1:02p| Add Kill Port
 # .(30917.02  9/17/23 RAM  2:00p| Fix up Help
 # .(40406.03  4/06/24 RAM  8:28p| New version of JPT13_reNum_p1.08.sh
 # .(40407.02  4/04/24 RAM 13:29p| Add bNoisy
-# .(30917.01 12/01/24 RAM 12:10p| Add Show Ports
+# .(30917.01 12/01/24 RAM 12:10p| Add Kill/Show multiple ports
 
 ##PRGM     +====================+===============================================+
 ##ID 69.600. Main0              |
@@ -176,8 +176,8 @@ function Help( ) {
 
      if [ "{bNoisy}" == "1" ]; then bQuiet=0; fi # else bQuiet=1; fi                                        # .(40407.02.2)
 
-#    sayMsg    "JPT10[176]  aArg1: '$aArg1', aArg2: '$aArg2', aArg3: '$aArg3', aArg4: '$aArg4', aArg5: '$aArg5', aArg6: '$aArg6', aArg7: '$aArg7', aArg8: '$aArg8', aArg9: '$aArg9'" 1
-     sayMsg    "JPT10[177]  aCmd:  '${aCmd}', aCmd1: '${aCmd1}', aCmd2: '${aCmd2}', aCmd3: '${aCmd3}', aCmd0: '${aCmd0}', bDoit: '${bDoit}', bDebug: '${bDebug}', bQuiet: '${bQuiet}, bNoisy: '${bNoisy}" -1
+#    sayMsg    "JPT10[179]  aArg1: '$aArg1', aArg2: '$aArg2', aArg3: '$aArg3', aArg4: '$aArg4', aArg5: '$aArg5', aArg6: '$aArg6', aArg7: '$aArg7', aArg8: '$aArg8', aArg9: '$aArg9'" 1
+     sayMsg    "JPT10[180]  aCmd:  '${aCmd}', aCmd1: '${aCmd1}', aCmd2: '${aCmd2}', aCmd3: '${aCmd3}', aCmd0: '${aCmd0}', bDoit: '${bDoit}', bDebug: '${bDebug}', bQuiet: '${bQuiet}, bNoisy: '${bNoisy}" -1
 
      Help "${aCmd0}"                                                                                        # .(30917.02.1 RAM Added "s)
 
@@ -233,7 +233,7 @@ function Help( ) {
        "$( dirname $0 )/JPT13_reNum_p1.08.sh"    "${mARGs[0]}" "${mARGs[1]}"                                # .(40406.03.1 RAM Was 1.07).(21117.03.1 RAM New Version)
 
         ${aLstSp}
-        exit
+        exit                                                                             
      fi # eoc Format Script                                                                                 # .(20504.01.1 End)
 #    -- --- ---------------  =  ------------------------------------------------------  #  ---------------- #
 
@@ -245,12 +245,49 @@ function Help( ) {
 #
 #====== =================================================================================================== #
 
-        sayMsg "JPT10[245]  Kill Port" -1    # 1) Always say, -1) Only if debug, 2) abort
-  if [ "${aCmd}" == "Show Ports" ]; then
+#       sayMsg "JPT10[248]  Show Ports (${aArg1})" 1    # 1) Always say, -1) Only if debug, 2) abort
+  if [ "${aCmd}" == "Show Ports" ] && [ "${aArg1}" == "" ]; then
 
-        sayMsg "JPT10[249]  Show Ports Not implemented yet" 1
+#       sayMsg "JPT10[251]  Show Ports Not implemented yet" 2
 
-        ${aLstSp}
+# function showPorts() {
+  if [ "${OS:0:7}" != "Windows" ]; then                                                                        # .(41109.09.1)
+    echo -e "\n  PID    IPAddr:Port      Program          "                                                 # .(41109.09.2)
+    echo      "  -----  ---------------  -----------------"                                                 # .(41109.09.3)
+#   lsof -i -P -n | grep LISTEN | awk '{ printf "  %-15s %6d   %s\n", $1, $2, $9 }'
+    lsof -i -P -n | grep LISTEN | awk '{ printf "  %-6s %6d %-16s %s\n", $9, $2, $1 }'                      # .(41109.09.4)
+  else                                                                                                      # .(41109.09.5 RAM Write show ports for Windows Beg)
+    echo -e "\n  PID    IPAddr:Port      Program          "
+    echo      "  -----  ---------------  -----------------"
+#   netstat -ano | grep LISTEN | grep node | \
+
+# First, get your arrays (but modified to actually capture the output)
+    mapfile -t array1 < <( wmic process where "name='node.exe'" get commandline | awk 'NR>1 { split( $0, a, " "); gsub( /"/, "", a[2]); print a[2] "..." a[ length(a)-1 ] }' )
+    mapfile -t array2 < <( wmic process where "name='node.exe'" get processid   | awk 'NR>1 { print $1 }' )
+
+#   for i in "${!array1[@]}"; do echo "  $i: ${array1[$i]}"; done
+#   echo      "  -----  ---------------  -----------------"
+#   for i in "${!array2[@]}"; do echo "  $i: $( netstat -ano | grep "${array2[$i]}" | awk '{ a = $2; exit }; END{ print a ? a : "n/a" }' )"; done # combine them
+#   echo      "  -----  ---------------  -----------------"
+
+    for i in "${!array2[@]}"; do array3[$i]="${array2[$i]} $( netstat -ano | grep "${array2[$i]}" | awk '{ a = $2; exit }; END{ print a ? a : "n/a" }' ) ${array1[$i]}"; done # combine them
+#   for i in "${!array3[@]}"; do     echo "  ${array3[$i]}" | awk '{ a=$1; b=$2; c=$3; if (c == "") { a = "."; b=$1; c=$2 }; printf "  %-6s %-16s %s\n", a, b, c }'; done                     # Print the combined array
+    for i in "${!array3[@]}"; do     echo "  ${array3[$i]}" | awk '$3 != "..." { a=$1; b=$2; c=$3; printf "  %-6s %-16s %s\n", a, b, c }'; done                     # Print the combined array
+
+#   ps -W | grep node | \
+#   while read line; do
+#       winpid=$( echo $line | awk '{print $1}')
+#       gitpid=$( echo $line | awk '{print $4}')
+#       port=$( netstat -ano | grep $gitpid | awk '{print $2}')
+#       echo " | awk '{ printf "  %-15s %6d   %s\n", $1, $2, $9 }'
+#       awk -F, '{ gsub("\"","",$0); split( $2, a, "node.exe"$2,  ); printf "%-6s %s\n", $1, a[2]}'
+#       echo "Port: $port  Git Bash PID: $gitpid"
+#   done
+#   echo -e "\n  To kill a Windows PID, do this: taskkill //F //PID {PID}"                                  # .(30917.01.16 RAM Remove)
+    fi                                                                                                      # .(41109.09.5 End)
+    exit_wCR
+#   }
+#      ${aLstSp}
      fi # eoc Show Ports                                                                                    # .(30917.01.15 End)
 #    -- --- ---------------  =  ------------------------------------------------------  #  ---------------- #
 
@@ -262,23 +299,27 @@ function Help( ) {
 #
 #====== =================================================================================================== #
 
-        sayMsg "JPT10[245]  Kill Port" -1    # 1) Always say, -1) Only if debug, 2) abort
+#       sayMsg "JPT10[302]  ${aCmd} (${aARGs[1]})" 1    # 1) Always say, -1) Only if debug, 2) abort
 
-  if [ "${aCmd}" == "Kill Port" ] || [ "${aCmd}" == "Show Port" ]; then  # echo "aCmd0: '${aCmd0}', '${aCmd0/port /}'"
+  if [ "${aCmd}" == "Kill Port" ] || [ "${aCmd}" == "Show Ports" ]; then  # echo "aCmd0: '${aCmd0}', '${aCmd0/port /}'"
 #       if [ "${aCmd0/port /}" != "${aCmd0}" ]; then mARGs[0]=${aCmd0:5}; fi
-        if [ "${aCmd}"        == "Show Port" ]; then mARGs[0]=${aCmd0:5}; aDoit="show"; else aDoit="doit"; fi
-        if [ "${mARGs[1]}"    == "show"      ]; then aDoit="show"; fi
+#       if [ "${aCmd}"        == "Show Ports" ]; then mARGs[0]=${aCmd0:5};  aDoit="show"; else aDoit="doit"; fi
+        if [ "${aCmd}"        == "Show Ports" ]; then mARGs[0]=${aCmd0:11}; aDoit="show"; else aDoit="doit"; fi
+        if [ "${mARGs[1]}"    == "show"       ]; then aDoit="show"; fi
 #       sayMsg "JPT10[251]  Kill Port Not implemented yet" 1
 #       sayMsg "JPT10[252]  ${aCmd} '${mARGs[0]}' '${mARGs[1]}' 'bDoit: '${bDoit}', bDebug: '${bDebug}', bQuiet: '${bQuiet}'" 1
 
 #    -- --- ---------------  =  ------------------------------------------------------  #  ---------------- #
 
-#       sayMsg   "JPT10[256] \"$( dirname $0 )/JPT14_killPort_p1.01.sh\" \"${mARGs[0]}\"" 1
-#       echo "  - JPT10[257] \"$( dirname $0 )/JPT14_killPort_p1.01.sh\" \"${mARGs[0]}\""; exit
-        $( dirname $0 )/JPT34_killPort_p1.01.sh "${mARGs[0]}" "${aDoit}"                                    # .(30917.01.16 RAM Was JPT14_)
-
+    for nPort in "${mARGs[@]}"; do
+#       sayMsg   "JPT10[313] \"$( dirname $0 )/JPT14_killPort_p1.01.sh\" \"${mARGs[0]}\"" 1
+#       sayMsg   "JPT10[314] \"$( dirname $0 )/JPT34_killPort_p1.01.sh\"  '${mARGs[0]}' '${aDoit}'" 1       ##.(30917.01.17).(30917.01.18)
+#       sayMsg   "JPT10[314] \"$( dirname $0 )/JPT34_killPort_p1.01.sh\"  '${nPort}'    '${aDoit}'" 1       # .(30917.01.18 RAM Was ${mARGs[0]}).(30917.01.17 RAM Was JPT14_)
+#                              $( dirname $0 )/JPT34_killPort_p1.01.sh    "${mARGs[0]}" "${aDoit}"          ##.(30917.01.17).(30917.01.18)
+                               $( dirname $0 )/JPT34_killPort_p1.01.sh    "${nPort}"    "${aDoit}"          # .(30917.01.18).(30917.01.17)
+        done 
         ${aLstSp}
-     fi # eoc Kill Port                                                                                     # .(30917.01.4 End)
+     fi # eoc Kill or show multiple port                                                                    # .(30917.01.4 End)
 #    -- --- ---------------  =  ------------------------------------------------------  #  ---------------- #
 
 # ------------------------------------------------------------------------------------

@@ -997,7 +997,7 @@ function getRemoteName() {                                                      
 #       sayMsg    "FRT40[873] Update Command" sp 1;
 
   if [ "${aCmd}" == "update" ]; then                                                                        # .(41116.01.3 RAM Add Update Command Beg)
-        sayMsg    "FRT40[876]  Update:   '${aArg1}' '${aArg2}' '${aArg3}' '${aArg4}', bDoit: '${bDoit}', bDebug: '${bDebug}', bForce: '${bForce}'" 1
+#       sayMsg    "FRT40[876]  Update:   '${aArg1}' '${aArg2}' '${aArg3}' '${aArg4}', bDoit: '${bDoit}', bDebug: '${bDebug}', bForce: '${bForce}'" 1
 
             aNewBranch="${aArg2}"                                                                           # .(41123.05.1 RAM Update a different branch Beg)
 #           aCurBranch="$( git branch | awk '/'"${aArg2}"'/ { sub(  "*",   "" ); print $1; exit }' )"       ##.(41123.05.11)
