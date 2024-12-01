@@ -10,15 +10,18 @@ if [ "${nPort}" == "" ]; then
    exit
    fi
 
+
 if [ "${OSTYPE:0:6}" == "darwin" ]; then
 
    nPID=$( lsof -i tcp:${nPort} ); if [ "${aShow}" == "show" ]; then echo -e "\n    lsof -i tcp:${nPort}"; fi
    if [ "${nPID}" == "" ]; then echo -e "\n* Port ${nPort} is not running (nPID: '${nPID}')."; exit; fi
 
  else  # if git-bash or linux
-
-   nWID=$( netstat -ano | awk '/TCP.+:'${nPort}'/ { print $5; exit }' ); if [ "${aShow}" == "show" ]; then echo ""
- echo "    netstat -ano | awk '/TCP.+:'${nPort}'/"; echo "    ps -W | awk '/ '${nWID}' /' ";
+#  echo "    nPort: '${nPort}'"; # exit
+   nWID=$( netstat -ano | awk '/TCP.+:'${nPort}'$/ { print $5; exit }' );
+#  echo "    netstat -ano | awk '/TCP.+:'${nPort}'$/"; echo "    ps -W | awk '/ '${nWID}' /' ";
+   if [ "${aShow}" == "show" ]; then echo "";
+   echo "    netstat -ano | awk '/TCP.+:'${nPort}'$/"; echo "    ps -W | awk '/ '${nWID}' /' ";
    fi
 
    if [ "${nWID}" == "" ]; then echo -e "\n  * Port ${nPort} is not running."; exit; fi

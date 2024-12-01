@@ -16,7 +16,8 @@
 ##FD   JPT10_Main0.sh           |  22971|  9/17/23 18:00|   349| p1.06-30917.1800
 ##FD   JPT10_Main0.sh           |  23498|  4/06/24 20:28|   354| p1.06-30917.2028
 ##FD   JPT10_Main0.sh           |  23935|  4/07/24 13:29|   360| p1.06`40407.1329
-##FD   JPT10_Main0.sh           |  25256| 12/01/24 12:10|   380| p1.06`41201.1210
+##FD   JPT10_Main0.sh           |  29002| 12/01/24 17:05|   424| p1.06`41201.1705
+
 ##DESC     .--------------------+-------+-----------------+------+---------------+
 #            Use the commands in this script to manage Ubuntu and Windows
 #            resources.
@@ -55,6 +56,7 @@
 # .(40406.03  4/06/24 RAM  8:28p| New version of JPT13_reNum_p1.08.sh
 # .(40407.02  4/04/24 RAM 13:29p| Add bNoisy
 # .(30917.01 12/01/24 RAM 12:10p| Add Kill/Show multiple ports
+# .(30917.01 12/01/24 RAM  5:05p| Check for missing port
 
 ##PRGM     +====================+===============================================+
 ##ID 69.600. Main0              |
@@ -62,7 +64,7 @@
 #*/
 #========================================================================================================== #  ===============================  #
 
-     aVdt="Apr 07, 2024  1:29p"; aVtitle="JScripWare Power Tools";                                          # .(21113.05.2 RAM Add aVtitle for Version in Begin)
+     aVdt="Dec 01, 2024  5:05p"; aVtitle="JScripWare Power Tools";                                          # .(21113.05.2 RAM Add aVtitle for Version in Begin)
      aVer="$( echo $0 | awk '{  match( $0, /_[dpstuv][0-9]+\.[0-9]+/ ); print substr( $0, RSTART+1, RLENGTH-1) }' )"  # .(21031.01.1 RAM Add [d...).(20416.03.8 "_p2.02", or _d1.09)
 
      LIB="JPT"; LIB_LOG=${LIB}_LOG; LIB_USER=${LIB}_USER; Lib=${LIB}                                        # .(80923.01.1)
@@ -233,7 +235,7 @@ function Help( ) {
        "$( dirname $0 )/JPT13_reNum_p1.08.sh"    "${mARGs[0]}" "${mARGs[1]}"                                # .(40406.03.1 RAM Was 1.07).(21117.03.1 RAM New Version)
 
         ${aLstSp}
-        exit                                                                             
+        exit
      fi # eoc Format Script                                                                                 # .(20504.01.1 End)
 #    -- --- ---------------  =  ------------------------------------------------------  #  ---------------- #
 
@@ -299,7 +301,7 @@ function Help( ) {
 #
 #====== =================================================================================================== #
 
-#       sayMsg "JPT10[302]  ${aCmd} (${aARGs[1]})" 1    # 1) Always say, -1) Only if debug, 2) abort
+#      sayMsg "JPT10[302]  ${aCmd} (${aARGs[1]})" 1    # 1) Always say, -1) Only if debug, 2) abort
 
   if [ "${aCmd}" == "Kill Port" ] || [ "${aCmd}" == "Show Ports" ]; then  # echo "aCmd0: '${aCmd0}', '${aCmd0/port /}'"
 #       if [ "${aCmd0/port /}" != "${aCmd0}" ]; then mARGs[0]=${aCmd0:5}; fi
@@ -310,6 +312,7 @@ function Help( ) {
 #       sayMsg "JPT10[252]  ${aCmd} '${mARGs[0]}' '${mARGs[1]}' 'bDoit: '${bDoit}', bDebug: '${bDebug}', bQuiet: '${bQuiet}'" 1
 
 #    -- --- ---------------  =  ------------------------------------------------------  #  ---------------- #
+        if [ "${mARGs}" == "" ]; then echo -e "\n* Please provide a port number."; fi                       # .(30917.01.19 RAM Check for missing port)
 
     for nPort in "${mARGs[@]}"; do
 #       sayMsg   "JPT10[313] \"$( dirname $0 )/JPT14_killPort_p1.01.sh\" \"${mARGs[0]}\"" 1
@@ -317,7 +320,7 @@ function Help( ) {
 #       sayMsg   "JPT10[314] \"$( dirname $0 )/JPT34_killPort_p1.01.sh\"  '${nPort}'    '${aDoit}'" 1       # .(30917.01.18 RAM Was ${mARGs[0]}).(30917.01.17 RAM Was JPT14_)
 #                              $( dirname $0 )/JPT34_killPort_p1.01.sh    "${mARGs[0]}" "${aDoit}"          ##.(30917.01.17).(30917.01.18)
                                $( dirname $0 )/JPT34_killPort_p1.01.sh    "${nPort}"    "${aDoit}"          # .(30917.01.18).(30917.01.17)
-        done 
+        done
         ${aLstSp}
      fi # eoc Kill or show multiple port                                                                    # .(30917.01.4 End)
 #    -- --- ---------------  =  ------------------------------------------------------  #  ---------------- #
