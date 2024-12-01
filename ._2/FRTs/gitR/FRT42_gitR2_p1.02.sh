@@ -116,6 +116,7 @@
 # .(41129.03 11/29/24 RAM  1:15p| Add add command
 # .(41129.04 11/29/24 RAM  2:50p| Fix make remote args
 # .(41031.04 12/01/24 RAM 12:32p| Fix List Commits Dec<-"Dev" date calc
+# .(41105.03 12/01/24 RAM  1:15p| Fix "${OS:0:7}" != "Windows" 
 
 ##PRGM     +====================+===============================================+
 ##ID 69.600. Main0              |
@@ -123,7 +124,7 @@
 #*/
 #========================================================================================================== #  ===============================  #
 
-        aVDt="Dec 01, 2024 12:34p"; aVer="p1.02"; aVTitle="Useful gitR2 Tools by formR";                                  # .(41103.02.2 RAM Was: gitR1)
+        aVDt="Dec 01, 2024 13:15p"; aVer="p1.02"; aVTitle="Useful gitR2 Tools by formR";                                  # .(41103.02.2 RAM Was: gitR1)
         aVer="$( echo "$0" | awk '{ match( $0, /_[dpstuv][0-9]+\.[0-9]+/ ); print substr( $0, RSTART+1, RLENGTH-1) }' )"  # .(21031.01.1 RAM Add [d...).(20416.03.8 "_p2.02", or _d1.09)
 
         LIB="gitR2"; LIB_LOG=${LIB}_LOG; LIB_USER=${LIB}_USER; Lib=${LIB}; aDir=$(dirname "${BASH_SOURCE}");              # .(41103.02.3).(41102.01.1 RAM Add JPT12_Main2Fns_p1.07.sh Beg).(80923.01.1)
@@ -206,7 +207,7 @@ function setOSvars() {
 # -----------------------------------------------------------
 
 function Sudo() {                                                                                           # .(41105.03.1 RAM Write Sudo)
-  if [[ "${OS:0:7}" != "windows" ]]; then if [ "${USERNAME}" != "root" ]; then sudo "$@"; fi; fi            # .(41105.03.2)
+  if [[ "${OS:0:7}" != "Windows" ]]; then if [ "${USERNAME}" != "root" ]; then sudo "$@"; fi; fi            # .(41105.03.12 RAM Was: "windows").(41105.03.2)
      }                                                                                                      # .(41105.03.3)
 # -----------------------------------------------------------
 
@@ -994,7 +995,7 @@ function getRemoteName() {                                                      
 #       sayMsg    "FRT40[873] Update Command" sp 1;
 
   if [ "${aCmd}" == "update" ]; then                                                                        # .(41116.01.3 RAM Add Update Command Beg)
-        sayMsg    "FRT40[876]  Update:   '${aArg1}' '${aArg2}' '${aArg3}' '${aArg4}', bDoit: '${bDoit}', bDebug: '${bDebug}', bForce: '${bForce}'" -1
+        sayMsg    "FRT40[876]  Update:   '${aArg1}' '${aArg2}' '${aArg3}' '${aArg4}', bDoit: '${bDoit}', bDebug: '${bDebug}', bForce: '${bForce}'" 1
 
             aNewBranch="${aArg2}"                                                                           # .(41123.05.1 RAM Update a different branch Beg)
 #           aCurBranch="$( git branch | awk '/'"${aArg2}"'/ { sub(  "*",   "" ); print $1; exit }' )"       ##.(41123.05.11)
@@ -1030,7 +1031,7 @@ function getRemoteName() {                                                      
             aVerb="will"; if [ "${bForce}" == "1" ]; then aVerb="won't"; fi
             aNum="$(git status -u --short | wc -l)"; s="s"; if [ "${aNum}" == "1" ]; then s=""; fi          # .(41129.02.5.(41116.01.21).(41123.03.3)
 
-        sayMsg    "FRT40[912]  Update:   aNewBranch: '${aNewBranch}', aCurBranch: '${aCurBranch}', bDoit: '${bDoit}', bDebug: '${bDebug}', bForce: '${bForce}'" -1
+        sayMsg    "FRT40[1033]  Update:   aNewBranch: '${aNewBranch}', aCurBranch: '${aCurBranch}', bDoit: '${bDoit}', bDebug: '${bDebug}', bForce: '${bForce}'" -1
 
             echo -e "\n* The branch, '${aCurBranch}', has ${aNum// /} uncommitted file${s}, that ${aVerb} be stashed."    # .(41116.01.22).(41123.05.6).(41123.03.4)
 
@@ -1047,6 +1048,9 @@ function getRemoteName() {                                                      
             aStashEm=""
             fi # eif bNoFilesInWork                                                                         # .(41107.01.7 End)
 
+#       sayMsg    "FRT40[1050]  aRepoDir: '${aRepoDir}', branch: '${aBranch}'" 1
+#       sayMsg    "FRT40[1051]       Pwd: '$( pwd )'" 2
+                
         if [ "${bDoit}" == "1" ]; then
 #                        git pull
             if [ "${bForce}" != "1" ]; then ${aStashEm} | awk '{ print "  " $0 }'; fi
