@@ -36,6 +36,7 @@
 ##FD   FRT10_Main0.sh           |  50875| 11/23/24 19:00|   731| p1.09`41123.1045
 ##FD   FRT10_Main0.sh           |  57213| 11/24/24 15:45|   825| p1.09`41124.1545
 ##FD   FRT10_Main0.sh           |  57987| 11/25/24  9:37|   833| p1.09`41125.0935
+##FD   FRT10_Main0.sh           |  58233| 11/29/24 13:00|   835| p1.09`41129.1300
 
 ##DESC     .--------------------+-------+---------------+------+-----------------+
 #            Use the commands in this script to manage FormR app resources.
@@ -118,6 +119,7 @@
 # .(41123.04 11/24/24 RAM 15:45a| Pass -f and -doit args to gitr update
 # .(41125.03 11/25/24 RAM  9:25a| Stash docker/docker-healthcheck.sh ??
 # .(41125.03 11/25/24 RAM  9:35a| Don't exit
+# .(41129.02 11/29/24 RAM  1:00p| Change git status -u to get all working files
 
 ##PRGM     +====================+===============================================+
 ##ID 69.600. Main0              |
@@ -125,7 +127,7 @@
 #*/
 #========================================================================================================== #  ===============================  #
 
-     aVdt="Nov 25, 2024 9:35a"; aVtitle="formR Tools"                                                      # .(21113.05.8 RAM Add aVtitle for Version in Begin)
+     aVdt="Nov 29, 2024 1:00p"; aVtitle="formR Tools"                                                      # .(21113.05.8 RAM Add aVtitle for Version in Begin)
      aVer="$( echo $0 | awk '{  match( $0, /_[dpstuv][0-9]+\.[0-9]+/ ); print substr( $0, RSTART+1, RLENGTH-1) }' )"  # .(21031.01.1 RAM Add [d...).(20416.03.8 "_p2.02", or _d1.09)
 
      LIB="FRT"; LIB_LOG=${LIB}_LOG; LIB_USER=${LIB}_USER; Lib=${LIB}; aDir=$( dirname "${BASH_SOURCE}" );   # .(41027.01.1 RAM).(80923.01.1)
@@ -749,10 +751,10 @@ function copyFile() {                                                           
        # 1. Make sure you're starting clean
             git checkout master                                  >/dev/null 2>&1;             # get into Anything-LLM's master branch
 
-                bNoFilesInWork="$( git status | awk '/working tree clean/ { print "1" }' )"   # should show clean working tree
+                bNoFilesInWork="$( git status -u --short | awk '/working tree clean/ { print "1" }' )"      # .(41129.02.1) # should show clean working tree
         if [ "${bNoFilesInWork}" != "1" ]; then
 #           echo -e "\n* The branch 'master', in ${aProjectStage}, has uncommitted files."                  # .(41125.03.1 RAM Stash em Beg)
-            aNum="$(git status --short | wc -l)"; s="s"; if [ "${aNum}" == "1" ]; then s=""; fi
+            aNum="$(git status -u --short | wc -l)"; s="s"; if [ "${aNum}" == "1" ]; then s=""; fi          # .(41129.02.2 RAM Get all working files)
             echo -e "\n* The branch, 'master', has ${aNum// /} uncommitted file${s}, that are being stashed."
 #           shoWorkingFiles
             aTS=$(date +%y%m%d.%H); aTS="${aTS:1}"
