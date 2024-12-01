@@ -16,6 +16,7 @@
 ##FD   JPT10_Main0.sh           |  22971|  9/17/23 18:00|   349| p1.06-30917.1800
 ##FD   JPT10_Main0.sh           |  23498|  4/06/24 20:28|   354| p1.06-30917.2028
 ##FD   JPT10_Main0.sh           |  23935|  4/07/24 13:29|   360| p1.06`40407.1329
+##FD   JPT10_Main0.sh           |  25256| 12/01/24 12:10|   380| p1.06`41201.1210
 ##DESC     .--------------------+-------+-----------------+------+---------------+
 #            Use the commands in this script to manage Ubuntu and Windows
 #            resources.
@@ -53,6 +54,7 @@
 # .(30917.02  9/17/23 RAM  2:00p| Fix up Help
 # .(40406.03  4/06/24 RAM  8:28p| New version of JPT13_reNum_p1.08.sh
 # .(40407.02  4/04/24 RAM 13:29p| Add bNoisy
+# .(30917.01 12/01/24 RAM 12:10p| Add Show Ports
 
 ##PRGM     +====================+===============================================+
 ##ID 69.600. Main0              |
@@ -119,7 +121,8 @@ function Help( ) {
      echo "  ------------------------------------------- -----------------------------------"
 #    echo "    JPT Make Project Dirs                     Create project structure "
      echo "    JPT Format Script                         Update sayMsg LineNos and ## FD header "           # .(20504.01.1 RAM Added)
-     echo "    JPT Kill Port                             Kill Port Process "                                # .(30917.01.2 RAM Added)
+     echo "    JPT Show Ports                            Show processes with port"                          # .(30917.01.11 RAM Add Show Ports)
+     echo "    JPT Kill Port                             Kill Port {Port} "                                 # .(30917.01.12).(30917.01.2 RAM Added)
      echo "    JPT Backup [zip|copy]                     Backup Current Folder without node_modules"        # .(21120.01 1 RAM Added)
      echo "    JPT RSS {Command}                         Robin's Shell Script {Command}"                    # .(21103.03.2 RAM Added)
 #    echo "    JPT10 {Command1}                          {Command1}"                                        # .(20416.01.1 RAM Added)
@@ -155,7 +158,8 @@ function Help( ) {
 #    getCmd  "cmd2"            "{Command2}"                                                                 # .(20416.02.2)
      getCmd  "ma" "pr" "di"    "Make Project Dirs"
      getCmd  "fo" "sc"         "Format Script"                                                              # .(20504.01.2)
-     getCmd  "po"      "*"     "Show Port"                                                                  # .(30917.01.3)
+     getCmd  "po"      "*"     "Show Ports"                                                                 # .(30917.01.13 RAM Was Show Port).(30917.01.3)
+     getCmd  "sh" "po"         "Show Ports"                                                                 # .(30917.01.14)
      getCmd  "ki" "po"         "Kill Port"                                                                  # .(30917.01.4)
 #    getCmd  "rss"             "RSS"   1                                                                    # .(21103.03.3)
      getCmd  "rss"     "*"     "RSS"                                                                        # .(21103.03.3)
@@ -237,6 +241,23 @@ function Help( ) {
 
 # ------------------------------------------------------------------------------------
 #
+#       Show Ports                                                                                          # .(30917.01.15 RAM Added Command Beg)
+#
+#====== =================================================================================================== #
+
+        sayMsg "JPT10[245]  Kill Port" -1    # 1) Always say, -1) Only if debug, 2) abort
+  if [ "${aCmd}" == "Show Ports" ]; then
+
+        sayMsg "JPT10[249]  Show Ports Not implemented yet" 1
+
+        ${aLstSp}
+     fi # eoc Show Ports                                                                                    # .(30917.01.15 End)
+#    -- --- ---------------  =  ------------------------------------------------------  #  ---------------- #
+
+#====== =================================================================================================== #  ===========
+
+# ------------------------------------------------------------------------------------
+#
 #       Kill Port                                                                                           # .(30917.01.4 Beg RAM Added Command)
 #
 #====== =================================================================================================== #
@@ -254,7 +275,7 @@ function Help( ) {
 
 #       sayMsg   "JPT10[256] \"$( dirname $0 )/JPT14_killPort_p1.01.sh\" \"${mARGs[0]}\"" 1
 #       echo "  - JPT10[257] \"$( dirname $0 )/JPT14_killPort_p1.01.sh\" \"${mARGs[0]}\""; exit
-        $( dirname $0 )/JPT14_killPort_p1.01.sh "${mARGs[0]}" "${aDoit}"
+        $( dirname $0 )/JPT34_killPort_p1.01.sh "${mARGs[0]}" "${aDoit}"                                    # .(30917.01.16 RAM Was JPT14_)
 
         ${aLstSp}
      fi # eoc Kill Port                                                                                     # .(30917.01.4 End)
