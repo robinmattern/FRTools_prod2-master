@@ -117,6 +117,7 @@
 # .(41129.04 11/29/24 RAM  2:50p| Fix make remote args
 # .(41031.04 12/01/24 RAM 12:32p| Fix List Commits Dec<-"Dev" date calc
 # .(41105.03 12/01/24 RAM  1:15p| Fix "${OS:0:7}" != "Windows" 
+# .(41123.05 12/01/24 RAM  1:33p| Adjust spacing for gitr update 
 
 ##PRGM     +====================+===============================================+
 ##ID 69.600. Main0              |
@@ -124,7 +125,7 @@
 #*/
 #========================================================================================================== #  ===============================  #
 
-        aVDt="Dec 01, 2024 13:15p"; aVer="p1.02"; aVTitle="Useful gitR2 Tools by formR";                                  # .(41103.02.2 RAM Was: gitR1)
+        aVDt="Dec 01, 2024 13:33p"; aVer="p1.02"; aVTitle="Useful gitR2 Tools by formR";                                  # .(41103.02.2 RAM Was: gitR1)
         aVer="$( echo "$0" | awk '{ match( $0, /_[dpstuv][0-9]+\.[0-9]+/ ); print substr( $0, RSTART+1, RLENGTH-1) }' )"  # .(21031.01.1 RAM Add [d...).(20416.03.8 "_p2.02", or _d1.09)
 
         LIB="gitR2"; LIB_LOG=${LIB}_LOG; LIB_USER=${LIB}_USER; Lib=${LIB}; aDir=$(dirname "${BASH_SOURCE}");              # .(41103.02.3).(41102.01.1 RAM Add JPT12_Main2Fns_p1.07.sh Beg).(80923.01.1)
@@ -1034,9 +1035,9 @@ function getRemoteName() {                                                      
         sayMsg    "FRT40[1033]  Update:   aNewBranch: '${aNewBranch}', aCurBranch: '${aCurBranch}', bDoit: '${bDoit}', bDebug: '${bDebug}', bForce: '${bForce}'" -1
 
             echo -e "\n* The branch, '${aCurBranch}', has ${aNum// /} uncommitted file${s}, that ${aVerb} be stashed."    # .(41116.01.22).(41123.05.6).(41123.03.4)
-
 #           git status --short | awk '{ print "  " $0 }'                                                    ##.(41124.06.6)
             shoWorkingFiles                                                                                 # .(41124.06.6 RAM Use it)
+            if [ "${bForce}" == "1" ]; then echo ""; fi                                                     # .(41123.05.32 RAM Put back echo "")
 
             aTS=$(date +%y%m%d.%H); aTS="${aTS:1}"
 #           aNum="$(git status --short | wc -l | awk '{ gsub( " ", "" ); print }' )";                       ##.(41116.01.13).(41116.01.21)
@@ -1064,7 +1065,8 @@ function getRemoteName() {                                                      
         else
         aVerb="About to update"
 #       echo -e "\n      git pull"
-        if [ "${bForce}" != "1" ]; then echo -e "\n      ${aStashEm}"; else echo ""; fi                     # .(41123.05.13)
+#       if [ "${bForce}" != "1" ]; then echo -e "\n      ${aStashEm}"; else echo ""; fi                     # .(41123.05.13).(41123.05.33)
+        if [ "${bForce}" != "1" ]; then echo -e "\n      ${aStashEm}"; fi                                   # .(41123.05.33 RAM Remove else echo "")
         if [ "${aNewBranch}" != "${aCurBranch}" ]; then                                                     # .(41123.05.14)
         echo "      git reset hard"                                                                         # .(41123.05.15)
         echo "      git checkout ${aNewBranch}"; fi                                                         # .(41123.05.16)
