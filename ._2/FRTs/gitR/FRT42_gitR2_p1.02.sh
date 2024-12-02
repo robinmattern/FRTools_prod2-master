@@ -21,7 +21,7 @@
 ##FD   FRT42_GitR2.sh           | 108122| 11/23/24 19:00|  1534| p1.02`.41123.1900
 ##FD   FRT42_GitR2.sh           | 113886| 11/24/24 19:45|  1596| p1.02`.41124.1945
 ##FD   FRT42_GitR2.sh           | 123098| 12/01/24 19:30|  1722| p1.02`.41201.1930
-##FD   FRT42_GitR2.sh           | 125381| 12/02/24 18:30|  1750| p1.02`.41202.1830
+##FD   FRT42_GitR2.sh           | 125488| 12/02/24 18:30|  1751| p1.02`.41202.1830
 
 ##DESC     .--------------------+-------+---------------+------+-----------------+
 #            This script has usefull GIT functions.
@@ -123,6 +123,7 @@
 # .(41201.03 12/01/24 RAM  7:30p| Kludge for cloning project in root dir
 # .(41202.03 12/02/24 RAM  5:30p| Deal with working files when changing branch
 # .(41202.03 12/02/24 RAM  6:30p| Use tr vs sed (Claude goofed)
+# .(41202.03 12/02/24 RAM  6:35p| Remmove exit ??
 
 ##PRGM     +====================+===============================================+
 ##ID 69.600. Main0              |
@@ -130,7 +131,7 @@
 #*/
 #========================================================================================================== #  ===============================  #
 
-        aVDt="Dec 02, 2024 6:30p"; aVer="p1.02"; aVTitle="Useful gitR2 Tools by formR";                                  # .(41103.02.2 RAM Was: gitR1)
+        aVDt="Dec 02, 2024 6:35p"; aVer="p1.02"; aVTitle="Useful gitR2 Tools by formR";                                  # .(41103.02.2 RAM Was: gitR1)
         aVer="$( echo "$0" | awk '{ match( $0, /_[dpstuv][0-9]+\.[0-9]+/ ); print substr( $0, RSTART+1, RLENGTH-1) }' )"  # .(21031.01.1 RAM Add [d...).(20416.03.8 "_p2.02", or _d1.09)
 
         LIB="gitR2"; LIB_LOG=${LIB}_LOG; LIB_USER=${LIB}_USER; Lib=${LIB}; aDir=$(dirname "${BASH_SOURCE}");              # .(41103.02.3).(41102.01.1 RAM Add JPT12_Main2Fns_p1.07.sh Beg).(80923.01.1)
@@ -1235,10 +1236,10 @@ function getRemoteName() {                                                      
             echo -e "\n  What would you like to do: Enter A, D or S: "
             read -p "    Abort, Discard or Stash as '${aStash}': " aAns;  aAns="$( echo "${aAns}" | tr '[:lower:]' '[:upper:]') )"
             if [ "${aAns:0:1}" == "A" ]; then echo "    Aborting"; exit_wCR; fi
-            exit
             if [ "${aAns:0:1}" == "S" ]; then  git stash push -u -m "${aStash}"; aAnswer="D"; fi
             if [ "${aAns:0:1}" == "D" ]; then
-               git clean -fd && git checkout  -f ${aArg2}
+               git clean -fd 2>&1 | awk '{ print "  " $0 }'
+               git checkout  -f ${aArg2} 2>&1 | awk '{ print "  " $0 }'
                exit_wCR;
                fi                                                                                           # .(41202.03.1 End)
             fi # eif bNoFilesInWork
