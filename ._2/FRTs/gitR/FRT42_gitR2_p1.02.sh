@@ -21,6 +21,7 @@
 ##FD   FRT42_GitR2.sh           | 108122| 11/23/24 19:00|  1534| p1.02`.41123.1900
 ##FD   FRT42_GitR2.sh           | 113886| 11/24/24 19:45|  1596| p1.02`.41124.1945
 ##FD   FRT42_GitR2.sh           | 123098| 12/01/24 19:30|  1722| p1.02`.41201.1930
+##FD   FRT42_GitR2.sh           | 125089| 12/02/24 17:30|  1748| p1.02`.41202.1730
 
 ##DESC     .--------------------+-------+---------------+------+-----------------+
 #            This script has usefull GIT functions.
@@ -120,6 +121,7 @@
 # .(41123.05 12/01/24 RAM  1:33p| Adjust spacing for gitr update
 # .(41123.05 12/01/24 RAM  2:25p| Fix if [ "aRemote" == "" ]
 # .(41201.03 12/01/24 RAM  7:30p| Kludge for cloning project in root dir
+# .(41202.03 12/01/24 RAM  5:30p| Deal with working files when changing branch
 
 ##PRGM     +====================+===============================================+
 ##ID 69.600. Main0              |
@@ -127,7 +129,7 @@
 #*/
 #========================================================================================================== #  ===============================  #
 
-        aVDt="Dec 01, 2024 7:30p"; aVer="p1.02"; aVTitle="Useful gitR2 Tools by formR";                                  # .(41103.02.2 RAM Was: gitR1)
+        aVDt="Dec 02, 2024 5:30p"; aVer="p1.02"; aVTitle="Useful gitR2 Tools by formR";                                  # .(41103.02.2 RAM Was: gitR1)
         aVer="$( echo "$0" | awk '{ match( $0, /_[dpstuv][0-9]+\.[0-9]+/ ); print substr( $0, RSTART+1, RLENGTH-1) }' )"  # .(21031.01.1 RAM Add [d...).(20416.03.8 "_p2.02", or _d1.09)
 
         LIB="gitR2"; LIB_LOG=${LIB}_LOG; LIB_USER=${LIB}_USER; Lib=${LIB}; aDir=$(dirname "${BASH_SOURCE}");              # .(41103.02.3).(41102.01.1 RAM Add JPT12_Main2Fns_p1.07.sh Beg).(80923.01.1)
@@ -443,6 +445,7 @@ function shoWorkingFiles() {                                                    
 #      git show --pretty="" --name-status HEAD~$2 | awk "${aAWK1}" | awk "${GetDate}"                       ##.(41124.06.14)
 #      git show --pretty="" --name-status HEAD~$2 | awk "${aAWK1}"                                          ##.(41124.06.14)
        fi                                                                                                   # .(41124.06.15)
+
    } # eof shoWorkingFiles                                                                                  # .(41124.06.1 End)
 # ---------------------------------------------------------------------------
 
@@ -710,7 +713,7 @@ yarn.lock
      fi # eoc Init                                                                                          # .(41103.03.5).(20430.01.3 End)
 #    -- --- ---------------  =  ------------------------------------------------------  #  ---------------- #
 #====== =================================================================================================== #  ===========
-#       GITR2 CLONE                                                                                         # .(41104.05.3 RAM Move git clone up before git init)
+#>      GITR2 CLONE                                                                                         # .(41104.05.3 RAM Move git clone up before git init)
 #====== =================================================================================================== #
 
 function getProjectStage_fromURL() {                                                                        # .(41104.01.1 Write getProjectStage_fromURL Beg)
@@ -803,6 +806,7 @@ function getRemoteName() {                                                      
 #    -- --- ---------------  =  ------------------------------------------------------  #  ---------------- #
 
      if [ "${aCmd}" == "cloneRemote" ] || [ "${aCmd}" == "cloneBranch" ]; then                              # .(41103.06.10 RAM write it Beg)
+
         sayMsg  "gitR2[806]  Git Clone ${aCmd:5}" -1;
         if [ "${aCmd:5}" == "Branch" ]; then                                                                # .(41201.03.1 RAM Start dealing with clone branch Beg)
            aArg1="${aArg2}"; aArg2="${aArg3}";  aArg3="${aArg4}"; aArg4="${aArg5}"; aArg5="${aArg6}"; aArg6=""
@@ -896,7 +900,7 @@ function getRemoteName() {                                                      
 #    -- --- ---------------  =  ------------------------------------------------------  #  ---------------- #
 
 #====== =================================================================================================== #  ===========
-#       GITR2 HELP & SET GLOBALS                                                                            # .(20430.01.3 Beg RAM Added Beg)
+#>      GITR2 HELP & SET GLOBALS                                                                            # .(20430.01.3 Beg RAM Added Beg)
 #====== =================================================================================================== #
 
 #         aCmd="cloneRemote"
@@ -1092,7 +1096,7 @@ function getRemoteName() {                                                      
 #    -- --- ---------------  =  ------------------------------------------------------  #  ---------------- #
 
 #====== =================================================================================================== #  ===========
-#       GITR2 SHOW LAST                                                                                     # .(20430.01.3 Beg RAM Added)
+#>      GITR2 SHOW LAST                                                                                     # .(20430.01.3 Beg RAM Added)
 #====== =================================================================================================== #
 
   if [ "${aCmd}" == "shoLast" ]; then
@@ -1115,7 +1119,7 @@ function getRemoteName() {                                                      
        done
      fi
 #====== =================================================================================================== #  ===========
-#       GITR2 SHOW COMMIT
+#>      GITR2 SHOW COMMIT
 #====== =================================================================================================== #
 
   if [ "${aCmd}" == "shoCommit" ]; then                                                                     # .(41030.05.4 RAM Add shoCommit Beg)
@@ -1137,7 +1141,7 @@ function getRemoteName() {                                                      
        done
      fi                                                                                                     # .(41030.05.4 End)
 #====== =================================================================================================== #  ===========
-#       GITR2 PULL
+#>      GITR2 PULL
 #====== =================================================================================================== #
 
   if [ "${aCmd}" == "pullRemote" ]; then                                                                    # .(41103.06.11 RAM write it Beg)
@@ -1168,7 +1172,7 @@ function getRemoteName() {                                                      
         Sudo find . -type f -name "*.sh" -exec chmod 777 {} +                                               # .(41105.03.2)
      fi                                                                                                     # .(41103.06.11 End)
 #====== =================================================================================================== #  ===========
-#       GITR2 PUSH
+#>      GITR2 PUSH
 #====== =================================================================================================== #
 
   if [ "${aCmd}" == "pushRemote" ]; then                                                                    # .(41129.06.4 RAM write pushRemote Beg)
@@ -1189,7 +1193,7 @@ function getRemoteName() {                                                      
      exit_wCR
      fi                                                                                                     # .(41129.06.4 End)
 #====== =================================================================================================== #  ===========
-#       GITR2 LIST BRANCHES
+#>      GITR2 LIST BRANCHES
 #====== =================================================================================================== #
 
   if [ "${aCmd}" == "listBranches" ]; then                                                                  # .(41114.04.5 RAM write listBranches)
@@ -1199,34 +1203,50 @@ function getRemoteName() {                                                      
         exit_wCR                                                                                            # .(41116.01.16)
      fi                                                                                                     # .(41114.04.5 End)
 #====== =================================================================================================== #  ===========
-#       GITR2 CHECKOUT BRANCHES
+#>      GITR2 CHECKOUT BRANCH
 #====== =================================================================================================== #
 
   if [ "${aCmd}" == "checkoutBranch" ]; then                                                                # .(41114.04.6 RAM write checkoutBranch)
      sayMsg  "gitR1[866]  checkoutBranch '${aArg2}'" -1
 
         getBranch
-     if [ "$aArg2" == "" ]; then
+     if [ "${aArg2}" == "" ]; then
 #       echo -e "\n  The current branch is ${aBranch}."                                                     ##.(41114.05.2
         echo ""                                                                                             # .(41114.05.1
         git branch -vva | awk '{ print "  " $0 }'                                                           # .(41114.05.2 RAM Display branches if none given)
       else
+        if ! git branch | grep -q "${aArg2}"; then                                                          # .(41202.03.2 RAM Check if it exists Beg)
+            echo ""; read -p "* The branch, ${aArg2}, does not exist.  Create it? Y or N: " aAns
+            if [ "$( echo "${aAns}" | sed 's/\(.*\)/\U\1/' )" != "Y" ]; then exit_wCR; fi
+            git branch "${aArg2}"
+            fi                                                                                              # .(41202.03.2 End)
+
             bFilesInWork="$( git status | awk '/working tree clean/ { b = 1 }; END { print b ? b : 0 }' )"  # .(41123.03.5)
         if [ "${bFilesInWork}" != "1" ]; then
             nCnt="$(git status -u --short | wc -l)"; s="s"; if [ "${nCnt}" == "1" ]; then s=""; fi          # .(41129.02.6).(41123.03.6)
-            echo -e "\n* The current branch, '${aBranch}', has ${nCnt} uncommitted file${s}."               # .(41123.03.7)
+            echo -e "\n* The current branch, '${aBranch}', has ${nCnt// /} uncommitted file${s}."           # .(41123.03.7)
 
 #           git status --short | awk '{ print "  " $0 }'                                                    ##.(41124.06.8)
             shoWorkingFiles                                                                                 # .(41124.06.8 RAM Use it)
 
-            ${aLstSp}; exit
+            aTS=$(date +%y%m%d.%H); aStash=".(${aTS:1} Stash of ${nCnt// /} file${s}"                       # .(41202.03.1 RAM Ask about working files Beg)
+            echo -e "\n  What would you like to do: Enter A, D or S: "
+            read -p "    Abort, Discard or Stash as '${aStash}': " aAns;  aAns="$( echo "${aAns}" | sed 's/\(.*\)/\U\1/' )"
+            if [ "${aAns:0:1}" == "A" ]; then echo "  Aborting"; exit_wCR; fi
+            exit
+            if [ "${aAns:0:1}" == "S" ]; then  git stash push -u -m "${aStash}"; aAnswer="D"; fi
+            if [ "${aAns:0:1}" == "D" ]; then
+               git clean -fd && git checkout  -f ${aArg2}
+               exit_wCR;
+               fi                                                                                           # .(41202.03.1 End)
             fi # eif bNoFilesInWork
-        git checkout | awk '{ print "  $0" }'
+        echo ""
+        git checkout ${aArg2} 2>&1 | awk '{ print "  " $0 }'
         fi
         exit_wCR                                                                                            # .(41116.01.17)
      fi                                                                                                     # .(41114.04.6 End)
 #====== =================================================================================================== #  ===========
-#       GITR2 MAKE REMMOTE
+#>      GITR2 MAKE REMMOTE
 #====== =================================================================================================== #
 #    sayMsg  "gitR2[425] aCmd: '${aCmd}'" 1
 
@@ -1363,7 +1383,7 @@ function getRemoteName() {                                                      
      fi
 # ---------------------------------------------------------------------------
 #====== =================================================================================================== #  ===========
-#       GITR2 ADD REMMOTE
+#>      GITR2 ADD REMMOTE
 #====== =================================================================================================== #
 #    sayMsg  "gitR2[1326] aCmd: '${aCmd}'" 1
 
@@ -1648,7 +1668,7 @@ function getRemoteName() {                                                      
      fi  # ???  // eof Add or Set Remote                                                # .(41103.04.8 RAM Finally put it back )
 # ---------------------------------------------------------------------------
 #====== =================================================================================================== #  ===========
-#       GITR2 DELETE REMMOTE
+#>      GITR2 DELETE REMMOTE
 #====== =================================================================================================== #
 #    sayMsg  "gitR2[711] aCmd: '${aCmd}'" 1
 
@@ -1664,6 +1684,9 @@ function getRemoteName() {                                                      
      fi
      fi
 # ---------------------------------------------------------------------------
+#====== =================================================================================================== #  ===========
+#>      GITR2 SHOW REMMOTE
+#====== =================================================================================================== #
 
   if [ "${aCmd}" == "shoRemote" ]; then
 #    echo ""
@@ -1672,6 +1695,9 @@ function getRemoteName() {                                                      
      exit_wCR
      fi
 # ---------------------------------------------------------------------------
+#====== =================================================================================================== #  ===========
+#>      GITR2 GET CLI
+#====== =================================================================================================== #
 
   if [ "${aCmd}" == "getCLI" ]; then
      echo ""
