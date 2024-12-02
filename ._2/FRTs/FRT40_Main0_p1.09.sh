@@ -37,7 +37,7 @@
 ##FD   FRT10_Main0.sh           |  57213| 11/24/24 15:45|   825| p1.09`41124.1545
 ##FD   FRT10_Main0.sh           |  57987| 11/25/24  9:37|   833| p1.09`41125.0935
 ##FD   FRT10_Main0.sh           |  58233| 11/29/24 13:00|   835| p1.09`41129.1300
-##FD   FRT10_Main0.sh           |  59027| 12/01/24 19:30|   841| p1.09`41201.1930
+##FD   FRT10_Main0.sh           |  59165| 12/01/24 21:50|   842| p1.09`41201.2150
 
 ##DESC     .--------------------+-------+---------------+------+-----------------+
 #            Use the commands in this script to manage FormR app resources.
@@ -122,6 +122,7 @@
 # .(41125.03 11/25/24 RAM  9:35a| Don't exit
 # .(41129.02 11/29/24 RAM  1:00p| Change git status -u to get all working files
 # .(41201.04 12/01/24 RAM  7:30p| Add aBranch to install repos
+# .(41201.03 12/01/24 RAM  9:50p| Change clone aProjectStage to AnyLLM
 
 ##PRGM     +====================+===============================================+
 ##ID 69.600. Main0              |
@@ -129,7 +130,7 @@
 #*/
 #========================================================================================================== #  ===============================  #
 
-     aVdt="Dec 01, 2024 7:30p"; aVtitle="formR Tools"                                                      # .(21113.05.8 RAM Add aVtitle for Version in Begin)
+     aVdt="Dec 01, 2024 9:50p"; aVtitle="formR Tools"                                                      # .(21113.05.8 RAM Add aVtitle for Version in Begin)
      aVer="$( echo $0 | awk '{  match( $0, /_[dpstuv][0-9]+\.[0-9]+/ ); print substr( $0, RSTART+1, RLENGTH-1) }' )"  # .(21031.01.1 RAM Add [d...).(20416.03.8 "_p2.02", or _d1.09)
 
      LIB="FRT"; LIB_LOG=${LIB}_LOG; LIB_USER=${LIB}_USER; Lib=${LIB}; aDir=$( dirname "${BASH_SOURCE}" );   # .(41027.01.1 RAM).(80923.01.1)
@@ -720,7 +721,7 @@ function copyFile() {                                                           
         sayMsg    "FRT40[674]  aArg2: '${aArg2}'" -1
 
 #                                     aProjectStage="AnyLLM_prod1-master"
-                                      aProjectStage="AnyLLM"
+                                      aProjectStage="AnyLLM"                                                # .(41201.03.5 )
         if [ "${aArg3}" != "" ]; then aProjectStage="$3"; fi
 #                                else aProjectStage="$( pwd )"; aProjectStage="${aProjectStage##/}"; fi
         if [ -d "../${aProjectStage}" ]; then cd ../${aProjectStage}; fi
