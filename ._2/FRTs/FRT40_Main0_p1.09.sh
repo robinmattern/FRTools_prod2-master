@@ -37,6 +37,7 @@
 ##FD   FRT10_Main0.sh           |  57213| 11/24/24 15:45|   825| p1.09`41124.1545
 ##FD   FRT10_Main0.sh           |  57987| 11/25/24  9:37|   833| p1.09`41125.0935
 ##FD   FRT10_Main0.sh           |  58233| 11/29/24 13:00|   835| p1.09`41129.1300
+##FD   FRT10_Main0.sh           |  59027| 12/01/24 19:30|   841| p1.09`41201.1930
 
 ##DESC     .--------------------+-------+---------------+------+-----------------+
 #            Use the commands in this script to manage FormR app resources.
@@ -120,6 +121,7 @@
 # .(41125.03 11/25/24 RAM  9:25a| Stash docker/docker-healthcheck.sh ??
 # .(41125.03 11/25/24 RAM  9:35a| Don't exit
 # .(41129.02 11/29/24 RAM  1:00p| Change git status -u to get all working files
+# .(41201.04 12/01/24 RAM  7:30p| Add aBranch to install repos
 
 ##PRGM     +====================+===============================================+
 ##ID 69.600. Main0              |
@@ -127,7 +129,7 @@
 #*/
 #========================================================================================================== #  ===============================  #
 
-     aVdt="Nov 29, 2024 1:00p"; aVtitle="formR Tools"                                                      # .(21113.05.8 RAM Add aVtitle for Version in Begin)
+     aVdt="Dec 01, 2024 7:30p"; aVtitle="formR Tools"                                                      # .(21113.05.8 RAM Add aVtitle for Version in Begin)
      aVer="$( echo $0 | awk '{  match( $0, /_[dpstuv][0-9]+\.[0-9]+/ ); print substr( $0, RSTART+1, RLENGTH-1) }' )"  # .(21031.01.1 RAM Add [d...).(20416.03.8 "_p2.02", or _d1.09)
 
      LIB="FRT"; LIB_LOG=${LIB}_LOG; LIB_USER=${LIB}_USER; Lib=${LIB}; aDir=$( dirname "${BASH_SOURCE}" );   # .(41027.01.1 RAM).(80923.01.1)
@@ -654,11 +656,11 @@ function Help( ) {
 #       Install Command                                                                                     # .(41111.01.5 RAM Add Install Command beg)
 #====== =================================================================================================== #
 
-        sayMsg    "FRT40[644]  Install Command" sp 1;
+        sayMsg    "FRT40[657]  Install Command" -1;
 
   if [ "${aCmd}" == "Install" ]; then
 
-        sayMsg    "FRT40[617]  Install:   '${aArg1}' '${aArg2}' '${aArg3}' '${aArg4}', bDoit: '${bDoit}', bDebug: '${bDebug}', bQuiet: '${bQuiet}'" -1
+        sayMsg    "FRT40[661]  Install:   '${aArg1}' '${aArg2}' '${aArg3}' '${aArg4}', bDoit: '${bDoit}', bDebug: '${bDebug}', bQuiet: '${bQuiet}'" -1
 
 function Sudo() {
 #       echo "   sudo[1] \${OS:0:7}: '${OS:0:7}'"
@@ -678,7 +680,7 @@ function copyFile() {                                                           
 #       copyFile "ALTools" "run-anyllm.sh" "master"
 #       ---------------------------------------------------------------------
 
-        sayMsg    "FRT40[634]  Install:   'aArg2: ${aArg2}' aArg3: '${aArg3}', bDoit: '${bDoit}', bDebug: '${bDebug}', bQuiet: '${bQuiet}'" -1
+        sayMsg    "FRT40[681]  Install:   'aArg2: ${aArg2}' aArg3: '${aArg3}', bDoit: '${bDoit}', bDebug: '${bDebug}', bQuiet: '${bQuiet}'" -1
 
         if [ "$aArg2" == "help"    ]; then aArgs="help"; else aArgs=""; fi                                  # .(41124.02.2 RAM Add install that runs set-frtools.sh Beg)
         if [ "$aArg2" == "show"    ]; then aArgs="show"; fi
@@ -697,14 +699,16 @@ function copyFile() {                                                           
         fi #  ${aArg2}" == ""                                                                               # .(41124.02.2 End)
 #       ---------------------------------------------------------------------
 
-        if [ "${aArg2}" == "aidocs" ]; then                                             # .(41124.03.1 RAM Add install aidocs Beg)
+        if [ "${aArg2}" == "aidocs" ]; then                                                                 # .(41124.03.1 RAM Add install aidocs Beg)
+           aBranch=""; if [ "${aArg3}" != "" ]; then aBranch=" ${aArg3}"; fi                                # .(41201.04.1 RAM Clarity)
         if [ "${bDoit}" != 1 ]; then
            echo -e "\n  About to install AIDocs"
-           echo "    gitr clone aidocs -doit"
+           echo "    gitr clone aidocs no-stage${aBranch} -d"                                               # .(41201.04.2 RAM Add aBranch)
            ${aLstSp}; exit
            fi
            echo -e "\n  Installing AIDocs"
-           gitr clone aidocs ${aArg3} -d
+           gitr clone aidocs no-stage ${aBranch} -d                                                         # .(41201.04.3)
+           if [ "${OS:0:7}" != "Windows" ]; then sudo find . -type f -name "*.sh" -exec chmod 755 {} +; fi  # .(41201.04.4)
 #          ${aLstSp}; exit
            exit
         fi # eif install aidocs                                                         # .(41124.03.1 End)
@@ -712,9 +716,11 @@ function copyFile() {                                                           
 #       ---------------------------------------------------------------------
 
         if [ "${aArg2}" == "altools" ]; then
+#          aBranch=""; if [ "${aArg3}" != "" ]; then aBranch=" ${aArg3}"; fi                                ##.(41201.04.5 RAM Clarity)
         sayMsg    "FRT40[674]  aArg2: '${aArg2}'" -1
 
-                                      aProjectStage="AnyLLM_prod1-master"
+#                                     aProjectStage="AnyLLM_prod1-master"
+                                      aProjectStage="AnyLLM"
         if [ "${aArg3}" != "" ]; then aProjectStage="$3"; fi
 #                                else aProjectStage="$( pwd )"; aProjectStage="${aProjectStage##/}"; fi
         if [ -d "../${aProjectStage}" ]; then cd ../${aProjectStage}; fi
