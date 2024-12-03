@@ -21,7 +21,7 @@
 ##FD   FRT42_GitR2.sh           | 108122| 11/23/24 19:00|  1534| p1.02`.41123.1900
 ##FD   FRT42_GitR2.sh           | 113886| 11/24/24 19:45|  1596| p1.02`.41124.1945
 ##FD   FRT42_GitR2.sh           | 123098| 12/01/24 19:30|  1722| p1.02`.41201.1930
-##FD   FRT42_GitR2.sh           | 125748| 12/03/24  8:31|  1753| p1.02`.41203.0830
+##FD   FRT42_GitR2.sh           | 125748| 12/03/24  9:30|  1753| p1.02`.41203.0930
 
 ##DESC     .--------------------+-------+---------------+------+-----------------+
 #            This script has usefull GIT functions.
@@ -125,6 +125,7 @@
 # .(41202.03 12/02/24 RAM  6:30p| Use tr vs sed (Claude goofed)
 # .(41202.03 12/02/24 RAM  6:35p| Remmove exit ??
 # .(41203.02 12/03/24 RAM  8:30a| Change update branch tolower($aArg2)
+# .(41203.03 12/03/24 RAM  9:30a| Add Time to stash msg 
 
 ##PRGM     +====================+===============================================+
 ##ID 69.600. Main0              |
@@ -132,7 +133,7 @@
 #*/
 #========================================================================================================== #  ===============================  #
 
-        aVDt="Dec 03, 2024 8:30a"; aVer="p1.02"; aVTitle="Useful gitR2 Tools by formR";                                  # .(41103.02.2 RAM Was: gitR1)
+        aVDt="Dec 03, 2024 9:30a"; aVer="p1.02"; aVTitle="Useful gitR2 Tools by formR";                                  # .(41103.02.2 RAM Was: gitR1)
         aVer="$( echo "$0" | awk '{ match( $0, /_[dpstuv][0-9]+\.[0-9]+/ ); print substr( $0, RSTART+1, RLENGTH-1) }' )"  # .(21031.01.1 RAM Add [d...).(20416.03.8 "_p2.02", or _d1.09)
 
         LIB="gitR2"; LIB_LOG=${LIB}_LOG; LIB_USER=${LIB}_USER; Lib=${LIB}; aDir=$(dirname "${BASH_SOURCE}");              # .(41103.02.3).(41102.01.1 RAM Add JPT12_Main2Fns_p1.07.sh Beg).(80923.01.1)
@@ -1017,10 +1018,10 @@ function getRemoteName() {                                                      
   if [ "${aCmd}" == "update" ]; then                                                                        # .(41116.01.3 RAM Add Update Command Beg)
 #       sayMsg    "FRT40[876]  Update:   '${aArg1}' '${aArg2}' '${aArg3}' '${aArg4}', bDoit: '${bDoit}', bDebug: '${bDebug}', bForce: '${bForce}'" 1
 
-            aNewBranch="$( echo "${aArg2}" | awk '{ print tolower($0) }' )"                                  # .(41203.02.2 RAM Add tolower).(41123.05.1 RAM Update a different branch Beg)
-#           aCurBranch="$( git branch | awk '/'"${aArg2}"'/      { sub(  "*",   "" ); print $1; exit }' )"   ##.(41123.05.11)
-#           aCurBranch="$( git branch | awk '/'"${aArg2}"'/      { sub( /[* ]/, "" ); print $1; exit }' )"   ##.(41123.05.11).(41203.02.2)
-            aCurBranch="$( git branch | awk '/'"${aNewBranch}"'/ { sub( /[* ]/, "" ); print $1; exit }' )"   # .(41203.02.2).(41123.05.11 RAM Fix for MacOS)
+            aNewBranch="$( echo "${aArg2}" | awk '{ print tolower($0) }' )"                                 # .(41203.02.1 RAM Add tolower).(41123.05.1 RAM Update a different branch Beg)
+#           aCurBranch="$( git branch | awk '/'"${aArg2}"'/      { sub(  "*",   "" ); print $1; exit }' )"  ##.(41123.05.11)
+#           aCurBranch="$( git branch | awk '/'"${aArg2}"'/      { sub( /[* ]/, "" ); print $1; exit }' )"  ##.(41123.05.11).(41203.02.2)
+            aCurBranch="$( git branch | awk '/'"${aNewBranch}"'/ { sub( /[* ]/, "" ); print $1; exit }' )"  # .(41203.02.2).(41123.05.11 RAM Fix for MacOS)
         sayMsg    "FRT40[881]  Update:   aNewBranch: '${aNewBranch}', aCurBranch: '${aCurBranch}', bDoit: '${bDoit}', bDebug: '${bDebug}', bForce: '${bForce}'" -1
         if [ "${aNewBranch}" != "" ]; then
 #           aNewBranch="$( git branch | awk '/'"${aNewBranch}"'/ { sub(  "*",   "" ); print $1; exit }' )"  ##.(41123.05.12)
@@ -1059,11 +1060,11 @@ function getRemoteName() {                                                      
             shoWorkingFiles                                                                                 # .(41124.06.6 RAM Use it)
             if [ "${bForce}" == "1" ]; then echo ""; fi                                                     # .(41123.05.32 RAM Put back echo "")
 
-            aTS=$(date +%y%m%d.%H); aTS="${aTS:1}"
+            aTS=$(date +%y%m%d.%H); aTS="${aTS:1}"; aHR="at $(date +%H:%M.%S)"                              # .(41203.03.1
 #           aNum="$(git status --short | wc -l | awk '{ gsub( " ", "" ); print }' )";                       ##.(41116.01.13).(41116.01.21)
 #           aStashEm="git stash -u save \".(${aTS} Stash of ${aNum} files\"\n      ";                       ##.(41116.01.14)
 #           aStashEm="git stash push -u -m \".(${aTS} Stash of ${aNum} files\"\n      ";                    ##.(41116.01.14).(41123.05.7).(41116.01.23)
-            aStashEm="git stash push -u -m \".(${aTS} Stash of ${aNum// /} file${s}\"";                     # .(41116.01.23).(41123.05.7 RAM Was files\n).(41116.01.14)
+            aStashEm="git stash push -u -m \".(${aTS} Stash of ${aNum// /} file${s} ${aHR}\"";              # .(41203.03.2).(41116.01.23).(41123.05.7 RAM Was files\n).(41116.01.14)
             if [ "${bForce}" == "1" ]; then aStashEm=""; fi                                                 # .(41116.01.6 RAM Don't stash them if bForce)
           else
             aStashEm=""
@@ -1234,7 +1235,8 @@ function getRemoteName() {                                                      
 #           git status --short | awk '{ print "  " $0 }'                                                    ##.(41124.06.8)
             shoWorkingFiles                                                                                 # .(41124.06.8 RAM Use it)
 
-            aTS=$(date +%y%m%d.%H); aStash=".(${aTS:1} Stash of ${nCnt// /} file${s}"                       # .(41202.03.1 RAM Ask about working files Beg)
+            aTS=$(date +%y%m%d.%H); aHR="at $(date +%H:%M.%S)"                                              # .(41203.03.3)
+            aStash=".(${aTS:1} Stash of ${nCnt// /} file${s} ${aHR}"                                        # .(41203.03.4).(41202.03.1 RAM Ask about working files Beg)
             echo -e "\n  What would you like to do: Enter A, D or S: "
             read -p "    Abort, Discard or Stash as '${aStash}': " aAns;  aAns="$( echo "${aAns}" | tr '[:lower:]' '[:upper:]') )"
             if [ "${aAns:0:1}" == "A" ]; then echo "    Aborting"; exit_wCR; fi
