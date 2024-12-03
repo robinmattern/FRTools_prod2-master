@@ -125,6 +125,7 @@
 # .(41201.04 12/01/24 RAM  7:30p| Add aBranch to install repos
 # .(41203.04 12/01/24 RAM  4:15p| Remove ${aLstSp} after calling other scripts
 # .(41203.05 12/03/24 RAM  4:45p| Display msg re invalid frt var command
+# .(41203.06 12/03/24 RAM  5:10p| Add frt show/kill ports
 
 ##PRGM     +====================+===============================================+
 ##ID 69.600. Main0              |
