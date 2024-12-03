@@ -38,6 +38,7 @@
 ##FD   FRT10_Main0.sh           |  57987| 11/25/24  9:37|   833| p1.09`41125.0935
 ##FD   FRT10_Main0.sh           |  58233| 11/29/24 13:00|   835| p1.09`41129.1300
 ##FD   FRT10_Main0.sh           |  59165| 12/01/24 21:50|   842| p1.09`41201.2150
+##FD   FRT10_Main0.sh           |  64242| 12/03/24 17:25|   903| p1.09`41203.1725
 
 ##DESC     .--------------------+-------+---------------+------+-----------------+
 #            Use the commands in this script to manage FormR app resources.
@@ -122,7 +123,10 @@
 # .(41125.03 11/25/24 RAM  9:35a| Don't exit
 # .(41129.02 11/29/24 RAM  1:00p| Change git status -u to get all working files
 # .(41201.04 12/01/24 RAM  7:30p| Add aBranch to install repos
-# .(41201.03 12/01/24 RAM  9:50p| Change clone aProjectStage to AnyLLM
+# .(41203.04 12/01/24 RAM  4:15p| Remove ${aLstSp} after calling other scripts
+# .(41203.05 12/03/24 RAM  4:45p| Display msg re invalid frt var command
+# .(41203.06 12/03/24 RAM  5:10p| Add frt show/kill ports
+# .(41028.01 12/03/24 RAM  5:25p| Don't call scripts with _version #s
 
 ##PRGM     +====================+===============================================+
 ##ID 69.600. Main0              |
@@ -130,7 +134,7 @@
 #*/
 #========================================================================================================== #  ===============================  #
 
-     aVdt="Dec 01, 2024 9:50p"; aVtitle="formR Tools"                                                      # .(21113.05.8 RAM Add aVtitle for Version in Begin)
+     aVdt="Dec 3, 2024 5:25p"; aVtitle="formR Tools"                                                      # .(21113.05.8 RAM Add aVtitle for Version in Begin)
      aVer="$( echo $0 | awk '{  match( $0, /_[dpstuv][0-9]+\.[0-9]+/ ); print substr( $0, RSTART+1, RLENGTH-1) }' )"  # .(21031.01.1 RAM Add [d...).(20416.03.8 "_p2.02", or _d1.09)
 
      LIB="FRT"; LIB_LOG=${LIB}_LOG; LIB_USER=${LIB}_USER; Lib=${LIB}; aDir=$( dirname "${BASH_SOURCE}" );   # .(41027.01.1 RAM).(80923.01.1)
@@ -206,11 +210,16 @@ function Help( ) {
      echo "         netR List"                                                          # .(41124.05.2)
      echo "         netR Clone"                                                         # .(41124.05.1 End)
      echo ""
-     echo "     FRT dokR [ help ]                   Manage Docker Containers"           # .(30716.01.2 RAM Beg Add)
-     echo "         dokR [ but | build ]"                                               # .(30716.01.3)
-     echo "         dokR [ psa | ps -a ]"                                               # .(30716.01.4)
-     echo "         dokR [ im  | images ]"                                              # .(30716.01.5)
-     echo ""                                                                            # .(30716.01.6)
+     echo "     FRT porTs show                      Manage Ports"                       # .(41203.06.1 RAM Add Ports Command)
+     echo "         show ports"                                                         # .(41203.06.2)
+     echo "         porT kill {Port}"                                                   # .(41203.06.3)
+     echo "         kill port {Port}"                                                   # .(41203.06.4)
+     echo ""
+   # echo "     FRT dokR [ help ]                   Manage Docker Containers"           # .(30716.01.2 RAM Beg Add)
+   # echo "         dokR [ but | build ]"                                               # .(30716.01.3)
+   # echo "         dokR [ psa | ps -a ]"                                               # .(30716.01.4)
+   # echo "         dokR [ im  | images ]"                                              # .(30716.01.5)
+   # echo ""                                                                            # .(30716.01.6)
    # echo "     FRT proX [ Help ]                   Manage Proxy files on server"
    # echo "         proX [ List | Restart ]"
    # echo "         proX Log"
@@ -237,9 +246,9 @@ function Help( ) {
    # echo ""
    # echo "         SSH [ {SSH_Loginalias} ]"                                           # .(20412.02.1 RAM Add)
    # echo ""
-     echo "     FRT DOC [ Help ]                    Manage Docsify Docs"                # .(21128.02.2 RAM Add)
-     echo "         DOC [ Start | Note | Code ]"                                        # .(21128.02.3 RAM Add)
-     echo ""
+   # echo "     FRT DOC [ Help ]                    Manage Docsify Docs"                # .(21128.02.2 RAM Add)
+   # echo "         DOC [ Start | Note | Code ]"                                        # .(21128.02.3 RAM Add)
+   # echo ""
      echo "         JPT {Cmd}"                                                          # .(21107.02.1)
      echo "         JPT RSS {Cmd}"                                                      # .(21107.02.2)
      echo "             RSS Dir (RDir)"                                                 # .(21107.02.3)
@@ -304,6 +313,11 @@ function Help( ) {
 #    getCmd    "he"             "Help"
      getCmd1   "doc"     ""     "DOC"     1                                                                 # .(21128.02.1)
      getCmd1   "proxy"   ""     "proX"                                                                      # .(20620.03.1 RAM).(20620.10.1 RAM was Proxy)(20622.2.5 RAM Beg Use getCmd1)
+
+     getCmd1   "sho"     "por"  "porT"                                                                      # .(41203.06.5)
+     getCmd1   "kil"     "por"  "porT"                                                                      # .(41203.06.6)
+     getCmd1   "por"     ""     "porT"                                                                      # .(41203.06.7)
+
      getCmd1   "netr"    ""     "netR"  # 1                                                                 # .(41124.05.3)
      getCmd1   "dokr"    ""     "dokR"  # 1                                                                 # .(30716.01.7)
      getCmd1   "gitr1"   ""     "gitR1" # 1                                                                 # .(41026.06.1 RAM Add gitR1, my lastest)
@@ -335,7 +349,7 @@ function Help( ) {
 
 # ------------------------------------------------------------------------------------                      # .(21107.02.9 Beg RAM Added)
 #
-#       JPT Commands
+#>      JPT Commands
 #
 #====== =================================================================================================== #
 
@@ -370,8 +384,9 @@ function Help( ) {
 #       "${aJPT_dir}/JPT00_Main0.sh"  ${aSubCmd}  "$@"                                                      # .(41026.05.6)
         "${aJPT_dir}/JPT30_Main0.sh"  ${aSubCmd}  "$@"                                                      # .(41028.01.1 RAM Was JPT00)
 
-        ${aLstSp}
+#       ${aLstSp};
         exit
+
      fi # eoc JPT Commands
 #    -- --- ---------------  =  ------------------------------------------------------  #  ---------------- # .(21107.02.9 End)
 
@@ -379,7 +394,7 @@ function Help( ) {
 
 # ------------------------------------------------------------------------------------
 #
-#       GITR Commands
+#>      GITR Commands
 #
 #====== =================================================================================================== #
 
@@ -398,9 +413,10 @@ function Help( ) {
 # echo "$( dirname $0 )/gitR/FRT22_gitR1_d2.04.sh"  "$@"
 #      "$( dirname $0 )/gitR/FRT22_gitR1_p2.04.sh"  "$@"                                                    # .(21027.04.2).(41028.01.2)
 #      "$( dirname $0 )/gitR/FRT22_${aGitR_Ver}.sh" "$@"                                                    # .(41026.06.x)
-       "$( dirname $0 )/gitR/FRT42_${aGitR_Ver}.sh" "$@"                                                    # .(41028.01.2 RAM Was FRT22)
+#      "$( dirname $0 )/gitR/FRT42_${aGitR_Ver}.sh" "$@"                                                    # .(41028.01.2 RAM Was FRT22)
+       "$( dirname $0 )/gitR/FRT42_gitR2.sh" "$@"                                                           # .(41028.01.12 RAM Was "gitR2_p2.06")
 
-        ${aLstSp}
+#       ${aLstSp}                                                                                           ##.(41203.04.1)
         exit
      fi # eoc gitR Commands                                                                                 # .(20429.03.2 End)
 #    -- --- ---------------  =  ------------------------------------------------------  #  ---------------- #
@@ -409,7 +425,7 @@ function Help( ) {
 
 # ------------------------------------------------------------------------------------                      # .(41124.05.4)
 #
-#       NETR Commands
+#>      NETR Commands
 #
 #====== =================================================================================================== #
 
@@ -423,7 +439,7 @@ function Help( ) {
         sayMsg "FRT40[414]  netR script: $( dirname $0 )/netR/FRT44_netR1.sh \"$1 $2 $3\"" -1;
        "$( dirname $0 )/netR/FRT44_netR1.sh"  "$1 $2 $3"
 
-        ${aLstSp}
+#       ${aLstSp}                                                                                           ##.(41203.04.2)
         exit
      fi # eoc netR Commands                                                                                 # .(41124.05.5 End)
 #    -- --- ---------------  =  ------------------------------------------------------  #  ---------------- #
@@ -431,7 +447,7 @@ function Help( ) {
 
 # ------------------------------------------------------------------------------------                      # .(30716.01.8 Beg Add)
 #
-#       DOKR Commands
+#>      DOKR Commands
 #
 #====== =================================================================================================== #
 
@@ -446,7 +462,7 @@ function Help( ) {
 #      "$( dirname $0 )/dokR/FRT25_dokR1.sh"  "$@"                                                          ##.(41026.03.3 RAM Was FRT24).(41028.01.3)
        "$( dirname $0 )/dokR/FRT45_dokR1.sh"  "$@"                                                          # .(41028.01.3 RAM Was FRT25)
 
-        ${aLstSp}
+#       ${aLstSp}                                                                                           ##.(41203.04.3)
         exit
      fi # eoc keyS Commands                                                                                 # .(30716.01.8 End)
 #    -- --- ---------------  =  ------------------------------------------------------  #  ---------------- #
@@ -454,7 +470,7 @@ function Help( ) {
 #========================================================================================================== #  ===============================  #
 # ------------------------------------------------------------------------------------
 #
-#       KEYS Commands
+#>      KEYS Commands
 #
 #====== =================================================================================================== #
 
@@ -466,9 +482,10 @@ function Help( ) {
 
         shift
 #      "$( dirname $0 )/keyS/FRT21_Keys1_p2.01.sh"  "$@"                                                    ##.(41028.01.4)
-       "$( dirname $0 )/keyS/FRT41_Keys1_p2.01.sh"  "$@"                                                    # .(41028.01.4 RAM Was FRT21)
+#      "$( dirname $0 )/keyS/FRT41_Keys1_p2.01.sh"  "$@"                                                    ##.(41028.01.4 RAM Was FRT21).(41028.01.14)
+       "$( dirname $0 )/keyS/FRT41_Keys1.sh"  "$@"                                                          # .(41028.01.14 RAM Was FRT41_Keys1_p2.01.sh)
 
-        ${aLstSp}
+#       ${aLstSp}                                                                                           ##.(41203.04.4)
         exit
      fi # eoc keyS Commands                                                                                 # .(20429.02.2 End)
 #    -- --- ---------------  =  ------------------------------------------------------  #  ---------------- #
@@ -477,7 +494,7 @@ function Help( ) {
 
 # ------------------------------------------------------------------------------------
 #
-#       APP Commands                                                                                        # .(20508.01.2 Beg RAM Put into seperate App script)
+#>      APP Commands                                                                                        # .(20508.01.2 Beg RAM Put into seperate App script)
 #
 #====== =================================================================================================== #
 
@@ -485,15 +502,18 @@ function Help( ) {
 
      if [ "${aCmd}"     == "appR" ]; then
 
+        echo -e "\n* Not implemented yet\n"; exit                                                           # .(41028.01.x)
+
         sayMsg "FRT40[479]  appR:   '${aArg1}' '${aArg2}' '${aArg3}' '${aArg4}', bDoit: '${bDoit}', bDebug: '${bDebug}', bQuiet: '${bQuiet}'" 1
 
         shift
 # echo "$( dirname $0 )/appR/FRT23_FRApp1_p1.06.sh"  "$@"                                                   ##.(20601.01.5)
 #      "$( dirname $0 )/appR/FRT23_FRApp1_p1.06.sh"  "$@"                                                   ##.(20601.01.5)
 #      "$( dirname $0 )/appR/FRT23_FRApp1_u1.07.sh"  "$@"                                                   ##.(20601.01.5 RAM Use u1.xx rather than p1.xx).(41028.01.5)
-       "$( dirname $0 )/appR/FRT47_FRApp1_u1.07.sh"  "$@"                                                   # .(41028.01.5 RAM Was FRT23).(20601.01.5 RAM Use u1.xx rather than p1.xx)
+#      "$( dirname $0 )/appR/FRT47_FRApp1_u1.07.sh"  "$@"                                                   ##.(41028.01.5 RAM Was FRT23).(20601.01.5 RAM Use u1.xx rather than p1.xx).(41028.01.15)
+       "$( dirname $0 )/appR/FRT47_FRApp1.sh"  "$@"                                                         # .(41028.01.15).(41028.01.5 RAM Was FRT23).(20601.01.5 RAM Use u1.xx rather than p1.xx)
 
-        ${aLstSp}
+#       ${aLstSp}                                                                                           ##.(41203.04.5)
         exit
      fi # eoc appR Commands                                                                                 # .(20429.02.2 End).(20508.01.2 End)
 #    -- --- ---------------  =  ------------------------------------------------------  #  ---------------- #
@@ -502,7 +522,7 @@ function Help( ) {
 
 # ------------------------------------------------------------------------------------
 #
-#       PROXY Commands
+#>      PROXY Commands
 #
 #====== =================================================================================================== #
 
@@ -511,26 +531,55 @@ function Help( ) {
 
         sayMsg "FRT40[503]  proX: '${aArg1}' '${aArg2}' '${aArg3}' '${aArg4}', bDoit: '${bDoit}', bDebug: '${bDebug}', bQuiet: '${bQuiet}'"
 
+        echo -e "\n* Not implemented yet\n"; exit                                                           # .(41028.01.xx)
         shift
 #      "$( dirname $0 )/proX/FRT24_Proxy_v1.06\`20620-1041.sh"  "$@"
 #      "$( dirname $0 )/proX/FRT24_Proxy1_v1.07\`20620-1052.sh"  "$@"
 #      "$( dirname $0 )/proX/FRT24_Proxy1_u1.07.sh"  "$@"                                                   ##.(41028.01.6)
-       "$( dirname $0 )/proX/FRT48_Proxy1_u1.07.sh"  "$@"                                                   # .(41028.01.6 RAM Was FRT24)
+#      "$( dirname $0 )/proX/FRT48_Proxy1_u1.07.sh"  "$@"                                                   ##.(41028.01.6 RAM Was FRT24).(41028.01.16)
+       "$( dirname $0 )/proX/FRT48_Proxy1.sh"  "$@"                                                         # .(41028.01.16.(41028.01.6 RAM Was FRT24)
 
-        ${aLstSp}
+#       ${aLstSp}                                                                                           ##.(41203.04.6)
         exit
      fi # eoc proX Commands                                                                                 # .(20620.02.2 RAM End)
+#    -- --- ---------------  =  ------------------------------------------------------  #  ---------------- #
+
+#========================================================================================================== #  ===============================  #
+
+# ------------------------------------------------------------------------------------
+#
+#>      PORT Commands                                                                                       # .(41203.06.8)
+#
+#====== =================================================================================================== #
+
+#       sayMsg    "FRT40[554]  ${aCmd} Command" sp 1;
+
+     if [ "${aCmd}" == "porT" ]; then                                                                       # .(41203.06.9 RAM Write ports command Beg)
+
+#       sayMsg "FRT40[558]  proX: aArg1: '${aArg1}', aArg2: '${aArg2}', aArg3: '${aArg3}', aArg4: '${aArg4}', bDoit: '${bDoit}', bDebug: '${bDebug}', bQuiet: '${bQuiet}'" sp 1
+
+        if [ "${aArg1:0:3}" == "sho" ]; then aCmd="show ports ${aArg2}"; fi
+        if [ "${aArg1:0:3}" == "por" ]; then if [ "${aArg2:0:3}" == "kil" ]; then aCmd="kill port ${aArg3}"; else aCmd="show ports ${aArg3}"; fi; fi
+        if [ "${aArg1:0:3}" == "kil" ]; then if [ "${aArg2:0:3}" == "por" ]; then aArg2="${aArg3}"; fi
+                                             aCmd="kill port ${aArg2}"; fi
+#       echo "    ${aCmd}"
+        eval "JPT ${aCmd}"
+#       echo -e "\n* Not implemented yet\n"; exit
+
+#       ${aLstSp}
+        exit
+     fi # eoc porT Commands                                                                                 # .(41203.06.9 RAM End)
 #    -- --- ---------------  =  ------------------------------------------------------  #  ---------------- #
 
 #====== =================================================================================================== #  ===========
 
 # ------------------------------------------------------------------------------------
 #
-#       Set Var Path Command                                                                                # .(20102.01.2 Beg RAM Added Command)
+#>      SET VAR PATH Command                                                                                # .(20102.01.2 Beg RAM Added Command)
 #
 #====== =================================================================================================== #
 
-#       sayMsg    "FRT40[524]  Set Var Command" sp 1;
+#       sayMsg    "FRT40[580]  ${aCmd} Command" sp 1;
 
   if [ "${aCmd}" == "Set Var" ]; then
 
@@ -545,7 +594,7 @@ function Help( ) {
 
      if [ -f "${aInfoScr}" ] && [ -d ".git" ]; then bOK=1; fi
      if [ "${bOK}" == "0" ]; then
-        echo -e "\n  * You must be in the FRTools Repo folder. \n"; exit
+        echo -e "  * You must be in the FRTools Repo folder. \n"; exit
         fi
         aPath1="$( pwd )/._2/bin";
 
@@ -570,7 +619,8 @@ function Help( ) {
                     "${aInfoScr}" path add "${aPath1}" "${aUser}"                                           # .(21126.08.3)
 
         if [ "$?" != "1" ]; then echo -e "\n    Add -doit to the command line to add the path to FRTools."; fi
-        ${aLstSp}; exit
+
+        bOK=1; ${aLstSp}; exit                                                                              # .(41203.05.1
         fi # eif not bDoit
 #       --------------------------------------------------------
 
@@ -610,16 +660,25 @@ function Help( ) {
       else
         echo -e     "\n    The Path to FRTools has not been set."
         fi
-        ${aLstSp}; exit                                                                                     # .(21127.08.1)
+        bOk=1: ${aLstSp}; exit                                                                              # .(41203.05.2).(21127.08.1)
         fi # eif bDoit
+
      fi # eoc set path
 #       --------------------------------------------------------
 
         sayMsg    "FRT40[609]  set var path ${aArg2} '${aArg3}' '${aArg4}'" sp -1;
+
   if [ "${aArg2}" == "path" ]; then                                                                         # .(21120.03.6 RAM Beg ?? Why here s.b. rss info var set aVar aVal)
        "${aInfoScr}" vars set -doit "${aArg3}" "${aArg4}"
+        bOk=1: ${aLstSp}; exit                                                                              # .(41203.05.3)
+
      fi # eoc set var
 #       --------------------------------------------------------
+
+     if [ "${bOK}" != "1" ]; then                                                                           # .(41203.05.4)
+        echo -e "* The only valid command is: frt var path. (And I don't know if it works)"                 # .(41203.05.5)
+        ${aLstSp}; exit                                                                                     # .(41203.05.6)
+        fi
      fi # eoc set                                                                                           # .(20102.01.2 RAM End)
 #    -- --- ---------------  =  ------------------------------------------------------  #  ---------------- #
 
@@ -627,7 +686,7 @@ function Help( ) {
 
 # ------------------------------------------------------------------------------------
 #
-#       Update Command                                                                                      # .(41107.01.5 RAM Beg Add Update Command Beg)
+#>      UPDATE Command                                                                                      # .(41107.01.5 RAM Beg Add Update Command Beg)
 #
 #====== =================================================================================================== #
 
@@ -649,12 +708,14 @@ function Help( ) {
         sayMsg "FRT40[635]  gitR \" ${aBranch} $2 $3 $4 $5\"" -1;
         gitr update ${aBranch} $2 $3 $4 $5                                                                  # .(41123.04.12).(41123.04.4 RAM Use gitr update)
         fi                                                                                                  # .(41123.04.13)
-        ${aLstSp}; exit
+
+#       ${aLstSp}                                                                                           ##.(41203.04.7)
+        exit
      fi # eoc Update Command                                                                                # .(41107.01.5 End)
 #    -- --- ---------------  =  ------------------------------------------------------  #  ---------------- #
 
 #====== =================================================================================================== #  ===========
-#       Install Command                                                                                     # .(41111.01.5 RAM Add Install Command beg)
+#>      INSTALL Command                                                                                     # .(41111.01.5 RAM Add Install Command beg)
 #====== =================================================================================================== #
 
         sayMsg    "FRT40[657]  Install Command" -1;
@@ -701,17 +762,17 @@ function copyFile() {                                                           
 #       ---------------------------------------------------------------------
 
         if [ "${aArg2}" == "aidocs" ]; then                                                                 # .(41124.03.1 RAM Add install aidocs Beg)
-           aBranch=""; if [ "${aArg3}" != "" ]; then aBranch=" ${aArg3}"; fi                                # .(41201.04.1 RAM Clarity)
+            aBranch=""; if [ "${aArg3}" != "" ]; then aBranch=" ${aArg3}"; fi                               # .(41201.04.1 RAM Clarity)
         if [ "${bDoit}" != 1 ]; then
-           echo -e "\n  About to install AIDocs"
-           echo "    gitr clone aidocs no-stage${aBranch} -d"                                               # .(41201.04.2 RAM Add aBranch)
-           ${aLstSp}; exit
-           fi
-           echo -e "\n  Installing AIDocs"
-           gitr clone aidocs no-stage ${aBranch} -d                                                         # .(41201.04.3)
-           if [ "${OS:0:7}" != "Windows" ]; then sudo find . -type f -name "*.sh" -exec chmod 755 {} +; fi  # .(41201.04.4)
-#          ${aLstSp}; exit
-           exit
+            echo -e "\n  About to install AIDocs"
+            echo "    gitr clone aidocs no-stage${aBranch} -d"                                              # .(41201.04.2 RAM Add aBranch)
+            ${aLstSp}; exit
+            fi
+            echo -e "\n  Installing AIDocs"
+            gitr clone aidocs no-stage ${aBranch} -d                                                        # .(41201.04.3)
+            if [ "${OS:0:7}" != "Windows" ]; then sudo find . -type f -name "*.sh" -exec chmod 755 {} +; fi # .(41201.04.4)
+#           ${aLstSp}; exit
+            exit
         fi # eif install aidocs                                                         # .(41124.03.1 End)
 
 #       ---------------------------------------------------------------------
@@ -807,7 +868,7 @@ function copyFile() {                                                           
 
         echo -e "\n* Please provide a valid repo to install, e.g. ALTools or AIDocs."                       # .(41124.04.3)
 
-       ${aLstSp}; exit
+        ${aLstSp}; exit
      fi # eoc Install Command                                                                               # .(41111.01.5 End)
 #    -- --- ---------------  =  ------------------------------------------------------  #  ---------------- #
 
@@ -815,7 +876,7 @@ function copyFile() {                                                           
 
 # ------------------------------------------------------------------------------------
 #
-#       NEXT COMMAND Commands                                                                               # .(20102.01.2 Beg RAM Added Command)
+#>      NEXT COMMAND                                                                                        # .(20102.01.2 Beg RAM Added Command)
 #
 #====== =================================================================================================== #
 
