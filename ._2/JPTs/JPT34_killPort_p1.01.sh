@@ -10,13 +10,21 @@ if [ "${nPort}" == "" ]; then
    exit
    fi
 
+# ---------------------------------------------------------------------------------------
 
 if [ "${OSTYPE:0:6}" == "darwin" ]; then
 
-   nPID=$( lsof -i tcp:${nPort} ); if [ "${aShow}" == "show" ]; then echo -e "\n    lsof -i tcp:${nPort}"; fi
-   if [ "${nPID}" == "" ]; then echo -e "\n* Port ${nPort} is not running (nPID: '${nPID}')."; exit; fi
+   nPID=$( lsof -i tcp:${nPort} | awk '/LISTEN/ { print $2 }' ); # .(41203.01.1 RAM Add AWK)
+
+   if [ "${aShow}" == "show" ]; then
+      echo -e "\n    lsof -i tcp:${nPort}"; fi
+   if [ "${nPID}" == "" ]; then
+      echo -e "\n* Port ${nPort} is not running (nPID: '${nPID}')."; exit;
+     fi
 
  else  # if git-bash or linux
+# -----------------------------------------
+
 #  echo "    nPort: '${nPort}'"; # exit
    nWID=$( netstat -ano | awk '/TCP.+:'${nPort}'$/ { print $5; exit }' );
 #  echo "    netstat -ano | awk '/TCP.+:'${nPort}'$/"; echo "    ps -W | awk '/ '${nWID}' /' ";
@@ -34,8 +42,11 @@ if [ "${OSTYPE:0:6}" == "darwin" ]; then
 #  if [ "${nPID}" != "" ]; then echo -e   "    Port ${nPort} is running as WID ${nPID}."; fi
    if [ "${nPID}" != "" ]; then echo -e   "    Port ${nPort} is running as PID ${nPID}."; fi
    fi
+# ---------------------------------------------------------------------------------------
 
 if [ "${aShow}" == "show" ]; then exit; fi
+
+# ---------------------------------------------------------------------------------------
 
 #  echo "\${OSTYPE:0:4}: ${OSTYPE:0:4}, \${OS:0:7}: '${OS:0:7}'"; exit
 
@@ -43,11 +54,23 @@ if [ "${OSTYPE:0:4}" == "msys" ] || [ "${OS:0:7}" == "Windows" ]; then
 
    aErr=$( cmd "/C taskkill /F /PID ${nWID}" 2>&1 ); if [ "${aErr:0:5}" == "ERROR" ]; then aErr=" failed! Try to end process manually in DOS. taskkill /F /PID ${nWID}";  else aErr="."; fi
 #  aErr=$(        taskkill /F /PID ${nPID} 2>&1 ); if [ "${aErr:0:5}" == "ERROR" ]; then aErr=" failed! Try to end process manually. taskkill /F /PID ${nPID}";  else aErr="."; fi
-  else
-   aErr=$(     kill ${nPID} 2>&1 ); if [ "${aErr}" != ""          ]; then aErr=" failed! Try to end process manually. kill -s 9 ${nPID}"; else aErr="."; fi
-   fi
 
-   echo " ** Killing Port ${nPort}${aErr}"; # if [ "${aErr}" != "." ]; then read -p ""; exit; fi
+  else
+# -----------------------------------------
+
+#  echo  " kill -s 9 ${nPID}"; exit
+#  aErr=$( kill      ${nPID} 2>&1 );
+   aErr=$( kill -s 9 ${nPID} 2>&1 );
+   if [ "${aErr}" != "" ]; then aErr=" failed! \n    Try to end process manually. kill -s 9 ${nPID}";
+                           else aErr="."; fi
+   fi
+# -----------------------------------------
+
+   echo -e "\n ** Killing Port ${nPort}${aErr}";
+
+   # if [ "${aErr}" != "." ]; then read -p ""; exit; fi
+
+# ---------------------------------------------------------------------------------------
 
 #   `$ netstat -ano | awk '/TCP.+:50133/' `
 #       TCP    0.0.0.0:50133          0.0.0.0:0              LISTENING       44916
@@ -65,7 +88,6 @@ if [ "${OSTYPE:0:4}" == "msys" ] || [ "${OS:0:7}" == "Windows" ]; then
 #   `$ which kill`
 #       /usr/bin/kill
 #
-
 
 #   ` > netstat -ano | awk '/TCP.+:50133/' `
 #       TCP    0.0.0.0:50133          0.0.0.0:0              LISTENING       44916
