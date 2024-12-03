@@ -21,7 +21,7 @@
 ##FD   FRT42_GitR2.sh           | 108122| 11/23/24 19:00|  1534| p1.02`.41123.1900
 ##FD   FRT42_GitR2.sh           | 113886| 11/24/24 19:45|  1596| p1.02`.41124.1945
 ##FD   FRT42_GitR2.sh           | 123098| 12/01/24 19:30|  1722| p1.02`.41201.1930
-##FD   FRT42_GitR2.sh           | 125488| 12/02/24 18:30|  1751| p1.02`.41202.1830
+##FD   FRT42_GitR2.sh           | 125748| 12/03/24  8:31|  1753| p1.02`.41203.0830
 
 ##DESC     .--------------------+-------+---------------+------+-----------------+
 #            This script has usefull GIT functions.
@@ -124,6 +124,7 @@
 # .(41202.03 12/02/24 RAM  5:30p| Deal with working files when changing branch
 # .(41202.03 12/02/24 RAM  6:30p| Use tr vs sed (Claude goofed)
 # .(41202.03 12/02/24 RAM  6:35p| Remmove exit ??
+# .(41203.02 12/03/24 RAM  8:30a| Change update branch tolower($aArg2)
 
 ##PRGM     +====================+===============================================+
 ##ID 69.600. Main0              |
@@ -131,7 +132,7 @@
 #*/
 #========================================================================================================== #  ===============================  #
 
-        aVDt="Dec 02, 2024 6:35p"; aVer="p1.02"; aVTitle="Useful gitR2 Tools by formR";                                  # .(41103.02.2 RAM Was: gitR1)
+        aVDt="Dec 03, 2024 8:30a"; aVer="p1.02"; aVTitle="Useful gitR2 Tools by formR";                                  # .(41103.02.2 RAM Was: gitR1)
         aVer="$( echo "$0" | awk '{ match( $0, /_[dpstuv][0-9]+\.[0-9]+/ ); print substr( $0, RSTART+1, RLENGTH-1) }' )"  # .(21031.01.1 RAM Add [d...).(20416.03.8 "_p2.02", or _d1.09)
 
         LIB="gitR2"; LIB_LOG=${LIB}_LOG; LIB_USER=${LIB}_USER; Lib=${LIB}; aDir=$(dirname "${BASH_SOURCE}");              # .(41103.02.3).(41102.01.1 RAM Add JPT12_Main2Fns_p1.07.sh Beg).(80923.01.1)
@@ -930,7 +931,7 @@ function getRemoteName() {                                                      
         chkUser                                                                                             # .(41114.07.3)
 
 #====== =================================================================================================== #  ===========
-#       gitR Status Command                                                                                 # .(41123.02.3)
+#>      GITR2 STATUS                                                                                        # .(41123.02.3)
 #====== =================================================================================================== #
 
 #       sayMsg    "FRT40[852] Update Command" sp 1;
@@ -939,7 +940,7 @@ function getRemoteName() {                                                      
             bFilesInWork="$( git status | awk '/working tree clean/ { b = 1 }; END { print b ? b : 0 }' )"  # .(41123.03.1 RAM Was End)
         if [ "${bFilesInWork}" != "1" ]; then
             nCnt="$(git status -u --short | wc -l)"; s="s"; if [ "${nCnt}" == "1" ]; then s=""; fi          # .(41129.02.4)
-            echo -e "\n* The current branch, '${aBranch}', has ${nCnt} uncommitted file${s}."
+            echo -e "\n* The current branch, '${aBranch}', has ${nCnt// / } uncommitted file${s}."
 
 #           git status --short | awk '{ print "   " $1 "  " substr( $0, 4) }'                               ##.(41124.06.5)
             shoWorkingFiles                                                                                 # .(41124.06.5 RAM Use it)
@@ -1008,7 +1009,7 @@ function getRemoteName() {                                                      
 #    -- --- ---------------  =  ------------------------------------------------------  #  ---------------- #
 
 #====== =================================================================================================== #  ===========
-#       gitR Update Command                                                                                 # .(41116.01.3)
+#>      GITR2 UPDATE                                                                                        # .(41116.01.3)
 #====== =================================================================================================== #
 
 #       sayMsg    "FRT40[873] Update Command" sp 1;
@@ -1016,9 +1017,10 @@ function getRemoteName() {                                                      
   if [ "${aCmd}" == "update" ]; then                                                                        # .(41116.01.3 RAM Add Update Command Beg)
 #       sayMsg    "FRT40[876]  Update:   '${aArg1}' '${aArg2}' '${aArg3}' '${aArg4}', bDoit: '${bDoit}', bDebug: '${bDebug}', bForce: '${bForce}'" 1
 
-            aNewBranch="${aArg2}"                                                                           # .(41123.05.1 RAM Update a different branch Beg)
-#           aCurBranch="$( git branch | awk '/'"${aArg2}"'/ { sub(  "*",   "" ); print $1; exit }' )"       ##.(41123.05.11)
-            aCurBranch="$( git branch | awk '/'"${aArg2}"'/ { sub( /[* ]/, "" ); print $1; exit }' )"       # .(41123.05.11 RAM Fix for MacOS)
+            aNewBranch="$( echo "${aArg2}" | awk '{ print tolower($0) }' )"                                  # .(41203.02.2 RAM Add tolower).(41123.05.1 RAM Update a different branch Beg)
+#           aCurBranch="$( git branch | awk '/'"${aArg2}"'/      { sub(  "*",   "" ); print $1; exit }' )"   ##.(41123.05.11)
+#           aCurBranch="$( git branch | awk '/'"${aArg2}"'/      { sub( /[* ]/, "" ); print $1; exit }' )"   ##.(41123.05.11).(41203.02.2)
+            aCurBranch="$( git branch | awk '/'"${aNewBranch}"'/ { sub( /[* ]/, "" ); print $1; exit }' )"   # .(41203.02.2).(41123.05.11 RAM Fix for MacOS)
         sayMsg    "FRT40[881]  Update:   aNewBranch: '${aNewBranch}', aCurBranch: '${aCurBranch}', bDoit: '${bDoit}', bDebug: '${bDebug}', bForce: '${bForce}'" -1
         if [ "${aNewBranch}" != "" ]; then
 #           aNewBranch="$( git branch | awk '/'"${aNewBranch}"'/ { sub(  "*",   "" ); print $1; exit }' )"  ##.(41123.05.12)
