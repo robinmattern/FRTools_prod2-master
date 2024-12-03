@@ -17,6 +17,7 @@
 ##FD   JPT10_Main0.sh           |  23498|  4/06/24 20:28|   354| p1.06-30917.2028
 ##FD   JPT10_Main0.sh           |  23935|  4/07/24 13:29|   360| p1.06`40407.1329
 ##FD   JPT10_Main0.sh           |  29002| 12/01/24 17:05|   424| p1.06`41201.1705
+##FD   JPT10_Main0.sh           |  29621| 12/02/24 21:20|   429| p1.06`41202.2120
 
 ##DESC     .--------------------+-------+-----------------+------+---------------+
 #            Use the commands in this script to manage Ubuntu and Windows
@@ -57,6 +58,7 @@
 # .(40407.02  4/04/24 RAM 13:29p| Add bNoisy
 # .(30917.01 12/01/24 RAM 12:10p| Add Kill/Show multiple ports
 # .(30917.01 12/01/24 RAM  5:05p| Check for missing port
+# .(41202.04 12/02/24 RAM  9:20p| Revise Show Ports on Mac
 
 ##PRGM     +====================+===============================================+
 ##ID 69.600. Main0              |
@@ -64,7 +66,7 @@
 #*/
 #========================================================================================================== #  ===============================  #
 
-     aVdt="Dec 01, 2024  5:05p"; aVtitle="JScripWare Power Tools";                                          # .(21113.05.2 RAM Add aVtitle for Version in Begin)
+     aVdt="Dec 2, 2024  9:20p"; aVtitle="JScripWare Power Tools";                                          # .(21113.05.2 RAM Add aVtitle for Version in Begin)
      aVer="$( echo $0 | awk '{  match( $0, /_[dpstuv][0-9]+\.[0-9]+/ ); print substr( $0, RSTART+1, RLENGTH-1) }' )"  # .(21031.01.1 RAM Add [d...).(20416.03.8 "_p2.02", or _d1.09)
 
      LIB="JPT"; LIB_LOG=${LIB}_LOG; LIB_USER=${LIB}_USER; Lib=${LIB}                                        # .(80923.01.1)
@@ -253,11 +255,14 @@ function Help( ) {
 #       sayMsg "JPT10[251]  Show Ports Not implemented yet" 2
 
 # function showPorts() {
-  if [ "${OS:0:7}" != "Windows" ]; then                                                                        # .(41109.09.1)
-    echo -e "\n  PID    IPAddr:Port      Program          "                                                 # .(41109.09.2)
-    echo      "  -----  ---------------  -----------------"                                                 # .(41109.09.3)
+  if [ "${OS:0:7}" != "Windows" ]; then                                                                     # .(41109.09.1)
+#   echo -e "\n    PID  IPAddr:Port      Program          "                                                 ##.(41109.09.2).(41202.04.1)
+#   echo      "  -----  ---------------  -----------------"                                                 ##.(41109.09.3).(41202.04.2)
+    echo -e "\n    PID      IP Address:Port    Program          "                                           # .(41202.04.1)
+    echo      "  -----  --------------------   -----------------"                                           # .(41202.04.2)
 #   lsof -i -P -n | grep LISTEN | awk '{ printf "  %-15s %6d   %s\n", $1, $2, $9 }'
-    lsof -i -P -n | grep LISTEN | awk '{ printf "  %-6s %6d %-16s %s\n", $9, $2, $1 }'                      # .(41109.09.4)
+#   lsof -i -P -n | grep LISTEN | awk '{ printf "  %-6s %6d %-16s %s\n", $9, $2, $1 }'                      # .(41109.09.4).(41202.04.3)
+    lsof -i -P -n | grep LISTEN | awk '{ i = index($9, "]:" ); i = i ? i+1 : index( $9, ":"); printf " %6d %15s:%-7s %s\n", $2, substr($9,0,i-1), substr($9,i+1), $1 }' # .(41202.04.3 RAM Rework)
   else                                                                                                      # .(41109.09.5 RAM Write show ports for Windows Beg)
     echo -e "\n  PID    IPAddr:Port      Program          "
     echo      "  -----  ---------------  -----------------"
