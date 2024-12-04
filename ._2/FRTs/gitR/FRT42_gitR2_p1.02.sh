@@ -22,6 +22,7 @@
 ##FD   FRT42_GitR2.sh           | 113886| 11/24/24 19:45|  1596| p1.02`.41124.1945
 ##FD   FRT42_GitR2.sh           | 123098| 12/01/24 19:30|  1722| p1.02`.41201.1930
 ##FD   FRT42_GitR2.sh           | 125748| 12/03/24  9:30|  1753| p1.02`.41203.0930
+##FD   FRT42_GitR2.sh           | 126873| 12/04/24  9:47|  1763| p1.02`.41204.0947
 
 ##DESC     .--------------------+-------+---------------+------+-----------------+
 #            This script has usefull GIT functions.
@@ -125,10 +126,11 @@
 # .(41202.03 12/02/24 RAM  6:30p| Use tr vs sed (Claude goofed)
 # .(41202.03 12/02/24 RAM  6:35p| Remmove exit ??
 # .(41203.02 12/03/24 RAM  8:30a| Change update branch tolower($aArg2)
-# .(41203.03 12/03/24 RAM  9:30a| Add Time to stash msg 
+# .(41203.03 12/03/24 RAM  9:30a| Add Time to stash msg
 # .(41204.01 12/04/24 RAM  9:27a| Was ${nCnt// / }) in gitr status command
 # .(41204.02 12/04/24 RAM  9:25a| Add Commit        to gitr checkout command
 # .(41204.03 12/04/24 RAM  9:25a| Add shoCommitMsg  to gitr add command
+# .(41204.01 12/04/24 RAM  9:47a| Fix working files count var ${s}
 
 ##PRGM     +====================+===============================================+
 ##ID 69.600. Main0              |
@@ -136,7 +138,7 @@
 #*/
 #========================================================================================================== #  ===============================  #
 
-        aVDt="Dec 03, 2024 9:30a"; aVer="p1.02"; aVTitle="Useful gitR2 Tools by formR";                                  # .(41103.02.2 RAM Was: gitR1)
+        aVDt="Dec 03, 2024 9:47a"; aVer="p1.02"; aVTitle="Useful gitR2 Tools by formR";                                  # .(41103.02.2 RAM Was: gitR1)
         aVer="$( echo "$0" | awk '{ match( $0, /_[dpstuv][0-9]+\.[0-9]+/ ); print substr( $0, RSTART+1, RLENGTH-1) }' )"  # .(21031.01.1 RAM Add [d...).(20416.03.8 "_p2.02", or _d1.09)
 
         LIB="gitR2"; LIB_LOG=${LIB}_LOG; LIB_USER=${LIB}_USER; Lib=${LIB}; aDir=$(dirname "${BASH_SOURCE}");              # .(41103.02.3).(41102.01.1 RAM Add JPT12_Main2Fns_p1.07.sh Beg).(80923.01.1)
@@ -943,8 +945,8 @@ function getRemoteName() {                                                      
   if [ "${aCmd}" == "status" ]; then                                                                        # .(41123.02.4 RAM Add Status Command Beg)
             bFilesInWork="$( git status | awk '/working tree clean/ { b = 1 }; END { print b ? b : 0 }' )"  # .(41123.03.1 RAM Was End)
         if [ "${bFilesInWork}" != "1" ]; then
-            nCnt="$(git status -u --short | wc -l)"; s="s"; if [ "${nCnt}" == "1" ]; then s=""; fi          # .(41129.02.4)
-            echo -e "\n* The current branch, '${aBranch}', has ${nCnt// /} uncommitted file${s}."           # .(41204.01.1 RAM Was ${nCnt// / })
+            nCnt="$(git status -u --short | wc -l)"; s="s"; if [ "${nCnt// /}" == "1" ]; then s=""; fi      # .(41204.01.2).(41129.02.4)
+            echo -e "\n* The current branch, '${aBranch}', has ${nCnt// /} uncommitted file${s}."           # .(41204.01.3 RAM Was ${nCnt// / })
 
 #           git status --short | awk '{ print "   " $1 "  " substr( $0, 4) }'                               ##.(41124.06.5)
             shoWorkingFiles                                                                                 # .(41124.06.5 RAM Use it)
@@ -996,7 +998,7 @@ function getRemoteName() {                                                      
            aGIT1="git add -A"
            aGIT2="git commit -m \"${aCN}_${aCMsg}\""
      if [ "${bDoit}" != "1" ]; then
-           aNum="$(git status -u --short | wc -l)"; s="s"; if [ "${aNum}" == "1" ]; then s=""; fi
+           aNum="$(git status -u --short | wc -l)"; s="s"; if [ "${aNum// /}" == "1" ]; then s=""; fi       # .(41204.01.4)
            echo -e "\n* There are ${aNum// /} working file${s} that will be committed."
            shoWorkingFiles                                                                                  # .(41204.03.1 Add shoCommitMsg to Add command)
            echo -e "\n  ${aGIT1}"
@@ -1055,7 +1057,7 @@ function getRemoteName() {                                                      
             bFilesInWork="$( git status | awk '/working tree clean/ { b = 1 }; END { print b ? b : 0 }' )"  # .(41123.03.2)
         if [ "${bFilesInWork}" != "1" ]; then                                                               # .(41116.01.5).(41107.01.7 RAM Deal with updating dirty repo Beg)
             aVerb="will"; if [ "${bForce}" == "1" ]; then aVerb="won't"; fi
-            aNum="$(git status -u --short | wc -l)"; s="s"; if [ "${aNum}" == "1" ]; then s=""; fi          # .(41129.02.5.(41116.01.21).(41123.03.3)
+            aNum="$(git status -u --short | wc -l)"; s="s"; if [ "${aNum// /}" == "1" ]; then s=""; fi      # .(41204.01.5).(41129.02.5.(41116.01.21).(41123.03.3)
 
         sayMsg    "FRT40[1033]  Update:   aNewBranch: '${aNewBranch}', aCurBranch: '${aCurBranch}', bDoit: '${bDoit}', bDebug: '${bDebug}', bForce: '${bForce}'" -1
 
@@ -1233,7 +1235,7 @@ function getRemoteName() {                                                      
 
             bFilesInWork="$( git status | awk '/working tree clean/ { b = 1 }; END { print b ? b : 0 }' )"  # .(41123.03.5)
         if [ "${bFilesInWork}" != "1" ]; then
-            nCnt="$(git status -u --short | wc -l)"; s="s"; if [ "${nCnt}" == "1" ]; then s=""; fi          # .(41129.02.6).(41123.03.6)
+            nCnt="$(git status -u --short | wc -l)"; s="s"; if [ "${nCnt// /}" == "1" ]; then s=""; fi      # .(41204.01.6).(41129.02.6).(41123.03.6)
             echo -e "\n* The current branch, '${aBranch}', has ${nCnt// /} uncommitted file${s}."           # .(41123.03.7)
 
 #           git status --short | awk '{ print "  " $0 }'                                                    ##.(41124.06.8)
@@ -1243,7 +1245,7 @@ function getRemoteName() {                                                      
             aStash=".(${aTS:1} Stash of ${nCnt// /} file${s} ${aHR}"                                        # .(41203.03.4).(41202.03.1 RAM Ask about working files Beg)
             echo -e "\n  What would you like to do: Enter A, D or S: "
             read -p "    Abort, Commit, Discard or Stash as '${aStash}': " aAns;                            # .(41204.02.1 RAM Add Commit to checkout)
-            aAns="$( echo "${aAns}" | tr '[:lower:]' '[:upper:]') )"  
+            aAns="$( echo "${aAns}" | tr '[:lower:]' '[:upper:]') )"
             if [ "${aAns:0:1}" == "A" ]; then echo "    Aborting"; exit_wCR; fi
             if [ "${aAns:0:1}" == "S" ]; then git stash push -u -m "${aStash}"; aAnswer="D"; fi
             if [ "${aAns:0:1}" == "C" ]; then gitr add "Commit of ${nCnt// /} file${s} ${aHR}"; fi          # .(41204.02.2)

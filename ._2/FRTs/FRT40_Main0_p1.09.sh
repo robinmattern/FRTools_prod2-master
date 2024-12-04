@@ -38,7 +38,7 @@
 ##FD   FRT10_Main0.sh           |  57987| 11/25/24  9:37|   833| p1.09`41125.0935
 ##FD   FRT10_Main0.sh           |  58233| 11/29/24 13:00|   835| p1.09`41129.1300
 ##FD   FRT10_Main0.sh           |  59165| 12/01/24 21:50|   842| p1.09`41201.2150
-##FD   FRT10_Main0.sh           |  64242| 12/03/24 17:25|   903| p1.09`41203.1725
+##FD   FRT10_Main0.sh           |  64323| 12/04/24  9:45|   904| p1.09`41204.0945
 
 ##DESC     .--------------------+-------+---------------+------+-----------------+
 #            Use the commands in this script to manage FormR app resources.
@@ -125,8 +125,9 @@
 # .(41201.04 12/01/24 RAM  7:30p| Add aBranch to install repos
 # .(41203.04 12/01/24 RAM  4:15p| Remove ${aLstSp} after calling other scripts
 # .(41203.05 12/03/24 RAM  4:45p| Display msg re invalid frt var command
-# .(41203.06 12/03/24 RAM  5:10p| Add frt show/kill ports 
+# .(41203.06 12/03/24 RAM  5:10p| Add frt show/kill ports
 # .(41028.01 12/03/24 RAM  5:25p| Don't call scripts with _version #s
+# .(41204.01 12/04/24 RAM  9:45a| Fix working files count var ${s}
 
 ##PRGM     +====================+===============================================+
 ##ID 69.600. Main0              |
@@ -134,7 +135,7 @@
 #*/
 #========================================================================================================== #  ===============================  #
 
-     aVdt="Dec 3, 2024 5:25p"; aVtitle="formR Tools"                                                      # .(21113.05.8 RAM Add aVtitle for Version in Begin)
+     aVdt="Dec 4, 2024 9:245p"; aVtitle="formR Tools"                                                      # .(21113.05.8 RAM Add aVtitle for Version in Begin)
      aVer="$( echo $0 | awk '{  match( $0, /_[dpstuv][0-9]+\.[0-9]+/ ); print substr( $0, RSTART+1, RLENGTH-1) }' )"  # .(21031.01.1 RAM Add [d...).(20416.03.8 "_p2.02", or _d1.09)
 
      LIB="FRT"; LIB_LOG=${LIB}_LOG; LIB_USER=${LIB}_USER; Lib=${LIB}; aDir=$( dirname "${BASH_SOURCE}" );   # .(41027.01.1 RAM).(80923.01.1)
@@ -822,7 +823,7 @@ function copyFile() {                                                           
                 bNoFilesInWork="$( git status -u --short | awk '/working tree clean/ { print "1" }' )"      # .(41129.02.1) # should show clean working tree
         if [ "${bNoFilesInWork}" != "1" ]; then
 #           echo -e "\n* The branch 'master', in ${aProjectStage}, has uncommitted files."                  # .(41125.03.1 RAM Stash em Beg)
-            aNum="$(git status -u --short | wc -l)"; s="s"; if [ "${aNum}" == "1" ]; then s=""; fi          # .(41129.02.2 RAM Get all working files)
+            aNum="$(git status -u --short | wc -l)"; s="s"; if [ "${aNum// /}" == "1" ]; then s=""; fi      # .(41204.01.1).(41129.02.2 RAM Get all working files)
             echo -e "\n* The branch, 'master', has ${aNum// /} uncommitted file${s}, that are being stashed."
 #           shoWorkingFiles
             aTS=$(date +%y%m%d.%H); aTS="${aTS:1}"
