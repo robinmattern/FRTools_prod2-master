@@ -127,6 +127,7 @@
 # .(41203.02 12/03/24 RAM  8:30a| Change update branch tolower($aArg2)
 # .(41203.03 12/03/24 RAM  9:30a| Add Time to stash msg 
 # .(41204.01 12/04/24 RAM  9:27a| Was ${nCnt// / }) in gitr status command
+# .(41204.02 12/04/24 RAM  9:25a| Add Commit        to gitr checkout command
 
 ##PRGM     +====================+===============================================+
 ##ID 69.600. Main0              |
