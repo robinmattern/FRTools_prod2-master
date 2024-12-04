@@ -126,6 +126,7 @@
 # .(41202.03 12/02/24 RAM  6:35p| Remmove exit ??
 # .(41203.02 12/03/24 RAM  8:30a| Change update branch tolower($aArg2)
 # .(41203.03 12/03/24 RAM  9:30a| Add Time to stash msg 
+# .(41204.01 12/04/24 RAM  9:27a| Was ${nCnt// / }) in gitr status command
 
 ##PRGM     +====================+===============================================+
 ##ID 69.600. Main0              |
@@ -1242,15 +1243,13 @@ function getRemoteName() {                                                      
             read -p "    Abort, Commit, Discard or Stash as '${aStash}': " aAns;                            # .(41204.02.1 RAM Add Commit to checkout)
             aAns="$( echo "${aAns}" | tr '[:lower:]' '[:upper:]') )"  
             if [ "${aAns:0:1}" == "A" ]; then echo "    Aborting"; exit_wCR; fi
-            if [ "${aAns:0:1}" == "S" ]; then  git stash push -u -m "${aStash}"; aAnswer="D"; fi
+            if [ "${aAns:0:1}" == "S" ]; then git stash push -u -m "${aStash}"; aAnswer="D"; fi
+            if [ "${aAns:0:1}" == "C" ]; then gitr add "Commit of ${nCnt// /} file${s} ${aHR}"; fi          # .(41204.02.2)
             if [ "${aAns:0:1}" == "D" ]; then
                git clean -fd 2>&1 | awk '{ print "  " $0 }'
                git checkout  -f ${aArg2} 2>&1 | awk '{ print "  " $0 }'
                exit_wCR;
                fi                                                                                           # .(41202.03.1 End)
-            if [ "${aAns:0:1}" == "C" ]; then                                                               # .(41204.02.2 Beg)
-               aCommit=".(${aTS:1} Stash of ${nCnt// /} file${s} ${aHR}"
-               fi                                                                                           # .(41204.02.2 Beg)
             fi # eif bNoFilesInWork
         echo ""
         git checkout ${aArg2} 2>&1 | awk '{ print "  " $0 }'
