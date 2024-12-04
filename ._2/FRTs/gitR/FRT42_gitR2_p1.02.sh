@@ -155,12 +155,12 @@ function help() {
      echo "    clone [name] [stagedir]                    Clone files from remote name to stagedir"         # .(41103.06.1)
      echo "    clone branch [name] [stagedir] [branch]    Clone files from remote name/branch to stagedir"  # .(41103.06.2)
      echo "    Status                                     Show uncommitted files in working tree, if any"   # .(41123.02.1)
+     echo "    Add commit {msg}                           Add and commit working files to .({TS})"          # .(41129.03.1)
      echo "    Show commit  [{beg}|{hash}] [{cnt}]        Show files for {cnt} commits from {beg}/{hash}"   # .(41123.08.1).(41030.05.1)
      echo "    List commits [{beg}] [{cnt}]               List last {cnt} commits from {beg}"               # .(41123.07.1).(41031.03.1).(51030.05.1)
      echo "    List remotes                               List current remote repositories"                 # .(41031.03.2)
      echo "    List branches                              List current remote repositories"                 # .(41114.04.1)
      echo "    Branch {branch}                            Checkout branch {branch}"                         # .(41114.04.2)
-     echo "    Add commit {msg}                           Add and commit working files to .({TS})"          # .(41129.03.1)
      echo "    Track Branch                               Set tracking for origin/branch"
      echo "    Set remote  {name} [{acct}] [{repo}] [-d]  Set current remote repository"
      echo "    Add remote  {name} [{acct}] [{repo}] [-d]  Add new origin remote repository"
@@ -941,7 +941,7 @@ function getRemoteName() {                                                      
             bFilesInWork="$( git status | awk '/working tree clean/ { b = 1 }; END { print b ? b : 0 }' )"  # .(41123.03.1 RAM Was End)
         if [ "${bFilesInWork}" != "1" ]; then
             nCnt="$(git status -u --short | wc -l)"; s="s"; if [ "${nCnt}" == "1" ]; then s=""; fi          # .(41129.02.4)
-            echo -e "\n* The current branch, '${aBranch}', has ${nCnt// / } uncommitted file${s}."
+            echo -e "\n* The current branch, '${aBranch}', has ${nCnt// /} uncommitted file${s}."           # .(41204.01.1 RAM Was ${nCnt// / })
 
 #           git status --short | awk '{ print "   " $1 "  " substr( $0, 4) }'                               ##.(41124.06.5)
             shoWorkingFiles                                                                                 # .(41124.06.5 RAM Use it)
@@ -953,10 +953,10 @@ function getRemoteName() {                                                      
 #    -- --- ---------------  =  ------------------------------------------------------  #  ---------------- #
 
 #====== =================================================================================================== #  ===========
-#       gitR Add Commit Command                                                                             # .(41129.03.5)
+#>      GITR2 ADD COMMIT                                                                                    # .(41129.03.5)
 #====== =================================================================================================== #
 
-#       sayMsg    "FRT40[926] Update Command" sp 1;
+#       sayMsg    "FRT40[959] ${aCmd} Command" sp 1;
 
   if [ "${aCmd}" == "addCommit" ]; then                                                                     # .(41129.03.6 RAM Add Add CommitCommand Beg)
                                    aCMsg="";         aCN=""
@@ -984,7 +984,7 @@ function getRemoteName() {                                                      
 
      if [ "${aCN}"  == "" ]; then
            aNxt=$( git log --since="midnight" --oneline | awk '{ sub( /.+\.\(/, "" ); print substr($0,7,2) }' | sort | awk 'END{ print $0 + 1 }' )
-       sayMsg sp "FRT40[954] aNxt: '${aNxt}'" 1;
+       sayMsg sp "FRT40[954] aNxt: '${aNxt}'" -1;
 #          if [ "${aNxt}"  == ""  ]; then aNxt="01"; fi
            if [ "${#aNxt}" == "1" ]; then aNxt="0${aNxt}"; fi
            aCN=".(${aTS}.${aNxt}"
@@ -994,7 +994,8 @@ function getRemoteName() {                                                      
            aGIT2="git commit -m \"${aCN}_${aCMsg}\""
      if [ "${bDoit}" != "1" ]; then
            aNum="$(git status -u --short | wc -l)"; s="s"; if [ "${aNum}" == "1" ]; then s=""; fi
-           echo -e "\n* There are ${aNum// /} uncommitted file${s} that will be committed."
+           echo -e "\n* There are ${aNum// /} working file${s} that will be committed."
+           shoWorkingFiles                                                                                  # .(41204.03.1 Add shoCommitMsg to Add command)
            echo -e "\n  ${aGIT1}"
            echo -e   "  ${aGIT2} # Add -d to doit"
          else
@@ -1238,7 +1239,8 @@ function getRemoteName() {                                                      
             aTS=$(date +%y%m%d.%H); aHR="at $(date +%H:%M.%S)"                                              # .(41203.03.3)
             aStash=".(${aTS:1} Stash of ${nCnt// /} file${s} ${aHR}"                                        # .(41203.03.4).(41202.03.1 RAM Ask about working files Beg)
             echo -e "\n  What would you like to do: Enter A, D or S: "
-            read -p "    Abort, Discard or Stash as '${aStash}': " aAns;  aAns="$( echo "${aAns}" | tr '[:lower:]' '[:upper:]') )"
+            read -p "    Abort, Commit, Discard or Stash as '${aStash}': " aAns;                            # .(41204.02.1 RAM Add Commit to checkout)
+            aAns="$( echo "${aAns}" | tr '[:lower:]' '[:upper:]') )"  
             if [ "${aAns:0:1}" == "A" ]; then echo "    Aborting"; exit_wCR; fi
             if [ "${aAns:0:1}" == "S" ]; then  git stash push -u -m "${aStash}"; aAnswer="D"; fi
             if [ "${aAns:0:1}" == "D" ]; then
@@ -1246,6 +1248,9 @@ function getRemoteName() {                                                      
                git checkout  -f ${aArg2} 2>&1 | awk '{ print "  " $0 }'
                exit_wCR;
                fi                                                                                           # .(41202.03.1 End)
+            if [ "${aAns:0:1}" == "C" ]; then                                                               # .(41204.02.2 Beg)
+               aCommit=".(${aTS:1} Stash of ${nCnt// /} file${s} ${aHR}"
+               fi                                                                                           # .(41204.02.2 Beg)
             fi # eif bNoFilesInWork
         echo ""
         git checkout ${aArg2} 2>&1 | awk '{ print "  " $0 }'

@@ -10,6 +10,7 @@
 ##FD         set-frtools.sh     |  18548| 10/31/24  7:15|   360| v1.05`41031.0615
 ##FD         set-frtools.sh     |  18894| 11/04/24 12:28|   366| v1.05`41104.1225
 ##FD         set-frtools.sh     |  19928| 11/24/24 14:45|   377| v1.05`41124.1445
+##FD         set-frtools.sh     |  20155| 12/04/24  9:09|   380| v1.05`41124.0909
 
 ##DESC     .--------------------+-------+-----------------+------+---------------+
 #            Create ._0/bin folder and copy all command scripts there as well as
@@ -46,6 +47,7 @@
 # .(41120.02 11/23/24 RAM  9:45a| Must be in FRTools repo
 # .(41124.01 11/24/24 RAM  9:25a| Allow -d and -doit
 # .(41124.05 11/24/24 RAM 14:45a| Add netr command
+# .(41203.08 12/04/24 RAM  9:07a| Shorten ${aBashrc}) in it exists msg
 
 ##PRGM     +====================+===============================================+
 ##ID 69.600. Main0              |
@@ -54,6 +56,7 @@
 #========================================================================================================== #  ===============================  #
 
   aVer="v1.05\`41124.1445"
+  aVer="v1.05\`41204.0909"
 
   echo ""
 
@@ -167,7 +170,7 @@ function setBashrc() {
      inRC=$( cat "${aBashrc}" | awk '/._0/ { print 1 }' );
   if [[ "${inRC}" == "1" ]]; then
 
-     echo "* The path, '${aBinDir}', is already in the User's ${aBashrc} file."
+     echo "* The path, '${aBinDir}', is already in the User's ${aBashrc/$HOME/~} file." # .(41203.08.1 RAM Shorten ${aBashrc})
 
    else  # Recreate "${aBashrc}"
 
