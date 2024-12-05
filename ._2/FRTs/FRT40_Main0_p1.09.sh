@@ -39,7 +39,7 @@
 ##FD   FRT10_Main0.sh           |  58233| 11/29/24 13:00|   835| p1.09`41129.1300
 ##FD   FRT10_Main0.sh           |  59165| 12/01/24 21:50|   842| p1.09`41201.2150
 ##FD   FRT10_Main0.sh           |  64323| 12/04/24  9:45|   904| p1.09`41204.0945
-##FD   FRT10_Main0.sh           |  68557| 12/04/24 12:30|   942| p1.09`41204.1230
+##FD   FRT10_Main0.sh           |  68641| 12/04/24 12:30|   943| p1.09`41204.1230
 
 ##DESC     .--------------------+-------+---------------+------+-----------------+
 #            Use the commands in this script to manage FormR app resources.
@@ -129,6 +129,7 @@
 # .(41203.06 12/03/24 RAM  5:10p| Add frt show/kill ports
 # .(41028.01 12/03/24 RAM  5:25p| Don't call scripts with _version #s
 # .(41204.01 12/04/24 RAM  9:45a| Fix working files count var ${s}
+# .(41204.02 12/04/24 RAM 10:15a| Add Commit to checkout
 #.(41115.02d 12/04/24 RAM 12:30p| Adjust FRT Update ALTools -u
 
 ##PRGM     +====================+===============================================+
@@ -137,7 +138,7 @@
 #*/
 #========================================================================================================== #  ===============================  #
 
-     aVdt="Dec 4, 2024 9:245p"; aVtitle="formR Tools"                                                      # .(21113.05.8 RAM Add aVtitle for Version in Begin)
+     aVdt="Dec 4, 2024 12:30p"; aVtitle="formR Tools"                                                      # .(21113.05.8 RAM Add aVtitle for Version in Begin)
      aVer="$( echo $0 | awk '{  match( $0, /_[dpstuv][0-9]+\.[0-9]+/ ); print substr( $0, RSTART+1, RLENGTH-1) }' )"  # .(21031.01.1 RAM Add [d...).(20416.03.8 "_p2.02", or _d1.09)
 
      LIB="FRT"; LIB_LOG=${LIB}_LOG; LIB_USER=${LIB}_USER; Lib=${LIB}; aDir=$( dirname "${BASH_SOURCE}" );   # .(41027.01.1 RAM).(80923.01.1)
