@@ -22,7 +22,7 @@
 ##FD   FRT42_GitR2.sh           | 113886| 11/24/24 19:45|  1596| p1.02`.41124.1945
 ##FD   FRT42_GitR2.sh           | 123098| 12/01/24 19:30|  1722| p1.02`.41201.1930
 ##FD   FRT42_GitR2.sh           | 125748| 12/03/24  9:30|  1753| p1.02`.41203.0930
-##FD   FRT42_GitR2.sh           | 126873| 12/04/24  9:47|  1763| p1.02`.41204.0947
+##FD   FRT42_GitR2.sh           | 128720| 12/05/24  9:40|  1778| p1.02`.41205.0940
 
 ##DESC     .--------------------+-------+---------------+------+-----------------+
 #            This script has usefull GIT functions.
@@ -131,6 +131,7 @@
 # .(41204.02 12/04/24 RAM  9:25a| Add Commit        to gitr checkout command
 # .(41204.03 12/04/24 RAM  9:25a| Add shoCommitMsg  to gitr add command
 # .(41204.01 12/04/24 RAM  9:47a| Fix working files count var ${s}
+#.(41103.06b 12/05/24 RAM  8:40a| Add -doit to pullRemote
 
 ##PRGM     +====================+===============================================+
 ##ID 69.600. Main0              |
@@ -138,7 +139,7 @@
 #*/
 #========================================================================================================== #  ===============================  #
 
-        aVDt="Dec 03, 2024 9:47a"; aVer="p1.02"; aVTitle="Useful gitR2 Tools by formR";                                  # .(41103.02.2 RAM Was: gitR1)
+        aVDt="Dec 05, 2024 9:40a"; aVer="p1.02"; aVTitle="Useful gitR2 Tools by formR";                                  # .(41103.02.2 RAM Was: gitR1)
         aVer="$( echo "$0" | awk '{ match( $0, /_[dpstuv][0-9]+\.[0-9]+/ ); print substr( $0, RSTART+1, RLENGTH-1) }' )"  # .(21031.01.1 RAM Add [d...).(20416.03.8 "_p2.02", or _d1.09)
 
         LIB="gitR2"; LIB_LOG=${LIB}_LOG; LIB_USER=${LIB}_USER; Lib=${LIB}; aDir=$(dirname "${BASH_SOURCE}");              # .(41103.02.3).(41102.01.1 RAM Add JPT12_Main2Fns_p1.07.sh Beg).(80923.01.1)
@@ -815,7 +816,8 @@ function getRemoteName() {                                                      
         }  # eof cloneRemote                                                                                                 # .(41104.01.2 End)
 #    -- --- ---------------  =  ------------------------------------------------------  #  ---------------- #
 
-     if [ "${aCmd}" == "cloneRemote" ] || [ "${aCmd}" == "cloneBranch" ]; then                              # .(41103.06.10 RAM write it Beg)
+
+  if [ "${aCmd}" == "cloneRemote" ] || [ "${aCmd}" == "cloneBranch" ]; then                                 # .(41103.06.10 RAM write cloneRemote or cloneBranch Beg)
 
         sayMsg  "gitR2[806]  Git Clone ${aCmd:5}" -1;
         if [ "${aCmd:5}" == "Branch" ]; then                                                                # .(41201.03.1 RAM Start dealing with clone branch Beg)
@@ -1156,7 +1158,7 @@ function getRemoteName() {                                                      
 #>      GITR2 PULL
 #====== =================================================================================================== #
 
-  if [ "${aCmd}" == "pullRemote" ]; then                                                                    # .(41103.06.11 RAM write it Beg)
+  if [ "${aCmd}" == "pullRemote" ]; then                                                                    # .(41103.06.11 RAM write pullRemote Beg)
      sayMsg  "gitR1[471]  Git pull" -1
 
         echo ""
@@ -1167,20 +1169,33 @@ function getRemoteName() {                                                      
 #       git branch --set-upstream-to="${aRemoteName}/${aBranch}" "${aBranch}"
 #       git pull "${aRemoteName}" "${aBranch}" --allow-unrelated-histories 2>&1 | awk '{ print "  " $0 }'   # .(41104.04.6 RAM Add 2>&1)
         aGIT1="git pull ${aRemoteName} ${aBranch} --allow-unrelated-histories"
-        echo -e "\n  ${aGIT1}"
-        eval        "${aGIT1}" 2>&1 | awk '{ print "  " $0 }'
+#       echo -e "\n  ${aGIT1}"                                                                              # .(41103.06b.1)
+#       eval        "${aGIT1}" 2>&1 | awk '{ print "  " $0 }'                                               # .(41103.06b.2)
      if [ -f .git/MERGE_HEAD ]; then   # in conflict                                                        # .(41104.02.1 RAM Check for conflicts Beg)
         aTS=$(date +%y%m%d); aTS="${aTS:3}"
-        git checkout --theirs .   # for all comflicts
-        git add .
-        git commit -m ".(${aTS}.01_Accept all incoming changes"
+        aGIT1="$aGIT1}git checkout --theirs ."   # for all comflicts                                        # .(41103.06b.3)
+#       aGIT1="$aGIT1}\ngit add ."                                                                          ##.(41103.06b.4)
+#       aGIT1="$aGIT1}\ngit commit -m \".(${aTS}.01_Accept all incoming changes\""                          ##.(41103.06b.5)
+#       aGIT1="$aGIT1}\ngit commit -m \".(${aTS}.01_Commit all incoming conflicts\""                        ##.(41103.06b.5)
+        aGIT1="$aGIT1}\ngitr add \".(${aTS}.01_Commit all incoming conflicts\""                             # .(41103.06b.6)
         fi                                                                                                  # .(41104.02.1 End)
+
       else                                                                                                  # .(41105.02.7 Beg)
-        aGIT2="git pull ${aRemoteName} ${aBranch} --force --allow-unrelated-histories"                      # .(41105.02.8)
-        echo -e "\n  ${aGIT2}"
-        eval        "${aGIT2}" 2>&1 | awk '{ print "  " $0 }'
-#       eval        "${aGIT2}"
+        aGIT1="git pull ${aRemoteName} ${aBranch} --force --allow-unrelated-histories"                      # .(41105.02.8)
+#       echo -e "\n  ${aGIT1}"                                                                              # .(41103.06b.7)
+#       eval        "${aGIT1}" 2>&1 | awk '{ print "  " $0 }'                                               # .(41103.06b.8)
+#       eval        "${aGIT1}"
         fi                                                                                                  # .(41105.02.7 End)                                                                                             # .(41105.02.3)
+
+     if [ "${bDoit}" != "1" ]; then                                                                         # .(41103.06b.9 RAM Add doit Beg)
+#       echo -e "\n  ${aGIT1}\n  ${aGIT2}"
+        echo -e "\n  ${aGIT1} # Add -d to doit"
+      else
+        echo -e "\n  ${aGIT1} \n"
+#       eval        "${aGIT1}" 2>&1 | awk '{ print "  " $0 }'
+        eval        "${aGIT1}"
+        fi                                                                                                  # .(41103.06b.9 End)
+
         Sudo find . -type f -name "*.sh" -exec chmod 777 {} +                                               # .(41105.03.2)
      fi                                                                                                     # .(41103.06.11 End)
 #====== =================================================================================================== #  ===========
