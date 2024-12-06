@@ -22,7 +22,8 @@
 ##FD   FRT42_GitR2.sh           | 113886| 11/24/24 19:45|  1596| p1.02`.41124.1945
 ##FD   FRT42_GitR2.sh           | 123098| 12/01/24 19:30|  1722| p1.02`.41201.1930
 ##FD   FRT42_GitR2.sh           | 125748| 12/03/24  9:30|  1753| p1.02`.41203.0930
-##FD   FRT42_GitR2.sh           | 128720| 12/05/24  9:40|  1778| p1.02`.41205.0940
+##FD   FRT42_GitR2.sh           | 128720| 12/05/24  8:40|  1778| p1.02`.41205.0840
+##FD   FRT42_GitR2.sh           | 131963| 12/06/24 11:43|  1849| p1.02`.41206.1140
 
 ##DESC     .--------------------+-------+---------------+------+-----------------+
 #            This script has usefull GIT functions.
@@ -132,6 +133,7 @@
 # .(41204.03 12/04/24 RAM  9:25a| Add shoCommitMsg  to gitr add command
 # .(41204.01 12/04/24 RAM  9:47a| Fix working files count var ${s}
 #.(41103.06b 12/05/24 RAM  8:40a| Add -doit to pullRemote
+#.(41103.03b 12/06/24 RAM 11:40a| Write and use getReposDir for gitR Init
 
 ##PRGM     +====================+===============================================+
 ##ID 69.600. Main0              |
@@ -139,7 +141,7 @@
 #*/
 #========================================================================================================== #  ===============================  #
 
-        aVDt="Dec 05, 2024 9:40a"; aVer="p1.02"; aVTitle="Useful gitR2 Tools by formR";                                  # .(41103.02.2 RAM Was: gitR1)
+        aVDt="Dec 06, 2024 11:40a"; aVer="p1.02"; aVTitle="Useful gitR2 Tools by formR";                                  # .(41103.02.2 RAM Was: gitR1)
         aVer="$( echo "$0" | awk '{ match( $0, /_[dpstuv][0-9]+\.[0-9]+/ ); print substr( $0, RSTART+1, RLENGTH-1) }' )"  # .(21031.01.1 RAM Add [d...).(20416.03.8 "_p2.02", or _d1.09)
 
         LIB="gitR2"; LIB_LOG=${LIB}_LOG; LIB_USER=${LIB}_USER; Lib=${LIB}; aDir=$(dirname "${BASH_SOURCE}");              # .(41103.02.3).(41102.01.1 RAM Add JPT12_Main2Fns_p1.07.sh Beg).(80923.01.1)
@@ -460,21 +462,90 @@ function shoWorkingFiles() {                                                    
    } # eof shoWorkingFiles                                                                                  # .(41124.06.1 End)
 # ---------------------------------------------------------------------------
 
+function getReposDir() {                                                                                    # .(41103.03b.1 RAM Write getReposDir for gitr Init Beg)
+
+     aDir="$( pwd )"
+     aREpos="$( echo "${aDir}" | awk '{ match( $0, /.*[Rr][Ee][Pp][Oo][Ss]/); print substr($0,1,RLENGTH) }' )"
+     aRDirs="$( echo "${aDir}" | awk '{ match( $0, /.*[Rr][Ee][Pp][Oo][Ss]/); print substr($0,RLENGTH+2) }' )"
+
+     if [ "${aREpos}" == "" ]; then
+        echo -e "\n* You must be in a Repos folder."
+        exit_wCR
+        fi
+
+        aSDirs="$( find . -maxdepth 2 -type d -name "?1_*" | awk '{ print; exit }' )"
+        sayMsg  "gitR2[475]  aSDirs: '${aSDirs}'" -1
+     if [ "${aRDirs}" != "" ]; then  # aRepos has no subfolder
+        if [ "${aSDirs}" != "" ] || [ "$1" == "no-check" ]; then
+           aREpos="${aREpos}/${aRDirs}"  # It is a Repos dir
+         else
+           if [ -d ".git" ]; then
+              echo -e "\n* This project folder already contains a git repository"
+              exit_wCR
+              fi # eif .git exists
+           echo -e "\n* You must be in a Repos folder with a subfolder: ._/!1_Support Files for ..."
+           aREpos=""
+           exit_wCR
+           fi;  # eif aSDirs
+       else
+#        if [ "${aSDirs}" != "" ] || [ "$1" == "no-check" ]; then return; fi
+         if [ "${aSDirs}" != "" ]; then return; fi
+         sayMsg  "gitR2[486]  The Repos root folder does not contain a subfolder: ._/!1_Support Files for ..." -1
+         fi
+
+         sayMsg  "gitR2[489]  aRepos: '${aREpos}', aRDirs: '${aRDirs}'" -1
+#       echo "${aREpos}"
+        } # // eof getReposDir                                                                              # .(41103.03b.1 End)
 #====== =================================================================================================== #  ===========
-#       GITR2 INIT                                                                                          # .(20430.01.3 Beg RAM Added Beg)
+#>      GITR2 INIT                                                                                          # .(20430.01.3 Beg RAM Add GitR Init Beg)
 #====== =================================================================================================== #
 
 #         aCmd="shoLast"
 #         aCmd="init"
 
-  if [ "${aCmd}" == "init" ]; then                                                                          # .(41103.03.5 RAM Actually write Beg)
-     sayMsg  "gitR1[388]  Git Init" -1
+  if [ "${aCmd}" == "init" ]; then                                                                          # .(41103.03.5 RAM Actually write Gitr Init Beg)
+     sayMsg  "gitR2[500]  Git Init" -1
+
+     aNewRepo="${mARGs[1]}"                                                                                 # .(41103.03b.2 RAM Create folder if given Beg)
+  if [ "${aNewRepo}" != "" ]; then
+#    aReposDir="$( getReposDir )"
+     getReposDir; aReposDir="${aREpos}"
+#    sayMsg  "gitR2[501]  aReposDir: '${aReposDir}'" -1
+#    sayMsg  "gitR2[502]  aSDirs: '${aSDirs}'" 1
+     if [ "${aReposDir}" != "" ]; then
+        if [ ! -d "${aNewRepo}" ]; then
+           sayMsg  "gitR2[510]  Git Init: Making aNewRepo folder, ${aNewRepo}, in the Repos folder, ${aReposDir}. " -1
+           mkdir -p "${aNewRepo}";
+         else
+           sayMsg  "gitR2[513]  Git Init: aNewRepo folder, ${aNewRepo}, already exists in the Repos folder, ${aReposDir}." -1
+        fi
+        cd "${aNewRepo}"
+      else
+           sayMsg  "gitR2[517]  Git Init: Not in aRepos folder." -1
+           echo -e "\n* You must be in a Repos folder."
+           exit_wCR
+        fi
+   else # eif no aNewRepo
+        getReposDir "no-check";
+     if [ "${aSDirs}" == "" ] && [ "${aRDirs}" != "" ]; then  # Only ok in Repos subfolders
+        aReposDir="$( pwd )"; aReposDir="${aReposDir%/*}"
+        sayMsg  "gitR2[525]  Git Init: Assuming a repo will be initialized in a current non-repos folder. " -1
+      else
+        sayMsg  "gitR2[522]  Git Init: You can't initialize a repo in the current repos folder. " -1
+        echo -e "\n* This folder contains other repositories. It can't be initialized as a repository!"
+        exit_wCR
+        fi
+     fi                                                                                                     # .(41103.03b.2 End)
 
   if [ -d ".git" ]; then
 #       getRepoDir
         echo -e "\n* This project folder already contains a git repository"
         exit_wCR
         fi # eif .git exists
+
+    sayMsg  "gitR2[523]  Git Init: Current folder is $( pwd )." 1
+    sayMsg  "gitR2[524]  Git Init:   Repos folder is ${aReposDir}." 2
+
 #  ----------------------------------------------------------------------
 
 function initGit() { # assumes we're in folder to be initialized
@@ -737,7 +808,7 @@ function getProjectStage_fromURL() {                                            
 #    -- --- ---------------  =  ------------------------------------------------------  #  ---------------- #
 
 #        getProjectStage_fromURL "git@github-ram:robinmattern/FRTools_prod2-master.git"
-#        sayMsg  "gitR1[481]  getProjectStage_fromURL: ${aProject}_${aStage}" 1
+#        sayMsg  "gitR2[481]  getProjectStage_fromURL: ${aProject}_${aStage}" 1
 #        aArg2="git@github-ram:robinmattern/FRTools_prod2-master.git"
 
 function getRemoteName() {                                                                                  # .(41104.01.2 RAM Write getRemoteName Beg)
@@ -967,7 +1038,7 @@ function getRemoteName() {                                                      
 
   if [ "${aCmd}" == "addCommit" ]; then                                                                     # .(41129.03.6 RAM Add Add CommitCommand Beg)
                                    aCMsg="";         aCN=""
-#    sayMsg  sp "FRT40[946] aArg2: '${aArg2}', aArg3: '${aArg3}', \$2: '$2', \$3: '$3'" 1;
+     sayMsg  sp "FRT40[946] aArg2: '${aArg2}', aArg3: '${aArg3}', aArg4: '${aArg4}', \$2: '$2', \$3: '$3', \$4: '$4'" 1;
 
      if [[ ${aArg2} =~ ^[0-9] ]]; then  aArg2="${aArg3}"; aArg3="$2"; fi
      if [ "${aArg2}" != "" ]; then aCMsg="${aArg2}"; fi
@@ -1159,7 +1230,7 @@ function getRemoteName() {                                                      
 #====== =================================================================================================== #
 
   if [ "${aCmd}" == "pullRemote" ]; then                                                                    # .(41103.06.11 RAM write pullRemote Beg)
-     sayMsg  "gitR1[471]  Git pull" -1
+     sayMsg  "gitR2[471]  Git pull" -1
 
         echo ""
         getBranch # aBranch=$( git branch | awk '/\*/ { print substr($0,3)}' )                              # .(41104.04.5)
@@ -1203,7 +1274,7 @@ function getRemoteName() {                                                      
 #====== =================================================================================================== #
 
   if [ "${aCmd}" == "pushRemote" ]; then                                                                    # .(41129.06.4 RAM write pushRemote Beg)
-     sayMsg  "gitR1[1153]  Git push" -1
+     sayMsg  "gitR2[1153]  Git push" -1
 
         getBranch # aBranch=$( git branch | awk '/\*/ { print substr($0,3)}' )                              # .(41104.04.7)
         getRemoteName
@@ -1224,7 +1295,7 @@ function getRemoteName() {                                                      
 #====== =================================================================================================== #
 
   if [ "${aCmd}" == "listBranches" ]; then                                                                  # .(41114.04.5 RAM write listBranches)
-     sayMsg  "gitR1[857]  listBranches" -1
+     sayMsg  "gitR2[857]  listBranches" -1
         echo ""
         git branch -vva | awk '{ print "  " $0 }'
         exit_wCR                                                                                            # .(41116.01.16)
@@ -1234,7 +1305,7 @@ function getRemoteName() {                                                      
 #====== =================================================================================================== #
 
   if [ "${aCmd}" == "checkoutBranch" ]; then                                                                # .(41114.04.6 RAM write checkoutBranch)
-     sayMsg  "gitR1[866]  checkoutBranch '${aArg2}'" -1
+     sayMsg  "gitR2[866]  checkoutBranch '${aArg2}'" -1
 
         getBranch
      if [ "${aArg2}" == "" ]; then
