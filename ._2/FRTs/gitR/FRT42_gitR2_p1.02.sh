@@ -354,7 +354,7 @@ function chkRepo() {                                                            
   else
     echo "  RepoDir is: ${aRepoDir}, branch: ${aBranch}";   # exit_wCR
     fi
-    }                                                                                                       # .(41103.03.4 End)
+    }                                                                                                       # .(41103.03.3 End)
 # ---------------------------------------------------------------------------
 
 function getBranch( ) {                                                                                     # .(41104.04.1 RAM Create getBranch function Beg)
@@ -510,18 +510,18 @@ function getReposDir() {                                                        
   if [ "${aNewRepo}" != "" ]; then
 #    aReposDir="$( getReposDir )"
      getReposDir; aReposDir="${aREpos}"
-#    sayMsg  "gitR2[501]  aReposDir: '${aReposDir}'" -1
-#    sayMsg  "gitR2[502]  aSDirs: '${aSDirs}'" 1
+     sayMsg  "gitR2[513]  aReposDir: '${aReposDir}'" -1
+     sayMsg  "gitR2[514]  aSDirs: '${aSDirs}'" -1
      if [ "${aReposDir}" != "" ]; then
         if [ ! -d "${aNewRepo}" ]; then
-           sayMsg  "gitR2[510]  Git Init: Making aNewRepo folder, ${aNewRepo}, in the Repos folder, ${aReposDir}. " -1
+           sayMsg  "gitR2[517]  Git Init: Making aNewRepo folder, ${aNewRepo}, in the Repos folder, ${aReposDir}. " -1
            mkdir -p "${aNewRepo}";
          else
-           sayMsg  "gitR2[513]  Git Init: aNewRepo folder, ${aNewRepo}, already exists in the Repos folder, ${aReposDir}." -1
+           sayMsg  "gitR2[520]  Git Init: aNewRepo folder, ${aNewRepo}, already exists in the Repos folder, ${aReposDir}." -1
         fi
         cd "${aNewRepo}"
       else
-           sayMsg  "gitR2[517]  Git Init: Not in aRepos folder." -1
+           sayMsg  "gitR2[524]  Git Init: Not in aRepos folder." -1
            echo -e "\n* You must be in a Repos folder."
            exit_wCR
         fi
@@ -529,9 +529,9 @@ function getReposDir() {                                                        
         getReposDir "no-check";
      if [ "${aSDirs}" == "" ] && [ "${aRDirs}" != "" ]; then  # Only ok in Repos subfolders
         aReposDir="$( pwd )"; aReposDir="${aReposDir%/*}"
-        sayMsg  "gitR2[525]  Git Init: Assuming a repo will be initialized in a current non-repos folder. " -1
+        sayMsg  "gitR2[532]  Git Init: Assuming a repo will be initialized in a current non-repos folder. " -1
       else
-        sayMsg  "gitR2[522]  Git Init: You can't initialize a repo in the current repos folder. " -1
+        sayMsg  "gitR2[534]  Git Init: You can't initialize a repo in the current repos folder. " -1
         echo -e "\n* This folder contains other repositories. It can't be initialized as a repository!"
         exit_wCR
         fi
@@ -543,12 +543,12 @@ function getReposDir() {                                                        
         exit_wCR
         fi # eif .git exists
 
-    sayMsg  "gitR2[523]  Git Init: Current folder is $( pwd )." 1
-    sayMsg  "gitR2[524]  Git Init:   Repos folder is ${aReposDir}." 2
+    sayMsg  "gitR2[546]  Git Init: Current folder is $( pwd )." -1
+    sayMsg  "gitR2[547]  Git Init:   Repos folder is ${aReposDir}." -1
 
 #  ----------------------------------------------------------------------
 
-function initGit() { # assumes we're in folder to be initialized
+function initGit() { # assumes we're in folder to be initialized                                            # .(41103.03.2 RAM Write initGit Beg)
 
          aMainBranch="master"
          aProject="$1"; aStage="$2"
@@ -574,7 +574,7 @@ function initGit() { # assumes we're in folder to be initialized
          exit_wCR;
          fi
          echo "  The current folder is empty.";
-         sayMsg  "gitR2[347]  Creating a repository, '${aProject_}${aStage}', in folder: '${aProject_Name}'.'" -1
+         sayMsg  "gitR2[577]  Creating a repository, '${aProject_}${aStage}', in folder: '${aProject_Name}'.'" -1
 
          git init                               | awk '{ print "  " $0 }'
          echo ""
@@ -645,8 +645,8 @@ yarn.lock
                                                                                         # .(41109.04.1 End)
          aWorkspace_code="{ \"folders\": [ { \"path\": \".\" } ] }"
                                                                                         # .(41109.03.2 RAM Add initGit dirs & files Beg)
-#        sayMsg  "gitR2[393]  Adding files to repo, ${aProject}_${aStage}, in folder: ${aProject_Name}'" -1
-         sayMsg  "gitR2[394]  Current folder is: '$( pwd )'" -1
+#        sayMsg  "gitR2[648]  Adding files to repo, ${aProject}_${aStage}, in folder: ${aProject_Name}'" -1
+         sayMsg  "gitR2[649]  Current folder is: '$( pwd )'" -1
 
 #        !2_formR Tools for 8020's FRTools Apps in rm228d on Stage Prod2-Master
          aDir="!2_\${Title} for ${aOwner}'s ${aProject} Apps in ${aSvr} on Stage ${aStage2}"
@@ -681,12 +681,12 @@ yarn.lock
 #        git branch --set-upstream-to=origin/${aMainBranch} ${aMainBranch}
 
 #        gitr1 add remote origin $1
-         } # eof
+         } # eof initGit                                                                                    # .(41103.03.2 End)
 #  ----------------------------------------------------------------------
 
            echo ""
            aPath="$( pwd )"; aDir="${aPath##*/}"
-        sayMsg "gitR2[535]  git init in ${aDir}" -1
+        sayMsg "gitR2[689]  git init in ${aDir}" -1
 
         if [ "${aDir: -1}" == "_" ]; then  # in a Project_ dir
 
@@ -707,7 +707,7 @@ yarn.lock
               fi
               cd "${aStage}" || exit_wCR
 
-           initGit "${aProject}" "${aStage}"
+           initGit     "${aProject}" "${aStage}"                                                            # .(41103.03.6)
            chkUser                                                                      # .(41114.07.2 RAM Use it here too)
 
            echo -e "\n  Please cd into the folder, '${aStage}'."
@@ -720,7 +720,7 @@ yarn.lock
            aStage="${aDir}"
 
 #          sayMsg "gitR2[445]  git init in ${aProject}${aStage}" 2
-           initGit "${aProject}" "${aStage}"
+           initGit     "${aProject}" "${aStage}"                                                            # .(41103.03.7  RAM in ${aProject} ${aStage}) 
            echo -e "\n  Please cd into the folder, '${aStage}'."
            exit_wCR
         fi # eif aDir == aStage
@@ -739,7 +739,7 @@ yarn.lock
               fi;
 #          sayMsg "gitR2[463]  git init in ${aProject}${aStage}" 2
                 cd     "${aProject}${aStage}" || exit_wCR; aFolder="${aProject}${aStage}"
-           initGit     "${aProject}${aStage}"
+           initGit     "${aProject}${aStage}"                                                               # .(41103.03.8  RAM in ${aProject}${aStage})
            echo -e "\n  Please cd into the folder, '${aFolder}'."
            exit_wCR
         fi # eif aProject_aStage dir
@@ -756,7 +756,7 @@ yarn.lock
               fi
 #          sayMsg "gitR2[480]  git init in ${aProject}_${aStage}" 2
                 cd     "${aProject}_${aStage}" || exit_wCR; aFolder="${aProject}_${aStage}"
-           initGit     "${aProject}_${aStage}"
+           initGit     "${aProject}_${aStage}"                                                              # .(41103.03.9  RAM in ${aProject}_${aStage})
            echo -e "\n  Please cd into the folder, '${aFolder}'."
            exit_wCR
            fi # eif aProject_aStage
@@ -770,7 +770,7 @@ yarn.lock
               fi
 #          sayMsg "gitR2[482]  git init in ${aProject}/${aStage}" 2
                 cd     "${aProject}/${aStage}" || exit_wCR; aFolder="${aProject}/${aStage}"
-           initGit     "${aProject}/${aStage}"
+           initGit     "${aProject}/${aStage}"                                                              # .(41103.03.10 RAM in ${aProject}/${aStage})
            echo -e "\n  Please cd into the folder, '${aFolder}'."
            exit_wCR
            fi # eif aProject/aStage
@@ -784,7 +784,7 @@ yarn.lock
               echo -e "  Creating a folder, '${aProject}'."
               fi
                 cd     "${aProject}" || exit_wCR; aFolder="${aProject}"
-           initGit     "${aProject}"
+           initGit     "${aProject}"                                                                        # .(41103.03.11 RAM in ${aProject)
            echo -e "\n  Please cd into the folder, '${aFolder}'."
            exit_wCR
            fi # eif aProject only
@@ -792,7 +792,7 @@ yarn.lock
 
         echo -e "\n * Didn't know what folder to put .git into"                                             # .(41109.01.2 RAM If all else fails)
         exit_wCR
-     fi # eoc Init                                                                                          # .(41103.03.5).(20430.01.3 End)
+     fi # eoc Init                                                                                          # .(41103.03.5 End).(20430.01.3 End)
 #    -- --- ---------------  =  ------------------------------------------------------  #  ---------------- #
 #====== =================================================================================================== #  ===========
 #>      GITR2 CLONE                                                                                         # .(41104.05.3 RAM Move git clone up before git init)
