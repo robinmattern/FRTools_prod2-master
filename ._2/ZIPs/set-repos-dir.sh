@@ -32,4 +32,6 @@ if [ "${a7zip_Ver}" != "24.09" ]; then  # or if ! type zip >/dev/null 2>&1; then
      7zip x -y set-repos.zip | awk '{ print "  " $0 }'
 
      if [ "${OS}" != "Windows" ]; then echo ""; sudo chmod 755 *.sh; fi
+     mv re-install.sh re-install
+
      if [ "${aCR}" != "" ]; then echo ""; fi
