@@ -25,11 +25,11 @@ if [ "${a7zip_Ver}" != "24.09" ]; then  # or if ! type zip >/dev/null 2>&1; then
      fi
 
      if ! curl -s "${aZIPs_URL}/set-repos.zip"  -o set-repos.zip  2>/dev/null; then
-     echo -e "\n* Failed to download, set-repos.zip.${aCR}"
+     echo -e "\n* Failed to download, set-repos-dir.zip.${aCR}"
      exit; fi
 
-     echo -e "\n  Unzipping: set-repos.zip."
-     7zip x -y set-repos.zip | awk '{ print "  " $0 }'
+     echo -e "\n  Unzipping: set-repos-dir.zip."
+     7zip x -y set-repos-dir.zip | awk '{ print "  " $0 }'
 
      if [ "${OS}" != "Windows" ]; then echo ""; sudo chmod 755 *.sh; fi
      mv re-install.sh re-install
