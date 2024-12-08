@@ -10,7 +10,8 @@
 ##FD         set-frtools.sh     |  18548| 10/31/24  7:15|   360| v1.05`41031.0615
 ##FD         set-frtools.sh     |  18894| 11/04/24 12:28|   366| v1.05`41104.1225
 ##FD         set-frtools.sh     |  19928| 11/24/24 14:45|   377| v1.05`41124.1445
-##FD         set-frtools.sh     |  20155| 12/04/24  9:09|   380| v1.05`41124.0909
+##FD         set-frtools.sh     |  20155| 12/04/24  9:09|   380| v1.05`41204.0909
+##FD         set-frtools.sh     |  20708| 12/08/24 16:55|   388| v1.05`41208.1655
 
 ##DESC     .--------------------+-------+-----------------+------+---------------+
 #            Create ._0/bin folder and copy all command scripts there as well as
@@ -48,6 +49,7 @@
 # .(41124.01 11/24/24 RAM  9:25a| Allow -d and -doit
 # .(41124.05 11/24/24 RAM 14:45a| Add netr command
 # .(41203.08 12/04/24 RAM  9:07a| Shorten ${aBashrc}) in it exists msg
+# .(41208.02 12/08/24 RAM  4:55p| Set different ${aBashrc}) in darwin20
 
 ##PRGM     +====================+===============================================+
 ##ID 69.600. Main0              |
@@ -57,6 +59,7 @@
 
   aVer="v1.05\`41124.1445"
   aVer="v1.05\`41204.0909"
+  aVer="v1.05\`41208.1655"
 
   echo ""
 
@@ -83,7 +86,9 @@ function setOSvars() {
      aBinDir="/C/Home/._0/bin"
      fi
   if [[ "${OSTYPE:0:6}" == "darwin" ]]; then
-     aBashrc="$HOME/.zshrc"
+     if [ -f "$HOME/.bash_profile" ]; then aBashrc="$HOME/.bash_profile"; fi
+     if [ -f "$HOME/.bashrc"       ]; then aBashrc="$HOME/.bashrc"; fi
+     if [ -f "$HOME/.zshrc"        ]; then aBashrc="$HOME/.zshrc"; fi
      aBinDir="/Users/Shared/._0/bin"
      aOS="darwin"
      fi
@@ -352,7 +357,7 @@ function cpyScript() {
   if [ "${bDoScripts}" == "0" ]; then                                                            echo "  Will create script: ${aName1} for \"${aJPTs_Script}\""; return; fi
 # if [   -f "${aJPTs_Script}" ]; then cp     -p  "${aJPTs_Script}" "${aJPTs_JDir}/";             echo "  Copied  script for: ${aName1}  in \"${aJPTs_Script}\""; fi
   if [   -f "${aJPTs_Script}" ]; then makScript  "${aJPTs_Script}" "${aJPTs_JDir}" "${aName}";   echo "  Created script for: ${aName1}  in \"${aJPTs_Script}\"";
-                                 Sudo chmod  777 "${aJPTs_Script}";
+#                                Sudo chmod  777 "${aJPTs_Script}";                     ##.(41104.03.1 RAM No need to set permission for each script
        fi
   }
 # ---------------------------------------------------------------------------
@@ -375,6 +380,9 @@ function cpyScript() {
 
   cd "${aRepo_Dir}"
 
+  if ! command -v frt; then
+  echo -e "\n* You need to run, source ${aBashrc}, or login again."
+  fi
   exit_withCR
 
 
