@@ -24,7 +24,7 @@ if [ "${a7zip_Ver}" != "24.09" ]; then  # or if ! type zip >/dev/null 2>&1; then
      exit; fi
      fi
 
-     if ! curl -s "${aZIPs_URL}/set-repos.zip"  -o set-repos.zip  2>/dev/null; then
+     if ! curl -s "${aZIPs_URL}/set-repos-dir.zip"  -o set-repos-dir.zip  2>/dev/null; then
      echo -e "\n* Failed to download, set-repos-dir.zip.${aCR}"
      exit; fi
 
