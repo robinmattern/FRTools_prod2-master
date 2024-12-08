@@ -15,17 +15,17 @@ function exit_wCR() {
     }
 #   -----------------------------------------------------
 
-function download() {                    echo -e "\n  Downloading $2";
+function download() {                    echo -e "\n  Downloading: $2";
 	if ! curl -L "$1" -o $2;        then echo -e   "  Download of $2 failed\n"; exit_wCR; fi
-	if [ -f "$2" ] && [ -s "$2" ];  then echo -e "\n  Downloaded ${aBIN}/$2";
+	if [ -f "$2" ] && [ -s "$2" ];  then echo -e "\n  Downloaded: ${aBIN}/$2";
                                     else echo -e   "  Download of $2 failed\n"; exit_wCR; fi
          }
 #   -----------------------------------------------------
 
-function check7z {                  echo -e "\n  Unzipping 7-Zip";
+function check7z {                  echo -e "\n  Unzipping: 7-Zip";
      if [ "$1" != ""     ]; then if [ -f "$1" ]; then a7z=$1; fi; fi
      if [ "$2" != ""     ]; then if [ -f "$2" ]; then a7z=$2; fi; fi
-     if [ "${a7z}" != "" ]; then    echo -e   "  Installed 7-Zip as ${a7z}";
+     if [ "${a7z}" != "" ]; then    echo -e   "  Installed: 7-Zip as ${a7z}";
                             else    echo -e "    Unzip of 7-Zip failed\n"; exit_wCR; fi
          }
 #   -----------------------------------------------------------------------
