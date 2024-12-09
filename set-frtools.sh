@@ -185,7 +185,7 @@ function setBashrc() {
 
      echo "* The path, '${aBinDir}', is already in the User's ${aBashrc/$HOME/~} file." # .(41203.08.1 RAM Shorten ${aBashrc})
      fi                                                                                                     # .(41208.02b.5)
-     echo  "  inRC: '${inRC}', bDoProfile: '${bDoProfile}', bShoProfile: '${bShoProfile}'"; # exit
+#    echo  "  inRC: '${inRC}', bDoProfile: '${bDoProfile}', bShoProfile: '${bShoProfile}'"; # exit
 
   if [[ "${inRC}" == "" ]] || [[ "${bShoProfile}" == "1" ]]; then # Recreate "${aBashrc}"                   # .(41208.02b.6)
 #  else  # Recreate "${aBashrc}"                                                                            # .(41208.02b.7)

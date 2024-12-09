@@ -135,6 +135,7 @@
 #.(41115.02d 12/04/24 RAM 12:30p| Adjust FRT Install ALTools -u
 #.(41115.02e 12/05/24 RAM  9:15a| Try a different way for FRT Update ALTools
 # .(41209.01 12/09/24 RAM  7:30a| Update gitR[] numbers
+#.(41115.02f 12/09/24 RAM  9:50a| Change bDoit != "1" to = "1"
 
 ##PRGM     +====================+===============================================+
 ##ID 69.600. Main0              |
@@ -142,7 +143,7 @@
 #*/
 #========================================================================================================== #  ===============================  #
 
-     aVdt="Dec 9, 2024 7:30a"; aVtitle="formR Tools"                                                      # .(21113.05.8 RAM Add aVtitle for Version in Begin)
+     aVdt="Dec 9, 2024 9:50a"; aVtitle="formR Tools"                                                      # .(21113.05.8 RAM Add aVtitle for Version in Begin)
      aVer="$( echo $0 | awk '{  match( $0, /_[dpstuv][0-9]+\.[0-9]+/ ); print substr( $0, RSTART+1, RLENGTH-1) }' )"  # .(21031.01.1 RAM Add [d...).(20416.03.8 "_p2.02", or _d1.09)
 
      LIB="FRT"; LIB_LOG=${LIB}_LOG; LIB_USER=${LIB}_USER; Lib=${LIB}; aDir=$( dirname "${BASH_SOURCE}" );   # .(41027.01.1 RAM).(80923.01.1)
@@ -763,11 +764,12 @@ function copyFile() {                                                           
         git commit -m ".(${aTS}.03_Add file, $2, from $1 branch" >/dev/null 2>&1        # Commit it
         git checkout "$1"                                        >/dev/null 2>&1        # Switch back to ALTools
         echo -e "\n  Copied file $2 to branch $1"                                       # .(41112.06.2)
-        }                                                                               # .(41111.04.1 End)
-#       copyFile "ALTools" "run-anyllm.sh" "master"
+        } # eof copyFile                                                                # .(41111.04.1 End)
 #       ---------------------------------------------------------------------
 
-        sayMsg    "FRT40[ 769]  Install: aArg2: '${aArg2}', aArg3: '${aArg3}', bDoit: '${bDoit}', bDebug: '${bDebug}', bUpdate: '${bUpdate}'" -1
+#       copyFile "ALTools" "run-anyllm.sh" "master"
+
+        sayMsg    "FRT40[ 769]  Install: aArg1: '${aArg1}', aArg2: '${aArg2}', aArg3: '${aArg3}', bDoit: '${bDoit}', bDebug: '${bDebug}', bUpdate: '${bUpdate}'" -1
 
 #       ---------------------------------------------------------------------
 #       if [ "${aArg1}" == "install" ]; then                                                                # .(41124.02.2)
@@ -778,6 +780,7 @@ function copyFile() {                                                           
         if [ "$aArg2" == "scripts" ]; then aArgs="scripts ${aArg3}"; fi
         if [ "$aArg2" == "profile" ]; then aArgs="profile ${aArg3}"; fi
         if [ "$aArg2" == "wipe" ]; then aArgs="wipe ${aArg3}"; fi
+
         if [ "${aArg2}" == "" ] || [ "${aArgs}" != "" ]; then
 #       echo -e "\n* Please provide repo to install, e.g. ALTools or AIDocs."                               # .(41124.02.4)
         aDir="$( dirname $0 )"; cd "${aDir%%/._2*}";
@@ -786,7 +789,7 @@ function copyFile() {                                                           
         if [ "${OS:0:7}" == "Windows" ]; then echo ""; fi ;
         echo "  You can also install a repo, e.g. ALTools or AIDocs."; ${aLstSp}; fi
         exit
-        fi #  ${aArg2}" == ""                                                                               # .(41124.02.3 End)
+        fi  # eif ${aArg2}" == "" no repo                                                                   # .(41124.02.3 End)
 #       ---------------------------------------------------------------------
 
         if [ "${aArg2}" == "aidocs" ]; then                                                                 # .(41124.03.1 RAM Add install aidocs Beg)
@@ -810,7 +813,7 @@ function copyFile() {                                                           
 
 #          aBranch=""; if [ "${aArg3}" != "" ]; then aBranch=" ${aArg3}"; fi                                ##.(41201.04.5 RAM Clarity)
 
-#       sayMsg    "FRT40[ 812]  Install: aArg2: '${aArg2}', aArg3: '${aArg3}', bDoit: '${bDoit}', bUpdate: '${bUpdate}'" 1  # .(41115.02d.37 RAM Do Update ALTools)
+        sayMsg    "FRT40[ 815]  Install: aArg2: '${aArg2}', aArg3: '${aArg3}', bDoit: '${bDoit}', bUpdate: '${bUpdate}'" -1  # .(41115.02d.37 RAM Do Update ALTools)
 
 #                                     aProjectStage="AnyLLM_prod1-master"
                                       aProjectStage="AnyLLM"                                                # .(41201.03.5 )
@@ -821,9 +824,9 @@ function copyFile() {                                                           
         if [ -d    "${aProjectStage}" ]; then cd    ${aProjectStage}; fi
 #                                     aProjectStage="$( pwd )"; aProjectStage="${aProjectStage##/}"; fi
                                       aDir="$( pwd )"; aDir="${aDir##*/}"; aDir="${aDir//anyllm/AnyLLM}"    # .(41115.02d.38 RAM Change aDir to Uppercase)
-#       sayMsg    "FRT40[ 823]  aProjectStage: '${aProjectStage}' aDir: '${aDir}'" 1
-#       sayMsg    "FRT40[ 824]  aProjectStage: '${aProjectStage/${aDir}/}' aDir: '${aDir}'" 1
-#       sayMsg    "FRT40[ 825]  install altools aProjectStage: '${aProjectStage}', bDoit: '${bDoit}', bUpdate: '${bUpdate}'" 1
+#       sayMsg    "FRT40[ 826]  aProjectStage: '${aProjectStage}' aDir: '${aDir}'" 1
+#       sayMsg    "FRT40[ 827]  aProjectStage: '${aProjectStage/${aDir}/}' aDir: '${aDir}'" 1
+        sayMsg    "FRT40[ 828]  install altools aProjectStage: '${aProjectStage}', bDoit: '${bDoit}', bUpdate: '${bUpdate}'" -1
 
 #       if [ "${aDir}" != "${aProjectStage}" ]; then
         if [ "${aProjectStage/${aDir}/}" == "${aProjectStage}" ]; then                                      # .(41115.02d.39 RAM Lowest sub-folder only)
@@ -838,32 +841,43 @@ function copyFile() {                                                           
             fi # aBranch altools exists                                                                     # .(41124.04.2 End)
 
             aVerb="Install"; if [ "${bUpdate}" == "1" ]; then aVerb="Update"; fi                            # .(41115.02d.40)
-         if [ "${bDoit}" != 1 ]; then
+
+#        --------------------------------------------------
+
+         if [ "${bDoit}" != "1" ]; then
+
             aTS="$( date +%y%m%d )"; aTS="${aTS:1}";
             echo -e "\n  About to ${aVerb} ALTools with these commands. Add -d to doit\n"                   # .(41115.02d.41)
 
           if [ "${bUpdate}" == "1" ]; then                                                                  # .(41115.02e.2)
-                                             echo "    git fetch ALTools_prod1"                             # .(41115.02e.3)
-                                             echo "    git reset --hard ALTools_prod1/ALTools"              # .(41115.02e.4)
-            else                                                                                            # .(41115.02e.5)
-            if [ "${bUpdate}" != "1" ]; then echo "    gitr remote add ALTools_prod1-robin -d";          fi # .(41115.02d.42)
-                                             echo "    git fetch ALTools_prod1"
-                                             echo "    git checkout -b altools"
-                                             echo "    git checkout ALTools_prod1/ALTools -- ."
-#                                            echo "    git commit -m \".(${aTS}.02_Added ALTools files\""   ##.(41115.02d.43)
-              fi                                                                                            ##.(41115.02e.6)
-                                             echo "    gitr add commit -m \"${aVerb} ALTools files\"";   fi # .(41115.02d.44)
+                                              echo "    git fetch ALTools_prod1"                            # .(41115.02e.3)
+                                              echo "    git reset --hard ALTools_prod1/ALTools"             # .(41115.02e.4)
+           else                                                                                             # .(41115.02e.5)
+             if [ "${bUpdate}" != "1" ]; then echo "    gitr remote add ALTools_prod1-robin -d";            # .(41115.02d.42)
+                fi # eif bUpdate != "1"
+                                              echo "    git fetch ALTools_prod1"
+                                              echo "    git checkout -b altools"
+                                              echo "    git checkout ALTools_prod1/ALTools -- ."
+#                                             echo "    git commit -m \".(${aTS}.02_Added ALTools files\""  ##.(41115.02d.43)
+             fi    # eif bUpdate != "1"                                                                     ##.(41115.02e.6)
+                                             echo "    gitr add commit -m \"${aVerb} ALTools files\"";      # .(41115.02d.44)
+#            fi    # eif ???
                                              echo "    copyFile \"ALTools\" \"run-anyllm.sh\" \"master\""
+
             if [ "${bUpdate}" != "1" ]; then echo "    ./set-anyllm.sh doit" ;                           fi # .(41115.02d.45)
             if [ "${bUpdate}" != "1" ]; then echo -e "\n  The command, anyllm, will also be installed."; fi # .(41115.02d.46)
+
             ${aLstSp}; exit
-            fi # bDoit == 0
+            fi # bDoit != `
 #           -------------------------------------------------------------------------------------
 
-         if [ "${bDoit}" != 1 ]; then
+        sayMsg    "FRT40[ 873]  install altools aProjectStage: '${aProjectStage}', bDoit: '${bDoit}', bUpdate: '${bUpdate}'" -1
+
+         if [ "${bDoit}" == "1" ]; then                                                                     # .(41115.02f.1 RAM Opps was: bDoit != 1)
 
             echo -e "\n  ${aVerb}ing ALTools in ${aProjectStage}."                                          # .(41115.02d.47)
        # 1. Make sure you're starting clean
+
             git checkout master                                  >/dev/null 2>&1;                           # get into Anything-LLM's master branch
 
                 bNoFilesInWork="$( git status -u --short | awk '/working tree clean/ { print "1" }' )"      # .(41129.02.1) # should show clean working tree
@@ -884,6 +898,7 @@ function copyFile() {                                                           
             fi # eif bNoRemoteName == 0
 
        # 2. Create your branch with your 22 files
+
             echo -e "\ngit fetch ALTools_prod1";                                                            # .(41112.04.1 )
             git fetch ALTools_prod1                          2>&1 | awk '{ print "  " $0 }'                 # create your branch
 
@@ -891,31 +906,39 @@ function copyFile() {                                                           
 
             echo -e "\ngit reset --hard ALTools_prod1/ALTools"; aTS="$( date +%y%m%d )"; aTS="${aTS:1}"     # .(41115.02e.8)
             git reset --hard ALTools_prod1/ALTools                                                          # .(41115.02e.9)
-            else                                                                                            # .(41115.02e.10)
+          else                                                                                            # .(41115.02e.10)
             echo -e "\ngit checkout -b altools"; aTS="$( date +%y%m%d )"; aTS="${aTS:1}"
             git checkout -b altools                          2>&1 | awk '{ print "  " $0 }'                 # create your branch
 
             echo -e "\ncheckout ALTools_prod1/ALTools -- .";
             git checkout ALTools_prod1/ALTools -- .          2>&1 | awk '{ print "  " $0 }'                 # get your 22 files
-            fi                                                                                              ##.(41115.02e.11)
+
+            fi # bUpdate == "0"                                                                             ##.(41115.02e.11)
 
             rm  ALTools_prod1-robin.code-workspace                                      # .(41113.01.3 RAM Was: AnyLLM_; Erase corrent VSCode workspace file )
 
-#           echo -e "\ncommit -m \"${aTS}.02_Added ALTools files\"";                                        ##.(41115.02d.48)
+        sayMsg    "FRT40[ 919]  gitr add \"${aVerb} ALTools files\"" -1
+
+            echo -e "\ncommit -m \"${aTS}.02_Added ALTools files\"";                                        ##.(41115.02d.48)
 #           git commit -m ".(${aTS}.02_Added ALTools files" 2>&1 | awk '{ print "  " $0 }'                  ##.(41115.02d.48 RAM Commit them)
-            gitr add commit -m "${aVerb} ALTools files";   fi                                               # .(41115.02d.48)
+            gitr add "${aVerb} ALTools files";                                                              # .(41115.02f.2).(41115.02d.48)
+
+            fi   # eif ???                                                                                  # .(41115.02f.3)
 
             copyFile "ALTools" "run-anyllm.sh" "master"                                 # .(41111.04.2 RAM Use it to copy anyllm command to master so that it is always available)
 
        # 3. Run set-anyllm.sh
+
             if [ "${bUpdate}" != "1" ]; then                                                                # .(41115.02d.49)
             Sudo chmod 755 *.sh
             echo -e   "\n./set-anyllm.sh";                                              # .(41113.01.4 RAM Remove leading spaces)
-                          ./set-anyllm.sh doit
+                         ./set-anyllm.sh doit
             echo -e   "\nanyllm help";                                                  # .(41113.01.5)
-                           anyllm
-            fi                                                                                              # .(41115.02d.50)
+                         anyllm
+            fi # eif bUpdate != "0"                                                                         # .(41115.02d.50)
+
        # 4. Now you can switch between branches:
+
 #           git checkout master       # original 768 Anything-LLM files
 #           git checkout ALTools     # 768 files plus your 22 changes
 
