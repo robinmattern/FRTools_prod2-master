@@ -11,7 +11,7 @@
 ##FD         set-frtools.sh     |  18894| 11/04/24 12:28|   366| v1.05`41104.1225
 ##FD         set-frtools.sh     |  19928| 11/24/24 14:45|   377| v1.05`41124.1445
 ##FD         set-frtools.sh     |  20155| 12/04/24  9:09|   380| v1.05`41204.0909
-##FD         set-frtools.sh     |  20708| 12/08/24 16:55|   388| v1.05`41208.1655
+##FD         set-frtools.sh     |  20708| 12/08/24 23:50|   388| v1.05`41208.2350
 
 ##DESC     .--------------------+-------+-----------------+------+---------------+
 #            Create ._0/bin folder and copy all command scripts there as well as
@@ -50,6 +50,7 @@
 # .(41124.05 11/24/24 RAM 14:45a| Add netr command
 # .(41203.08 12/04/24 RAM  9:07a| Shorten ${aBashrc}) in it exists msg
 # .(41208.02 12/08/24 RAM  4:55p| Set different ${aBashrc}) in darwin20
+#.(41208.02b 12/08/24 RAM 11:50p| Who is right re setopt for MacOS
 
 ##PRGM     +====================+===============================================+
 ##ID 69.600. Main0              |
@@ -60,6 +61,7 @@
   aVer="v1.05\`41124.1445"
   aVer="v1.05\`41204.0909"
   aVer="v1.05\`41208.1655"
+  aVer="v1.05\`41208.2350"
 
   echo ""
 
@@ -87,9 +89,11 @@ function setOSvars() {
      aBinDir="/C/Home/._0/bin"
      fi
   if [[ "${OSTYPE:0:6}" == "darwin" ]]; then
-     if [ -f "$HOME/.bash_profile" ]; then aBashrc="$HOME/.bash_profile"; fi
-     if [ -f "$HOME/.bashrc"       ]; then aBashrc="$HOME/.bashrc"; fi
-     if [ -f "$HOME/.zshrc"        ]; then aBashrc="$HOME/.zshrc"; fi
+     if [ -f "$HOME/.bash_profile" ]; then aBashrc="$HOME/.bash_profile"; fi                                # .(41208.02.1)
+     if [ -f "$HOME/.bashrc"       ]; then aBashrc="$HOME/.bashrc"; fi                                      # .(41208.02.2)
+     if [ -f "$HOME/.zshrc"        ]; then aBashrc="$HOME/.zshrc"; fi                                       # .(41208.02.3)
+     bZSHver="0"; if [[ "${OSTYPE:6:2}" > 21 ]]; then bZSHver="1"; fi                                       # .(41208.02b.1)
+#    echo "  bZSHver: '${bZSHver}', OSTYPE:6:2: '${OSTYPE:6:2}'"; exit
      aBinDir="/Users/Shared/._0/bin"
      aOS="darwin"
      fi
@@ -106,15 +110,18 @@ function exit_withCR() {
      }
 # -----------------------------------------------------------
 
-                                    aCmd="help";    bDoScripts="0"; bDoProfile="0";  bDoWipe="0"
-#  if [[ "$1" == ""        ]]; then aCmd="help";    fi
+                                      aCmd="help";    bDoWipe="0";    bDoProfile="0";   bDoScripts="0";  bShoProfile="0";                # .(41208.02b.2)
+#  if [[ "$1" == ""          ]]; then aCmd="help";    fi
    if [[ "${1:0:3}" == "hel" ]]; then aCmd="help";    fi
    if [[ "${1:0:3}" == "sho" ]]; then aCmd="showEm";  fi
-   if [[ "${1:0:2}" == "-d"  ]]; then aCmd="doit";                    bDoProfile="1";  bDoScripts="1";  fi  # .(41124.01.1)
-   if [[ "${1:0:3}" == "doi" ]]; then aCmd="doit";                    bDoProfile="1";  bDoScripts="1";  fi  # .(41031.02.2 Add doit command)
-   if [[ "${1:0:3}" == "wip" ]]; then aCmd="wipeIt";  if [[    "$2" == "doit" ]]; then bDoWipe="1"; fi; fi  # .(41030.03.2 Add doit option)
-   if [[ "${1:0:3}" == "pro" ]]; then aCmd="profile"; if [[ "${!#}" == "doit" ]]; then bDoProfile="1";  fi; fi
-   if [[ "${1:0:3}" == "scr" ]]; then aCmd="copyEm";  if [[    "$2" == "doit" ]]; then bDoScripts="1";  fi; fi
+   if [[ "${1:0:2}" == "-d"  ]]; then aCmd="doit";                    bDoProfile="1";   bDoScripts="1";  fi # .(41124.01.1)
+   if [[ "${1:0:3}" == "doi" ]]; then aCmd="doit";                    bDoProfile="1";   bDoScripts="1";  fi # .(41031.02.2 Add doit command)
+   if [[ "${1:0:3}" == "wip" ]]; then aCmd="wipeIt";  if [[    "$2" == "doit"  ]]; then bDoWipe="1"; fi; fi # .(41030.03.2 Add doit option)
+   if [[ "${1:0:3}" == "pro" ]]; then aCmd="profile"; if [[ "${!#}" == "doit"  ]]; then bDoProfile="1";  fi; fi
+#  if [[ "${1:0:3}" == "pro" ]]; then aCmd="profile"; if [[ "${!#}" == "show"  ]]; then bDoProfile="0";  bShoProfile="1"; fi; fi         ##.(41208.02b.3)
+   if [[ "${1:0:3}" == "pro" ]]; then aCmd="profile"; if [[    "$2" == "show"  ]]; then bDoProfile="0";  bShoProfile="1"; shift; fi; fi  # .(41208.02b.3)
+   if [[ "${1:0:3}" == "pro" ]]; then aCmd="profile"; if [[    "$2" == "again" ]]; then bDoProfile="1";  bShoProfile="1"; shift; fi; fi  # .(41208.02b.4)
+   if [[ "${1:0:3}" == "scr" ]]; then aCmd="copyEm";  if [[    "$2" == "doit"  ]]; then bDoScripts="1";  fi; fi
 
 # ---------------------------------------------------------------------------
 
@@ -177,8 +184,11 @@ function setBashrc() {
   if [[ "${inRC}" == "1" ]]; then
 
      echo "* The path, '${aBinDir}', is already in the User's ${aBashrc/$HOME/~} file." # .(41203.08.1 RAM Shorten ${aBashrc})
+     fi                                                                                                     # .(41208.02b.5)
+     echo  "  inRC: '${inRC}', bDoProfile: '${bDoProfile}', bShoProfile: '${bShoProfile}'"; # exit
 
-   else  # Recreate "${aBashrc}"
+  if [[ "${inRC}" == "" ]] || [[ "${bShoProfile}" == "1" ]]; then # Recreate "${aBashrc}"                   # .(41208.02b.6)
+#  else  # Recreate "${aBashrc}"                                                                            # .(41208.02b.7)
 
      if [ "${bDoProfile}" == "0" ]; then cat     "${aBashrc}" | awk '/._0/ { exit }; NF > 0 { print }' >"${aBashrc}_@tmp"
                                          aBashrc="${aBashrc}_@tmp"; fi
@@ -206,11 +216,18 @@ function setBashrc() {
      echo "  }"                                             >>"${aBashrc}"
      echo ""                                                >>"${aBashrc}"
 
+     echo -e "\n  BASH_VERSION: '${BASH_VERSION}', ZSH_VERSION: '${ZSH_VERSION}', bZSHver: '${bZSHver}'\n";
+
 # if [ "${aOS}" != "darwin" ]; then                                                     ##.(41030.06.1 Beg).(41030.06b.1)
-  if [ -n "${BASH_VERSION}" ]; then                                                     # .(41030.06b.1)
+  if [ -n "${BASH_VERSION}" ] && [ "${bZSHver}" == "0" ]; then                          # .(41208.02b.8).(41030.06b.1)
      echo "  PROMPT_SUBST=true   # bash style"              >>"${aBashrc}"              # .(41123.01b.1 RAM Set Prompt correctly)
      echo "# setopt prompt_subst # zsh style"               >>"${aBashrc}"              # .(41123.01b.2)
      echo "# set -o PROMPT_SUBST # another bash style"      >>"${aBashrc}"              # .(41123.01b.3).(41123.01 RAM Change setopt for MacOS)
+     fi
+  if [ -n "${BASH_VERSION}" ] && [ "${bZSHver}" == "1" ]; then                          # .(41208.02b.9).(41030.06b.1)
+     echo "# PROMPT_SUBST=true   # bash style"              >>"${aBashrc}"              # .(41123.01b.1 RAM Set Prompt correctly)
+     echo "# setopt prompt_subst # zsh style"               >>"${aBashrc}"              # .(41123.01b.2)
+     echo "  set -o PROMPT_SUBST # another bash style"      >>"${aBashrc}"              # .(41123.01b.3).(41123.01 RAM Change setopt for MacOS)
      fi
 # if [ "${aOS}" == "darwin" ]; then
   if [ -n "${ZSH_VERSION}"  ]; then                                                     ##.(41030.06.1 Beg).(41030.06b.2)
