@@ -62,8 +62,8 @@ if [ "${OSTYPE:0:6}" == "darwin" ]; then
 	chmod 755 ${a7zip}
 
     if [ ! -d  /Users/Shared/._0/bin ]; then mkdir -p /Users/Shared/._0/bin; fi
-	cp ${a7zip}     /Users/Shared/._0/bin/${a7zip}
-	cp ${a7zip}     /usr/local/bin/${a7zip}
+	     cp ${a7zip}  /Users/Shared/._0/bin/${a7zip}
+	sudo cp ${a7zip}         /usr/local/bin/${a7zip}
 	fi
 #   -----------------------------------------------------------------------
 
@@ -79,7 +79,8 @@ if [ "${OSTYPE:0:5}" == "linux" ]; then
 	chmod 755 ${a7zip}
 
     if [ ! -d   /home/._0/bin ]; then mkdir -p /home/._0/bin; fi
-	cp ${a7zip} /home/._0/bin/${a7zip}
+     	 cp ${a7zip}  /home/._0/bin/${a7zip}
+	sudo cp ${a7zip} /usr/local/bin/${a7zip}
 	fi
 #   -----------------------------------------------------------------------
 

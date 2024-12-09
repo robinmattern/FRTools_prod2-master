@@ -1,5 +1,7 @@
 #!/bin/bash
 
+#    aVer=".(41208.05_Latest set-repos and set-repos-dir.sh"
+
      aCR=""; if [ "${OSTYPE:0:6}" == "darwin" ]; then aCR="\n"; fi
      aRepos="$( pwd | awk '{ print tolower($0) }' )";
 if [ "${aRepos/repos}" == "${aRepos}" ]; then
