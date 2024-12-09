@@ -24,6 +24,7 @@
 ##FD   FRT42_GitR2.sh           | 125748| 12/03/24  9:30|  1753| p1.02`.41203.0930
 ##FD   FRT42_GitR2.sh           | 128720| 12/05/24  8:40|  1778| p1.02`.41205.0840
 ##FD   FRT42_GitR2.sh           | 132995| 12/09/24  6:40|  1850| p1.02`.41209.0640
+##FD   FRT42_GitR2.sh           | 132995| 12/09/24  9:40|  1850| p1.02`.41209.0940
 
 ##DESC     .--------------------+-------+---------------+------+-----------------+
 #            This script has usefull GIT functions.
@@ -135,6 +136,7 @@
 #.(41103.06b 12/05/24 RAM  8:40a| Add -doit to pullRemote
 #.(41103.03b 12/06/24 RAM 11:40a| Write and use getReposDir for gitR Init
 # .(41209.01 12/09/24 RAM  6:40a| Update gitR[] numbers
+# .(41209.02 12/09/24 RAM  9:40a| Add Delete Branch
 
 ##PRGM     +====================+===============================================+
 ##ID 69.600. Main0              |
@@ -142,7 +144,7 @@
 #*/
 #========================================================================================================== #  ===============================  #
 
-        aVDt="Dec 6, 2024 61:40a"; aVer="p1.02"; aVTitle="Useful gitR2 Tools by formR";                                  # .(41103.02.2 RAM Was: gitR1)
+        aVDt="Dec 9, 2024 6:40a"; aVer="p1.02"; aVTitle="Useful gitR2 Tools by formR";                                    # .(41103.02.2 RAM Was: gitR1)
         aVer="$( echo "$0" | awk '{ match( $0, /_[dpstuv][0-9]+\.[0-9]+/ ); print substr( $0, RSTART+1, RLENGTH-1) }' )"  # .(21031.01.1 RAM Add [d...).(20416.03.8 "_p2.02", or _d1.09)
 
         LIB="gitR2"; LIB_LOG=${LIB}_LOG; LIB_USER=${LIB}_USER; Lib=${LIB}; aDir=$(dirname "${BASH_SOURCE}");              # .(41103.02.3).(41102.01.1 RAM Add JPT12_Main2Fns_p1.07.sh Beg).(80923.01.1)
@@ -171,6 +173,7 @@ function help() {
      echo "    List branches                              List current remote repositories"                 # .(41114.04.1)
      echo "    Branch {branch}                            Checkout branch {branch}"                         # .(41114.04.2)
      echo "    Track Branch                               Set tracking for origin/branch"
+     echo "    Delete Branch {branch}                     Delete branch"                                    # .(41209.02.1)
      echo "    Set remote  {name} [{acct}] [{repo}] [-d]  Set current remote repository"
      echo "    Add remote  {name} [{acct}] [{repo}] [-d]  Add new origin remote repository"
 #    echo "    Make remote {name} [{acct}] [{repo}] [-d]  Create new remote repository in github"           ##.(41129.04.1)
@@ -295,8 +298,10 @@ done
 
   if [ "$1" == "lis" ] && [ "$2" == "bra" ]; then aCmd="listBranches";  fi              # .(41103.05.2 RAM List Branchs)
   if [ "$1" == "bra" ] && [ "$2" == "lis" ]; then aCmd="listBranches";  fi              # .(41103.05.2 RAM List Branchs)
-  if [ "$1" == "tra" ] && [ "$2" == "bra" ]; then aCmd="trackBranch";  fi
-  if [ "$1" == "bra" ] && [ "$2" == "tra" ]; then aCmd="trackBranch";  fi
+  if [ "$1" == "tra" ] && [ "$2" == "bra" ]; then aCmd="trackBranch";   fi
+  if [ "$1" == "bra" ] && [ "$2" == "tra" ]; then aCmd="trackBranch";   fi
+  if [ "$1" == "del" ] && [ "$2" == "bra" ]; then aCmd="deleteBranch";  fi              # .(41209.02.2)
+  if [ "$1" == "bra" ] && [ "$2" == "del" ]; then aCmd="deleteBranch";  fi              # .(41209.02.3)
 
   if [ "$1" == "bac" ] && [ "$2" == "loc" ]; then aCmd="backupLocal";  fi
   if [ "$1" == "rep" ] && [ "$2" == "loc" ]; then aCmd="replaceLocal"; fi               # .(41031.07.2)
@@ -1301,6 +1306,27 @@ function getRemoteName() {                                                      
         git branch -vva | awk '{ print "  " $0 }'
         exit_wCR                                                                                            # .(41116.01.16)
      fi                                                                                                     # .(41114.04.5 End)
+#====== =================================================================================================== #  ===========
+#>      GITR2 DELETE BRANCH
+#====== =================================================================================================== #
+
+  if [ "${aCmd}" == "deleteBranch" ]; then                                                                 # .(41209.02.4 RAM write deleteBranche)
+     sayMsg  "gitR2[1309]  listBranches aArg3: '${aArg3}'" -1
+        if [ "${aArg3}" == "" ]; then 
+           echo -e "\n* You must enter a branch name, from the following:" 
+           git branch | awk '{ print "  " $0 }'
+           exit_wCR                                                                                             
+        fi
+        aGIT1="git branch -d ${aArg3}"      # safe delete (only if merged)
+#       aGIT1="git branch -D ${aArg3}"      # force delete (even if not merged)
+     if [ "${bDoit}" != "1" ]; then
+        echo -e "\n  ${aGIT1} # Add -d to doit"
+      else
+        echo -e "\n  ${aGIT1} \n"
+        eval        "${aGIT1}"
+        fi
+        exit_wCR                                                                                             
+     fi                                                                                                     # .(41209.02.4End)
 #====== =================================================================================================== #  ===========
 #>      GITR2 CHECKOUT BRANCH
 #====== =================================================================================================== #
