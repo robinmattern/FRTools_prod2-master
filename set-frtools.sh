@@ -50,7 +50,7 @@
 # .(41124.05 11/24/24 RAM 14:45a| Add netr command
 # .(41203.08 12/04/24 RAM  9:07a| Shorten ${aBashrc}) in it exists msg
 # .(41208.02 12/08/24 RAM  4:55p| Set different ${aBashrc}) in darwin20
- 
+
 ##PRGM     +====================+===============================================+
 ##ID 69.600. Main0              |
 ##SRCE     +====================+===============================================+
@@ -66,13 +66,14 @@
 # ---------------------------------------------------------------------------
 
 function help() {
-  echo "  Run . ./set-anyllm.sh commands  (${aVer}, OS: ${aOS})"
+  echo "  Run ./set-frtools.sh commands: (${aVer}, OS: ${aOS})"
   echo "    help            This help"
   echo "    show            ${aBashrc} and script files"
   echo "    doit            Do scripts and profile"                                                         # .(41031.02.1)
   echo "    scripts [doit]  Copy FRTools scripts"
   echo "    profile [doit]  Update ${aBashrc} file"
   echo "    wipe    [doit]  Erase all setup changes"                                                        # .(41030.03.1)
+  echo ""
   }
 # -----------------------------------------------------------
 
@@ -172,7 +173,7 @@ function setBashrc() {
 
 # if [ "${PATH/._0/}" != "${PATH}" ]; then
 
-     inRC=$( cat "${aBashrc}" | awk '/._0/ { print 1 }' );
+     inRC=$( cat "${aBashrc}" | awk '/\._0/ { print 1 }' );                             # .(41208.05.1 RAM Added /\._0/)
   if [[ "${inRC}" == "1" ]]; then
 
      echo "* The path, '${aBinDir}', is already in the User's ${aBashrc/$HOME/~} file." # .(41203.08.1 RAM Shorten ${aBashrc})
@@ -184,63 +185,93 @@ function setBashrc() {
      if [ "${bDoProfile}" == "0" ]; then aWill_add="Will add"; else aWill_add="Adding"; fi
      if [ "${bDoProfile}" == "1" ]; then cp -p   "${aBashrc}" "${aBashrc}_v${aTS}"; fi
 
-     echo "  ${aWill_add} path, '${aBinDir}', to User's PATH in '${aBashrc}'."
+     echo "  ${aWill_add} path, '${aBinDir}', to User's PATH in '${aBashrc/_@tmp/}'."; # exit
+#    echo "  BASH_VERSION: '${BASH_VERSION}', ZSH_VERSION: '${ZSH_VERSION}'"; exit
 
      echo ""                                                >>"${aBashrc}"
 #    echo "export PATH=\"/Users/Shared/._0/bin:\$PATH\""    >>"${aBashrc}"
      echo "export PATH=\"${aBinDir}:\$PATH\""               >>"${aBashrc}"
      echo "export THE_SERVER=\"${THE_SERVER}\""             >>"${aBashrc}"              # .(41030.07.2)
      echo ""                                                >>"${aBashrc}"
-     if [ "${aOS}" != "windows" ]; then
+
+  if [ "${aOS}" != "windows" ]; then
+
      echo "function git_branch_name() {"                                                               >>"${aBashrc}"
      echo "  branch=\$( git symbolic-ref HEAD 2>/dev/null | awk 'BEGIN{ FS=\"/\" } { print \$NF }' )"  >>"${aBashrc}"
      echo "  if [[ \$branch == \"\" ]]; then"                                                          >>"${aBashrc}"
-     echo "    :"                                           >>"${aBashrc}"
+     echo "    echo '#'"                                    >>"${aBashrc}"
      echo "  else"                                          >>"${aBashrc}"
-     echo "    echo ' ('\$branch')'"                        >>"${aBashrc}"
+     echo "    echo ' ('\$branch')#'"                       >>"${aBashrc}"
      echo "  fi"                                            >>"${aBashrc}"
      echo "  }"                                             >>"${aBashrc}"
      echo ""                                                >>"${aBashrc}"
-  if [ "${aOS}" != "darwin" ]; then                                                     # .(41030.06.1 Beg)
-     echo "  setopt PROMPT_SUBST"                           >>"${aBashrc}"
+
+# if [ "${aOS}" != "darwin" ]; then                                                     ##.(41030.06.1 Beg).(41030.06b.1)
+  if [ -n "${BASH_VERSION}" ]; then                                                     # .(41030.06b.1)
+     echo "  PROMPT_SUBST=true   # bash style"              >>"${aBashrc}"              # .(41123.01b.1 RAM Set Prompt correctly)
+     echo "# setopt prompt_subst # zsh style"               >>"${aBashrc}"              # .(41123.01b.2)
+     echo "# set -o PROMPT_SUBST # another bash style"      >>"${aBashrc}"              # .(41123.01b.3).(41123.01 RAM Change setopt for MacOS)
      fi
-  if [ "${aOS}" == "darwin" ]; then
-     echo "  PROMPT_SUBST=true"                             >>"${aBashrc}"
-     echo "# setopt prompt_subst"                           >>"${aBashrc}"
-     echo "  set -o PROMPT_SUBST"                           >>"${aBashrc}"              # .(41123.01 RAM Change setopt for MacOS)
+# if [ "${aOS}" == "darwin" ]; then
+  if [ -n "${ZSH_VERSION}"  ]; then                                                     ##.(41030.06.1 Beg).(41030.06b.2)
+     echo "# PROMPT_SUBST=true   # bash style"              >>"${aBashrc}"              # .(41030.06b.2).(41123.01b.1)
+     echo "  setopt prompt_subst # zsh style"               >>"${aBashrc}"              # .(41123.01b.2)
+     echo "# set -o PROMPT_SUBST # another bash style"      >>"${aBashrc}"              # .(41123.01b.3).(41123.01 RAM Change setopt for MacOS)
      fi                                                                                 # .(41030.06.1 End)
-     echo "PROMPT='%n@%m %1~\$(git_branch_name): '"         >>"${aBashrc}"
+
+     echo "  PROMPT='%n@%m %1~\$(git_branch_name) '"        >>"${aBashrc}"
      echo ""                                                >>"${aBashrc}"
-     fi
+     fi # eif windows prompt handled by git bash
+
      echo "# Add timestamps and user to history"            >>"${aBashrc}"
-     echo "export HISTTIMEFORMAT=\"%F %T \$(whoami) \""     >>"${aBashrc}"
-     echo ""                                                >>"${aBashrc}"
-     echo "# Write history after every command"             >>"${aBashrc}"
-     echo "PROMPT_COMMAND=\"history -a; $PROMPT_COMMAND\""  >>"${aBashrc}"
-  if [ "${aOS}" != "darwin" ]; then
-     echo ""                                                >>"${aBashrc}"
-     echo "# Append to history file, don't overwrite it"    >>"${aBashrc}"
-     echo "shopt -s histappend"                             >>"${aBashrc}"
-     fi
-  if [ "${aOS}" == "darwin" ]; then
-     echo ""                                                >>"${aBashrc}"
-     echo "alias history=\"fc -il 1\""                      >>"${aBashrc}"
+  if [ -n "${BASH_VERSION}" ]; then    # for older Macs
+     echo "  export HISTTIMEFORMAT=\"%F %T \$(whoami) \""   >>"${aBashrc}"
+     echo "  PROMPT_COMMAND=\"history -a; $PROMPT_COMMAND\"">>"${aBashrc}"
+                                       # Only for non-macOS Bash (Git Bash, Ubuntu)
+     if [ "${aOS}" != "darwin" ]; then
+     echo "  shopt -s histappend"                           >>"${aBashrc}"
+     fi; fi
+  if [ -n "$ZSH_VERSION" ]; then       # For Zsh (newer macOS)
+     echo "  setopt EXTENDED_HISTORY   # Save timestamps"   >>"${aBashrc}"
+     echo "  setopt INC_APPEND_HISTORY # Append immediately">>"${aBashrc}"
+     echo "  alias history="fc -il 1"  # Format output"     >>"${aBashrc}"
      fi
 
-     echo -e "  Executing: source \"${aBashrc}\"\n"
+#    echo "  export HISTTIMEFORMAT=\"%F %T \$(whoami) \""   >>"${aBashrc}"
+#    echo ""                                                >>"${aBashrc}"
+#    echo "# Write history after every command"             >>"${aBashrc}"
+#    echo "  PROMPT_COMMAND=\"history -a; $PROMPT_COMMAND\"">>"${aBashrc}"
 
-  if [ "${bDoProfile}" == "1" ]; then   source "${aBashrc}" "" 2>/dev/null;  fi         # .(41030.06.2 RAM setopt gets an error in MacOS when run here, but not during login)
+# if [ "${aOS}" != "darwin" ]; then
+#    echo ""                                                >>"${aBashrc}"
+#    echo "# Append to history file, don't overwrite it"    >>"${aBashrc}"
+#    echo "  shopt -s histappend"                           >>"${aBashrc}"
+#    fi
+# if [ "${aOS}" == "darwin" ]; then
+#    echo ""                                                >>"${aBashrc}"
+#    echo "alias history=\"fc -il 1\""                      >>"${aBashrc}"
+#    fi
+
+#    echo -e "  Executing: source \"${aBashrc}\"\n"
+# if [ "${bDoProfile}" == "1" ]; then     source "${aBashrc}" "" 2>/dev/null;  fi       # .(41030.06.2 RAM setopt gets an error in MacOS when run here, but not during login)
+
 #  else
+
      echo -e "  .Bashrc: '${aBashrc}' contents:"                                        # .(41030.06.3 Beg)
      echo      "  ------------------------------------------------"
-     if [[  -f "${aBashrc}" ]]; then cat "${aBashrc}" | awk '{ print "    " $0 }'; fi
-     echo -e "  ------------------------------------------------";
+     if [[ -f "${aBashrc}" ]]; then cat "${aBashrc}" | awk '{ print "    " $0 }'; fi
+     echo -e "\n  ------------------------------------------------";
 
   if [ "${bDoProfile}" == "0" ]; then
-     if [[  -f "${aBashrc}" ]]; then rm  "${aBashrc}"; fi
+     if [[ -f "${aBashrc}" ]]; then rm  "${aBashrc}"; fi
+   else
+     echo -e "\n  User Profile updated:  \"${aBashrc}\""
+#    echo -e   "  Try to execute: source \"${aBashrc}\""    # it gets installed in this shell, but not after exiting
+#    source "${aBashrc}" ""
      fi                                                                                 # .(41030.06.3 End)
      fi  # eif Recreate "${aBashrc}"
-  }
+
+  }  # eof setBashrc
 # -----------------------------------------------------------
 
 function setTHE_SERVER() {                                                              # .(41030.07.3 RAM Write setTHE_SERVER Beg)
@@ -346,6 +377,7 @@ function cpyToBin() {
    cd "${aRepo_Dir}"                                                                    # .(41120.02.3 RAM Need to be in FRTools repo)
    git config core.fileMode false                                                       # .(41120.02.2 RAM Ignore file permissions in this repo)
   Sudo find . -type f -name "*.sh" -exec chmod 755 {} \;                                # .(41104.03.1 RAM Set premissions for all scripts)
+  echo ""
   }
 # ---------------------------------------------------------------------------
 
@@ -369,7 +401,7 @@ function cpyScript() {
   setOSvars; # echo "  OS: ${aOS}"
 
   if [[ "${aCmd}" == "help"    ]]; then help; fi
-  if [[ "${aCmd}" == "doit"    ]]; then setBashrc; cpyToBin;  fi                                            # .(41031.02.3)
+  if [[ "${aCmd}" == "doit"    ]]; then cpyToBin; setBashrc; fi                                             # .(41031.02.3)
   if [[ "${aCmd}" == "showEm"  ]]; then showEm; fi
   if [[ "${aCmd}" == "wipeIt"  ]]; then clnHouse; fi
   if [[ "${aCmd}" == "profile" ]]; then setBashrc "$2 $3 $4"; fi                        # .(41030.07.4)
@@ -380,9 +412,13 @@ function cpyScript() {
 
   cd "${aRepo_Dir}"
 
-  if ! command -v frt; then
-  echo -e "\n* You need to run, source ${aBashrc}, or login again."
-  fi
+# if [ -z "$(command -v frt 2>/dev/null)" ]; then
+  if [ -z "$(which frt)" ]; then
+     echo -e "* You need to run, source ${aBashrc}, or login again."
+   else
+     echo -e "  FRTools are installed."
+     fi
+
   exit_withCR
 
 
