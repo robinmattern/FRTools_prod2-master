@@ -1440,12 +1440,12 @@ function getRemoteName() {                                                      
      aGIT2="gh repo create ${aRepo} --public"                                                               # .(41129.04.4)
      echo -e "\n  ${aGIT2} # Add -d to doit"; # exit                                    # .(41029.04.1 RAM Add doit msg)
 #    echo -e   "  gitr add remote origin \"\" ${aProj}"                                                     ##.(41129.04.5 RAM aArg4=aAcct)
-     echo -e   "  gitr add remote origin"                                                                   # .(41129.04.5)
+#    echo -e   "  gitr add remote origin"                                                                   # .(41129.04.5)
 
  if [ "${bDoit}" == "1" ]; then
      eval        "${aGIT2}"
 #    aCmd="addRemote"; aArg3="origin" aArg4="${aAcct}"; aArg5="${aProj}"                                    ##.(41129.04.6 RAM aArg4=aAcct)
-     aCmd="addRemote"; aArg3="origin" aArg4=""; aArg5=""                                                    # .(41129.04.6)
+#    aCmd="addRemote"; aArg3="origin" aArg4=""; aArg5=""                                                    # .(41129.04.6)
      fi
 #    exit_wCR
 
