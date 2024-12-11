@@ -25,6 +25,7 @@
 ##FD   FRT42_GitR2.sh           | 128720| 12/05/24  8:40|  1778| p1.02`.41205.0840
 ##FD   FRT42_GitR2.sh           | 132995| 12/09/24  6:40|  1850| p1.02`.41209.0640
 ##FD   FRT42_GitR2.sh           | 140914| 12/11/24  7:14|  1953| p1.02`.41211.0540
+##FD   FRT42_GitR2.sh           | 145239| 12/11/24 10:21|  2002| p1.02`.41211.1020
 
 ##DESC     .--------------------+-------+---------------+------+-----------------+
 #            This script has usefull GIT functions.
@@ -141,7 +142,8 @@
 # .(41210.01 12/10/24 RAM 10:30p| Revise gitr clone
 # .(41211.01 12/11/24 RAM  5:40p| Install the GIT CLI on Mac
 #.(41208.02c 12/11/24 RAM  7:20a| Update finding .bashrc on unix
-#.(41211.01b 12/11/24 RAM  8:50p| Install the GIT CLI on Ubuntu
+#.(41211.01b 12/11/24 RAM  8:50a| Install the GIT CLI on Ubuntu
+# .(41211.03 12/11/24 RAM 10:20a| Enable set remote origin account ssh
 
 ##PRGM     +====================+===============================================+
 ##ID 69.600. Main0              |
@@ -149,7 +151,7 @@
 #*/
 #========================================================================================================== #  ===============================  #
 
-        aVDt="Dec 11, 2024 5:40a"; aVer="p1.02"; aVTitle="Useful gitR2 Tools by formR";                                    # .(41103.02.2 RAM Was: gitR1)
+        aVDt="Dec 11, 2024 10:20a"; aVer="p1.02"; aVTitle="Useful gitR2 Tools by formR";                                    # .(41103.02.2 RAM Was: gitR1)
         aVer="$( echo "$0" | awk '{ match( $0, /_[dpstuv][0-9]+\.[0-9]+/ ); print substr( $0, RSTART+1, RLENGTH-1) }' )"  # .(21031.01.1 RAM Add [d...).(20416.03.8 "_p2.02", or _d1.09)
 
         LIB="gitR2"; LIB_LOG=${LIB}_LOG; LIB_USER=${LIB}_USER; Lib=${LIB}; aDir=$(dirname "${BASH_SOURCE}");              # .(41103.02.3).(41102.01.1 RAM Add JPT12_Main2Fns_p1.07.sh Beg).(80923.01.1)
@@ -965,8 +967,9 @@ function getRemoteName() {                                                      
         sayMsg  "gitR2[ 931]  aProject:    '${aProject}', aCloneDir: '${aCloneDir}', aStageDir: '${aStageDir}', aBranch: '${aBranch}', aAcct: '${aAcct}'" -1
 
      if [ "${bSSH}" == "1"  ]; then aSSH="github-ram"                                                       # .(41210.01.10 RAM Reset for SSH)
-        if [ "${aAcct}" == "blueNSX" ]; then aSSH="github-rjs"; fi                                          # .(41210.01.11 RAM Reset Userfor SSH)
-        if [ "${aAcct}" == "brucetroutman-gmail" ]; then aSSH="github-btr"; fi                              # .(41210.01.12)
+        if [ "${aAcct}" == "blueNSX"             ]; then aSSH="github-rjs"; fi                              # .(41210.01.11 RAM Reset User for SSH)
+        if [ "${aAcct}" == "suzeeparker"         ]; then aSSH="github-sue"; fi                              # .(41210.01.11)
+        if [ "${aAcct}" == "brucetroutman-gmail" ]; then aSSH="github-btg"; fi                              # .(41210.01.12)
         aRemoteURL="${aRemoteURL/https:\/\/github.com\//git@${aSSH}:}";
         fi                                                                                                  # .(41210.01.10 End)
 
@@ -1545,14 +1548,18 @@ function getRemoteName() {                                                      
      fi
 # ---------------------------------------------------------------------------
 #====== =================================================================================================== #  ===========
-#>      GITR2 ADD REMMOTE
+#>      GITR2 ADD / SET REMMOTE
 #====== =================================================================================================== #
 #    sayMsg  "gitR2[1489] aCmd: '${aCmd}'" 1
 
   if [ "${aCmd}" == "addRemote" ] || [ "${aCmd}" == "setRemote" ]; then                 # .(41029.05.1 RAM Add seetRemote)
 #    aName="origin";    aBranch="master"
 #    aSSH="github-ram"; aAcct='robinmattern';  aStage="${aArg3}";
-     sayMsg  "gitR2[1494]  aArg3: '${aArg3}', aArg4: '${aArg4}', aArg5: '${aArg5}', aArg6: '${aArg6}', aStage: '${aStage}'"  -1
+     sayMsg  "gitR2[1555]  aArg3: '${aArg3}', aArg4: '${aArg4}', aArg5: '${aArg5}', aArg6: '${aArg6}', aArg7: '${aArg7}', aStage: '${aStage}'"  -1
+
+     if [ "$aArg4" == "ssh" ]; then bSSH="1"; aArg4="${aArg5}"; aArg5="${aArg6}"; aArg6="${aArg7}"; fi
+     if [ "$aArg5" == "ssh" ]; then bSSH="1"; aArg5="${aArg6}"; aArg6="${aArg7}"; fi
+     sayMsg  "gitR2[1494]  aArg3: '${aArg3}', aArg4: '${aArg4}', aArg5: '${aArg5}', aArg6: '${aArg6}', bSSH: '${bSSH}', aStage: '${aStage}'"  -1
 
      if [ "${aArg3}" != "" ]; then aRemote_name="$( echo "${aArg3}" | awk '{ print tolower($0) }' )"; fi
      if [ "${aArg4}" != "" ]; then aAcct="${aArg4}"; fi
@@ -1575,7 +1582,7 @@ function getRemoteName() {                                                      
              echo      "    [origin]   for any  {Project_Stage}"
              exit_wCR
              fi
-     sayMsg  "gitR2[1568]  aRemote_name: '${aRemote_name}', aArg3: '${aArg3}', aArg4: '${aArg4}', aStage: '${aStage}'"  -1
+     sayMsg  "gitR2[1582]  aRemote_name: '${aRemote_name}', aArg3: '${aArg3}', aArg4: '${aArg4}', aStage: '${aStage}'"  -1
 
      if [ "${aRemote_name}" == "origin" ] && [ "${aArg4}" != "" ]; then                 # .(41102.03.2 RAM Create origin project name Beg)
              aRemote_name="${aArg4}"; aArg4="${aArg5}"; # echo "    {aArg4}: '${aArg4}'"
@@ -1586,7 +1593,6 @@ function getRemoteName() {                                                      
          if [ "${aRemote_name}" == "origin" ] && [ "${aArg4}" == "" ]; then
              echo -e "\n    You must provide a Remote URL, ";
              echo    "      e.g. git@or anything-llm, anything, anythingllm, anythingllm_master"            # .(41129.05.2)
-
              fi
        else                                                                             # .(41210.04.1 End)
          if [ "${aRemote_name}" == "origin" ] && [ "${aArg4}" == "" ]; then             # .(41102.03.1 RAM Ask for Remote Name Beg)
@@ -1599,7 +1605,7 @@ function getRemoteName() {                                                      
              aRemote_name="${aAnswer}"; aArg3="${aAnswer}"
              aRemoteName="origin"
              fi                                                                         # .(41102.03.1 End)
-     sayMsg  "gitR2[1592]  aRemote_name: '${aRemote_name}', aStage: '${aStage}', aStage_: ${aStage_}'"  -1
+     sayMsg  "gitR2[1605]  aRemote_name: '${aRemote_name}', aStage: '${aStage}', aStage_: ${aStage_}'"  -1
              fi # eif add remote                                                        # .(41210.04.2)
 
      if [ "${aRemote_name}" != "origin" ]; then                                         # .(41102.05.1 RAM Wierd fix, based on position)
@@ -1607,7 +1613,7 @@ function getRemoteName() {                                                      
              fi                                                                         # .(41102.05.3)
 #            aRemoteURL=""                                                              ##.(41103.04.4)
 
-     sayMsg  "gitR2[1600]  aRemote_name: '${aRemote_name}', aStage: '${aStage}', aStage_: ${aStage_}'"  -1
+     sayMsg  "gitR2[1613]  aRemote_name: '${aRemote_name}', aStage: '${aStage}', aStage_: ${aStage_}'"  -1
 #    --------------------------------------------------------------------------------
 
      if [ "${aRemote_name/_/}" != "${aRemote_name}"    ]; then   # for any  {Project_Stage}"                # .(41102.03.5 RAM Write this Beg)
@@ -1630,6 +1636,7 @@ function getRemoteName() {                                                      
 
         fi # eif "${aRemote_name/_/}" != "${aRemote_name}"                                                  # .(41102.03.5 End)
 #    --------------------------------------------------------------------------------
+     sayMsg  "gitR2[1636]  aRemote_name: '${aRemote_name}', aStage: '${aStage}', aStage_: ${aStage_}', aRemoteURL: '${aRemoteURL}', bSSH: '${bSSH}'"  -1
 
 #    if [ "${aRemote_name}"     == "anythingllm_master" ]; then aRemote_name="anything-llm"; fi
 #    if [ "${aRemote_name}"     == "anythingllm"        ]; then aRemote_name="anything-llm"; fi
@@ -1718,7 +1725,22 @@ function getRemoteName() {                                                      
 
    function  setRemote() {                                                                                  # .(41102.03.5 RAM Write setRemote Beg)
 #    if "${aArg3}" == "origin", then Dev stages to: git@github.[ram|rsh|btg], else all stages go to https://github.com
+
              aPROJ=$1; aProj="$( echo "$1" | awk '{ print tolower($0) }' )"; w=${#aProj}; w1=$((w+1)); w2=$((w+4));  # echo "  ${aRemote_name}  w w1 w3: ${w} ${w1} ${w2}"
+     sayMsg  "gitR2[1728]  aPROJ: '${aPROJ}', aProj: '${aProj}', w: '${w}', w1: '${w1}', w2: '${w2}'"  -1
+     sayMsg  "gitR2[1729]  aRemote_name: '${aRemote_name}', aStage: '${aStage}', aStage_: '${aStage_}', aAcct: '${aAcct}', bSSH: '${bSSH}'"  -1
+
+     if [ "${bSSH}" == "1"  ]; then aSSH="git@github-ram"                                                   # .(41211.03.1 RAM Set it right Beg)
+        if [ "${aAcct}" == "blueNSX"             ]; then aSSH="git@github-rjs:"; fi
+        if [ "${aAcct}" == "suzeeparker"         ]; then aSSH="git@github-sue:"; fi
+        if [ "${aAcct}" == "brucetroutman-gmail" ]; then aSSH="git@github-btg:"; fi
+        aRemoteURL="${aRemoteURL/https:\/\/github.com\//git@${aSSH}:}";
+        fi
+     if [ "${aAcct}" == "blueNSX"             ]; then  aRemoteURL="${aSSH}${aAcct}/${aProject}_${aStage}.git"; fi
+     if [ "${aAcct}" == "burcetroutman-email" ]; then  aRemoteURL="${aSSH}${aAcct}/${aProject}_${aStage}.git"; fi
+     if [ "${aAcct}" == "suzeeparker"         ]; then  aRemoteURL="${aSSH}${aAcct}/${aProject}_${aStage}.git"; fi
+                                                                                                            # .(41211.03.1 End)
+
      if [ "${aRemote_name:0:${w}}"  == "${aProj}"       ]; then                         # .(41029.06.1 RAM Add alias: frtools Beg)
 #    if [ "${aRemote_name}"         == "${aProj}_dev01" ]; then aRemote_name="${aProj}_dev01-robin"; fi
      if [ "${aRemote_name}"         == "${aProj}_dev03" ]; then aRemote_name="${aProj}_dev03-robin"; fi
@@ -1728,13 +1750,15 @@ function getRemoteName() {                                                      
              aBranch="master"
 #            aStage="prod1-master"; if [ "${aSSH:0:3}" == "git" ]; then aStage="${aRemote_name:7}"; fi; aStage_="_${aStage}"
              aStage="${aRemote_name:${w1}}"; aStage_="_${aStage}";  if [ "${aStage}" == "" ]; then aStage_=""; fi  ; # echo "aStage: '${aStage}', aStage_: '${aStage_}'"
-             aAcct="/robinmattern"; if [ "${aStage/rick/}"  != "${aStage}" ]; then aAcct="/blueNSX";  aSSH="${aSSH/.ram/.rsh}"; fi
+             aAcct="/robinmattern"; if [ "${aStage/rick/}"  != "${aStage}" ]; then aAcct="/blueNSX";  aSSH="${aSSH/.ram/.rjs}"; fi
                                     if [ "${aStage/bruce/}" != "${aStage}" ]; then aAcct="/8020data"; aSSH="${aSSH/.ram/.btg}"; fi
              if [ "${aRemoteName}"  == "origin"         ]; then aAcct=":${aAcct:1}"; fi
 #            if [ "${aRemoteName}"  != "origin"         ]; then aRemoteName="${aProject}_${aStage/-*/}"; fi
              if [ "${aRemoteName}"  != "origin"         ]; then aRemoteName="${aProject}${aStage_/-*/}"; fi
              aRemoteURL="${aSSH}${aAcct}/${aProject}${aStage_}.git"
         fi
+     sayMsg  "gitR2[1758]  aRemote_name: '${aRemote_name}', aStage: '${aStage}', aStage_: ${aStage_}', aRemoteURL: '${aRemoteURL}', bSSH: '${bSSH}'"  -1
+
      }                                                                                                      # .(41102.03.5 End)
 #    --------------------------------------------------------------------------------
 
@@ -1746,7 +1770,7 @@ function getRemoteName() {                                                      
          fi                                                                                                 # .(41102.03.8 End)
 
 #    sayMsg  "help"
-     sayMsg  "gitR2[1680]  aRemoteURL:   '${aRemoteURL}'"  -1      # Provided via aliases: frtools, altools* or anyllm*
+     sayMsg  "gitR2[1753]  aRemoteURL:   '${aRemoteURL}'"  -1      # Provided via aliases: frtools, altools* or anyllm*
 
 #    --------------------------------------------------------------------------------
 
@@ -1789,7 +1813,7 @@ function getRemoteName() {                                                      
 #       ---------------------------------------------------
              aRemoteName="${aArg3}"
 
-     sayMsg  "gitR2[1723]  aRemoteName: ${aRemoteName}, aRemoteURL: ${aRemoteURL}" -1
+     sayMsg  "gitR2[1796]  aRemoteName: ${aRemoteName}, aRemoteURL: ${aRemoteURL}" -1
      fi # eif no ${aRemoteURL}
 #    fi # eif                                                                           # .(41103.04.7 RAM Removed)
 #    -------------------------------------------------------------
@@ -1892,8 +1916,8 @@ function getRemoteName() {                                                      
 #                    npm install -g gh                                                                      ##.(41211.01.3 End)
                      winget install GitHub.cli | awk '{ print "    " $0 }'              # .(41211.01.3 RAM let's try this)
        fi # bDoit == 1                                                                  # .(41211.01.4)
-     fi # sOS == windows 
-#    ---------------------------------------------------------------------------     
+     fi # sOS == windows
+#    ---------------------------------------------------------------------------
 
   if [ "${aOS}" == "linux" ]; then                                                      # .(41211.01b.1 RAM Install on Linux Beg)
   if [ "${bDoit}" != "1" ]; then
@@ -1911,8 +1935,8 @@ function getRemoteName() {                                                      
                      sudo apt update
                      sudo apt install gh
         fi # bDoit == 1
-     fi  # aOS == unix                                                                  # .(41211.01b.1 End) 
-#    ---------------------------------------------------------------------------     
+     fi  # aOS == unix                                                                  # .(41211.01b.1 End)
+#    ---------------------------------------------------------------------------
 
   if [ "${aOS}" == "darwin" ]; then                                                     # .(41211.01b.2 RAM Was !- :windows")
      if [ "$(which brew)" == "" ]; then
@@ -1927,8 +1951,8 @@ function getRemoteName() {                                                      
        echo -e "\n  brew install gh"
                     brew install gh 2>&1 | awk '{ print "  " $0 }'
        fi # bDoit == 1
-     fi  # aOS == darwin                                                                # .(41211.01.5 End) 
-#    ---------------------------------------------------------------------------     
+     fi  # aOS == darwin                                                                # .(41211.01.5 End)
+#    ---------------------------------------------------------------------------
 
      if [ "$(command -v gh)" == "" ]; then                                              # .(41211.01.6 RAM Run gh auth login)
         echo -e "\n* The GitHub CLI (gh) installation failed."
