@@ -149,9 +149,9 @@ function  setOS() {
         fi
         echo -e "\n  THE_SERVER ${aVerb} \"${HOME}/${aBashRC}\""
         echo "* Remember to run: source ~/${aBashRC}"
-        if [ "${aOS}" == "windows" ]; then echo ""; fi                                                                          # .(41115.01.4 End)
-        exit
-        fi #
+#       if [ "${aOS}" == "windows" ]; then echo ""; fi                                                                          ##.(41211.02.7)
+        exit_wCR # exit                                                                                                         # .(41211.02.7)
+        fi                                                                                                                      # .(41115.01.4 End)
         # exit; fi                                                                                                              # .(21112.04.2)
 #       -------------------------------------------------------------
 

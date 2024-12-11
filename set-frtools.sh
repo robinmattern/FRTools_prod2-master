@@ -13,7 +13,8 @@
 ##FD         set-frtools.sh     |  20155| 12/04/24  9:09|   380| v1.05`41204.0909
 ##FD         set-frtools.sh     |  20708| 12/08/24 23:50|   388| v1.05`41208.2350
 ##FD         set-frtools.sh     |  25171| 12/11/24  7:21|   446| v1.05`41211.0720
-
+##FD         set-frtools.sh     |  26049| 12/11/24  8:41|   453| v1.05`41211.0840
+ 
 ##DESC     .--------------------+-------+-----------------+------+---------------+
 #            Create ._0/bin folder and copy all command scripts there as well as
 #            Update ,bashrc (or .zshrc) with PATH, THE_SERVER and OS Prompt.
@@ -53,6 +54,7 @@
 # .(41208.02 12/08/24 RAM  4:55p| Set different ${aBashrc}) in darwin20
 #.(41208.02b 12/08/24 RAM 11:50p| Who is right re setopt for MacOS
 #.(41208.02c 12/11/24 RAM  7:20a| Update finding .bashrc on unix
+# .(41211.02 12/11/24 RAM  8:40a| Fix wierdness copying script files 
 
 ##PRGM     +====================+===============================================+
 ##ID 69.600. Main0              |
@@ -65,6 +67,7 @@
   aVer="v1.05\`41208.1655"
   aVer="v1.05\`41208.2350"
   aVer="v1.05\`41211.0720"
+  aVer="v1.05\`41211.0840"
 
   echo ""
 
@@ -87,7 +90,7 @@ function setOSvars() {
 #    aBashrc="$HOME/.bashrc"                                                                                ##.(41208.02c.1)
      if [ -f "$HOME/.bash_profile" ]; then aBashrc="$HOME/.bash_profile"; fi                                # .(41208.02c.1)
      if [ -f "$HOME/.bashrc"       ]; then aBashrc="$HOME/.bashrc"; fi                                      # .(41208.02c.2)
-     aBinDir="/Home/._0/bin"
+     aBinDir="/home/._0/bin"                                                                                # .(41211.02.1 RAM Was /Home/._0/bin)
      aOS="linux"
   if [[ "${OS:0:7}" == "Windows" ]]; then
      aOS="windows";
@@ -167,15 +170,6 @@ function clnHouse() {
 
    echo "  Wipe of \$PATH and ${aBashrc} file complete";
      fi
-  }
-# -----------------------------------------------------------
-
-function  makScript() {
-# echo " making script in $2/$3"; exit
-# echo "    aAnyLLMscr:  $2/$3"
-  echo "#!/bin/bash"   >"$2/$3"
-  echo "  $1 \"\$@\"" >>"$2/$3"
-  chmod 777 "$2/$3"
   }
 # -----------------------------------------------------------
 
@@ -337,13 +331,13 @@ function setTHE_SERVER() {                                                      
 function cpyToBin() {
 # return
 
-    aJPTs_JDir="${aBinDir}"; if [ "${aOS}" == "darwin" ]; then aJPTs_JDir="/Users/Shared/._0/bin"; fi
+     aJPTs_JDir="${aBinDir}"; # if [ "${aOS}" == "darwin" ]; then aJPTs_JDir="/Users/Shared/._0/bin"; fi    # .(41211.02.2 RAM aBinDir is this on mac)
 
-#   echo ""
-#   echo " aJPTs_JDir: ${aJPTs_JDir}";
-#   echo " aJPTs_GitR: ${aJPTs_GitR}";
-#   echo " alias gitr: ${aJPTs_JDir}/gitr.sh";
-#   echo " copying run-anyllm.sh and gitr to: \"${aJPTs_JDir}\""; echo ""
+#    echo ""
+#    echo " aJPTs_JDir: ${aJPTs_JDir}";
+#    echo " aJPTs_GitR: ${aJPTs_GitR}";
+#    echo " alias gitr: ${aJPTs_JDir}/gitr.sh";
+#    echo " copying run-anyllm.sh and gitr to: \"${aJPTs_JDir}\""; echo ""
 
  if [   -d "${aJPTs_JDir}"   ]; then                                                     echo "  Wont create BinDir: it exists in \"${aJPTs_JDir}\""; fi
  if [ ! -d "${aJPTs_JDir}"   ]; then
@@ -405,16 +399,29 @@ function cpyToBin() {
 
 function cpyScript() {
 
-  aJPTs_Script="$2"; aName1="$1"; aName="${aName1// /}" # echo "  cp -p \"${aJPTs_Script}\" to \"${aJPTs_JDir}/${aName}\""
-# echo "  copying script: \"${aJPTs_Script}\" to \"${aJPTs_JDir}/${aName}\""
-  if [ ! -f "${aJPTs_Script}" ]; then                                                            echo "* Script not found:  \"${aJPTs_Script}\""; return; fi
-  if [ "${bDoScripts}" == "0" ]; then                                                            echo "  Will create script: ${aName1} for \"${aJPTs_Script}\""; return; fi
-# if [   -f "${aJPTs_Script}" ]; then cp     -p  "${aJPTs_Script}" "${aJPTs_JDir}/";             echo "  Copied  script for: ${aName1}  in \"${aJPTs_Script}\""; fi
-  if [   -f "${aJPTs_Script}" ]; then makScript  "${aJPTs_Script}" "${aJPTs_JDir}" "${aName}";   echo "  Created script for: ${aName1}  in \"${aJPTs_Script}\"";
+  aJPTs_Script="$2"; aName1="$1"; aName="${aName1// /}"   # echo "  cp -p \"${aJPTs_Script}\" to \"${aJPTs_JDir}/${aName}\""
+#                                                  echo "  copying script: \"${aJPTs_Script}\" to \"${aJPTs_JDir}/${aName}\""
+
+  if [ ! -f "${aJPTs_Script}" ]; then                                                           echo "* Script not found:  \"${aJPTs_Script}\""; return; fi                       # .(41211.02.3 RAM Can't create it in aBinDir if not found in FRTools)
+
+  if [ "${bDoScripts}" == "0" ]; then                                                           echo "  Will create script: ${aJPTs_JDir}/${aName1} for \"${aJPTs_Script}\""; return; fi
+
+  if [ "${bDoScripts}" == "1" ]; then                                                                                                                                             # .(41211.02.4 RAM Add if bDoScripts for clarity)
+# if [   -f "${aJPTs_Script}" ]; then cp     -p  "${aJPTs_Script}" "${aJPTs_JDir}/";            echo "  Copied  script for: ${aName1}  in \"${aJPTs_Script}\""; fi                ##.(41211.02.5 RAM It's not copied, rather  ..)
+  if [   -f "${aJPTs_Script}" ]; then makScript  "${aJPTs_Script}" "${aJPTs_JDir}" "${aName}";  echo "  Created script in: ${aJPTs_JDir}/${aName1}  for \"${aJPTs_Script}\""; fi  # .(41211.02.6 RAM It's created it in aBinDir)
 #                                Sudo chmod  777 "${aJPTs_Script}";                     ##.(41104.03.1 RAM No need to set permission for each script
-       fi
+       fi # eif bDoScripts
   }
 # ---------------------------------------------------------------------------
+
+function  makScript() {
+# echo "  making script in $2/$3"; # exit
+# echo "    aAnyLLMscr:  $2/$3"
+  echo "#!/bin/bash"   >"$2/$3"
+  echo "  $1 \"\$@\"" >>"$2/$3"
+  chmod 777 "$2/$3"
+  }
+# -----------------------------------------------------------
 
   aRepo_Dir="$(pwd)"
   cd ..
