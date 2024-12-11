@@ -24,7 +24,7 @@
 ##FD   FRT42_GitR2.sh           | 125748| 12/03/24  9:30|  1753| p1.02`.41203.0930
 ##FD   FRT42_GitR2.sh           | 128720| 12/05/24  8:40|  1778| p1.02`.41205.0840
 ##FD   FRT42_GitR2.sh           | 132995| 12/09/24  6:40|  1850| p1.02`.41209.0640
-##FD   FRT42_GitR2.sh           | 132995| 12/09/24  9:40|  1850| p1.02`.41209.0940
+##FD   FRT42_GitR2.sh           | 140914| 12/11/24  7:14|  1953| p1.02`.41211.0540
 
 ##DESC     .--------------------+-------+---------------+------+-----------------+
 #            This script has usefull GIT functions.
@@ -139,6 +139,7 @@
 # .(41209.02 12/09/24 RAM  9:40a| Add Delete Branch
 #.(41102.03b 12/09/24 RAM  3:00p| Update Add Remote for AIDocs
 # .(41210.01 12/10/24 RAM 10:30p| Revise gitr clone
+# .(41211.01 12/11/24 RAM  5:40p| Install the GIT CLI on Mac
 
 ##PRGM     +====================+===============================================+
 ##ID 69.600. Main0              |
@@ -146,7 +147,7 @@
 #*/
 #========================================================================================================== #  ===============================  #
 
-        aVDt="Dec 10, 2024 10:30p"; aVer="p1.02"; aVTitle="Useful gitR2 Tools by formR";                                    # .(41103.02.2 RAM Was: gitR1)
+        aVDt="Dec 11, 2024 5:40a"; aVer="p1.02"; aVTitle="Useful gitR2 Tools by formR";                                    # .(41103.02.2 RAM Was: gitR1)
         aVer="$( echo "$0" | awk '{ match( $0, /_[dpstuv][0-9]+\.[0-9]+/ ); print substr( $0, RSTART+1, RLENGTH-1) }' )"  # .(21031.01.1 RAM Add [d...).(20416.03.8 "_p2.02", or _d1.09)
 
         LIB="gitR2"; LIB_LOG=${LIB}_LOG; LIB_USER=${LIB}_USER; Lib=${LIB}; aDir=$(dirname "${BASH_SOURCE}");              # .(41103.02.3).(41102.01.1 RAM Add JPT12_Main2Fns_p1.07.sh Beg).(80923.01.1)
@@ -187,7 +188,7 @@ function help() {
      echo "    Replace [local] [{name}]             [-d]  Replace all files from origin or remote {name}"   # .(41031.07.1)
      echo "    Update [{branch}] [{name}]      [-f] [-d]  Update all files from {name} [-f for no stash]"   # .(41116.01.1)
      echo "    Backup local                               Copy local repo to ../ZIPs"
-     echo "    Install gh                                 Install the GIT CLI"
+     echo "    Install [gh|cli]                           Install the GitHub CLI program gh"                # .(41211.01.1 RAM Revised)
      echo "    Init                                       Initialize a git repository"                      # .(41103.03.1)
      echo "    [-b]                                       Show debug messages"
      echo "    [-d]                                       Doit, i.e. execute the command"
@@ -319,7 +320,9 @@ done
   if [ "$1" == "rem" ] && [ "$2" == "add" ]; then aCmd="addRemote";    fi
   if [ "$1" == "set" ] && [ "$2" == "rem" ]; then aCmd="setRemote";    fi
   if [ "$1" == "rem" ] && [ "$2" == "set" ]; then aCmd="setRemote";    fi
+
   if [ "$1" == "sho" ] && [ "$2" == "rem" ]; then aCmd="shoRemote";    fi
+  if [ "$1" == "rem" ] && [ "$2" == "sho" ]; then aCmd="shoRemote";    fi               # .(41031.03b.1)
   if [ "$1" == "lis" ] && [ "$2" == "rem" ]; then aCmd="shoRemote";    fi               # .(41031.03.5)
   if [ "$1" == "rem" ] && [ "$2" == "lis" ]; then aCmd="shoRemote";    fi               # .(41031.03.6)
   if [ "$1" == "mer" ] && [ "$2" == "rem" ]; then aCmd="mergeRemote";  fi
@@ -331,6 +334,7 @@ done
   if [ "$1" == "mak" ] && [ "$2" == "rem" ]; then aCmd="makRemote";    fi
 
   if [ "$1" == "ins" ] && [ "$2" == "gh"  ]; then aCmd="getCLI";       fi
+  if [ "$1" == "ins" ] && [ "$2" == "cli" ]; then aCmd="getCLI";       fi               # .(41211.01.2)
 
 # if [ "${bDebug}" == "1" ]; then
 #   echo -e "\n  aCmd: ${aCmd}, bDoit: ${bDoit}, bDebug: ${bDebug}, 1)$1, 2)$2, 3)$3, 4)$4, 5)$5, 6)$6."; # exit_wCR
@@ -347,7 +351,7 @@ function chkUser() {                                                            
          aGitUserEmail="$( ask4Required "    Enter your email." )"                      # .(41114.06.4 RAM Use it)
          git config --global user.name  "${aGitUserName}"
          git config --global user.email "${aGitUserEmail}"
-         echo "" 
+         echo ""
          fi
 #        git config --global core.fileMode false                                        ##.(41120.02.3 RAM Don't).(41120.02.1 RAM Ignore file permissions)
     } # eof chkUser                                                                     # .(41114.07.1 End)
@@ -908,8 +912,8 @@ function getRemoteName() {                                                      
         sayMsg  "gitR2[ 901]  Git Clone ${aCmd:5}" -1;
         if [ "${aCmd:5}" == "Branch" ]; then                                                                # .(41201.03.1 RAM Start dealing with clone branch Beg)
            aArg1="${aArg2}"; aArg2="${aArg3}";  aArg3="${aArg4}"; aArg4="${aArg5}"; aArg5="${aArg6}"; aArg6=""
-           fi  
-           
+           fi
+
         if [ "${aArg3}" == 'ssh' ]; then bSSH="1"; aArg3=""; fi                                             # .(41210.01.1 RAM Add ssh option)
         if [ "${aArg4}" == 'ssh' ]; then bSSH="1"; aArg4=""; fi                                             # .(41210.01.2)
         if [ "${aArg5}" == 'ssh' ]; then bSSH="1"; aArg5="${aArg6}"; fi                                     # .(41210.01.2)
@@ -959,7 +963,7 @@ function getRemoteName() {                                                      
      if [ "${bSSH}" == "1"  ]; then aSSH="github-ram"                                                       # .(41210.01.10 RAM Reset for SSH)
         if [ "${aAcct}" == "blueNSX" ]; then aSSH="github-rjs"; fi                                          # .(41210.01.11 RAM Reset Userfor SSH)
         if [ "${aAcct}" == "brucetroutman-gmail" ]; then aSSH="github-btr"; fi                              # .(41210.01.12)
-        aRemoteURL="${aRemoteURL/https:\/\/github.com\//git@${aSSH}:}"; 
+        aRemoteURL="${aRemoteURL/https:\/\/github.com\//git@${aSSH}:}";
         fi                                                                                                  # .(41210.01.10 End)
 
      if [ "${aArg3}" != ""   ] && [ "${aBranch}" != "" ]; then # for branch                                 # .(41104.06.8 RAM aArg3 means user asked for it )
@@ -985,7 +989,7 @@ function getRemoteName() {                                                      
          exit_wCR;
          fi                                                                                                 # .(41119.01.3 End)
 
-     if [ "${bDoit}" != "1" ]; then 
+     if [ "${bDoit}" != "1" ]; then
 #       echo -e "\n  ${aGIT1}\n  ${aGIT2}"
         echo -e "\n  About to clone remote name, ${aRemoteName}${forBranch}:"
         echo -e   "  ${aGIT1} # Add -d to doit"                                         # .(41029.04.1)
@@ -1338,10 +1342,10 @@ function getRemoteName() {                                                      
 
   if [ "${aCmd}" == "deleteBranch" ]; then                                                                  # .(41209.02.4 RAM write deleteBranche)
      sayMsg  "gitR2[1309]  listBranches aArg3: '${aArg3}'" -1
-        if [ "${aArg3}" == "" ]; then 
-           echo -e "\n* You must enter a branch name, from the following:" 
+        if [ "${aArg3}" == "" ]; then
+           echo -e "\n* You must enter a branch name, from the following:"
            git branch | awk '{ print "  " $0 }'
-           exit_wCR                                                                                             
+           exit_wCR
         fi
         aGIT1="git branch -d ${aArg3}"      # safe delete (only if merged)
 #       aGIT1="git branch -D ${aArg3}"      # force delete (even if not merged)
@@ -1351,7 +1355,7 @@ function getRemoteName() {                                                      
         echo -e "\n  ${aGIT1} \n"
         eval        "${aGIT1}"
         fi
-        exit_wCR                                                                                             
+        exit_wCR
      fi                                                                                                     # .(41209.02.4End)
 #====== =================================================================================================== #  ===========
 #>      GITR2 CHECKOUT BRANCH
@@ -1579,7 +1583,7 @@ function getRemoteName() {                                                      
              echo -e "\n    You must provide a Remote URL, ";
              echo    "      e.g. git@or anything-llm, anything, anythingllm, anythingllm_master"            # .(41129.05.2)
 
-             fi 
+             fi
        else                                                                             # .(41210.04.1 End)
          if [ "${aRemote_name}" == "origin" ] && [ "${aArg4}" == "" ]; then             # .(41102.03.1 RAM Ask for Remote Name Beg)
              echo -e "\n    You must provide a Remote Name, e.g frtools, aidocs, anyllm, anyllm_dev03-robin";
@@ -1858,18 +1862,57 @@ function getRemoteName() {                                                      
      fi
 # ---------------------------------------------------------------------------
 #====== =================================================================================================== #  ===========
-#>      GITR2 GET CLI
+#>      GITR2 INSTALL GH / CLI
 #====== =================================================================================================== #
 
   if [ "${aCmd}" == "getCLI" ]; then
-     echo ""
-# if [ "${aOS}" == "windows" ]; then
-#    curl -LO https://github.com/cli/cli/releases/latest/download/gh_*_windows_amd64.msi   # no workie
-#    msiexec.exe /i gh_*_windows_amd64.msi
-#    rm gh_*_windows_amd64.msi
-     npm install -g gh
-#    fi
+
+  if [ "$(command -v gh)" != "" ]; then
+        echo -e "\n* The GitHub CLI (gh) is already installed."
+        exit_wCR
+        fi
+  if [ "${aOS}" == "windows" ]; then
+  if [ "${bDoit}" != "1" ]; then                                                        # .(41211.01.5 RAM Add bDoit Beg)
+#       echo -e "\n  curl -LO https://github.com/cli/cli/releases/latest/download/gh_*_windows_amd64.msi"   ##.(41211.01.3)
+#       echo -e   "  msiexec.exe /i gh___windows_amd64.msi"                                                 ##.(41211.01.3
+#       echo -e   "  npm install -g gh"                                                                     ##.(41211.01.3 RAM Not a correct version of gh)
+        echo -e "\n  winget install GitHub.cli    # Add -d to doit"                     # .(41211.01.3)
+        echo -e   "  gh auth login"
+        exit_wCR
+     else                                                                               # .(41211.01.4 End)
+        echo -e "\n  winget install GitHub.cli"
+#                    curl -LO https://github.com/cli/cli/releases/latest/download/gh_*_windows_amd64.msi    ##.(41211.01.3 Beg)
+#                    echo ""
+#                    msiexec.exe /i gh___windows_amd64.msi
+#                    rm gh___windows_amd64.msi
+#                    npm install -g gh                                                                      ##.(41211.01.3 End)
+                     winget install GitHub.cli | awk '{ print "    " $0 }'              # .(41211.01.3 RAM let's try this)
+       fi # bDoit == 1                                                                  # .(41211.01.4)
      fi
+  if [ "${aOS}" != "windows" ]; then                                                    # .(41211.01.5 RAM Install on Mac Beg)
+     if [ "$(which brew)" == "" ]; then
+        echo -e "\n* The GitHub CLI (gh) requires brew to be installed."
+        exit_wCR
+        fi
+  if [ "${bDoit}" != "1" ]; then
+        echo -e "\n  brew install gh    # Add -d to doit"
+        echo -e   "  gh auth login"
+        exit_wCR
+     else
+       echo -e "\n  brew install gh"
+                    brew install gh 2>&1 | awk '{ print "  " $0 }'
+       fi # bDoit == 1
+     fi                                                                                 # .(41211.01.5 End)
+#    -------------------------------------------------------------
+
+     if [ "$(command -v gh)" == "" ]; then                                              # .(41211.01.6 RAM Run gh auth login)
+        echo -e "\n* The GitHub CLI (gh) installation failed."
+        exit_wCR
+        fi
+        echo -e "\n  The GitHub CLI (gh) requires you to login to GitHub."
+        gh auth login
+        exit_wCR                                                                        # .(41211.01.6 End)
+     fi # eoc getCLI
 # ---------------------------------------------------------------------------
 #
 # if [ "${aCmd}" == "version" ]; then                                                                       # .(20420.07.03 RAM No need Beg)
