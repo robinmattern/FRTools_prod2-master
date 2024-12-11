@@ -2,10 +2,10 @@
 #  keyS Launcher (Prod Copy)
 
 #       FRT_Scr=FRT26_keyS1_p2.01.sh
-        FRT_Scr=FRT41_keyS1_p2.01.sh
+        FRT_Scr=FRT41_keyS1_p2.01.sh                                  # .(41210.02.7)
 
-        FRT_Dir=$( realpath "$0" ); FRT_Dir=$( dirname "${FRT_Dir}" )
-        FRT1_Main1=$FRT_Dir/$FRT_Scr
+#       FRT_Dir=$( realpath "$0" ); FRT_Dir=$( dirname "${FRT_Dir}" ) ##.(41210.02.7)
+        FRT_Dir="$( cd "$( dirname "$0" )" && pwd )"                  # .(41210.02.7)
 
-      "$FRT1_Main1" "$@"
+      "$FRT_Dir/$FRT_Scr" "$@"                                        # .(41210.02.7)
 

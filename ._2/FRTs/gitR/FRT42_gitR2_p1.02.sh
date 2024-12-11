@@ -347,6 +347,7 @@ function chkUser() {                                                            
          aGitUserEmail="$( ask4Required "    Enter your email." )"                      # .(41114.06.4 RAM Use it)
          git config --global user.name  "${aGitUserName}"
          git config --global user.email "${aGitUserEmail}"
+         echo "" 
          fi
 #        git config --global core.fileMode false                                        ##.(41120.02.3 RAM Don't).(41120.02.1 RAM Ignore file permissions)
     } # eof chkUser                                                                     # .(41114.07.1 End)
@@ -1573,14 +1574,14 @@ function getRemoteName() {                                                      
              aRemoteName="origin"
              fi                                                                         # .(41102.03.2 End)
      sayMsg  "gitR2[1574]  aRemote_name: '${aRemote_name}', aStage: '${aStage}', aStage_: ${aStage_}'"  -1
-     if [ "${aCmd}" == "setRemote" ];then                                                                        # .(41210.02.1 RAM Check for set Beg)
+     if [ "${aCmd}" == "setRemote" ];then                                               # .(41210.04.1 RAM Check for set Beg)
          if [ "${aRemote_name}" == "origin" ] && [ "${aArg4}" == "" ]; then
              echo -e "\n    You must provide a Remote URL, ";
-             echo    "      e.g. git@or anything-llm, anything, anythingllm, anythingllm_master"                     # .(41129.05.2)
+             echo    "      e.g. git@or anything-llm, anything, anythingllm, anythingllm_master"            # .(41129.05.2)
 
              fi 
-       else                                                                             # .(41210.02.1 End)
-         if [ "${aRemote_name}" == "origin" ] && [ "${aArg4}" == "" ]; then                 # .(41102.03.1 RAM Ask for Remote Name Beg)
+       else                                                                             # .(41210.04.1 End)
+         if [ "${aRemote_name}" == "origin" ] && [ "${aArg4}" == "" ]; then             # .(41102.03.1 RAM Ask for Remote Name Beg)
              echo -e "\n    You must provide a Remote Name, e.g frtools, aidocs, anyllm, anyllm_dev03-robin";
              echo    "      or anything-llm, anything, anythingllm, anythingllm_master"                     # .(41129.05.2)
 #            echo -e   "    or is it this: ${aProject}_${aStage}.\n"                                        # .(41129.05.3)
@@ -1591,7 +1592,7 @@ function getRemoteName() {                                                      
              aRemoteName="origin"
              fi                                                                         # .(41102.03.1 End)
      sayMsg  "gitR2[1592]  aRemote_name: '${aRemote_name}', aStage: '${aStage}', aStage_: ${aStage_}'"  -1
-             fi # eif add remote                                                        # .(41210.02.2)
+             fi # eif add remote                                                        # .(41210.04.2)
 
      if [ "${aRemote_name}" != "origin" ]; then                                         # .(41102.05.1 RAM Wierd fix, based on position)
              aRemote_name="${aArg3}";                                                   # .(41102.05.2)
