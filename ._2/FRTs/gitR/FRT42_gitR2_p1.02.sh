@@ -141,6 +141,7 @@
 # .(41210.01 12/10/24 RAM 10:30p| Revise gitr clone
 # .(41211.01 12/11/24 RAM  5:40p| Install the GIT CLI on Mac
 #.(41208.02c 12/11/24 RAM  7:20a| Update finding .bashrc on unix
+#.(41211.01b 12/11/24 RAM  8:50p| Install the GIT CLI on Ubuntu
 
 ##PRGM     +====================+===============================================+
 ##ID 69.600. Main0              |
@@ -1891,8 +1892,29 @@ function getRemoteName() {                                                      
 #                    npm install -g gh                                                                      ##.(41211.01.3 End)
                      winget install GitHub.cli | awk '{ print "    " $0 }'              # .(41211.01.3 RAM let's try this)
        fi # bDoit == 1                                                                  # .(41211.01.4)
-     fi
-  if [ "${aOS}" != "windows" ]; then                                                    # .(41211.01.5 RAM Install on Mac Beg)
+     fi # sOS == windows 
+#    ---------------------------------------------------------------------------     
+
+  if [ "${aOS}" == "linux" ]; then                                                      # .(41211.01b.1 RAM Install on Linux Beg)
+  if [ "${bDoit}" != "1" ]; then
+        echo -e "\n  apt install gh    # Add -d to doit"
+        echo -e   "  curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | sudo dd of=/usr/share/keyrings/githubcli-archive-keyring.gpg"  # Add GitHub's official package repository
+        echo -e   "  echo \"deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main\" | sudo tee /etc/apt/sources.list.d/github-cli.list > /dev/null"
+        echo -e   "  sudo apt update"
+        echo -e   "  sudo apt install gh"
+        echo -e   "  gh auth login"
+        exit_wCR
+     else
+        echo -e "\n  apt install gh    # Add -d to doit"
+                     curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | sudo dd of=/usr/share/keyrings/githubcli-archive-keyring.gpg  # Add GitHub's official package repository
+                     echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" | sudo tee /etc/apt/sources.list.d/github-cli.list >/dev/null
+                     sudo apt update
+                     sudo apt install gh
+        fi # bDoit == 1
+     fi  # aOS == unix                                                                  # .(41211.01b.1 End) 
+#    ---------------------------------------------------------------------------     
+
+  if [ "${aOS}" == "darwin" ]; then                                                     # .(41211.01b.2 RAM Was !- :windows")
      if [ "$(which brew)" == "" ]; then
         echo -e "\n* The GitHub CLI (gh) requires brew to be installed."
         exit_wCR
@@ -1905,8 +1927,8 @@ function getRemoteName() {                                                      
        echo -e "\n  brew install gh"
                     brew install gh 2>&1 | awk '{ print "  " $0 }'
        fi # bDoit == 1
-     fi                                                                                 # .(41211.01.5 End)
-#    -------------------------------------------------------------
+     fi  # aOS == darwin                                                                # .(41211.01.5 End) 
+#    ---------------------------------------------------------------------------     
 
      if [ "$(command -v gh)" == "" ]; then                                              # .(41211.01.6 RAM Run gh auth login)
         echo -e "\n* The GitHub CLI (gh) installation failed."
