@@ -140,6 +140,7 @@
 #.(41102.03b 12/09/24 RAM  3:00p| Update Add Remote for AIDocs
 # .(41210.01 12/10/24 RAM 10:30p| Revise gitr clone
 # .(41211.01 12/11/24 RAM  5:40p| Install the GIT CLI on Mac
+#.(41208.02c 12/11/24 RAM  7:20a| Update finding .bashrc on unix
 
 ##PRGM     +====================+===============================================+
 ##ID 69.600. Main0              |
@@ -216,7 +217,9 @@ function exit_wCR() {
 
 function setOSvars() {
      aTS=$( date '+%y%m%d.%H%M' ); aTS=${aTS:2}
-     aBashrc="$HOME/.bashrc"
+#    aBashrc="$HOME/.bashrc"                                                                                ##.(41208.02c.1)
+     if [ -f "$HOME/.bash_profile" ]; then aBashrc="$HOME/.bash_profile"; fi                                # .(41208.02c.1)
+     if [ -f "$HOME/.bashrc"       ]; then aBashrc="$HOME/.bashrc"; fi                                      # .(41208.02c.2)
      aBinDir="/Home/._0/bin"
      aOS="linux"
   if [[ "${OS:0:7}" == "Windows" ]]; then

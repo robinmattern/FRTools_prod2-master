@@ -12,6 +12,7 @@
 ##FD         set-frtools.sh     |  19928| 11/24/24 14:45|   377| v1.05`41124.1445
 ##FD         set-frtools.sh     |  20155| 12/04/24  9:09|   380| v1.05`41204.0909
 ##FD         set-frtools.sh     |  20708| 12/08/24 23:50|   388| v1.05`41208.2350
+##FD         set-frtools.sh     |  25171| 12/11/24  7:21|   446| v1.05`41211.0720
 
 ##DESC     .--------------------+-------+-----------------+------+---------------+
 #            Create ._0/bin folder and copy all command scripts there as well as
@@ -51,6 +52,7 @@
 # .(41203.08 12/04/24 RAM  9:07a| Shorten ${aBashrc}) in it exists msg
 # .(41208.02 12/08/24 RAM  4:55p| Set different ${aBashrc}) in darwin20
 #.(41208.02b 12/08/24 RAM 11:50p| Who is right re setopt for MacOS
+#.(41208.02c 12/11/24 RAM  7:20a| Update finding .bashrc on unix
 
 ##PRGM     +====================+===============================================+
 ##ID 69.600. Main0              |
@@ -62,6 +64,7 @@
   aVer="v1.05\`41204.0909"
   aVer="v1.05\`41208.1655"
   aVer="v1.05\`41208.2350"
+  aVer="v1.05\`41211.0720"
 
   echo ""
 
@@ -81,7 +84,9 @@ function help() {
 
 function setOSvars() {
      aTS=$( date '+%y%m%d.%H%M' ); aTS=${aTS:2}
-     aBashrc="$HOME/.bashrc"
+#    aBashrc="$HOME/.bashrc"                                                                                ##.(41208.02c.1)
+     if [ -f "$HOME/.bash_profile" ]; then aBashrc="$HOME/.bash_profile"; fi                                # .(41208.02c.1)
+     if [ -f "$HOME/.bashrc"       ]; then aBashrc="$HOME/.bashrc"; fi                                      # .(41208.02c.2)
      aBinDir="/Home/._0/bin"
      aOS="linux"
   if [[ "${OS:0:7}" == "Windows" ]]; then

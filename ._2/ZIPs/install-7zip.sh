@@ -16,9 +16,9 @@ function exit_wCR() {
 #   -----------------------------------------------------
 
 function download() {                    echo -e "\n  Downloading: $2";
-	if ! curl -L "$1" -o $2;        then echo -e   "  Download of $2 failed\n"; exit_wCR; fi
-	if [ -f "$2" ] && [ -s "$2" ];  then echo -e "\n  Downloaded: ${aBIN}/$2";
-                                    else echo -e   "  Download of $2 failed\n"; exit_wCR; fi
+	if ! curl -L "$1" -o $2;        then echo -e   "* Download of $2 failed\n"; exit_wCR; fi
+	if [ -f "$2" ] && [ -s "$2" ];  then echo -e   "  Downloaded: ${aBIN}/$2";
+                                    else echo -e   "* Download of $2 failed\n"; exit_wCR; fi
          }
 #   -----------------------------------------------------
 
