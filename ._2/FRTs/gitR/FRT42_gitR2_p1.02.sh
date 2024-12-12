@@ -26,6 +26,7 @@
 ##FD   FRT42_GitR2.sh           | 132995| 12/09/24  6:40|  1850| p1.02`.41209.0640
 ##FD   FRT42_GitR2.sh           | 140914| 12/11/24  7:14|  1953| p1.02`.41211.0540
 ##FD   FRT42_GitR2.sh           | 145239| 12/11/24 10:21|  2002| p1.02`.41211.1020
+##FD   FRT42_GitR2.sh           | 145947| 12/12/24  9:31|  2011| p1.02`.41212.0930
 
 ##DESC     .--------------------+-------+---------------+------+-----------------+
 #            This script has usefull GIT functions.
@@ -105,7 +106,7 @@
 # .(41116.01 11/18/24 RAM 10:15a| Fix gitR update issues
 # .(20420.07 11/19/24 RAM  8:10a| Add Version vars
 # .(41119.01 11/19/24 RAM  9:10a| Check for MT gitR clone dir
-# .(41119.01 11/19/24 RAM  9:50a| Fix clone afteremath
+# .(41119.01 11/19/24 RAM  9:50a| Fix clone aftermath
 # .(41120.01 11/20/24 RAM  9:00a| Fix exit_CR
 # .(41120.02 11/20/24 RAM 11:45a| Ignore file permissions globally
 # .(41120.02 11/23/24 RAM  9:20a| Don't Ignore file permissions globally
@@ -144,6 +145,8 @@
 #.(41208.02c 12/11/24 RAM  7:20a| Update finding .bashrc on unix
 #.(41211.01b 12/11/24 RAM  8:50a| Install the GIT CLI on Ubuntu
 # .(41211.03 12/11/24 RAM 10:20a| Enable set remote origin account ssh
+#.(41111.02b 12/12/24 RAM  9:30a| Set .code-workspace to new StageDir
+
 
 ##PRGM     +====================+===============================================+
 ##ID 69.600. Main0              |
@@ -151,7 +154,7 @@
 #*/
 #========================================================================================================== #  ===============================  #
 
-        aVDt="Dec 11, 2024 10:20a"; aVer="p1.02"; aVTitle="Useful gitR2 Tools by formR";                                    # .(41103.02.2 RAM Was: gitR1)
+        aVDt="Dec 12, 2024  9:30a"; aVer="p1.02"; aVTitle="Useful gitR2 Tools by formR";                                    # .(41103.02.2 RAM Was: gitR1)
         aVer="$( echo "$0" | awk '{ match( $0, /_[dpstuv][0-9]+\.[0-9]+/ ); print substr( $0, RSTART+1, RLENGTH-1) }' )"  # .(21031.01.1 RAM Add [d...).(20416.03.8 "_p2.02", or _d1.09)
 
         LIB="gitR2"; LIB_LOG=${LIB}_LOG; LIB_USER=${LIB}_USER; Lib=${LIB}; aDir=$(dirname "${BASH_SOURCE}");              # .(41103.02.3).(41102.01.1 RAM Add JPT12_Main2Fns_p1.07.sh Beg).(80923.01.1)
@@ -996,6 +999,11 @@ function getRemoteName() {                                                      
          exit_wCR;
          fi                                                                                                 # .(41119.01.3 End)
 
+        aRepo1=${aStageDir/\/}; if [ "${aStageDir}" == "" ]; then aRepo1="${aProject}_${aStage}"; fi        # .(41111.02b.1 RAM For code-workspace)
+        if [ "${aRepo1/_/}" == "${aRepo1}" ]; then aRepo1="${aProject}_${aRepo1}"; fi                       # .(41111.02b.2)
+
+        sayMsg  "gitR2[1004]  aCloneDir : '${aDir}', aBranch: '${aBranch}', aStage: '${aStage}', aRepo1: '${aRepo1}'" -1
+
      if [ "${bDoit}" != "1" ]; then
 #       echo -e "\n  ${aGIT1}\n  ${aGIT2}"
         echo -e "\n  About to clone remote name, ${aRemoteName}${forBranch}:"
@@ -1005,22 +1013,23 @@ function getRemoteName() {                                                      
         eval        "${aGIT1}" 2>&1 | awk '{ print "  " $0 }'
 #       eval        "${aGIT2}"
                 Sudo find . -type f -name "*.sh" -exec chmod 755 {} +                                       # .(41119.01.4
-        echo -e "\n  Please change into the project folder: ${aDir}"                                        # .(41210.01.x)
-        sayMsg  "gitR2[ 996]  aCloneDir : '${aDir}', aBranch: '${aBranch}', aStage: '${aStage}'" -1
-        cd "${aDir}"; aTS="$( date +%y%m%d )"; aTS="${aTS:1}"                                               # .(41119.01.5 RAM Move to here).(41111.02.2 RAM or commit it)
 
+        cd "${aDir}"; aTS="$( date +%y%m%d )"; aTS="${aTS:1}"                                               # .(41119.01.5 RAM Move to here).(41111.02.2 RAM or commit it)
 #    if [ ! -f "${aCloneDir}/*.code-workspace" ]; then                                                      ##.(41110.03.1)
      if [ ! -n "$(ls *.code-workspace 2>/dev/null)" ]; then                                                 # .(41119.01.6 RAM Was ls "${aCloneDir}/*.."").(41110.03.1 RAM Add .code-workspace file if needed after clone)
         aWorkspace_code="{ \"folders\": [ { \"path\": \".\" } ] }"                                          # .(41110.03.2)
-        sayMsg  "gitR2[1002]  Creating '${aProject}_${aStage}.code-workspace'" -1
-        echo "${aWorkspace_code}" >"${aProject}_${aStage}.code-workspace"                                   # .(41119.01.7).(41111.02.1 RAM Don't do it for now, cuz GIT detects it).(41110.03.3)
+        sayMsg  "gitR2[1002]  Creating '${aRepo1}.code-workspace'" -1
+#       echo "${aWorkspace_code}" >"${aProject}_${aStage}.code-workspace"                                   ##.(41119.01.7).(41111.02.1 RAM Don't do it for now, cuz GIT detects it).(41110.03.3).(41111.02b.2)
+        echo "${aWorkspace_code}" >"${aRepo1}.code-workspace"                                               # .(41111.02b.3).(41119.01.7).(41111.02.1 RAM Don't do it for now, cuz GIT detects it).(41110.03.3)
         echo ""                                                                                             # .(41111.02.3)
-        git add "${aProject}_${aStage}.code-workspace"                        2>&1| awk '{ print "  " $0 }' # .(41111.02.4)
-        git commit -m ".(${aTS}.01_Add ${aProject}_${aStage}.code-workspace)" 2>&1| awk '{ print "  " $0 }' # .(41111.02.5)
+        git add "${aRepo1}.code-workspace"                        2>&1| awk '{ print "  " $0 }'             # .(41111.02b.4).(41111.02.4)
+        git commit -m ".(${aTS}.01_Add ${aRepo1}.code-workspace)" 2>&1| awk '{ print "  " $0 }'             # .(41111.02b.5).(41111.02.5)
 #       git add "${aProject}_${aStage}.code-workspace"                        2>&1| awk '{ print "  " $0 }' ##.(41119.01.8)
-#       git commit -m ".(${aTS}.01_Add ${aProject}_${aStage}.code-workspace)" 2>&1| awk '{ print "  " $0 }' ##(41119.01.9)
-        fi                                                                                                  # .(41110.03.4)
-        fi
+#       git commit -m ".(${aTS}.01_Add ${aProject}_${aStage}.code-workspace)" 2>&1| awk '{ print "  " $0 }' ##.(41119.01.9)
+        fi # // eif add code-workspace                                                                      # .(41110.03.4)
+
+        echo -e "\n  Please change into the project folder: ${aDir}"                                        # .(41210.01.x)
+        fi # // eif bDoit == 1
         exit_wCR
         fi # eoc getRemoteName                                                                              # .(41104.05.5 End).(41103.06.10 End)
 #    -- --- ---------------  =  ------------------------------------------------------  #  ---------------- #
