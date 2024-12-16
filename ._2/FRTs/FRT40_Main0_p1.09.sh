@@ -42,6 +42,7 @@
 ##FD   FRT10_Main0.sh           |  68641| 12/04/24 12:30|   943| p1.09`41204.1230
 ##FD   FRT10_Main0.sh           |  70250| 12/05/24  9:40|   957| p1.09`41205.0940
 ##FD   FRT10_Main0.sh           |  70443| 12/09/24  7:30|   959| p1.09`41209.0730
+##FD   FRT10_Main0.sh           |  72736| 12/16/24 10:20|   996| p1.09`41216.1020
 
 ##DESC     .--------------------+-------+---------------+------+-----------------+
 #            Use the commands in this script to manage FormR app resources.
@@ -136,6 +137,7 @@
 #.(41115.02e 12/05/24 RAM  9:15a| Try a different way for FRT Update ALTools
 # .(41209.01 12/09/24 RAM  7:30a| Update gitR[] numbers
 #.(41115.02f 12/09/24 RAM  9:50a| Change bDoit != "1" to = "1"
+#.(41201.04b 12/16/24 RAM 10:20a| Enable re-install aidocs [aStage] to work
 
 ##PRGM     +====================+===============================================+
 ##ID 69.600. Main0              |
@@ -143,7 +145,7 @@
 #*/
 #========================================================================================================== #  ===============================  #
 
-     aVdt="Dec 9, 2024 9:50a"; aVtitle="formR Tools"                                                      # .(21113.05.8 RAM Add aVtitle for Version in Begin)
+     aVdt="Dec 16, 2024 10:20a"; aVtitle="formR Tools"                                                      # .(21113.05.8 RAM Add aVtitle for Version in Begin)
      aVer="$( echo $0 | awk '{  match( $0, /_[dpstuv][0-9]+\.[0-9]+/ ); print substr( $0, RSTART+1, RLENGTH-1) }' )"  # .(21031.01.1 RAM Add [d...).(20416.03.8 "_p2.02", or _d1.09)
 
      LIB="FRT"; LIB_LOG=${LIB}_LOG; LIB_USER=${LIB}_USER; Lib=${LIB}; aDir=$( dirname "${BASH_SOURCE}" );   # .(41027.01.1 RAM).(80923.01.1)
@@ -779,7 +781,7 @@ function copyFile() {                                                           
         if [ "$aArg2" == "doit"    ]; then aArgs="doit"; fi
         if [ "$aArg2" == "scripts" ]; then aArgs="scripts ${aArg3}"; fi
         if [ "$aArg2" == "profile" ]; then aArgs="profile ${aArg3}"; fi
-        if [ "$aArg2" == "wipe" ]; then aArgs="wipe ${aArg3}"; fi
+        if [ "$aArg2" == "wipe"    ]; then aArgs="wipe ${aArg3}"; fi
 
         if [ "${aArg2}" == "" ] || [ "${aArgs}" != "" ]; then
 #       echo -e "\n* Please provide repo to install, e.g. ALTools or AIDocs."                               # .(41124.02.4)
@@ -792,21 +794,33 @@ function copyFile() {                                                           
         fi  # eif ${aArg2}" == "" no repo                                                                   # .(41124.02.3 End)
 #       ---------------------------------------------------------------------
 
+        if [ "${aArg2/_/}" != "${aArg2}" ]; then                                                            # .(41201.04b.1 Fix aArg2)
+           aArg4="${aArg3}"; aArg3="${aArg2/*_/}"; aArg2="${aArg2/_*/}"                                     # .(41201.04b.2)
+           fi                                                                                               # .(41201.04b.3)
+#          echo "[794] aArg2: '${aArg2}', aArg3: '${aArg3}', aArgs: '${aArgs}', bDoit: '${bDoit}'"; exit
+
         if [ "${aArg2}" == "aidocs" ]; then                                                                 # .(41124.03.1 RAM Add install aidocs Beg)
 
-            aBranch=""; if [ "${aArg3}" != "" ]; then aBranch=" ${aArg3}"; fi                               # .(41201.04.1 RAM Clarity)
+#           aBranch="";   if [ "${aArg4}" != "" ]; then aBranch=" ${aArg4}"; fi                             ##.(41201.04.1 RAM Clarity).(41201.04b.4)
+            aStageDir=""; if [ "${aArg3}" != "" ]; then aStageDir="${aArg3}"; fi                            # .(41201.04b.4 RAM Not aBranch)
+            aRepoStg=" no-stage"; if [ "${aStageDir}" != "" ]; then aRepoStg="_${aStageDir}"; fi            # .(41201.04b.5)
+
         if [ "${bDoit}" != 1 ]; then
-            echo -e "\n  About to install AIDocs"
-            echo "    gitr clone aidocs no-stage${aBranch} -d"                                              # .(41201.04.2 RAM Add aBranch)
+            echo -e "\n  About to install AIDocs${aRepoStg}"                                                # .(41201.04b.6 RAM Add aRepoStg ??)
+#           echo "    gitr clone aidocs no-stage${aBranch} -d"                                              ##.(41201.04.2 RAM Add aBranch).(41201.04b.7)
+            echo "    gitr clone aidocs${aRepoStg}${aBranch} -d"                                            # .(41201.04b.7).(41201.04.2 RAM Add aBranch)
             ${aLstSp}; exit
             fi
-            echo -e "\n  Installing AIDocs"
-            gitr clone aidocs no-stage ${aBranch} -d                                                        # .(41201.04.3)
+            echo -e "\n  Installing AIDocs${aRepoStg}"                                                      # .(41201.04b.8)
+#                     gitr clone aidocs no-stage ${aBranch} -d                                              ##.(41201.04.3).(41201.04b.9)
+#                     gitr clone aidocs${aRepoStg} ${aBranch}                                               ##.(41201.04b.9)
+                      gitr clone aidocs${aRepoStg} ${aBranch} -d                                            # .(41201.04b.9)
+
             if [ "${OS:0:7}" != "Windows" ]; then sudo find . -type f -name "*.sh" -exec chmod 755 {} +; fi # .(41201.04.4)
 #           ${aLstSp}; exit
             exit
         fi # eif install aidocs                                                         # .(41124.03.1 End)
-
+echo "[816] aArg2: '${aArg2}', aArg3: '${aArg3}', aArgs: '${aArgs}'";
 #       ---------------------------------------------------------------------
 
         if [ "${aArg2}" == "altools" ]; then

@@ -30,7 +30,7 @@ function reinstall() {
 
 #  if [ -d "${aRepo}"    ]; then deleteDir "${aRepo}"; fi
 #  if [ -d "${aRepoDir}" ]; then deleteDir "${aRepoDir}"; echo ""; fi
-   if [ -d "${aRepoDir}" ]; then deleteDir "${aRepoDir}"; fi            # .(41208.0
+   if [ -d "${aRepoDir}" ]; then deleteDir "${aRepoDir}"; fi               # .(41208.0
 
    aRepo="$( echo "${aRepo}" | awk '{ print tolower($0) }' )"
 
@@ -43,13 +43,24 @@ if [ "$1" == "" ]; then
    echo -e "\n  You can do: ./re-install.sh FRTools, AnyLLM or AIDocs"
    echo -e   "          or: ./re-install.sh all"
    echo -e "\n  Other possible forms to install into different project folders:"
-   echo -e   "              ./re-install.sh frtools                      ->  FRTools"
-   echo -e   "              ./re-install.sh frtools prod1-master         ->  FRTools_prod1-master"
-   echo -e   "              ./re-install.sh frtools /test2-bruce         ->  FRTools_/test2-bruce"
-   echo -e   "              ./re-install.sh frtools /frtools_dev03-robin ->  FRTools_/FRTools_dev03-robin"
+   echo -e   "              ./re-install.sh frtools                           ->  FRTools"
+   echo -e   "              ./re-install.sh aidocs                            ->  AIDocs_demo1-master"
+   echo -e   "              ./re-install.sh aidocs dev01-rick                 ->  AIDocs_dev01-rick"
+   echo -e   "              ./re-install.sh aidocs /aidocs/aidocs_dev03-robin ->  AIDocs_/AIDocs_dev03-robin"
    echo ""; exit
    fi
 #  --------------------------------------------------------------
+
+  if [ "$1" == "aidocs"   ]; then bCheck="1"; fi;
+  if [ "$1" == "anyllm"   ]; then bCheck="1"; fi;
+  if [ "${bCheck}" == "1" ] && [ "$( which npm )" == "" ]; then
+     echo -e "\n* You need to install NVS, Node and NPM, first.\n"
+     exit
+     fi
+  if [ "${bCheck}" == "1" ] && [ "$( which frt )" == "" ]; then
+     echo -e "\n* Please run: bash re-install frtools, first.\n"
+     exit
+     fi
 
   if [ "$1" == "all" ]; then
      reinstall frtools
