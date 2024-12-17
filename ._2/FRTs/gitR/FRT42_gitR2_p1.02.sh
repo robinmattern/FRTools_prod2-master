@@ -26,7 +26,7 @@
 ##FD   FRT42_GitR2.sh           | 132995| 12/09/24  6:40|  1850| p1.02`.41209.0640
 ##FD   FRT42_GitR2.sh           | 140914| 12/11/24  7:14|  1953| p1.02`.41211.0540
 ##FD   FRT42_GitR2.sh           | 145239| 12/11/24 10:21|  2002| p1.02`.41211.1020
-##FD   FRT42_GitR2.sh           | 145947| 12/12/24  9:31|  2011| p1.02`.41212.0930
+##FD   FRT42_GitR2.sh           | 147201| 12/17/24  9:05|  2022| p1.02`.41217.0905
 
 ##DESC     .--------------------+-------+---------------+------+-----------------+
 #            This script has usefull GIT functions.
@@ -146,7 +146,8 @@
 #.(41211.01b 12/11/24 RAM  8:50a| Install the GIT CLI on Ubuntu
 # .(41211.03 12/11/24 RAM 10:20a| Enable set remote origin account ssh
 #.(41111.02b 12/12/24 RAM  9:30a| Set .code-workspace to new StageDir
-
+#.(41124.06b 12/17/24 RAM  9:05a| Fix shoWorkingFiles
+# .(41217.01 12/17/24 RAM  3:00p| Add gh login
 
 ##PRGM     +====================+===============================================+
 ##ID 69.600. Main0              |
@@ -154,7 +155,7 @@
 #*/
 #========================================================================================================== #  ===============================  #
 
-        aVDt="Dec 12, 2024  9:30a"; aVer="p1.02"; aVTitle="Useful gitR2 Tools by formR";                                    # .(41103.02.2 RAM Was: gitR1)
+        aVDt="Dec 17, 2024  9:05a"; aVer="p1.02"; aVTitle="Useful gitR2 Tools by formR";                                    # .(41103.02.2 RAM Was: gitR1)
         aVer="$( echo "$0" | awk '{ match( $0, /_[dpstuv][0-9]+\.[0-9]+/ ); print substr( $0, RSTART+1, RLENGTH-1) }' )"  # .(21031.01.1 RAM Add [d...).(20416.03.8 "_p2.02", or _d1.09)
 
         LIB="gitR2"; LIB_LOG=${LIB}_LOG; LIB_USER=${LIB}_USER; Lib=${LIB}; aDir=$(dirname "${BASH_SOURCE}");              # .(41103.02.3).(41102.01.1 RAM Add JPT12_Main2Fns_p1.07.sh Beg).(80923.01.1)
@@ -196,6 +197,7 @@ function help() {
      echo "    Update [{branch}] [{name}]      [-f] [-d]  Update all files from {name} [-f for no stash]"   # .(41116.01.1)
      echo "    Backup local                               Copy local repo to ../ZIPs"
      echo "    Install [gh|cli]                           Install the GitHub CLI program gh"                # .(41211.01.1 RAM Revised)
+     echo "    Login [githib] {acct}                      Login to GitHib with CLI program gh"              # .(41217.01.1)
      echo "    Init                                       Initialize a git repository"                      # .(41103.03.1)
      echo "    [-b]                                       Show debug messages"
      echo "    [-d]                                       Doit, i.e. execute the command"
@@ -447,28 +449,37 @@ function shoCommitMsg() {                                                       
 function shoWorkingFiles() {                                                                                # .(41124.06.1 RAM Write showWorkingFiles Beg)
 #    aAWKpgm='                                                                                              ##.(41124.06.2)
 #function getDate( aFile ) { return "2024-11-24 16:40" }; { d = getDate( substr($0,4) ); print d " " $0 }'  ##.(41124.06.2)
+#    shellcheck disable=SC2016
 #    aAWK_GetDate( aFile )='                                                                                # .(41124.06.2 RAM Show Date of git uncommitted files Beg)
           GetDate='
- function getDate( aFile ) {
+function getDate( aFile ) {
 #    if ((getline < aFile) < 0) { return "Not Found        " };  close( aFile )
      if ( ENVIRON["OS"] ~ /Windows/ ) {
 #         cmd = "stat --format=\"%Y-%m-%d %H:%M\" \""      aFile "\" 2>/dev/null"
           cmd = "stat -c \"%y\" \""                        aFile "\" 2>/dev/null"
-     if ((cmd | getline lastmod) <= 0) { close( cmd ); return "Not Found        " }
+#    if ((cmd | getline lastmod) <= 0) { close( cmd ); return "Not Found       "  }
+     if ((cmd | getline lastmod) <= 0) { close( cmd ); return "       Not Found"  }
           split( lastmod, dt, ".")       # Remove fractional seconds
           return substr( dt[1], 1, 16 )  # Get just YYYY-MM-DD HH:MM
       } else {
           cmd = "stat -f \"%Sm\" -t \"%Y-%m-%d %H:%M\" \"" aFile "\" 2>/dev/null" }
 #         cmd | getline lastmod
-#    if ((cmd | getline lastmod) <= 0) { close( cmd ); return "Access Error     " }
-     if ((cmd | getline lastmod) <= 0) { close( cmd ); return "Not Found        " }
-                                         close( cmd ); return lastmod }
-     !/`/ { d = getDate( substr( $0, 4 ) );   print d " " $0 }                                              # .(41124.06.3 RAM Remove files with "`")
+#    if ((cmd | getline lastmod) <= 0) { close( cmd ); return "Access Error    "  }
+     if ((cmd | getline lastmod) <= 0) { close( cmd ); return "Not Found    2  "  }
+                                         close( cmd ); return lastmod
+          } # eof getDate
+#         ----------------------------------------------------------------------------
+          { bOK = 0; aFile = substr( $0, 4 ); gsub(/"/, "", aFile ); a = substr( $0, 1, 3 ) }               # .(41124b.06.1 RAM Rmove "s)
+     /\(/ { bOK = 1; gsub( /\(/, "\\(", aFile ); gsub(/\)/, "\\)", aFile); }                                # .(41124b.06.2 RAM Add \ to parentheses)
+     !/`/ { bOK = 1; }                                                                                      # .(41124b.06.3 RAM Different method).(41124.06.3 RAM Remove files with "`")
+#    !/`/ { d = getDate( substr( $0, 4 ) ); print d " " $0 }                                                ##.(41124.06.3 RAM Remove files with "`").(41124b.06.3)
+      bOK { d = getDate( aFile ); print a" "d"       "aFile }                                               # .(41124.06b.4 RAM Use bOK and switch a and d)
 #    !/`/ {      aFile = substr( $0, 4 );     print "  aFile: [" aFile "]" }                                ##.(41124.06.3)
-    '                                                                                                       # .(41124.06.2 End)
+     '                                                                                                      # .(41124.06.2 End)
 #      git status --short | awk '{ print "   " $1 "  " substr( $0, 4) }'                                    ##.(41124.06.4)
     if [ "$1" == "" ]; then                                                                                 # .(41124.06.11 RAM For status)
-       git status -u --short | awk "${GetDate}" | awk '{printf "%20s  %-16s  %s\n",$3,$1" "$2, substr($0,21)}' # .(41129.02.3).(41124.06.4)
+#      git status -u --short | awk "${GetDate}" | awk '{ printf "%20s  %-16s  %s\n",$3,$1" "$2, s.($0,21)}' ##.(41129.02.3).(41124.06.4).(41124.06b.5)
+       git status -u --short | awk "${GetDate}" | awk '{ printf "%17s %s\n", "", $0 }'                      # .(41124.06b.5).(41129.02.3).(41124.06.4)
 #      git status --short | awk "${GetDate}"                                                                ##.(41124.06.4)
 #      git status --short                                                                                   ##.(41124.06.4)
        fi                                                                                                   # .(41124.06.12)
