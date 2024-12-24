@@ -43,6 +43,7 @@
 ##FD   FRT10_Main0.sh           |  70250| 12/05/24  9:40|   957| p1.09`41205.0940
 ##FD   FRT10_Main0.sh           |  70443| 12/09/24  7:30|   959| p1.09`41209.0730
 ##FD   FRT10_Main0.sh           |  72736| 12/16/24 10:20|   996| p1.09`41216.1020
+##FD   FRT10_Main0.sh           |  74458| 12/18/24 09:25|  1025| p1.09`41218.0925
 
 ##DESC     .--------------------+-------+---------------+------+-----------------+
 #            Use the commands in this script to manage FormR app resources.
@@ -138,6 +139,7 @@
 # .(41209.01 12/09/24 RAM  7:30a| Update gitR[] numbers
 #.(41115.02f 12/09/24 RAM  9:50a| Change bDoit != "1" to = "1"
 #.(41201.04b 12/16/24 RAM 10:20a| Enable re-install aidocs [aStage] to work
+# .(41218.04 12/18/24 RAM  9:25a| Add frt init
 
 ##PRGM     +====================+===============================================+
 ##ID 69.600. Main0              |
@@ -265,6 +267,7 @@ function Help( ) {
      echo "             RSS Dir (RDir)"                                                 # .(21107.02.3)
      echo "             RSS DirList (DirList)"                                          # .(21107.02.4)
      echo ""                                                                                                # .(41107.01.2)
+     echo "    FRT Init                             Create a local repo folder"                             # .(41218.04.1)
      echo "    FRT Install                          Run ./set-frtools.sh"                                   # .(41124.02.1)
      echo "        Install [ALTools] [-doit]        Install ALTools"                                        # .(41111.01.2)
      echo "                [ALTools] [-doit] [-u]   Update ALTools"                                         # .(41115.02d.30)
@@ -352,6 +355,7 @@ function Help( ) {
      getCmd1   "set"     "path" "Set Var"                                                                   # .(21120.03.2)
      getCmd1   "setpath" ""     "Set Var"   1                                                               # .(21120.03.3)
      getCmd1   "upd"     ""     "Update"    1                                                               # .(41107.01.4)
+     getCmd1   "ini"     ""     "Init"      1                                                               # .(41218.04.2)
      getCmd1   "ins"     ""     "Install"   1                                                               # .(41111.01.4)
 #    getCmd1   "ins"     "-df"  "Install"   1                                                               ##.(41115.02d.36)
 
@@ -745,6 +749,31 @@ function Help( ) {
 #    -- --- ---------------  =  ------------------------------------------------------  #  ---------------- #
 
 #====== =================================================================================================== #  ===========
+#>      INSTALL Command                                                                                     # .(41218.04.3 RAM Add Init Command beg)
+#====== =================================================================================================== #
+
+        sayMsg    "FRT40[ 755]  Init Command" -1;
+
+  if [ "${aCmd}" == "Init" ]; then
+        shift
+  if [ "$1" == "" ]; then
+        echo -e "\n* Please enter a name for the new repository folder."
+        echo -e "\n  It must be in a folder named, C:\\Repos or /Users/Shared/Repos."
+        echo -e   "     or in unix, /home/shared/repos/owner.  Owner is optional."
+        echo -e "\n  It can have any of the following names:"
+        echo -e   "     Project_/Project_stage-author"
+        echo -e   "     Project_/stage-author"
+        echo -e   "     Project_stage-author"
+        echo -e   "     Project"
+        echo -e "\n  Stage can be: prod1, test2 or dev03."
+        exit_wCR
+        fi
+        gitr init "$@"
+
+     fi # eoc Init Command                                                                                  # .(41218.04.3 End)
+#    -- --- ---------------  =  ------------------------------------------------------  #  ---------------- #
+
+##====== =================================================================================================== #  ===========
 #>      INSTALL Command                                                                                     # .(41111.01.5 RAM Add Install Command beg)
 #====== =================================================================================================== #
 

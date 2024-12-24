@@ -5,7 +5,7 @@
      aCR=""; if [ "${OSTYPE:0:6}" == "darwin" ]; then aCR="\n"; fi
      aRepos="$( pwd | awk '{ print tolower($0) }' )";
 if [ "${aRepos/repos}" == "${aRepos}" ]; then
-     echo -e "\n* You must be in a Repos folder.\n"
+     echo -e "* You must be in a Repos folder.\n"
      exit; fi
 
      aZIPs_URL="https://raw.githubusercontent.com/robinmattern/FRTools_prod2-master/master/._2/ZIPs"
