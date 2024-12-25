@@ -14,7 +14,7 @@
 ##FD         set-frtools.sh     |  20708| 12/08/24 23:50|   388| v1.05`41208.2350
 ##FD         set-frtools.sh     |  25171| 12/11/24  7:21|   446| v1.05`41211.0720
 ##FD         set-frtools.sh     |  26049| 12/11/24  8:41|   453| v1.05`41211.0840
-##FD         set-frtools.sh     |  27656| 12/25/24 12:20|   471| v1.05`41225.1220
+##FD         set-frtools.sh     |  28002| 12/25/24 12:40|   472| v1.05`41225.1240
 #
 ##DESC     .--------------------+-------+-----------------+------+---------------+
 #            Create ._0/bin folder and copy all command scripts there as well as
@@ -59,6 +59,7 @@
 #.(41208.02d 12/25/24 RAM 10:50a| Reverse priority for .bash_profile
 # .(41225.01 12/25/24 RAM 10:59a| Set aTS to include Y for year
 # .(41225.02 12/25/24 RAM 12:20p| Fix SetTHE_SERVER
+# .(41225.03 12/25/24 RAM 12:40p| Say ~/.bash_profile may need to be run
 
 ##PRGM     +====================+===============================================+
 ##ID 69.600. Main0              |
@@ -72,7 +73,7 @@
   aVer="v1.05\`41208.2350"
   aVer="v1.05\`41211.0720"
   aVer="v1.05\`41211.0840"
-  aVer="v1.05\`41225.1220"
+  aVer="v1.05\`41225.1240"
 
   echo ""
 
@@ -460,11 +461,11 @@ function  makScript() {
   cd "${aRepo_Dir}"
 
 # if [ -z "$(command -v frt 2>/dev/null)" ]; then
-  if [ -z "$(which frt)" ]; then
-     echo -e "* You need to run, source ${aBashrc}, or login again."
-   else
-     echo -e "  FRTools are installed."
-     fi
+# if [ -z "$(which frt)" ]; then                                                        # .(41225.03.1 RAM)
+     echo -e "* You may need to run, source ${aBashrc}, or login again."
+#  else                                                                                 # .(41225.03.2)
+     echo -e "\n  FRTools are installed."
+#    fi                                                                                 # .(41225.03.3)
 
   exit_withCR
 
