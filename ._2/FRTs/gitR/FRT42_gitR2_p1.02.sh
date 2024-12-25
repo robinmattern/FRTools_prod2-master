@@ -27,7 +27,8 @@
 ##FD   FRT42_GitR2.sh           | 140914| 12/11/24  7:14|  1953| p1.02`.41211.0540
 ##FD   FRT42_GitR2.sh           | 145239| 12/11/24 10:21|  2002| p1.02`.41211.1020
 ##FD   FRT42_GitR2.sh           | 147201| 12/17/24  9:05|  2022| p1.02`.41217.0905
-
+##FD   FRT42_GitR2.sh           | 149239| 12/25/24 15:40|  2031| p1.02`.41225.1540
+#
 ##DESC     .--------------------+-------+---------------+------+-----------------+
 #            This script has usefull GIT functions.
 #
@@ -148,6 +149,7 @@
 #.(41111.02b 12/12/24 RAM  9:30a| Set .code-workspace to new StageDir
 #.(41124.06b 12/17/24 RAM  9:05a| Fix shoWorkingFiles
 # .(41217.01 12/17/24 RAM  3:00p| Add gh login
+# .(41225.05 12/25/24 RAM  3:40p| Modify gitr branch list
 
 ##PRGM     +====================+===============================================+
 ##ID 69.600. Main0              |
@@ -155,7 +157,7 @@
 #*/
 #========================================================================================================== #  ===============================  #
 
-        aVDt="Dec 17, 2024  9:05a"; aVer="p1.02"; aVTitle="Useful gitR2 Tools by formR";                                    # .(41103.02.2 RAM Was: gitR1)
+        aVDt="Dec 25, 2024 3:40p"; aVer="p1.02"; aVTitle="Useful gitR2 Tools by formR";                                    # .(41103.02.2 RAM Was: gitR1)
         aVer="$( echo "$0" | awk '{ match( $0, /_[dpstuv][0-9]+\.[0-9]+/ ); print substr( $0, RSTART+1, RLENGTH-1) }' )"  # .(21031.01.1 RAM Add [d...).(20416.03.8 "_p2.02", or _d1.09)
 
         LIB="gitR2"; LIB_LOG=${LIB}_LOG; LIB_USER=${LIB}_USER; Lib=${LIB}; aDir=$(dirname "${BASH_SOURCE}");              # .(41103.02.3).(41102.01.1 RAM Add JPT12_Main2Fns_p1.07.sh Beg).(80923.01.1)
@@ -307,9 +309,10 @@ done
   if [ "$1" == "sho" ] && [ "$2" == "com" ]; then aCmd="shoCommit"; aArg3=$3; aArg4=$4; fi                  # .(41123.08.2 RAM Add aArgs).(51030.05.2)
   if [ "$1" == "com" ] && [ "$2" == "sho" ]; then aCmd="shoCommit"; aArg3=$3; aArg4=$4; fi                  # .(41123.08.3).(51030.05.3)
 
-  if [ "$1" == "bra" ];                      then aCmd="checkoutBranch";  fi                                # .(41114.04.3 RAM Checkout Branch).(41103.05.2)
+  if [ "$1" == "bra" ] && [ "$2" != ""    ]; then aCmd="checkoutBranch";  fi                                # .(41225.05.1).(41114.04.3 RAM Checkout Branch).(41103.05.2)
   if [ "$1" == "che" ];                      then aCmd="checkoutBranch";  fi                                # .(41114.04.4 RAM Checkout Branch).(41103.05.2)
 
+  if [ "$1" == "bra" ] && [ "$2" == ""    ]; then aCmd="listBranches";    fi                                # .(41225.05.2)
   if [ "$1" == "lis" ] && [ "$2" == "bra" ]; then aCmd="listBranches";  fi              # .(41103.05.2 RAM List Branchs)
   if [ "$1" == "bra" ] && [ "$2" == "lis" ]; then aCmd="listBranches";  fi              # .(41103.05.2 RAM List Branchs)
   if [ "$1" == "tra" ] && [ "$2" == "bra" ]; then aCmd="trackBranch";   fi
@@ -1033,6 +1036,7 @@ function getRemoteName() {                                                      
 #       echo "${aWorkspace_code}" >"${aProject}_${aStage}.code-workspace"                                   ##.(41119.01.7).(41111.02.1 RAM Don't do it for now, cuz GIT detects it).(41110.03.3).(41111.02b.2)
         echo "${aWorkspace_code}" >"${aRepo1}.code-workspace"                                               # .(41111.02b.3).(41119.01.7).(41111.02.1 RAM Don't do it for now, cuz GIT detects it).(41110.03.3)
         echo ""                                                                                             # .(41111.02.3)
+
         git add "${aRepo1}.code-workspace"                        2>&1| awk '{ print "  " $0 }'             # .(41111.02b.4).(41111.02.4)
         git commit -m ".(${aTS}.01_Add ${aRepo1}.code-workspace)" 2>&1| awk '{ print "  " $0 }'             # .(41111.02b.5).(41111.02.5)
 #       git add "${aProject}_${aStage}.code-workspace"                        2>&1| awk '{ print "  " $0 }' ##.(41119.01.8)
@@ -1359,8 +1363,13 @@ function getRemoteName() {                                                      
 
   if [ "${aCmd}" == "listBranches" ]; then                                                                  # .(41114.04.5 RAM write listBranches)
      sayMsg  "gitR2[1298]  listBranches" -1
-        echo ""
-        git branch -vva | awk '{ print "  " $0 }'
+        echo ""; nWdt=13
+#       git branch -vva | awk '{ print "  " $0 }'                                                           ##.(41225.05.4)
+#       git branch -vv  | awk '{ print " -- " $0 }'                                                         ##.(41225.05.4)
+#       git branch -vv  | awk  '/\* .+ \[/         { if ($4 ~ /\]$/) { a = $4; $4="" }; if ($5 ~ /\]$/) { a = $4 $5; $4=$5="" }; if ($6 ~ /\]$/) { a = $4 $5 $6; $4=$5=$6="" }; gsub( /  +/, " "); $2 = substr( $2 "          ", 1, 10); print "*"substr($0,2)" -- "a}'    # .(41225.05.3)
+        git branch -vv  | awk  'BEGIN { n='${nWdt}'; s=sprintf("%"n"s", "--") } /\* .+ \[/          { if ($4 ~ /\]$/) { a = $4; $4="" }; if ($5 ~ /\]$/) { a = $4 $5; $4=$5="" }; if ($6 ~ /\]$/) { a = $4 $5 $6; $4=$5=$6="" }; gsub( /  +/, " "); $2 = substr( $2 s, 1, n); $3 = $3" "; print "*"substr($0,2)" -- "a }'                                                          # .(41225.05.3)
+        git branch -vv  | awk  'BEGIN { n='${nWdt}'; s=sprintf("%"n"s", "--") } /\* / && !/\[/                                                                                                                                                                                                                         { $2 = substr( $2 s, 1, n); $3 = $3" "; print      $0 }'    # .(41225.05.4)
+        git branch -vv  | awk  'BEGIN { n='${nWdt}'; s=sprintf("%"n"s", "==") } /\* / { next } /\[/ { if ($3 ~ /\]$/) { a = $3; $3="" }; if ($4 ~ /\]$/) { a = $3 $4; $3=$4="" }; if ($5 ~ /\]$/) { a = $3 $4 $5; $3=$4=$5="" }; gsub( /  +/, " "); $1 = substr( $1 s, 1, n); $2 = $2" "; print "  " $0" -- "a ; next} { $1 = substr( $1 s, 1, n); $2 = $2" "; print "  " $0 }'    # .(41225.05.5)
         exit_wCR                                                                                            # .(41116.01.16)
      fi                                                                                                     # .(41114.04.5 End)
 #====== =================================================================================================== #  ===========
@@ -1380,7 +1389,7 @@ function getRemoteName() {                                                      
         echo -e "\n  ${aGIT1} # Add -d to doit"
       else
         echo -e "\n  ${aGIT1} \n"
-        eval        "${aGIT1}"
+        eval        "${aGIT1}"  2>&1 | awk '{ print "  " $0 }'
         fi
         exit_wCR
      fi                                                                                                     # .(41209.02.4End)
