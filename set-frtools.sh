@@ -445,7 +445,7 @@ function  makScript() {
   aProj_Dir="$(pwd)"
 
   setOSvars;          # echo "  OS: ${aOS}"
-  setTHE_SERVER "$2";   echo "  THE_SERVER: ${THE_SERVER}"; exit
+# setTHE_SERVER "$2";   echo "  THE_SERVER: ${THE_SERVER}"; exit
 
   if [[ "${aCmd}" == "help"    ]]; then help; fi
   if [[ "${aCmd}" == "doit"    ]]; then cpyToBin; setBashrc; fi                                             # .(41031.02.3)
