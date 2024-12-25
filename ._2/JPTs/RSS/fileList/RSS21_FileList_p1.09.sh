@@ -88,7 +88,7 @@ while [[ $# -gt 0 ]]; do key="$1"; # echo "key: '${key}', \$2: '$2'"
 
 #        aLstSp="echo "; if [ "${aOSv/w}" != "${aOSv}" ]; then aLstSp=""; fi                                                    ##.(10706.09.1 RAM Windows returns an extra blank line).(21113.06.1 RAM Reverse).(21120.02.2).(40520.02.1)
 function exit_wCR() {                                                                                                           # .(40520.02.3 RAM New name).(40520.02.1 RAM Add Beg)
-   if [ "${OSTYPE:0:6}" == "darwin" ]; then echo ""; fi
+  if [ "${OS:0:7}"     != "Windows" ]; then echo ""; fi                                 # .(41120.01.4 RAM Fix exit_wCR)
          exit
          }                                                                                                                      # .(40520.02.1 End)
 # +------- +------------------ +----------------------------------------------------------- # ------------+ ------------------- # --------------+

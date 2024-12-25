@@ -2,7 +2,8 @@
 
 #    aVer=".(41208.05_Latest set-repos and set-repos-dir.sh"
 
-     aCR=""; if [ "${OSTYPE:0:6}" == "darwin" ]; then aCR="\n"; fi
+     aCR=""; if [ "${OS:0:7}"     != "Windows" ]; then aCR="\n"; fi                     # .(41120.01.6) 
+
      aRepos="$( pwd | awk '{ print tolower($0) }' )";
 if [ "${aRepos/repos}" == "${aRepos}" ]; then
      echo -e "* You must be in a Repos folder.\n"

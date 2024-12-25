@@ -113,11 +113,11 @@
 
 # +------- +------------------ +----------------------------------------------------------- # ------------+ ------------------- # --------------+
 
-function exit_wCR() {                                                                       # .(41120.01.2 RAM Add exit_CR Beg)
-# if [ "${OSTYPE:0:6}" == "darwin"  ]; then echo ""; fi
-  if [ "${OS:0:7}"     != "Windows" ]; then echo ""; fi
+function exit_wCR() {                                                                   # .(41120.01.2 RAM Add exit_CR Beg)
+# if [ "${OSTYPE:0:6}" == "darwin"  ]; then echo ""; fi                                 ##.(41120.01.2) 
+  if [ "${OS:0:7}"     != "Windows" ]; then echo ""; fi                                 # .(41120.01.2 RAM Fix exit_wCR)
      exit
-     }                                                                                      # .(41120.01.2 End)
+     }                                                                                  # .(41120.01.2 End)
 # ---------------------------------------------------------------------------
 
 function  setOS() {
@@ -293,9 +293,9 @@ function  Begin() {                                                             
      echo ""
 #    echo "  Robin's Shell Scripts Version: ${aVer}   ($( date "+%b %-d %Y %H:%M" ))"                       ##.(20429.04.1)
      echo "  ${aVtitle}: ${aVer}   (${aVdt})"                                                               # .(21113.05.2)
-#    if [ "${1:0:3}" == "-ve" ]; then echo "    $0"; fi                                                     ##.(41120.01.3).(20620.01.1 RAM)
-#    echo ""; exit                                                                                          ##.(41120.01.3)
-     exit_wCR                                                                                               # .(41120.01.3)
+#    if [ "${1:0:3}" == "-ve" ]; then echo "    $0"; fi                                 ##.(41120.01.2).(20620.01.1 RAM)
+#    echo ""; exit                                                                      ##.(41120.01.2)
+     exit_wCR                                                                           # .(41120.01.2)
      fi                                                                                                     # .(21113.05.1 RAM End)
 # if [ "${aCmd}" == "version"  ]; then echo ""; echo $0 | awk '{ gsub( /.+-v|.sh/, "" ); print "  JPT Version: " $0 }'; echo ""; exit; fi
 # if [ "${aCmd}" == "version"  ]; then echo ""; echo $0 | awk '{ gsub( /.+-v|.sh/, "" ); print "  '$LIB' Version: "          $0      }'; echo ""; exit; fi  # .(80923.02.4 Was "JPT-..)

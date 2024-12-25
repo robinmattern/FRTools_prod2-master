@@ -73,7 +73,7 @@
 # if [ "${1}" == "source"   ]; then echo ${aFns}     | awk '{                         print "                      \""    $0 "\"" }'; echo ""; exit; fi  # .(30516.02.2)
 
 function echo_exit() {                                                                                      # .(40520.02.4 RAM Add Beg)
-   if [ "${OSTYPE:0:6}" == "darwin" ]; then echo ""; fi
+   if [ "${OS:0:7}" != "Windows" ]; then echo ""; fi
    exit
    }                                                                                                        # .(40520.02.4 End)
 # +------- +------------------ +----------------------------------------------------------- # ------------+ ------------------- # --------------+
@@ -248,7 +248,6 @@ if [ "$bHdr" != "0" ]; then
         fi
 
   if [ "$bHdr" != "0" ]; then
-        ${aLstSp}; exit
         echo_exit # ${aLstSp}; exit                                                     # .(40520.02.6)
 #       echo ""
         fi

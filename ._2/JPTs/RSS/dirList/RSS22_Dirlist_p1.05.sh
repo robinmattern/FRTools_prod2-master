@@ -10,6 +10,8 @@
 ##FD   RSS22_DirList.sh         |  16556|  5/03/23 16:10|   215| p1.03`30503.1610
 ##FD   RSS22_DirList.sh         |  17410|  5/16/23  8:45|   230| p1.04`30516.0845
 ##FD   RSS22_DirList.sh         |  18645|  5/16/23  9:20|   243| p1.04`30516.0920
+##FD   RSS22_DirList.sh         |  20134| 12/25/24  9:30|   263| p1.04`41225.0930
+#
 ##DESC     .--------------------+-------+-------------------+------+------------+
 #            List directory counts using du on every subfolder, where
 #
@@ -45,12 +47,13 @@
 # .(40520.02  5/20/24 RAM  8:00a| Use echo_exit
 # .(40520.03  5/20/24 RAM  8:30a| Accomodate MacOS
 # .(40520.04  5/20/24 RAM 10:00a| Check if en_US exists
+#.(41120.01b 12/25/24 RAM  9:30a| Fix echo_exit once and for all
 
 ##PRGM     +====================+===============================================+
 ##ID 69.600. Main               |
 ##SRCE     +====================+===============================================+
 #*/
-    aVdt="May 16, 2023 9:20a"; aVtitle="Robin's Script Tools"                                                                   # .(21113.05.6 RAM Add aVtitle for Version in Begin).(30516.02.1)
+    aVdt="Dec 25, 2024 9:20a"; aVtitle="Robins Script Tools"                                                                   # .(21113.05.6 RAM Add aVtitle for Version in Begin).(30516.02.1)
     aVer="$( echo $0 | awk '{  match( $0, /_[dpstuv][0-9]+\.[0-9]+/ ); print substr( $0, RSTART+1, RLENGTH-1) }' )"             # .(21031.01.1 RAM Add [d...).(20416.03.8 "_p2.02", or _d1.09)
 
             LIB="RSS"; LIB_LOG=${LIB}_LOG; LIB_USER=${LIB}_USER                             # .(80923.01.1)
@@ -73,7 +76,7 @@
 # if [ "${1}" == "source"   ]; then echo ${aFns}     | awk '{                         print "                      \""    $0 "\"" }'; echo ""; exit; fi  # .(30516.02.2)
 
 function echo_exit() {                                                                                      # .(40520.02.4 RAM Add Beg)
-   if [ "${OSTYPE:0:6}" == "darwin" ]; then echo ""; fi
+  if [ "${OS:0:7}"     != "Windows" ]; then echo ""; fi                                 # .(41120.01.3 RAM Fix exit_wCR)
    exit
    }                                                                                                        # .(40520.02.4 End)
 # +------- +------------------ +----------------------------------------------------------- # ------------+ ------------------- # --------------+

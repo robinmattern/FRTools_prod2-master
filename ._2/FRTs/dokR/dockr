@@ -36,7 +36,7 @@
  if [ "$1" == ""           ]; then  ${aDockr_Cmd};      exit; fi
 
 function echo_exit() {
-   if [ "${OSTYPE:0:6}" == "darwin" ]; then echo ""; fi
+   if [ "${OS:0:6}" != "Windows" ]; then echo ""; fi                                    # .(41120.01.9)
    exit
    }
 
