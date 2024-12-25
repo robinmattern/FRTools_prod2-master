@@ -224,7 +224,7 @@ function exit_wCR() {
 # ---------------------------------------------------------------------------
 
 function setOSvars() {
-     aTS=$( date '+%y%m%d.%H%M' ); aTS=${aTS:2}
+     aTS=$( date '+%y%m%d.%H%M' ); aTS=${aTS:1}                                                             # .(41225.01.2)
 #    aBashrc="$HOME/.bashrc"                                                                                ##.(41208.02c.1)
      if [ -f "$HOME/.bash_profile" ]; then aBashrc="$HOME/.bash_profile"; fi                                # .(41208.02c.1)
      if [ -f "$HOME/.bashrc"       ]; then aBashrc="$HOME/.bashrc"; fi                                      # .(41208.02c.2)

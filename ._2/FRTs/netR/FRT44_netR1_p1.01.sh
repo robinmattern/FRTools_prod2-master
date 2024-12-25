@@ -47,7 +47,7 @@ function exit_wCR() {
 # -----------------------------------------------------------
 
 function setOSvars() {
-     aTS=$( date '+%y%m%d.%H%M' ); aTS=${aTS:2}
+     aTS=$( date '+%y%m%d.%H%M' ); aTS=${aTS:1}                                                             # .(41225.01.3)
      aBashrc="$HOME/.bashrc"
      aBinDir="/Home/._0/bin"
      aOS="linux"

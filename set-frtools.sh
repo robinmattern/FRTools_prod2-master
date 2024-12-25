@@ -14,7 +14,7 @@
 ##FD         set-frtools.sh     |  20708| 12/08/24 23:50|   388| v1.05`41208.2350
 ##FD         set-frtools.sh     |  25171| 12/11/24  7:21|   446| v1.05`41211.0720
 ##FD         set-frtools.sh     |  26049| 12/11/24  8:41|   453| v1.05`41211.0840
-##FD         set-frtools.sh     |  26289| 12/25/24 10:50|   456| v1.05`41225.1050
+##FD         set-frtools.sh     |  26450| 12/25/24 10:59|   457| v1.05`41225.1059
 #
 ##DESC     .--------------------+-------+-----------------+------+---------------+
 #            Create ._0/bin folder and copy all command scripts there as well as
@@ -57,6 +57,7 @@
 #.(41208.02c 12/11/24 RAM  7:20a| Update finding .bashrc on unix
 # .(41211.02 12/11/24 RAM  8:40a| Fix wierdness copying script files
 #.(41208.02d 12/25/24 RAM 10:50a| Reverse priority for .bash_profile
+# .(41225.01 12/25/24 RAM 10:59a| Set aTS to include Y for year
 
 ##PRGM     +====================+===============================================+
 ##ID 69.600. Main0              |
@@ -70,7 +71,7 @@
   aVer="v1.05\`41208.2350"
   aVer="v1.05\`41211.0720"
   aVer="v1.05\`41211.0840"
-  aVer="v1.05\`41225.1050"
+  aVer="v1.05\`41225.1059"
 
   echo ""
 
@@ -89,7 +90,7 @@ function help() {
 # -----------------------------------------------------------
 
 function setOSvars() {
-     aTS=$( date '+%y%m%d.%H%M' ); aTS=${aTS:2}
+     aTS=$( date '+%y%m%d.%H%M' ); aTS=${aTS:1}                                                             # .(41225.01.1 RAM Was ${aTS:2})
 #    aBashrc="$HOME/.bashrc"                                                                                ##.(41208.02c.1)
      if [ -f "$HOME/.bashrc"       ]; then aBashrc="$HOME/.bashrc"; fi                                      # .(41208.02b.1).(41208.02c.2)
      if [ -f "$HOME/.bash_profile" ]; then aBashrc="$HOME/.bash_profile"; fi                                # .(41208.02b.2).(41208.02c.1)
