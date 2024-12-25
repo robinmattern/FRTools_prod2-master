@@ -14,7 +14,7 @@
 ##FD         set-frtools.sh     |  20708| 12/08/24 23:50|   388| v1.05`41208.2350
 ##FD         set-frtools.sh     |  25171| 12/11/24  7:21|   446| v1.05`41211.0720
 ##FD         set-frtools.sh     |  26049| 12/11/24  8:41|   453| v1.05`41211.0840
-##FD         set-frtools.sh     |  26450| 12/25/24 10:59|   457| v1.05`41225.1059
+##FD         set-frtools.sh     |  27656| 12/25/24 12:20|   471| v1.05`41225.1220
 #
 ##DESC     .--------------------+-------+-----------------+------+---------------+
 #            Create ._0/bin folder and copy all command scripts there as well as
@@ -58,6 +58,7 @@
 # .(41211.02 12/11/24 RAM  8:40a| Fix wierdness copying script files
 #.(41208.02d 12/25/24 RAM 10:50a| Reverse priority for .bash_profile
 # .(41225.01 12/25/24 RAM 10:59a| Set aTS to include Y for year
+# .(41225.02 12/25/24 RAM 12:20p| Fix SetTHE_SERVER
 
 ##PRGM     +====================+===============================================+
 ##ID 69.600. Main0              |
@@ -71,7 +72,7 @@
   aVer="v1.05\`41208.2350"
   aVer="v1.05\`41211.0720"
   aVer="v1.05\`41211.0840"
-  aVer="v1.05\`41225.1059"
+  aVer="v1.05\`41225.1220"
 
   echo ""
 
@@ -305,13 +306,18 @@ function setTHE_SERVER() {                                                      
 #   THE_SERVER='Robins-Mac-mini.local       rm231d-os14_
 #   THE_SERVER='sc212d-w10p_Windows-Prod1 (127.0.0.1)'      rm228d-w11p    RM228D-W11P
 
-  if [ "${aOS}" == "windows" ]; then aIP="$( ipconfig | awk '/IPv4/  { a = substr($0,40) }; END { print a }' )"
-                                else aIP="$( ifconfig | awk '/inet / { a = $2 }; END { print a }' )"; fi
+  if [ "${aOS}" == "windows" ]; then aIP="$( ipconfig | awk '/IPv4/  { a = substr($0,40) }; END { print a }' )"; fi
+  if [ "${aOS}" == "darwin"  ]; then aIP="$( ifconfig | awk '/inet / { a = $2 }; END { print a }' )"; fi                    # .(41225.02.1)
+  if [ "${aOS}" == "linux"   ]; then aIP="$( ip a | awk '/inet / { a = $2 }; END { sub( /\/.*/, "", a); print a }' )"; fi   # .(41225.02.2 RAM Only works in Latest yersions of Ubuntu)
+
   if [ "${aOS}" == "darwin"  ]; then aOSN="os${OSTYPE:6:2}"; fi
-  if [ "${aOS}" == "windows" ]; then aOSN="w$( wmic os get caption | awk 'NR == 2 { print $3 substr($4,1,1) }' )"; fi
-  if [ "${aOS}" == "msys"    ]; then aOSN="w$( wmic os get caption | awk '{ print $3 substr($4,1,1) }' )"; fi
-  if [ "${aOS}" == "linux"   ]; then aOSN="ub$( cat /etc/issue | awk '{ print $3 substr($4,1,1) }' )"; fi
+  if [ "${aOS}" == "windows" ]; then aOSN="w$( wmic os get caption | awk 'NR == 2 { print $3 tolower( substr($4,1,1)) }' )"; fi  # .(41225.02.3)
+  if [ "${aOS}" == "msys"    ]; then aOSN="w$( wmic os get caption | awk 'NR == 2 { print $3 tolower( substr($4,1,1)) }' )"; fi  # .(41225.02.4)
+# if [ "${aOS}" == "linux"   ]; then aOSN="ub$( cat /etc/issue | awk '{ print $3 substr($4,1,1) }' )"; fi  ##.(41225.02.5)
+  if [ "${aOS}" == "linux"   ]; then aOSN="ub$( cat /etc/issue | awk '{ print substr($2,1,2) }'    )"; fi  # .(41225.02.5)
+
 #      echo "  THE_SERVER: ${THE_SERVER}"
+#      echo "  aIP: ${aIP}"
 
        aSvr="$1";  aSvr="$( echo "${aSvr/doit/}" | sed 's/ *$//' )"                     # .(41030.06.4 RAM Add /doit/)
 #                           echo "  aSvr: '${aSvr}' (${#aSvr})'"
@@ -326,7 +332,14 @@ function setTHE_SERVER() {                                                      
   if [ "${THE_SERVER}" != "" ]; then return; fi
 
   if [ "${aSvr}" == "" ]; then
-     aSvr="xx000-${aOSN}_${HOSTNAME/.local/} (${aIP})"
+     aName="${HOSTNAME/.local/}";
+     nPos=6; if [ "${aOSN}" == "${aName:7:4}" ]; then nPos=7; fi                        # .(41225.02.6)
+     echo "  aOSN: ${aOSN}, aName: ${aName:${nPos}:4}"                                  # .(41225.02.7)
+  if [ "${aOSN}" == "${aName:${nPos}:4}" ]; then                                        # .(41225.02.8)
+     aSvr="${aName:0:$(( nPos + 4 ))}_Web-Server (${aIP})"                              # .(41225.02.9 RAM Special name)
+   else
+     aSvr="xx000-${aOSN}_${aName} (${aIP})"                                             # .(41225.02.10)
+     fi                                                                                 # .(41225.02.11)
      THE_SERVER="${aSvr}"
      fi
   }                                                                                     # .(41030.07.3 End)
@@ -431,7 +444,8 @@ function  makScript() {
   cd ..
   aProj_Dir="$(pwd)"
 
-  setOSvars; # echo "  OS: ${aOS}"
+  setOSvars;          # echo "  OS: ${aOS}"
+  setTHE_SERVER "$2";   echo "  THE_SERVER: ${THE_SERVER}"; exit
 
   if [[ "${aCmd}" == "help"    ]]; then help; fi
   if [[ "${aCmd}" == "doit"    ]]; then cpyToBin; setBashrc; fi                                             # .(41031.02.3)
