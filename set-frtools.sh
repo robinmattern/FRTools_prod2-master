@@ -14,7 +14,8 @@
 ##FD         set-frtools.sh     |  20708| 12/08/24 23:50|   388| v1.05`41208.2350
 ##FD         set-frtools.sh     |  25171| 12/11/24  7:21|   446| v1.05`41211.0720
 ##FD         set-frtools.sh     |  26049| 12/11/24  8:41|   453| v1.05`41211.0840
- 
+##FD         set-frtools.sh     |  26289| 12/25/24 10:50|   456| v1.05`41225.1050
+#
 ##DESC     .--------------------+-------+-----------------+------+---------------+
 #            Create ._0/bin folder and copy all command scripts there as well as
 #            Update ,bashrc (or .zshrc) with PATH, THE_SERVER and OS Prompt.
@@ -54,7 +55,8 @@
 # .(41208.02 12/08/24 RAM  4:55p| Set different ${aBashrc}) in darwin20
 #.(41208.02b 12/08/24 RAM 11:50p| Who is right re setopt for MacOS
 #.(41208.02c 12/11/24 RAM  7:20a| Update finding .bashrc on unix
-# .(41211.02 12/11/24 RAM  8:40a| Fix wierdness copying script files 
+# .(41211.02 12/11/24 RAM  8:40a| Fix wierdness copying script files
+#.(41208.02d 12/25/24 RAM 10:50a| Reverse priority for .bash_profile
 
 ##PRGM     +====================+===============================================+
 ##ID 69.600. Main0              |
@@ -68,6 +70,7 @@
   aVer="v1.05\`41208.2350"
   aVer="v1.05\`41211.0720"
   aVer="v1.05\`41211.0840"
+  aVer="v1.05\`41225.1050"
 
   echo ""
 
@@ -88,8 +91,8 @@ function help() {
 function setOSvars() {
      aTS=$( date '+%y%m%d.%H%M' ); aTS=${aTS:2}
 #    aBashrc="$HOME/.bashrc"                                                                                ##.(41208.02c.1)
-     if [ -f "$HOME/.bash_profile" ]; then aBashrc="$HOME/.bash_profile"; fi                                # .(41208.02c.1)
-     if [ -f "$HOME/.bashrc"       ]; then aBashrc="$HOME/.bashrc"; fi                                      # .(41208.02c.2)
+     if [ -f "$HOME/.bashrc"       ]; then aBashrc="$HOME/.bashrc"; fi                                      # .(41208.02b.1).(41208.02c.2)
+     if [ -f "$HOME/.bash_profile" ]; then aBashrc="$HOME/.bash_profile"; fi                                # .(41208.02b.2).(41208.02c.1)
      aBinDir="/home/._0/bin"                                                                                # .(41211.02.1 RAM Was /Home/._0/bin)
      aOS="linux"
   if [[ "${OS:0:7}" == "Windows" ]]; then
@@ -97,8 +100,8 @@ function setOSvars() {
      aBinDir="/C/Home/._0/bin"
      fi
   if [[ "${OSTYPE:0:6}" == "darwin" ]]; then
-     if [ -f "$HOME/.bash_profile" ]; then aBashrc="$HOME/.bash_profile"; fi                                # .(41208.02.1)
-     if [ -f "$HOME/.bashrc"       ]; then aBashrc="$HOME/.bashrc"; fi                                      # .(41208.02.2)
+     if [ -f "$HOME/.bashrc"       ]; then aBashrc="$HOME/.bashrc"; fi                                      # .(41208.02b.3).(41208.02.2)
+     if [ -f "$HOME/.bash_profile" ]; then aBashrc="$HOME/.bash_profile"; fi                                # .(41208.02b.4).(41208.02.1)
      if [ -f "$HOME/.zshrc"        ]; then aBashrc="$HOME/.zshrc"; fi                                       # .(41208.02.3)
      bZSHver="0"; if [[ "${OSTYPE:6:2}" > 21 ]]; then bZSHver="1"; fi                                       # .(41208.02b.1)
 #    echo "  bZSHver: '${bZSHver}', OSTYPE:6:2: '${OSTYPE:6:2}'"; exit
