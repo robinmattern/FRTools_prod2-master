@@ -44,8 +44,8 @@
 ##FD   FRT10_Main0.sh           |  70443| 12/09/24  7:30|   959| p1.09`41209.0730
 ##FD   FRT10_Main0.sh           |  72736| 12/16/24 10:20|   996| p1.09`41216.1020
 ##FD   FRT10_Main0.sh           |  74458| 12/18/24 09:25|  1025| p1.09`41218.0925
-##FD   FRT10_Main0.sh           |  74776| 12/25/24 15:42|  1029| p1.09`41225.1542
-#b
+##FD   FRT10_Main0.sh           |  74775| 12/25/24 15:42|  1029| p1.09`41225.1542
+#
 ##DESC     .--------------------+-------+---------------+------+-----------------+
 #            Use the commands in this script to manage FormR app resources.
 #
@@ -142,6 +142,7 @@
 #.(41201.04b 12/16/24 RAM 10:20a| Enable re-install aidocs [aStage] to work
 # .(41218.04 12/18/24 RAM  9:25a| Add frt init
 #.(41113.01b 12/25/24 RAM  3:42p| Remove wrong altools .code-workspace file
+#.(41113.01b 12/25/24 RAM  3:52p| Remove wrong altools .code-workspace file again
 
 ##PRGM     +====================+===============================================+
 ##ID 69.600. Main0              |
@@ -961,8 +962,9 @@ function copyFile() {                                                           
 
             fi # bUpdate == "0"                                                                             ##.(41115.02e.11)
 
-            rm  ALTools_prod1-robin.code-workspace                                      # .(41113.01.3  RAM Was: AnyLLM_; Erase wrong VSCode workspace file )
-            git update-index --assume-unchanged ALTools_prod1-robin.code-workspace      # .(41113.01b.3 RAM Tell git to ignore the delete)
+                rm                              ALTools_prod1-robin.code-workspace      # .(41113.01.3  RAM Was: AnyLLM_; Erase wrong VSCode workspace file )
+            git update-index --assume-unchanged ALTools_prod1-robin.code-workspace      # .(41113.01b.1 RAM Tell git to ignore the delete)
+            git rm --cached                     ALTools_prod1-robin.code-workspace      # .(41113.01b.2 RAM Try this)
 
         sayMsg    "FRT40[ 919]  gitr add \"${aVerb} ALTools files\"" -1
 
