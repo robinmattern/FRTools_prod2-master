@@ -10,7 +10,7 @@
 ##FD   RSS22_DirList.sh         |  16556|  5/03/23 16:10|   215| p1.03`30503.1610
 ##FD   RSS22_DirList.sh         |  17410|  5/16/23  8:45|   230| p1.04`30516.0845
 ##FD   RSS22_DirList.sh         |  18645|  5/16/23  9:20|   243| p1.04`30516.0920
-##FD   RSS22_DirList.sh         |  20134| 12/25/24  9:30|   263| p1.04`41225.0930
+##FD   RSS22_DirList.sh         |  20870| 12/25/24 10:30|   268| p1.04`41225.1030
 #
 ##DESC     .--------------------+-------+-------------------+------+------------+
 #            List directory counts using du on every subfolder, where
@@ -47,13 +47,13 @@
 # .(40520.02  5/20/24 RAM  8:00a| Use echo_exit
 # .(40520.03  5/20/24 RAM  8:30a| Accomodate MacOS
 # .(40520.04  5/20/24 RAM 10:00a| Check if en_US exists
-#.(41120.01b 12/25/24 RAM  9:30a| Fix echo_exit once and for all
+#.(41120.01b 12/25/24 RAM 10:30a| Fix echo_exit once and for all
 
 ##PRGM     +====================+===============================================+
 ##ID 69.600. Main               |
 ##SRCE     +====================+===============================================+
 #*/
-    aVdt="Dec 25, 2024 9:20a"; aVtitle="Robins Script Tools"                                                                   # .(21113.05.6 RAM Add aVtitle for Version in Begin).(30516.02.1)
+    aVdt="Dec 25, 2024 10:30a"; aVtitle="Robins Script Tools"                                                                   # .(21113.05.6 RAM Add aVtitle for Version in Begin).(30516.02.1)
     aVer="$( echo $0 | awk '{  match( $0, /_[dpstuv][0-9]+\.[0-9]+/ ); print substr( $0, RSTART+1, RLENGTH-1) }' )"             # .(21031.01.1 RAM Add [d...).(20416.03.8 "_p2.02", or _d1.09)
 
             LIB="RSS"; LIB_LOG=${LIB}_LOG; LIB_USER=${LIB}_USER                             # .(80923.01.1)
@@ -63,22 +63,27 @@
 #           aFncLine="${aFncLine/ \//\/}";  aFncLine="${aFncLine/ C:/C:}";  aFncLine="${aFncLine/ D:/D:}";  aFncLine="${aFncLine/ M:/M:}";
    if [ -f "$LIB_LOG" ]; then echo "$( date '+%Y%m%d-%H%M%S%z')  ${SCN_SERVER:0:11} ${LIB_USER:0:8}  ${aFncLine}" >>"$LIB_LOG"; fi
             }
+# +------- +------------------ +----------------------------------------------------------- # ------------+
+
+function echo_exit() {                                                                                      # .(40520.02.4 RAM Add Beg)
+  if [ "${OS:0:7}"     != "Windows" ]; then echo ""; fi                                 # .(41120.01.3 RAM Fix exit_wCR)
+     exit
+   }
+# +------- +------------------ +----------------------------------------------------------- # ------------+
 
   if [ "${1:0:3}" == "ver" ] || [ "${1:0:2}" == "-v" ]; then                                                # .(20420.07.1 RAM Added Version).(21113.05.1 RAM Beg Added).(30516.02.2 RAM Beg Add verson and source)
      echo ""
      echo "  ${aVtitle}: ${aVer}   (${aVdt})"                                                               # .(21113.05.2)
      if [ "${1:0:3}" == "-ve" ]; then echo "    $0"; fi                                                     # .(20620.01.1 RAM)
-     echo ""
-     exit
+#    echo ""; exit                                                                      ##.(41120.01b.11)
+     echo_exit                                                                          # .(41120.01b.11 RAM Opps)
      fi                                                                                                     # .(21113.05.1 RAM End)
+# +------- +------------------ +----------------------------------------------------------- # ------------+
 
-  if [ "${1}" == "source"   ]; then echo ""; echo $0 | awk '{                         print "  '$LIB' Script File(s): \"" $0 "\"" }'; echo ""; exit; fi  # .(80923.02.3 Was "JPT-..)
-# if [ "${1}" == "source"   ]; then echo ${aFns}     | awk '{                         print "                      \""    $0 "\"" }'; echo ""; exit; fi  # .(30516.02.2)
-
-function echo_exit() {                                                                                      # .(40520.02.4 RAM Add Beg)
-  if [ "${OS:0:7}"     != "Windows" ]; then echo ""; fi                                 # .(41120.01.3 RAM Fix exit_wCR)
-   exit
-   }                                                                                                        # .(40520.02.4 End)
+  if [ "${1}" == "source"   ]; then echo ""; echo $0 | awk '{                         print "  '$LIB' Script File(s): \"" $0 "\"" }';                    # .(80923.02.3 Was "JPT-..)
+# if [ "${1}" == "source"   ]; then echo ${aFns}     | awk '{                         print    "                     \""    $0 "\"" }';                  ##.(30516.02.2)
+     echo_exit                                                                          # .(41120.01b.12 RAM Opps)
+     fi                                                                                                     # .(40520.02.4 End)
 # +------- +------------------ +----------------------------------------------------------- # ------------+ ------------------- # --------------+
 
             aNums="0123456789";                                                                                                                          # .(21206.06.7 RAM Beg Much different)
@@ -251,7 +256,7 @@ if [ "$bHdr" != "0" ]; then
         fi
 
   if [ "$bHdr" != "0" ]; then
-        ${aLstSp}; exit
+#       ${aLstSp}; exit                                                                 # .(41120.01b.13 RAM Opps)
         echo_exit # ${aLstSp}; exit                                                     # .(40520.02.6)
 #       echo ""
         fi
