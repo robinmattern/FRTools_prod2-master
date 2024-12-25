@@ -44,7 +44,7 @@
 ##FD   FRT10_Main0.sh           |  70443| 12/09/24  7:30|   959| p1.09`41209.0730
 ##FD   FRT10_Main0.sh           |  72736| 12/16/24 10:20|   996| p1.09`41216.1020
 ##FD   FRT10_Main0.sh           |  74458| 12/18/24 09:25|  1025| p1.09`41218.0925
-##FD   FRT10_Main0.sh           |  74775| 12/25/24 15:42|  1029| p1.09`41225.1542
+##FD   FRT10_Main0.sh           |  75102| 12/25/24 17:33|  1032| p1.09`41225.1733
 #
 ##DESC     .--------------------+-------+---------------+------+-----------------+
 #            Use the commands in this script to manage FormR app resources.
@@ -143,6 +143,7 @@
 # .(41218.04 12/18/24 RAM  9:25a| Add frt init
 #.(41113.01b 12/25/24 RAM  3:42p| Remove wrong altools .code-workspace file
 #.(41113.01b 12/25/24 RAM  3:52p| Remove wrong altools .code-workspace file again
+#.(41115.02g 12/25/24 RAM  5:33p| Fix gitr add commit -m
 
 ##PRGM     +====================+===============================================+
 ##ID 69.600. Main0              |
@@ -150,7 +151,7 @@
 #*/
 #========================================================================================================== #  ===============================  #
 
-     aVdt="Dec 25, 2024 3:42p"; aVtitle="formR Tools"                                                      # .(21113.05.8 RAM Add aVtitle for Version in Begin)
+     aVdt="Dec 25, 2024 5:33p"; aVtitle="formR Tools"                                                      # .(21113.05.8 RAM Add aVtitle for Version in Begin)
      aVer="$( echo $0 | awk '{  match( $0, /_[dpstuv][0-9]+\.[0-9]+/ ); print substr( $0, RSTART+1, RLENGTH-1) }' )"  # .(21031.01.1 RAM Add [d...).(20416.03.8 "_p2.02", or _d1.09)
 
      LIB="FRT"; LIB_LOG=${LIB}_LOG; LIB_USER=${LIB}_USER; Lib=${LIB}; aDir=$( dirname "${BASH_SOURCE}" );   # .(41027.01.1 RAM).(80923.01.1)
@@ -907,7 +908,7 @@ function copyFile() {                                                           
                                               echo "    git checkout ALTools_prod1/ALTools -- ."
 #                                             echo "    git commit -m \".(${aTS}.02_Added ALTools files\""  ##.(41115.02d.43)
              fi    # eif bUpdate != "1"                                                                     ##.(41115.02e.6)
-                                             echo "    gitr add commit -m \"${aVerb} ALTools files\"";      # .(41115.02d.44)
+                                             echo "    gitr add commit \"${aVerb} ALTools files\"";         # .(41115.02g.1 RAM get rid of -m).(41115.02d.44)
 #            fi    # eif ???
                                              echo "    copyFile \"ALTools\" \"run-anyllm.sh\" \"master\""
 
@@ -953,7 +954,7 @@ function copyFile() {                                                           
 
             echo -e "\ngit reset --hard ALTools_prod1/ALTools"; aTS="$( date +%y%m%d )"; aTS="${aTS:1}"     # .(41115.02e.8)
             git reset --hard ALTools_prod1/ALTools                                                          # .(41115.02e.9)
-          else                                                                                            # .(41115.02e.10)
+          else                                                                                              # .(41115.02e.10)
             echo -e "\ngit checkout -b altools"; aTS="$( date +%y%m%d )"; aTS="${aTS:1}"
             git checkout -b altools                          2>&1 | awk '{ print "  " $0 }'                 # create your branch
 
@@ -966,11 +967,11 @@ function copyFile() {                                                           
             git update-index --assume-unchanged ALTools_prod1-robin.code-workspace      # .(41113.01b.1 RAM Tell git to ignore the delete)
             git rm --cached                     ALTools_prod1-robin.code-workspace      # .(41113.01b.2 RAM Try this)
 
-        sayMsg    "FRT40[ 919]  gitr add \"${aVerb} ALTools files\"" -1
+        sayMsg    "FRT40[ 919]  gitr add commit \"${aVerb} ALTools files\"" -1
 
-            echo -e "\ncommit -m \"${aTS}.02_Added ALTools files\"";                                        ##.(41115.02d.48)
+            echo -e "\ngitr add commit -m \"${aTS}.02_${aVerb} ALTools files\"";                            # .(41115.02g.2).(41115.02d.48)
 #           git commit -m ".(${aTS}.02_Added ALTools files" 2>&1 | awk '{ print "  " $0 }'                  ##.(41115.02d.48 RAM Commit them)
-            gitr add "${aVerb} ALTools files";                                                              # .(41115.02f.2).(41115.02d.48)
+            gitr add commit "${aVerb} ALTools files";                                                       # .(41115.02g.3)..(41115.02f.2).(41115.02d.48)
 
             fi   # eif ???                                                                                  # .(41115.02f.3)
 
