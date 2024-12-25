@@ -45,6 +45,7 @@
 ##FD   FRT10_Main0.sh           |  72736| 12/16/24 10:20|   996| p1.09`41216.1020
 ##FD   FRT10_Main0.sh           |  74458| 12/18/24 09:25|  1025| p1.09`41218.0925
 ##FD   FRT10_Main0.sh           |  75102| 12/25/24 17:33|  1032| p1.09`41225.1733
+##FD   FRT10_Main0.sh           |  76551| 12/25/24 18:40|  1058| p1.09`41225.1840
 #
 ##DESC     .--------------------+-------+---------------+------+-----------------+
 #            Use the commands in this script to manage FormR app resources.
@@ -144,6 +145,7 @@
 #.(41113.01b 12/25/24 RAM  3:42p| Remove wrong altools .code-workspace file
 #.(41113.01b 12/25/24 RAM  3:52p| Remove wrong altools .code-workspace file again
 #.(41115.02g 12/25/24 RAM  5:33p| Fix gitr add commit -m
+# .(41225.06 12/25/24 RAM  6:40p| Add command frt copy
 
 ##PRGM     +====================+===============================================+
 ##ID 69.600. Main0              |
@@ -151,7 +153,7 @@
 #*/
 #========================================================================================================== #  ===============================  #
 
-     aVdt="Dec 25, 2024 5:33p"; aVtitle="formR Tools"                                                      # .(21113.05.8 RAM Add aVtitle for Version in Begin)
+     aVdt="Dec 25, 2024 6:40p"; aVtitle="formR Tools"                                                      # .(21113.05.8 RAM Add aVtitle for Version in Begin)
      aVer="$( echo $0 | awk '{  match( $0, /_[dpstuv][0-9]+\.[0-9]+/ ); print substr( $0, RSTART+1, RLENGTH-1) }' )"  # .(21031.01.1 RAM Add [d...).(20416.03.8 "_p2.02", or _d1.09)
 
      LIB="FRT"; LIB_LOG=${LIB}_LOG; LIB_USER=${LIB}_USER; Lib=${LIB}; aDir=$( dirname "${BASH_SOURCE}" );   # .(41027.01.1 RAM).(80923.01.1)
@@ -276,6 +278,7 @@ function Help( ) {
      echo "        Install [ALTools] [-doit]        Install ALTools"                                        # .(41111.01.2)
      echo "                [ALTools] [-doit] [-u]   Update ALTools"                                         # .(41115.02d.30)
      echo "                [AIDocs] [-doit]         Install AIDocs"                                         # .(41111.01.3)
+     echo "    FRT Copy    {FromBra} {File} {ToBra} Copy file from to a branch"                              # .(41225.06.1)
      echo ""
      echo "    FRT Update [-doit]                   Update [ {FRTools} ]"                                   # .(41107.01.3)
      echo ""
@@ -362,6 +365,7 @@ function Help( ) {
      getCmd1   "ini"     ""     "Init"      1                                                               # .(41218.04.2)
      getCmd1   "ins"     ""     "Install"   1                                                               # .(41111.01.4)
 #    getCmd1   "ins"     "-df"  "Install"   1                                                               ##.(41115.02d.36)
+     getCmd1   "cop"     ""     "Copy File"   1                                                             # .(41225.06.2)
 
 #    -- --- ---------------  =  ------------------------------------------------------  #  ---------------- #
 
@@ -783,14 +787,11 @@ function Help( ) {
 
         sayMsg    "FRT40[ 747]  Install Command" -1;
 
-  if [ "${aCmd}" == "Install" ]; then
-
 function Sudo() {
 #       echo "   sudo[1] \${OS:0:7}: '${OS:0:7}'"
         if [[ "${OS:0:7}" != "Windows" ]]; then if [ "${USERNAME}" != "root" ]; then sudo "$@"; fi; fi
 #                sudo "$@"; echo "sudo[2]  sudo \"$@\""; fi; fi                         ##.(41113.01.1)
         }
-#       ---------------------------------------------------------------------
 function copyFile() {                                                                   # .(41111.04.1 RAM Write copyFile Beg)
         git checkout "$3"                                        >/dev/null 2>&1        # Switch to master branch
         git checkout "$1" -- "$2"                                >/dev/null 2>&1        # Get file from ALTools branch
@@ -800,6 +801,11 @@ function copyFile() {                                                           
         git checkout "$1"                                        >/dev/null 2>&1        # Switch back to ALTools
         echo -e "\n  Copied file $2 to branch $1"                                       # .(41112.06.2)
         } # eof copyFile                                                                # .(41111.04.1 End)
+#       ---------------------------------------------------------------------
+
+  if [ "${aCmd}" == "Install" ]; then
+
+
 #       ---------------------------------------------------------------------
 
 #       copyFile "ALTools" "run-anyllm.sh" "master"
@@ -910,7 +916,7 @@ function copyFile() {                                                           
              fi    # eif bUpdate != "1"                                                                     ##.(41115.02e.6)
                                              echo "    gitr add commit \"${aVerb} ALTools files\"";         # .(41115.02g.1 RAM get rid of -m).(41115.02d.44)
 #            fi    # eif ???
-                                             echo "    copyFile \"ALTools\" \"run-anyllm.sh\" \"master\""
+                                             echo "    frt copyFile \"ALTools\" \"run-anyllm.sh\" \"master\""
 
             if [ "${bUpdate}" != "1" ]; then echo "    ./set-anyllm.sh doit" ;                           fi # .(41115.02d.45)
             if [ "${bUpdate}" != "1" ]; then echo -e "\n  The command, anyllm, will also be installed."; fi # .(41115.02d.46)
@@ -1005,7 +1011,27 @@ function copyFile() {                                                           
 
 # ------------------------------------------------------------------------------------
 #
-#>      NEXT COMMAND                                                                                        # .(20102.01.2 Beg RAM Added Command)
+#>      GITR COPYFILE                                                                                        # .(41225.06.3 Beg RAM Added Command)
+#
+#====== =================================================================================================== #
+
+        sayMsg    "FRT40[1015]  Copy File" sp;
+
+  if [ "${aCmd}" == "Copy File" ]; then
+
+        sayMsg    "FRT40[1019]  ${aCmd}" 1
+        aFrom="$2"; aFile="$3"; aTo="$4"
+        sayMsg    "FRT40[1021]  copyFile \"${aFrom}\" \"${aFile}\" \"${aTo}\"" 1
+                                copyFile  "${aFrom}"   "${aFile}"  "${aTo}"
+     ${aLstSp}; exit
+     fi # eoc Copy File                                                                                 # .(41225.06.3 End)
+#    -- --- ---------------  =  ------------------------------------------------------  #  ---------------- #
+
+#====== =================================================================================================== #  ===========
+
+# ------------------------------------------------------------------------------------
+#
+#>      NEXT COMMAND                                                                                        # .(20102.01.2 Beg RAM Add Command)
 #
 #====== =================================================================================================== #
 
