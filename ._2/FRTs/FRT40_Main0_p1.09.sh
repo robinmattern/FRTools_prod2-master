@@ -45,7 +45,7 @@
 ##FD   FRT10_Main0.sh           |  72736| 12/16/24 10:20|   996| p1.09`41216.1020
 ##FD   FRT10_Main0.sh           |  74458| 12/18/24 09:25|  1025| p1.09`41218.0925
 ##FD   FRT10_Main0.sh           |  75102| 12/25/24 17:33|  1032| p1.09`41225.1733
-##FD   FRT10_Main0.sh           |  76551| 12/25/24 18:40|  1058| p1.09`41225.1840
+##FD   FRT10_Main0.sh           |  77086| 12/25/24 23:30|  1062| p1.09`41225.2330
 #
 ##DESC     .--------------------+-------+---------------+------+-----------------+
 #            Use the commands in this script to manage FormR app resources.
@@ -67,85 +67,86 @@
 #            set var command    |
 #                               |
 ##CHGS     .--------------------+----------------------------------------------+
-# .(01001.01 10/01/20 RAM 10:00p| Created
-# .(10706.09 10/01/20 RAM 10:00p| Windows returns an extra blank line)
-# .(20416.03  4/16/22 RAM  3:30p| Get aVer and lost main2Fns
-# .(20420.05  4/20/22 RAM  5:15p| Update FRT10_Main0_p1.06.sh changes
-# .(20420.07  4/20/22 RAM  6:08p| Add Version command
-# .(20429.02  4/29/22 RAM  2:48p| Add Keys command
-# .(20429.03  4/29/22 RAM  2:48p| Add Git command
-# .(20429.04  4/29/22 RAM  3:45p| Make Version Date permenant ${aVdt}
-# .(20429.09  4/29/22 RAM  7:30p| aArgsNs have been converted to lowercase in getOpts
-# .(20501.01  5/01/22 RAM 11:30a| Enable JPT12_Main2Fns_p1.05.sh in sub-scripts
-# .(20502.06  5/02/22 RAM 12:00p| Major overhaul of JPT12_Main2Fns_p1.06.sh
-# .(20508.01  5/08/22 RAM  2:50p| Put App Commands into separate script
-# .(20601.01  6/01/22 RAM  8:30a| Add App List Styles and Rename Styles
-# .(20601.02  6/01/22 RAM 10:15p| Never sayMsg() if bQuiet = 1
-# .(20620.02  6/20/22 RAM 10:45a| Run Proxy in FRT24_Proxy1_u1.06.sh
-# .(20620.05  6/20/22 RAM  6:15a| Move setting bDoit=0, bQuiet=0, bDebug=0
-# .(20620.04  6/20/22 RAM  5:45p| Reworked sayMsg sp functionality
-# .(21027.04 10/27/22 RAM 10:59a| Update gitr with sparse and clone
-# .(21031.01 10/31/22 RAM  7:45a| Allow version _d1.09
-# .(21107.02 11/07/22 RAM 12:45a| Add RSS Commands
-# .(21113.05 11/13/22 RAM  5:30p| Display Version and Source in Begin
-# .(21119.01 11/19/22 RAM  7:22p| Capitalize Help Menu
-# .(21120.02 11/20/22 RAM  1:55p| Fix aOSv and aLstSp
-# .(21120.03 11/20/22 RAM  2:55p| Set System Path for FRTools in DOS, GFW and Linux
-# .(21121.03 11/21/22 RAM  4:00p| Allow for .bashrc or profile
-# .(21122.01 11/22/22 RAM  9:15a| Add exit code if paths are the same
-# .(21126.01 11/26/22 RAM  2:00p| Check SYSTEM path if set path was successful
-# .(21126.08 11/26/22 RAM  6:11p| Add -user option to 'frt set path'
-# .(21126.09 11/26/22 RAM  7:20p| Modify System/Shell names for PATH
-# .(21127.07 11/27/22 RAM  7:40p| Surpress Info Path Add msg if FRT setPath
-# .(21128.02 11/28/22 RAM  8:00p| Add docR Commands
-# .(21129.07 11/29/22 RAM  8:50p| Fix set path not found in wrong shell
-# .(21121.03 11/30/22 RAM  9:45a| Select .profile over .bashrc
-# .(21121.07 11/30/22 RAM 11:45a| Change Help FRT Rir to FRT Dir
-# .(21121.03 12/03/22 RAM  3:05p| Use another method to select .profile over .bashrc
-# .(21203.05 12/03/22 RAM  5:45p| Deal with setPath None Found confusion
-# .(21203.06 12/03/22 RAM  6:20p| Copy Uppercase bin commands in Linux
-# .(21121.03 12/03/22 RAM  6:50p| Reverse method to select .profile over .bashrc
-# .(30716.01  7/16/23 RAM 11:12a| Add dokr script
-# .(40413.02  7/13/24 RAM 11:05a| Change RSS22-Info to RSS23_Info
-# .(41026.04 10/26/24 RAM  1:50p| Fix JPT12_Main2Fns_p1.07 & dokR location
-# .(41026.05 10/26/24 RAM  3:04p| Find right location of JPTs scripts
-# .(41026.06 10/26/24 RAM  4:22p| Run the right scripts for gitr
-# .(41027.01 10/27/24 RAM  6:43p| Fix JPT12_Main2Fns_p1.07 again, and JPTs dir
-# .(41028.01 10/28/24 RAM  9:32a| Change JPT app numbers
-# .(41107.01 11/07/24 RAM  8:15a| Add Update command
-# .(41111.01 11/11/24 RAM  7:45a| Add Install ALTools command
-# .(41111.04 11/11/24 RAM  7:30p| Copy run-anyllm to master branch
-# .(41112.04 11/12/24 RAM  9:05a| Remove trailing quotes from .gitignore
-# .(41112.05 11/12/24 RAM  9:05a| Remove git git from install command
-# .(41112.06 11/12/24 RAM 10:00a| Add / fix Sudo
-# .(41113.01 11/13/24 RAM 10:00a| Delete wrong altools .code-workspace file
-# .(41107.01 11/15/24 RAM 12:10p| Deal with updating dirty repo
-# .(41123.04 11/23/24 RAM 10:45a| Use gitr update
-# .(41124.02 11/24/24 RAM  9:50a| Add install "" for set-frtools command
-# .(41124.03 11/24/24 RAM 11:30a| Add Install AIDocs command
-# .(41124.04 11/24/24 RAM 11:45a| Fix Install ALTools command
-# .(41124.05 11/24/24 RAM 14:45a| Add netr command
-# .(41123.04 11/24/24 RAM 15:45a| Pass -f and -doit args to gitr update
-# .(41125.03 11/25/24 RAM  9:25a| Stash docker/docker-healthcheck.sh ??
-# .(41125.03 11/25/24 RAM  9:35a| Don't exit
-# .(41129.02 11/29/24 RAM  1:00p| Change git status -u to get all working files
-# .(41201.04 12/01/24 RAM  7:30p| Add aBranch to install repos
-# .(41203.04 12/01/24 RAM  4:15p| Remove ${aLstSp} after calling other scripts
-# .(41203.05 12/03/24 RAM  4:45p| Display msg re invalid frt var command
-# .(41203.06 12/03/24 RAM  5:10p| Add frt show/kill ports
-# .(41028.01 12/03/24 RAM  5:25p| Don't call scripts with _version #s
-# .(41204.01 12/04/24 RAM  9:45a| Fix working files count var ${s}
-# .(41204.02 12/04/24 RAM 10:15a| Add Commit to checkout
+#.(01001.01  10/01/20 RAM 10:00p| Created
+#.(10706.09  10/01/20 RAM 10:00p| Windows returns an extra blank line)
+#.(20416.03   4/16/22 RAM  3:30p| Get aVer and lost main2Fns
+#.(20420.05   4/20/22 RAM  5:15p| Update FRT10_Main0_p1.06.sh changes
+#.(20420.07   4/20/22 RAM  6:08p| Add Version command
+#.(20429.02   4/29/22 RAM  2:48p| Add Keys command
+#.(20429.03   4/29/22 RAM  2:48p| Add Git command
+#.(20429.04   4/29/22 RAM  3:45p| Make Version Date permenant ${aVdt}
+#.(20429.09   4/29/22 RAM  7:30p| aArgsNs have been converted to lowercase in getOpts
+#.(20501.01   5/01/22 RAM 11:30a| Enable JPT12_Main2Fns_p1.05.sh in sub-scripts
+#.(20502.06   5/02/22 RAM 12:00p| Major overhaul of JPT12_Main2Fns_p1.06.sh
+#.(20508.01   5/08/22 RAM  2:50p| Put App Commands into separate script
+#.(20601.01   6/01/22 RAM  8:30a| Add App List Styles and Rename Styles
+#.(20601.02   6/01/22 RAM 10:15p| Never sayMsg() if bQuiet = 1
+#.(20620.02   6/20/22 RAM 10:45a| Run Proxy in FRT24_Proxy1_u1.06.sh
+#.(20620.05   6/20/22 RAM  6:15a| Move setting bDoit=0, bQuiet=0, bDebug=0
+#.(20620.04   6/20/22 RAM  5:45p| Reworked sayMsg sp functionality
+#.(21027.04  10/27/22 RAM 10:59a| Update gitr with sparse and clone
+#.(21031.01  10/31/22 RAM  7:45a| Allow version _d1.09
+#.(21107.02  11/07/22 RAM 12:45a| Add RSS Commands
+#.(21113.05  11/13/22 RAM  5:30p| Display Version and Source in Begin
+#.(21119.01  11/19/22 RAM  7:22p| Capitalize Help Menu
+#.(21120.02  11/20/22 RAM  1:55p| Fix aOSv and aLstSp
+#.(21120.03  11/20/22 RAM  2:55p| Set System Path for FRTools in DOS, GFW and Linux
+#.(21121.03  11/21/22 RAM  4:00p| Allow for .bashrc or profile
+#.(21122.01  11/22/22 RAM  9:15a| Add exit code if paths are the same
+#.(21126.01  11/26/22 RAM  2:00p| Check SYSTEM path if set path was successful
+#.(21126.08  11/26/22 RAM  6:11p| Add -user option to 'frt set path'
+#.(21126.09  11/26/22 RAM  7:20p| Modify System/Shell names for PATH
+#.(21127.07  11/27/22 RAM  7:40p| Surpress Info Path Add msg if FRT setPath
+#.(21128.02  11/28/22 RAM  8:00p| Add docR Commands
+#.(21129.07  11/29/22 RAM  8:50p| Fix set path not found in wrong shell
+#.(21121.03  11/30/22 RAM  9:45a| Select .profile over .bashrc
+#.(21121.07  11/30/22 RAM 11:45a| Change Help FRT Rir to FRT Dir
+#.(21121.03  12/03/22 RAM  3:05p| Use another method to select .profile over .bashrc
+#.(21203.05  12/03/22 RAM  5:45p| Deal with setPath None Found confusion
+#.(21203.06  12/03/22 RAM  6:20p| Copy Uppercase bin commands in Linux
+#.(21121.03  12/03/22 RAM  6:50p| Reverse method to select .profile over .bashrc
+#.(30716.01   7/16/23 RAM 11:12a| Add dokr script
+#.(40413.02   7/13/24 RAM 11:05a| Change RSS22-Info to RSS23_Info
+#.(41026.04  10/26/24 RAM  1:50p| Fix JPT12_Main2Fns_p1.07 & dokR location
+#.(41026.05  10/26/24 RAM  3:04p| Find right location of JPTs scripts
+#.(41026.06  10/26/24 RAM  4:22p| Run the right scripts for gitr
+#.(41027.01  10/27/24 RAM  6:43p| Fix JPT12_Main2Fns_p1.07 again, and JPTs dir
+#.(41028.01  10/28/24 RAM  9:32a| Change JPT app numbers
+#.(41107.01  11/07/24 RAM  8:15a| Add Update command
+#.(41111.01  11/11/24 RAM  7:45a| Add Install ALTools command
+#.(41111.04  11/11/24 RAM  7:30p| Copy run-anyllm to master branch
+#.(41112.04  11/12/24 RAM  9:05a| Remove trailing quotes from .gitignore
+#.(41112.05  11/12/24 RAM  9:05a| Remove git git from install command
+#.(41112.06  11/12/24 RAM 10:00a| Add / fix Sudo
+#.(41113.01  11/13/24 RAM 10:00a| Delete wrong altools .code-workspace file
+#.(41107.01  11/15/24 RAM 12:10p| Deal with updating dirty repo
+#.(41123.04  11/23/24 RAM 10:45a| Use gitr update
+#.(41124.02  11/24/24 RAM  9:50a| Add install "" for set-frtools command
+#.(41124.03  11/24/24 RAM 11:30a| Add Install AIDocs command
+#.(41124.04  11/24/24 RAM 11:45a| Fix Install ALTools command
+#.(41124.05  11/24/24 RAM 14:45a| Add netr command
+#.(41123.04  11/24/24 RAM 15:45a| Pass -f and -doit args to gitr update
+#.(41125.03  11/25/24 RAM  9:25a| Stash docker/docker-healthcheck.sh ??
+#.(41125.03  11/25/24 RAM  9:35a| Don't exit
+#.(41129.02  11/29/24 RAM  1:00p| Change git status -u to get all working files
+#.(41201.04  12/01/24 RAM  7:30p| Add aBranch to install repos
+#.(41203.04  12/01/24 RAM  4:15p| Remove ${aLstSp} after calling other scripts
+#.(41203.05  12/03/24 RAM  4:45p| Display msg re invalid frt var command
+#.(41203.06  12/03/24 RAM  5:10p| Add frt show/kill ports
+#.(41028.01  12/03/24 RAM  5:25p| Don't call scripts with _version #s
+#.(41204.01  12/04/24 RAM  9:45a| Fix working files count var ${s}
+#.(41204.02  12/04/24 RAM 10:15a| Add Commit to checkout
 #.(41115.02d 12/04/24 RAM 12:30p| Adjust FRT Install ALTools -u
 #.(41115.02e 12/05/24 RAM  9:15a| Try a different way for FRT Update ALTools
-# .(41209.01 12/09/24 RAM  7:30a| Update gitR[] numbers
+#.(41209.01  12/09/24 RAM  7:30a| Update gitR[] numbers
 #.(41115.02f 12/09/24 RAM  9:50a| Change bDoit != "1" to = "1"
 #.(41201.04b 12/16/24 RAM 10:20a| Enable re-install aidocs [aStage] to work
-# .(41218.04 12/18/24 RAM  9:25a| Add frt init
+#.(41218.04  12/18/24 RAM  9:25a| Add frt init
 #.(41113.01b 12/25/24 RAM  3:42p| Remove wrong altools .code-workspace file
 #.(41113.01b 12/25/24 RAM  3:52p| Remove wrong altools .code-workspace file again
 #.(41115.02g 12/25/24 RAM  5:33p| Fix gitr add commit -m
-# .(41225.06 12/25/24 RAM  6:40p| Add command frt copy
+#.(41225.06  12/25/24 RAM  6:40p| Add command frt copy
+#.(41115.02h 12/25/24 RAM 11:25p| Add -d to gitr add commit
 
 ##PRGM     +====================+===============================================+
 ##ID 69.600. Main0              |
@@ -153,7 +154,7 @@
 #*/
 #========================================================================================================== #  ===============================  #
 
-     aVdt="Dec 25, 2024 6:40p"; aVtitle="formR Tools"                                                      # .(21113.05.8 RAM Add aVtitle for Version in Begin)
+     aVdt="Dec 25, 2024 11:30p"; aVtitle="formR Tools"                                                      # .(21113.05.8 RAM Add aVtitle for Version in Begin)
      aVer="$( echo $0 | awk '{  match( $0, /_[dpstuv][0-9]+\.[0-9]+/ ); print substr( $0, RSTART+1, RLENGTH-1) }' )"  # .(21031.01.1 RAM Add [d...).(20416.03.8 "_p2.02", or _d1.09)
 
      LIB="FRT"; LIB_LOG=${LIB}_LOG; LIB_USER=${LIB}_USER; Lib=${LIB}; aDir=$( dirname "${BASH_SOURCE}" );   # .(41027.01.1 RAM).(80923.01.1)
@@ -938,34 +939,36 @@ function copyFile() {                                                           
         if [ "${bNoFilesInWork}" != "1" ]; then
 #           echo -e "\n* The branch 'master', in ${aProjectStage}, has uncommitted files."                  # .(41125.03.1 RAM Stash em Beg)
             aNum="$(git status -u --short | wc -l)"; s="s"; if [ "${aNum// /}" == "1" ]; then s=""; fi      # .(41204.01.1).(41129.02.2 RAM Get all working files)
-            echo -e "\n* The branch, 'master', has ${aNum// /} uncommitted file${s}, that are being stashed."
+     echo -e "\n* The branch, 'master', has ${aNum// /} uncommitted file${s}, that going to be stashed."
 #           shoWorkingFiles
             aTS=$(date +%y%m%d.%H); aTS="${aTS:1}"
-            git stash push -u -m ".(${aTS} Stash of ${aNum// /} file${s}";                                  # .(41125.03.1 End )
-            ${aLstSp}; # exit                                                                               # .(41125.03.2 RAM Don't Exit )
+     echo -e "  git stash push -u -m \".(${aTS} Stash of ${aNum// /} file${s}\"";                           # .(41125.03.1 End )
+                git stash push -u -m  ".(${aTS} Stash of ${aNum// /} file${s}";                             # .(41125.03.1 End )
+               ${aLstSp}; # exit                                                                            # .(41125.03.2 RAM Don't Exit )
             fi # eif bNoFilesInWork
 
 #               bNoRemoteName="$( git remote | awk '/anyllm_prod1/  { a=1 }; END { print a ? a : "0" }' )"  # should have remote allm_prod1
                 bNoRemoteName="$( git remote | awk '/ALTools_prod1/ { a=1 }; END { print a ? a : "0" }' )"  # should have remote ALTools_prod1
         if [ "${bNoRemoteName}" == "0" ]; then
-            gitr remote add ALTools_prod1-robin -d                                                          # add it if not there
-            fi # eif bNoRemoteName == 0
+     echo -e "\ngitr remote add ALTools_prod1-robin -d";                                                                   # .(41112.04.1 )
+                gitr remote add ALTools_prod1-robin -d                                                          # add it if not there
+           fi # eif bNoRemoteName == 0
 
        # 2. Create your branch with your 22 files
 
-            echo -e "\ngit fetch ALTools_prod1";                                                            # .(41112.04.1 )
-            git fetch ALTools_prod1                          2>&1 | awk '{ print "  " $0 }'                 # create your branch
+     echo -e "\ngit fetch ALTools_prod1";                                                                   # .(41112.04.1 )
+                git fetch ALTools_prod1                          2>&1 | awk '{ print "  " $0 }'             # create your branch
 
           if [ "${bUpdate}" == "1" ]; then                                                                  # .(41115.02e.7)
 
-            echo -e "\ngit reset --hard ALTools_prod1/ALTools"; aTS="$( date +%y%m%d )"; aTS="${aTS:1}"     # .(41115.02e.8)
-            git reset --hard ALTools_prod1/ALTools                                                          # .(41115.02e.9)
+     echo -e "\ngit reset --hard ALTools_prod1/ALTools"; aTS="$( date +%y%m%d )"; aTS="${aTS:1}"            # .(41115.02e.8)
+                git reset --hard ALTools_prod1/ALTools                                                      # .(41115.02e.9)
           else                                                                                              # .(41115.02e.10)
-            echo -e "\ngit checkout -b altools"; aTS="$( date +%y%m%d )"; aTS="${aTS:1}"
-            git checkout -b altools                          2>&1 | awk '{ print "  " $0 }'                 # create your branch
+     echo -e "\ngit checkout -b altools"; aTS="$( date +%y%m%d )"; aTS="${aTS:1}"
+                git checkout -b altools                          2>&1 | awk '{ print "  " $0 }'             # create your branch
 
-            echo -e "\ncheckout ALTools_prod1/ALTools -- .";
-            git checkout ALTools_prod1/ALTools -- .          2>&1 | awk '{ print "  " $0 }'                 # get your 22 files
+     echo -e "\ngit checkout ALTools_prod1/ALTools -- .";
+                git checkout ALTools_prod1/ALTools -- .          2>&1 | awk '{ print "  " $0 }'             # get your 22 files
 
             fi # bUpdate == "0"                                                                             ##.(41115.02e.11)
 
@@ -975,13 +978,14 @@ function copyFile() {                                                           
 
         sayMsg    "FRT40[ 919]  gitr add commit \"${aVerb} ALTools files\"" -1
 
-            echo -e "\ngitr add commit -m \"${aTS}.02_${aVerb} ALTools files\"";                            # .(41115.02g.2).(41115.02d.48)
-#           git commit -m ".(${aTS}.02_Added ALTools files" 2>&1 | awk '{ print "  " $0 }'                  ##.(41115.02d.48 RAM Commit them)
-            gitr add commit "${aVerb} ALTools files";                                                       # .(41115.02g.3)..(41115.02f.2).(41115.02d.48)
+     echo -e "\ngitr add commit \"${aTS}.02_${aVerb} ALTools files\" -d";                                   # .(41115.02g.2).(41115.02d.48)
+#               git commit -m ".(${aTS}.02_Added ALTools files" 2>&1 | awk '{ print "  " $0 }'              ##.(41115.02d.48 RAM Commit them)
+                gitr add commit            "${aVerb} ALTools files"  -d;                                    # .(41115.02h.1 RAM Add -d).(41115.02g.3).(41115.02f.2).(41115.02d.48)
 
             fi   # eif ???                                                                                  # .(41115.02f.3)
 
-            copyFile "ALTools" "run-anyllm.sh" "master"                                 # .(41111.04.2 RAM Use it to copy anyllm command to master so that it is always available)
+     echo -e "\ngitr copyFile \"ALTools\" \"run-anyllm.sh\" \"master\"";                                    # .(41115.02g.4).(41115.02d.48)
+                     copyFile  "ALTools"   "run-anyllm.sh"   "master"                                       # .(41115.02g.5 RAM Could use gitr).(41111.04.2 RAM Use it to copy anyllm command to master so that it is always available)
 
        # 3. Run set-anyllm.sh
 
