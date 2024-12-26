@@ -1109,7 +1109,7 @@ function getRemoteName() {                                                      
 
   if [ "${aCmd}" == "addCommit" ]; then                                                                     # .(41129.03.6 RAM Add Add Commit Command Beg)
                                    aCMsg="";         aCN=""
-       sayMsg  sp "gitR2[1110] aArg2: '${aArg2}', aArg3: '${aArg3}', aArg4: '${aArg4}', \$2: '$2', \$3: '$3', \$4: '$4'" 1;
+       sayMsg  sp "gitR2[1112] aArg2: '${aArg2}', aArg3: '${aArg3}', aArg4: '${aArg4}', \$2: '$2', \$3: '$3', \$4: '$4'" -1;
 
      if [[ ${aArg2} =~ ^[0-9] ]]; then aArg2="${aArg3}"; aArg3="$2"; fi
      if [ "${aArg2}" != ""     ]; then aCMsg="${aArg2}"; fi
@@ -1131,7 +1131,7 @@ function getRemoteName() {                                                      
            if [ "${#aCN}" == "1" ]; then aCN="0${aCN}"; fi
            aCN=".(${aTS}.${aCN}"                                                                            # .(41129.03.7 RAM Add nth commit of the day)
            fi
-       sayMsg sp "gitR2[1130] aMsg: '${aCMsg}', aCN: '${aCN}'" 1;
+       sayMsg "gitR2[1134] aMsg: '${aCMsg}', aCN: '${aCN}'" -1;
 
      if [ "${aCN}"  == "" ]; then
            aNxt=$( git log --since="midnight" --oneline | awk '{ sub( /.+\.\(/, "" ); print substr($0,7,2) }' | sort | awk 'END{ print $0 + 1 }' )
