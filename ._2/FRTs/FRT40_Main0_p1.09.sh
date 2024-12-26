@@ -755,7 +755,7 @@ function Help( ) {
 #       echo "      gitR update ${aArgs}"                                                                   # .(41226.05.2)
         gitr update ${aBranch} $2 $3 $4 $5
       else
-        echo -e "\n  Updating FRT in ${aProject_dir}."; # exit                                              # .(41123.04.11 RAM Move to here End)
+#       echo -e "\n  Updating FRT in ${aProject_dir}."; # exit                                              # .(41226.05.7).(41123.04.11 RAM Move to here End)
         sayMsg    "FRT40[ 757]  gitR \" ${aBranch} $2 $3 $4 $5\"" -1;
         gitr update ${aBranch} $2 $3 $4 $5                                                                  # .(41123.04.12).(41123.04.4 RAM Use gitr update)
         fi                                                                                                  # .(41123.04.13)

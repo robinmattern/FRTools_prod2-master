@@ -29,7 +29,7 @@
 ##FD   FRT42_GitR2.sh           | 147201| 12/17/24  9:05|  2022| p1.02`.41217.0905
 ##FD   FRT42_GitR2.sh           | 149239| 12/25/24 15:40|  2031| p1.02`.41225.1540
 ##FD   FRT42_GitR2.sh           | 150500| 12/26/24  0:27|  2040| p1.02`.41226.0027
-##FD   FRT42_GitR2.sh           | 152093| 12/26/24 17:30|  2061| p1.02`.41226.1730
+##FD   FRT42_GitR2.sh           | 152353| 12/26/24 17:40|  2064| p1.02`.41226.1740
 #
 ##DESC     .--------------------+-------+---------------+------+-----------------+
 #            This script has usefull GIT functions.
@@ -155,7 +155,8 @@
 #.(41226.01  12/26/24 RAM 12:27a| Add -force for delete branch
 #.(41129.03b 12/26/24 RAM  8:10a| 1st fix of add commit command
 #.(41124.06c 12/26/24 RAM 16:15p| Do shoWorkingFiles the same for unix
-#.(41226.05. 12/26/24 RAM  5:30p| Rework gitr update messages
+#.(41226.05  12/26/24 RAM  5:30p| Rework gitr update messages
+#.(41226.05b 12/26/24 RAM  5:40p| Don't show aStashmsg if MT
 
 ##PRGM     +====================+===============================================+
 ##ID 69.600. Main0              |
@@ -163,7 +164,7 @@
 #*/
 #========================================================================================================== #  ===============================  #
 
-        aVDt="Dec 26, 2024 5:30p"; aVer="p1.02"; aVTitle="Useful gitR2 Tools by formR";                                    # .(41103.02.2 RAM Was: gitR1)
+        aVDt="Dec 26, 2024 5:40p"; aVer="p1.02"; aVTitle="Useful gitR2 Tools by formR";                                    # .(41103.02.2 RAM Was: gitR1)
         aVer="$( echo "$0" | awk '{ match( $0, /_[dpstuv][0-9]+\.[0-9]+/ ); print substr( $0, RSTART+1, RLENGTH-1) }' )"  # .(21031.01.1 RAM Add [d...).(20416.03.8 "_p2.02", or _d1.09)
 
         LIB="gitR2"; LIB_LOG=${LIB}_LOG; LIB_USER=${LIB}_USER; Lib=${LIB}; aDir=$(dirname "${BASH_SOURCE}");              # .(41103.02.3).(41102.01.1 RAM Add JPT12_Main2Fns_p1.07.sh Beg).(80923.01.1)
@@ -1233,7 +1234,7 @@ function getRemoteName() {                                                      
             fi # eif bNoFilesInWork                                                                         # .(41107.01.7 End)
 
 #       sayMsg    "gitR2[1234]  aRepoDir: '${aRepoDir}', branch: '${aBranch}'" 1
-        sayMsg    "gitR2[1235]       Pwd: '$( pwd )'" -1
+        sayMsg    "gitR2[1235]  Pwd: '$( pwd )'" -1
 
         if [ "${bDoit}" == "1" ]; then
 #                        git pull
@@ -1253,9 +1254,11 @@ function getRemoteName() {                                                      
             aVerb="About to update"
 #       echo -e "\n  ${aVerb} repo, '${aRemote_name}', for branch, '${aBranch}', from remote, '${aRepo}'."; ##.(41226.05.5)
 
+        sayMsg    "gitR2[1256]  Say what" -1
 #           echo -e "\n      git pull"
 #           if [ "${bForce}" != "1" ]; then echo -e "\n    ${aStashEm}"; else echo ""; fi                   ##.(41123.05.13).(41123.05.33)
-            if [ "${bForce}" != "1" ]; then echo -e "\n    ${aStashEm}"; fi                                 # .(41123.05.33 RAM Remove else echo "")
+            if [ "${bForce}" != "1" ]; then if [ "${aStashEm}" != "" ]; then                                # .(41226.05.6 RAM Don't say it if nothing to say)
+                  echo -e "\n    ${aStashEm}"; fi; fi                                                       # .(41123.05.33 RAM Remove else echo "")
             if [ "${aNewBranch}" != "${aCurBranch}" ]; then                                                 # .(41123.05.14)
                   echo "    git reset hard"                                                                 # .(41123.05.15)
                   echo "    git checkout ${aNewBranch}";                                                    # .(41123.05.16)
