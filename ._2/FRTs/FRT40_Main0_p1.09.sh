@@ -1014,7 +1014,7 @@ function copyFile() {                                                           
             fi   # eif ???                                                                                  # .(41115.02f.3)
 
 #       sayMsg    "FRT40[ 986]  pwd: '$( pwd )'" 1
-     echo -e   "frt copy\"altools\" \"run-anyllm.sh\" \"master\" -doit";                                    # .(41115.02g.4).(41115.02d.48)
+     echo -e   "frt copy \"altools\" \"run-anyllm.sh\" \"master\" -doit";                                   # .(41115.02g.4).(41115.02d.48)
 #                   copyFile  "ALTools"   "run-anyllm.sh"   "master"    bDoit                               ##.(41111.04b.1 RAM Use it).(41115.02g.5 RAM Could use gitr).(41111.04.2 RAM Use it to copy anyllm command to master so that it is always available).(41111.04c.1)
                     copyFile  "altools"   "run-anyllm.sh"   "master"  ${bDoit}                              # .(41111.04e.1).(41111.04c.1 RAM Branch Needs to be 'anyllm').(41111.04b.1 RAM Use it).(41115.02g.5 RAM Could use gitr).(41111.04.2 RAM Use it to copy anyllm command to master so that it is always available)
 
