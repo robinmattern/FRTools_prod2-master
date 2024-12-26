@@ -152,6 +152,7 @@
 #.(41111.04b 12/26/24 RAM  7:15a| Add -d to frt copy
 #.(41111.04c 12/26/24 RAM 10:00a| Copy file from lowercase branch altools
 #.(41111.04d 12/26/24 RAM 10:15a| Add -doit to frt copy command
+#.(41111.04e 12/26/24 RAM 10:15a| Add ${bDoit} to frt copy command
 
 ##PRGM     +====================+===============================================+
 ##ID 69.600. Main0              |
@@ -1012,9 +1013,9 @@ function copyFile() {                                                           
             fi   # eif ???                                                                                  # .(41115.02f.3)
 
 #       sayMsg    "FRT40[ 986]  pwd: '$( pwd )'" 1
-     echo -e   "gitr copyFile \"altools\" \"run-anyllm.sh\" \"master\" -doit";                              # .(41115.02g.4).(41115.02d.48)
-#                    copyFile  "ALTools"   "run-anyllm.sh"   "master"  bDoit                                ##.(41111.04b.1 RAM Use it).(41115.02g.5 RAM Could use gitr).(41111.04.2 RAM Use it to copy anyllm command to master so that it is always available).(41111.04c.1)
-                     copyFile  "altools"   "run-anyllm.sh"   "master"  bDoit                                # .(41111.04c.1 RAM Branch Needs to be 'anyllm').(41111.04b.1 RAM Use it).(41115.02g.5 RAM Could use gitr).(41111.04.2 RAM Use it to copy anyllm command to master so that it is always available)
+     echo -e   "frt copy\"altools\" \"run-anyllm.sh\" \"master\" -doit";                                   # .(41115.02g.4).(41115.02d.48)
+#                   copyFile  "ALTools"   "run-anyllm.sh"   "master"  bDoit                                ##.(41111.04b.1 RAM Use it).(41115.02g.5 RAM Could use gitr).(41111.04.2 RAM Use it to copy anyllm command to master so that it is always available).(41111.04c.1)
+                    copyFile  "altools"   "run-anyllm.sh"   "master"  ${bDoit}                             # .(41111.04c.1 RAM Branch Needs to be 'anyllm').(41111.04b.1 RAM Use it).(41115.02g.5 RAM Could use gitr).(41111.04.2 RAM Use it to copy anyllm command to master so that it is always available)
 
        # 3. Run set-anyllm.sh
 
@@ -1048,14 +1049,14 @@ function copyFile() {                                                           
 #
 #====== =================================================================================================== #
 
-        sayMsg    "FRT40[1015]  Copy File" sp;
+        sayMsg    "FRT40[1015]  Copy File" sp 1;
 
   if [ "${aCmd}" == "Copy File" ]; then
 
         sayMsg    "FRT40[1026]  ${aCmd}" 1
         aFrom="$2"; aFile="$3"; aTo="$4"
-        sayMsg    "FRT40[1055]  copyFile \"${aFrom}\" \"${aFile}\" \"${aTo}\" -doit" -1
-                                copyFile  "${aFrom}"   "${aFile}"  "${aTo}"  bDoit
+        sayMsg    "FRT40[1057]  copyFile \"${aFrom}\" \"${aFile}\" \"${aTo}\" -doit" 2
+                                copyFile  "${aFrom}"   "${aFile}"   "${aTo}"  bDoit
      ${aLstSp}; exit
      fi # eoc Copy File                                                                                     # .(41225.06.4 End)
 #    -- --- ---------------  =  ------------------------------------------------------  #  ---------------- #
