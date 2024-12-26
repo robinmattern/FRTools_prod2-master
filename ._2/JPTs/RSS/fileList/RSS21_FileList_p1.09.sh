@@ -11,7 +11,8 @@
 ##FD   RSS21_FileList.sh        |  16731|  5/20/24  8:43a|   221| p1.07.40520.0843
 ##FD   RSS21_FileList.sh        |  19145| 10/26/24  9:08a|   237| p1.07.41026.0908
 ##FD   RSS21_FileList.sh        |  22081| 11/17/24  4:46p|   259| p1.09.41117.1645
-
+##FD   RSS21_FileList.sh        |  22948| 12/26/24  3:15p|   265| p1.09.41226.1515
+#
 ##DESC     .--------------------+-------+----------------+------+----------------+
 #            List files similar to Windows dir.  Also use switches
 #
@@ -54,7 +55,8 @@
 # .(40520.01  5/20/24 RAM  7:30a| Accomodate MacOS
 # .(40520.02 11/17/24 RAM 10:45a| Use exit_wCR
 # .(40520.01 11/17/24 RAM  2:05p| Accomodate MacOS again
-# .(10707.09 11/17/24 RAM  4:45p| Add Seconds 
+# .(10707.09 11/17/24 RAM  4:45p| Add Seconds
+# .(41226.03 12/25/24 RAM  3:15p| Remove fractional seconds
 
 ##PRGM     +====================+===============================================+
 ##ID 69.600. Main               |
@@ -107,10 +109,11 @@ function exit_wCR() {                                                           
 # if [   -z "${mArgs[1]}" ]; then aStr='*'; else aStr="*${mArgs[1]}*";   fi; aSearch="-iname \"${aStr}\""
   if [   -z "${mArgs[1]}" ]; then aStr='*'; else aStr="*${mArgs[1]}*";   fi; aSearch="-iname \"${aStr/\`/\\\`}\""               # .(40404.01.1 RAM Was: "-iname \"${aStr}\"")
   if [ ! -z "${nDays}"    ]; then aSearch="-mtime -${nDays} ${aSearch}"; fi
+
   if [ ! -z "${nSort}"    ]; then if [ "${nSort:0:1}" == "1" ]; then aNum="n";  fi;
                                   if [ "${nSort:0:1}" == "2" ]; then aNum=",3"; fi
-                                  if [ "${nSort:0:1}" == "3" ]; then nSort=4${nSort:1:1}; fi
-                                                                     aSort=" | sort -k${nSort:0:1}${aNum}";
+                                  if [ "${nSort:0:1}" == "3" ]; then nSort=4${nSort:1:1}; aCollate="LC_COLLATE=C"; fi           # .(41226.03.1)
+                                                                     aSort=" | ${aCollate} sort -k${nSort:0:1}${aNum}";         # .(41226.03.2 RAM Add LC_COLLATE=C for Linux)
                                   if [ "${nSort:1:1}" == "r" ]; then aSort="${aSort}r"; fi; fi
 
   if [ ! -z "${aIncl}"    ]; then      aExcl=; fi
@@ -152,6 +155,7 @@ function exit_wCR() {                                                           
 #   bQuiet=0; bSpace=0; sayMsg "                                find \"${aDir}\" ${opt} ${aSearch}${aSort}${aExcl}${aIncl}" -1  # .(21117.02.2)
 
   if [ ! -z "${bFile}" ]; then
+
     echo -e "\n  Folder Size     Files   Dirs     Date      Time    $( pwd )/$aDir"                                                               # .(41117.03.1)
 #   echo "  ----------  ----------------  -------------------------------------------------------------------------------------------------------------  ------------------"
 #   echo "  ----------  ----------------  ----------------  -------------------------------------------------------------------------------------------  ------------------"
@@ -162,7 +166,8 @@ function exit_wCR() {                                                           
 #         aFmt='  %10s                    %TY-%Tm-%Td %TH:%TM                                                                                               %f \n';
 #         aFmt='  %10s                    %TY-%Tm-%Td %TH:%TM.%TS                                                                                               %f \n';
 #         aFmt='  %10s                    %TY-%Tm-%Td %TH:%TM  %-94p  %f \n';                                                   ##.(10707.09.2)
-          aFmt='  %12s                  %TY-%Tm-%Td %TH:%TM.%TS  %-88p  %f \n';                                                 # .(10707.09.2)
+#         aFmt='  %12s                  %TY-%Tm-%Td %TH:%TM.%TS  %-88p  %f \n';                                                 # .(10707.09.2)
+          aFmt='  %12s                  %TY-%Tm-%Td %TH:%TM.%T  %-88p  %f \n';                                                  # .(41226.04.1)
     else
 #   echo -e "\n Folder Size     Files    Dirs  $( pwd )/$aDir"                                                                  # .(21114.07.2)
 #   echo -e "\n   File Size     Date    Time   $( pwd )/$aDir"                                                                  # .(21114.07.2)
@@ -171,9 +176,9 @@ function exit_wCR() {                                                           
   echo "  ----------  -------------------  ---------------------------------------------------------------------------"
 #         aFmt='  %10s  %TY-%Tm-%Td %TH:%TM  %p\n';                                           #  echo "aFmt '${aFmt}'"          ##.(10707.09.3)
           aFmt='  %10s  %TY-%Tm-%Td %TH:%TM.%TS  %p\n';                                       #  echo "aFmt '${aFmt}'"          # .(10107.09.3).(10707.09.1 RAM add Seconds)
+          aFmt='  %10s  %TY-%Tm-%Td %TH:%TM.%TS  %p\n';                                       #  echo "aFmt '${aFmt}'"          # .(41226.04.2).(10107.09.3).(10707.09.1 RAM add Seconds)
       fi
 # -----------------------------------------------------------------------------------------------------------------------------
-
 
 # aAwk='{ d=$9" "substr($10,1,5); gsub( /\"/, "", d ); printf "%12d  %15s  %s\n", $8, d, $20 }'                                 # .(40520.01.1 RAM Do it this way).(40520.01.x)
   aAwk='{ d=$9" "substr($10,1,5); gsub( /"/, "",  d ); printf "%12d  %15s  %s\n", $8, d, $20 }'                                 # .(40520.01.x RAM Was gsub( /\"/, "", d)
@@ -191,7 +196,8 @@ if [ "${aIncl}" == "" ]; then                                                   
 #    aCmd="find \"${aDir}\" ${opt} ${aSearch} -not -path  */node-modules/*  | xargs    stat -t \"%Y-%m-%d %H:%M:%S\"    | awk '{ print $8\" \"$9\" \"$10\" \"$20 }'" ##.(40520.01.2).(40520.01.13)
 #    aCmd="find \"${aDir}\" ${opt} ${aSearch} -not -path  */node-modules/*  | xargs -0 stat -t \"%Y-%m-%d %H:%M:%S\"    | awk '${aAwk}'"    # .(40520.01.2).(40520.01.13)
 #    aCmd="${aCmd}";                  aCmd+=" -not -path  */node-modules/*  | xargs    stat -t \"%Y-%m-%d %H:%M:%S\"    | awk '${aAwk}'"    # .(40520.01.13).(40520.01.2)
-     aCmd="${aCmd}";                  aCmd+=" -not -path "*/node-modules/*" -printf \""${aFmt}"\" | awk '{ sub( /\...00000000/, \"\"); print }'"; # .(41026.01.4).(10826.01.2 RAM)
+#    aCmd="${aCmd}";                  aCmd+=" -not -path "*/node-modules/*" -printf \""${aFmt}"\" | awk '{ sub(  /\...00000000/, \"\" ); print }'"; ##.(10826.01.2 RAM).(41026.01.4).(41226.03.3)
+     aCmd="${aCmd}";                  aCmd+=" -not -path "*/node-modules/*" -printf \""${aFmt}"\" | awk '{ sub( /\.[0-9.]{10} /, \" \"); print }'"; # .(41226.03.3).(41026.01.4).(10826.01.2 RAM)
 
    else                                                                                                                                     # .(40520.01.14)
 #    aCmd="${aCmd} -iname \"*\" ! -name \"node_modules\"   -exec stat -f \"%z %Sm %N\"   -t \"%Y-%m-%d %H:%M:%S\" {} \; | awk '${aAwk}'"    ##.(40520.01.15)
@@ -213,9 +219,9 @@ if [ "${aIncl}" == "" ]; then                                                   
 # -----------------------------------------------------------------------------------------------------------------------------
 
 # awk '{ n=index($0"/!_", "/!_"); printf "%-100s %s\n", substr($0,1,n-1), substr($0,n+1) }'                                     # .(10923.01.1 RAM ??)
-# echo "RDIR[211]  aIncl: '${aIncl}', Exclude: ${aExclude}";
-# echo "RDIR[212]  aCmd:  '${aCmd}'";
-# echo "RDIR[213]  ${aCmd}${aExclude}${aSort}";   #exit
+# echo "RDIR[221]  aIncl: '${aIncl}', Exclude: ${aExclude}";
+# echo "RDIR[222]  aCmd:  '${aCmd}'";
+# echo "RDIR[223]  ${aCmd}${aExclude}${aSort}";   #exit
 
 # -----------------------------------------------------------------------------------------------------------------------------
 
