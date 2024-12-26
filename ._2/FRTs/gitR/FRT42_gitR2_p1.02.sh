@@ -29,6 +29,7 @@
 ##FD   FRT42_GitR2.sh           | 147201| 12/17/24  9:05|  2022| p1.02`.41217.0905
 ##FD   FRT42_GitR2.sh           | 149239| 12/25/24 15:40|  2031| p1.02`.41225.1540
 ##FD   FRT42_GitR2.sh           | 150500| 12/26/24  0:27|  2040| p1.02`.41226.0027
+##FD   FRT42_GitR2.sh           | 151134| 12/26/24  8:10|  2044| p1.02`.41226.0810
 #
 ##DESC     .--------------------+-------+---------------+------+-----------------+
 #            This script has usefull GIT functions.
@@ -121,7 +122,7 @@
 #.(41124.06  11/24/24 RAM  6:55p| Add Date to git status
 #.(41124.06  11/24/24 RAM  7:45p| Add Date to git show commit
 #.(41129.02  11/29/24 RAM  1:00p| Change git status -u to get all working files
-#.(41129.03  11/29/24 RAM  1:15p| Add add command
+#.(41129.03  11/29/24 RAM  1:15p| Add add commit command
 #.(41129.04  11/29/24 RAM  2:50p| Fix make remote args
 #.(41031.04  12/01/24 RAM 12:32p| Fix List Commits Dec<-"Dev" date calc
 #.(41105.03  12/01/24 RAM  1:15p| Fix "${OS:0:7}" != "Windows"
@@ -152,6 +153,7 @@
 #.(41217.01  12/17/24 RAM  3:00p| Add gh login
 #.(41225.05  12/25/24 RAM  3:40p| Modify gitr branch list
 #.(41226.01  12/26/24 RAM 12:27a| Add -force for delete branch
+#.(41129.03b 12/26/24 RAM  8:10a| 1st fix of add commit command
 
 ##PRGM     +====================+===============================================+
 ##ID 69.600. Main0              |
@@ -159,7 +161,7 @@
 #*/
 #========================================================================================================== #  ===============================  #
 
-        aVDt="Dec 26, 2024 12:27a"; aVer="p1.02"; aVTitle="Useful gitR2 Tools by formR";                                    # .(41103.02.2 RAM Was: gitR1)
+        aVDt="Dec 26, 2024 8:10a"; aVer="p1.02"; aVTitle="Useful gitR2 Tools by formR";                                    # .(41103.02.2 RAM Was: gitR1)
         aVer="$( echo "$0" | awk '{ match( $0, /_[dpstuv][0-9]+\.[0-9]+/ ); print substr( $0, RSTART+1, RLENGTH-1) }' )"  # .(21031.01.1 RAM Add [d...).(20416.03.8 "_p2.02", or _d1.09)
 
         LIB="gitR2"; LIB_LOG=${LIB}_LOG; LIB_USER=${LIB}_USER; Lib=${LIB}; aDir=$(dirname "${BASH_SOURCE}");              # .(41103.02.3).(41102.01.1 RAM Add JPT12_Main2Fns_p1.07.sh Beg).(80923.01.1)
@@ -1105,15 +1107,17 @@ function getRemoteName() {                                                      
 
 #      sayMsg    "gitR2[1037] ${aCmd} Command" sp 1;
 
-  if [ "${aCmd}" == "addCommit" ]; then                                                                     # .(41129.03.6 RAM Add Add CommitCommand Beg)
+  if [ "${aCmd}" == "addCommit" ]; then                                                                     # .(41129.03.6 RAM Add Add Commit Command Beg)
                                    aCMsg="";         aCN=""
-       sayMsg  sp "gitR2[1041] aArg2: '${aArg2}', aArg3: '${aArg3}', aArg4: '${aArg4}', \$2: '$2', \$3: '$3', \$4: '$4'" -1;
+       sayMsg  sp "gitR2[1110] aArg2: '${aArg2}', aArg3: '${aArg3}', aArg4: '${aArg4}', \$2: '$2', \$3: '$3', \$4: '$4'" 1;
 
-     if [[ ${aArg2} =~ ^[0-9] ]]; then  aArg2="${aArg3}"; aArg3="$2"; fi
-     if [ "${aArg2}" != "" ]; then aCMsg="${aArg2}"; fi
-     if [ "${aArg3}" != "" ]; then aCMsg="${aArg3}"; aCN="${aArg2}"; fi
+     if [[ ${aArg2} =~ ^[0-9] ]]; then aArg2="${aArg3}"; aArg3="$2"; fi
+     if [ "${aArg2}" != ""     ]; then aCMsg="${aArg2}"; fi
+#    if [ "${aArg3}" != ""     ]; then aCMsg="${aArg3}"; aCN="${aArg2}"; fi                                 ##.(41129.03b.1)
+     if [ "${aArg3}" != ""     ]; then aCMsg="${aArg3}"; aCN="${aArg4}"; aArg4="${aArg5}"; fi               # .(41129.03b.1)
+#    if [ "${aArg3}" != ""     ]; then aCMsg="${aArg2}"; aCN="${aArg3}"; fi                                 ##.(41129.03b.2)
+     if [[ ${aCN}   =~ ^[0-9] ]]; then aCN=${aCN}; else aCN=""; fi                                          # .(41129.03b.3)
 
-     if [ "${aArg3}" != "" ]; then aCMsg="${aArg2}"; aCN="${aArg3}"; fi
      if [ "${aArg4}" != "" ]; then
          echo -e "\n* Please put the commit message in quotes."
          exit_wCR
@@ -1125,13 +1129,13 @@ function getRemoteName() {                                                      
            aTS="$( date '+%y%m%d')"; aTS="${aTS:1}"
      if [ "${#aCN}" == "1" ] || [ "${#aCN}" == "2" ]; then
            if [ "${#aCN}" == "1" ]; then aCN="0${aCN}"; fi
-           aCN=".(${aTS}.${aCN}"
+           aCN=".(${aTS}.${aCN}"                                                                            # .(41129.03.7 RAM Add nth commit of the day)
            fi
-#      sayMsg sp "gitR2[1061] aMsg: '${aCMsg}', aCN: '${aCN}'" 1;
+       sayMsg sp "gitR2[1130] aMsg: '${aCMsg}', aCN: '${aCN}'" 1;
 
      if [ "${aCN}"  == "" ]; then
            aNxt=$( git log --since="midnight" --oneline | awk '{ sub( /.+\.\(/, "" ); print substr($0,7,2) }' | sort | awk 'END{ print $0 + 1 }' )
-       sayMsg sp "gitR2[1065] aNxt: '${aNxt}'" -1;
+       sayMsg sp "gitR2[1134] aNxt: '${aNxt}'" -1;
 #          if [ "${aNxt}"  == ""  ]; then aNxt="01"; fi
            if [ "${#aNxt}" == "1" ]; then aNxt="0${aNxt}"; fi
            aCN=".(${aTS}.${aNxt}"
@@ -1144,7 +1148,7 @@ function getRemoteName() {                                                      
            echo -e "\n* There are ${aNum// /} working file${s} that will be committed."
            shoWorkingFiles                                                                                  # .(41204.03.1 Add shoCommitMsg to Add command)
            echo -e "\n  ${aGIT1}"
-           echo -e   "  ${aGIT2} # Add -d to doit"
+           echo -e   "  ${aGIT2}  # Add -d to doit"
          else
            echo -e "\n  ${aGIT1}"
            echo -e   "  ${aGIT2}\n"                                                                        # .(41225.07.1 RAM Add line)
