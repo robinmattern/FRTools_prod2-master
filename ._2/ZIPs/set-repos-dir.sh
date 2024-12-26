@@ -37,5 +37,5 @@ if [ "${a7zip_Ver}" != "24.09" ]; then  # or if ! type zip >/dev/null 2>&1; then
      if [ "${OS}" != "Windows" ]; then echo ""; sudo chmod 755 *.sh; fi
      mv re-install.sh re-install
 
-     rm set-repos-dir.zip                                                               # .(41226.03.1 RAM Erase it)
+     rm set-repos-dir.zip                                                               # .(41226.04.1 RAM Erase it)
      if [ "${aCR}" != "" ]; then echo ""; fi
