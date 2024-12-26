@@ -868,7 +868,7 @@ function copyFile() {                                                           
 
 #          aBranch=""; if [ "${aArg3}" != "" ]; then aBranch=" ${aArg3}"; fi                                ##.(41201.04.5 RAM Clarity)
 
-        sayMsg    "FRT40[ 815]  Install: aArg2: '${aArg2}', aArg3: '${aArg3}', bDoit: '${bDoit}', bUpdate: '${bUpdate}'" -1  # .(41115.02d.37 RAM Do Update ALTools)
+        sayMsg    "FRT40[ 871]  Install: aArg2: '${aArg2}', aArg3: '${aArg3}', bDoit: '${bDoit}', bUpdate: '${bUpdate}'" -1  # .(41115.02d.37 RAM Do Update ALTools)
 
 #                                     aProjectStage="AnyLLM_prod1-master"
                                       aProjectStage="AnyLLM"                                                # .(41201.03.5 )
@@ -879,9 +879,9 @@ function copyFile() {                                                           
         if [ -d    "${aProjectStage}" ]; then cd    ${aProjectStage}; fi
 #                                     aProjectStage="$( pwd )"; aProjectStage="${aProjectStage##/}"; fi
                                       aDir="$( pwd )"; aDir="${aDir##*/}"; aDir="${aDir//anyllm/AnyLLM}"    # .(41115.02d.38 RAM Change aDir to Uppercase)
-#       sayMsg    "FRT40[ 826]  aProjectStage: '${aProjectStage}' aDir: '${aDir}'" 1
-#       sayMsg    "FRT40[ 827]  aProjectStage: '${aProjectStage/${aDir}/}' aDir: '${aDir}'" 1
-        sayMsg    "FRT40[ 828]  install altools aProjectStage: '${aProjectStage}', bDoit: '${bDoit}', bUpdate: '${bUpdate}'" -1
+#       sayMsg    "FRT40[ 882]  aProjectStage: '${aProjectStage}' aDir: '${aDir}'" 1
+#       sayMsg    "FRT40[ 883]  aProjectStage: '${aProjectStage/${aDir}/}' aDir: '${aDir}'" 1
+        sayMsg    "FRT40[ 884]  install altools aProjectStage: '${aProjectStage}', bDoit: '${bDoit}', bUpdate: '${bUpdate}'" -1
 
 #       if [ "${aDir}" != "${aProjectStage}" ]; then
         if [ "${aProjectStage/${aDir}/}" == "${aProjectStage}" ]; then                                      # .(41115.02d.39 RAM Lowest sub-folder only)
@@ -926,7 +926,7 @@ function copyFile() {                                                           
             fi # bDoit != `
 #           -------------------------------------------------------------------------------------
 
-        sayMsg    "FRT40[ 873]  install altools aProjectStage: '${aProjectStage}', bDoit: '${bDoit}', bUpdate: '${bUpdate}'" -1
+        sayMsg    "FRT40[ 929]  install altools aProjectStage: '${aProjectStage}', bDoit: '${bDoit}', bUpdate: '${bUpdate}'" -1
 
          if [ "${bDoit}" == "1" ]; then                                                                     # .(41115.02f.1 RAM Opps was: bDoit != 1)
 
@@ -976,15 +976,15 @@ function copyFile() {                                                           
             git update-index --assume-unchanged ALTools_prod1-robin.code-workspace      # .(41113.01b.1 RAM Tell git to ignore the delete)
             git rm --cached                     ALTools_prod1-robin.code-workspace      # .(41113.01b.2 RAM Try this)
 
-        sayMsg    "FRT40[ 978]  gitr add commit \"${aVerb} ALTools files\" -d" -1
+        sayMsg    "FRT40[ 979]  gitr add commit \"${aVerb} ALTools files\" -d" -1
      echo -e "\ngitr add commit \"${aTS}.02_${aVerb} ALTools files\" -d";                                   # .(41225.06b.1.(41115.02g.2).(41115.02d.48)
 #               git commit -m ".(${aTS}.02_Added ALTools files" 2>&1 | awk '{ print "  " $0 }'              ##.(41115.02d.48 RAM Commit them)
                 gitr add commit            "${aVerb} ALTools files"  -d;                                    # .(41225.06b.2).(41115.02h.1 RAM Add -d).(41115.02g.3).(41115.02f.2).(41115.02d.48)
 
             fi   # eif ???                                                                                  # .(41115.02f.3)
 
-        sayMsg    "FRT40[ 985]  pwd: '$( pwd )'" 1
-     echo -e "\ngitr copyFile \"ALTools\" \"run-anyllm.sh\" \"master\"";                                    # .(41115.02g.4).(41115.02d.48)
+#       sayMsg    "FRT40[ 986]  pwd: '$( pwd )'" 1
+     echo -e   "gitr copyFile \"ALTools\" \"run-anyllm.sh\" \"master\"";                                    # .(41115.02g.4).(41115.02d.48)
                      copyFile  "ALTools"   "run-anyllm.sh"   "master"                                       # .(41115.02g.5 RAM Could use gitr).(41111.04.2 RAM Use it to copy anyllm command to master so that it is always available)
 
        # 3. Run set-anyllm.sh
