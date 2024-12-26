@@ -29,7 +29,7 @@
 ##FD   FRT42_GitR2.sh           | 147201| 12/17/24  9:05|  2022| p1.02`.41217.0905
 ##FD   FRT42_GitR2.sh           | 149239| 12/25/24 15:40|  2031| p1.02`.41225.1540
 ##FD   FRT42_GitR2.sh           | 150500| 12/26/24  0:27|  2040| p1.02`.41226.0027
-##FD   FRT42_GitR2.sh           | 151448| 12/26/24 16:15|  2046| p1.02`.41226.1615
+##FD   FRT42_GitR2.sh           | 152093| 12/26/24 17:30|  2061| p1.02`.41226.1730
 #
 ##DESC     .--------------------+-------+---------------+------+-----------------+
 #            This script has usefull GIT functions.
@@ -155,6 +155,7 @@
 #.(41226.01  12/26/24 RAM 12:27a| Add -force for delete branch
 #.(41129.03b 12/26/24 RAM  8:10a| 1st fix of add commit command
 #.(41124.06c 12/26/24 RAM 16:15p| Do shoWorkingFiles the same for unix
+#.(41226.05. 12/26/24 RAM  5:30p| Rework gitr update messages
 
 ##PRGM     +====================+===============================================+
 ##ID 69.600. Main0              |
@@ -162,7 +163,7 @@
 #*/
 #========================================================================================================== #  ===============================  #
 
-        aVDt="Dec 26, 2024 4:15p"; aVer="p1.02"; aVTitle="Useful gitR2 Tools by formR";                                    # .(41103.02.2 RAM Was: gitR1)
+        aVDt="Dec 26, 2024 5:30p"; aVer="p1.02"; aVTitle="Useful gitR2 Tools by formR";                                    # .(41103.02.2 RAM Was: gitR1)
         aVer="$( echo "$0" | awk '{ match( $0, /_[dpstuv][0-9]+\.[0-9]+/ ); print substr( $0, RSTART+1, RLENGTH-1) }' )"  # .(21031.01.1 RAM Add [d...).(20416.03.8 "_p2.02", or _d1.09)
 
         LIB="gitR2"; LIB_LOG=${LIB}_LOG; LIB_USER=${LIB}_USER; Lib=${LIB}; aDir=$(dirname "${BASH_SOURCE}");              # .(41103.02.3).(41102.01.1 RAM Add JPT12_Main2Fns_p1.07.sh Beg).(80923.01.1)
@@ -1133,11 +1134,11 @@ function getRemoteName() {                                                      
            if [ "${#aCN}" == "1" ]; then aCN="0${aCN}"; fi
            aCN=".(${aTS}.${aCN}"                                                                            # .(41129.03.7 RAM Add nth commit of the day)
            fi
-       sayMsg "gitR2[1134] aMsg: '${aCMsg}', aCN: '${aCN}'" -1;
+       sayMsg "gitR2[1136] aMsg: '${aCMsg}', aCN: '${aCN}'" -1;
 
      if [ "${aCN}"  == "" ]; then
            aNxt=$( git log --since="midnight" --oneline | awk '{ sub( /.+\.\(/, "" ); print substr($0,7,2) }' | sort | awk 'END{ print $0 + 1 }' )
-       sayMsg sp "gitR2[1134] aNxt: '${aNxt}'" -1;
+       sayMsg sp "gitR2[1140] aNxt: '${aNxt}'" -1;
 #          if [ "${aNxt}"  == ""  ]; then aNxt="01"; fi
            if [ "${#aNxt}" == "1" ]; then aNxt="0${aNxt}"; fi
            aCN=".(${aTS}.${aNxt}"
@@ -1176,38 +1177,44 @@ function getRemoteName() {                                                      
 #           aCurBranch="$( git branch | awk '/'"${aArg2}"'/      { sub(  "*",   "" ); print $1; exit }' )"  ##.(41123.05.11)
 #           aCurBranch="$( git branch | awk '/'"${aArg2}"'/      { sub( /[* ]/, "" ); print $1; exit }' )"  ##.(41123.05.11).(41203.02.2)
             aCurBranch="$( git branch | awk '/'"${aNewBranch}"'/ { sub( /[* ]/, "" ); print $1; exit }' )"  # .(41203.02.2).(41123.05.11 RAM Fix for MacOS)
-        sayMsg    "gitR2[1104]  Update:   aNewBranch: '${aNewBranch}', aCurBranch: '${aCurBranch}', bDoit: '${bDoit}', bDebug: '${bDebug}', bForce: '${bForce}'" -1
+
+        sayMsg    "gitR2[1180]  Update:   aNewBranch: '${aNewBranch}', aCurBranch: '${aCurBranch}', bDoit: '${bDoit}', bDebug: '${bDebug}', bForce: '${bForce}'" -1
         if [ "${aNewBranch}" != "" ]; then
 #           aNewBranch="$( git branch | awk '/'"${aNewBranch}"'/ { sub(  "*",   "" ); print $1; exit }' )"  ##.(41123.05.12)
             aNewBranch="$( git branch | awk '/'"${aNewBranch}"'/ { sub( /[* ]/, "" ); print $1; exit }' )"  # .(41123.05.12)
         if [ "${aNewBranch}" == "" ]; then echo -e "\n* The branch, '${aArg2}', doesn't exist."; exit_wCR; fi
            else aNewBranch="${aCurBranch}"
              fi                                                                                             # .(41123.05.1 End)
-        sayMsg    "gitR2[1111]  Update:   aNewBranch: '${aNewBranch}', aCurBranch: '${aCurBranch}', bDoit: '${bDoit}', bDebug: '${bDebug}', bForce: '${bForce}'" -1
+        sayMsg    "gitR2[1187]  Update:   aNewBranch: '${aNewBranch}', aCurBranch: '${aCurBranch}', bDoit: '${bDoit}', bDebug: '${bDebug}', bForce: '${bForce}'" -1
 
 #       if [ "${aNewBranch}" != "${aCurBranch}" ]; then                                                     ##.(41123.05.2)
             aRemote="$( git config --list | grep "branch\.${aNewBranch}\.remote" | awk -F= '{ print $2 }')" # .(41123.05.3)
         if [ "${aRemote}" == "" ]; then aRemote_name="origin";   fi                                         # .(41123.05.44 RAM Was "aRemote").(41123.05.4)
         if [ "${aArg3}"   != "" ]; then aRemote_name="${aArg3}"; fi                                         # .(41123.05.5 RAM Was origin if = "" )
             aRemote="$( git remote -v | awk '/'"${aRemote_name}"'/ { sub( /\.git.+$/, "" ); print; exit }' )"
-        sayMsg "gitR2[1118]  aRemote: '${aRemote}', aRemote_name: '${aRemote_name}'" -1
+
+        sayMsg "gitR2[1195]  aRemote: '${aRemote}', aRemote_name: '${aRemote_name}'" -1
         if [ "${aRemote}" == "" ]; then echo -e "\n* The remote name, '${aRemote_name}', doesn't exist."; exit_wCR; fi
             aRemote_name="$( echo "${aRemote}" | awk '{ print $1 }' )"
 
 #           aRepo="${aRemote/${aRemote_name}/}"; aRepo="${aRepo%%*/}"; aRepo="${aRepo/.git}"
 #           aRepo="$(echo "$aRemote" | sed -n 's/.*github\/\([^.]*\).*/\1/p' )"
             aRepo="$( echo "${aRemote}" | awk '{ n = split( $2, m, "/" ); print m[ n-1 ]"/"m[ n ] }' )"     # .(41116.01.11 RAM Was: /[/:]/)
-        sayMsg    "gitR[1125]  Update:   aNewBranch: '${aNewBranch}', aCurBranch: '${aCurBranch}', bDoit: '${bDoit}', bDebug: '${bDebug}', bForce: '${bForce}'" -1
 
+        sayMsg    "gitR2[1203]  Update:   aNewBranch: '${aNewBranch}', aCurBranch: '${aCurBranch}', bDoit: '${bDoit}', bDebug: '${bDebug}', bForce: '${bForce}'" -1
 #       echo -e "\n  Updating repo, '${aRemote_name}', for branch, '${aBranch}', from remote, '${aRepo}'."; # .(41116.01.12 RAM Moved to below)
 #         cd    "$(  dirname $0  )"
-#           aBranch="$( git symbolic-ref --short HEAD )"                                                    # .(41116.01.4)
-            bFilesInWork="$( git status | awk '/working tree clean/ { b = 1 }; END { print b ? b : 0 }' )"  # .(41123.03.2)
+#               aBranch="$( git symbolic-ref --short HEAD )"                                                # .(41116.01.4)
+
+#       if [ "${bDoit}" != "" ]; then
+ echo -e "\n  About to update repo, '${aRemote_name}', for branch, '${aBranch}', from remote, '${aRepo}'."; # .(41226.05.3)
+#           fi
+                bFilesInWork="$( git status | awk '/working tree clean/ { b = 1 }; END { print b ? b : 0 }' )" # .(41123.03.2)
         if [ "${bFilesInWork}" != "1" ]; then                                                               # .(41116.01.5).(41107.01.7 RAM Deal with updating dirty repo Beg)
             aVerb="will"; if [ "${bForce}" == "1" ]; then aVerb="won't"; fi
             aNum="$(git status -u --short | wc -l)"; s="s"; if [ "${aNum// /}" == "1" ]; then s=""; fi      # .(41204.01.5).(41129.02.5.(41116.01.21).(41123.03.3)
 
-        sayMsg    "gitR2[1135]  Update:   aNewBranch: '${aNewBranch}', aCurBranch: '${aCurBranch}', bDoit: '${bDoit}', bDebug: '${bDebug}', bForce: '${bForce}'" -1
+        sayMsg    "gitR2[1216]  Update:   aNewBranch: '${aNewBranch}', aCurBranch: '${aCurBranch}', bDoit: '${bDoit}', bDebug: '${bDebug}', bForce: '${bForce}'" -1
 
             echo -e "\n* The branch, '${aCurBranch}', has ${aNum// /} uncommitted file${s}, that ${aVerb} be stashed."    # .(41116.01.22).(41123.05.6).(41123.03.4)
 #           git status --short | awk '{ print "  " $0 }'                                                    ##.(41124.06.6)
@@ -1220,36 +1227,44 @@ function getRemoteName() {                                                      
 #           aStashEm="git stash push -u -m \".(${aTS} Stash of ${aNum} files\"\n      ";                    ##.(41116.01.14).(41123.05.7).(41116.01.23)
             aStashEm="git stash push -u -m \".(${aTS} Stash of ${aNum// /} file${s} ${aHR}\"";              # .(41203.03.2).(41116.01.23).(41123.05.7 RAM Was files\n).(41116.01.14)
             if [ "${bForce}" == "1" ]; then aStashEm=""; fi                                                 # .(41116.01.6 RAM Don't stash them if bForce)
-          else
+
+          else # eif bFilesInWork != "1"  ??
             aStashEm=""
             fi # eif bNoFilesInWork                                                                         # .(41107.01.7 End)
 
-#       sayMsg    "gitR2[1152]  aRepoDir: '${aRepoDir}', branch: '${aBranch}'" 1
-#       sayMsg    "gitR2[1153]       Pwd: '$( pwd )'" 2
+#       sayMsg    "gitR2[1234]  aRepoDir: '${aRepoDir}', branch: '${aBranch}'" 1
+        sayMsg    "gitR2[1235]       Pwd: '$( pwd )'" -1
 
         if [ "${bDoit}" == "1" ]; then
 #                        git pull
             if [ "${bForce}" != "1" ]; then ${aStashEm} | awk '{ print "  " $0 }'; fi
-               if [ "${aNewBranch}" != "${aCurBranch}" ]; then                                              # .(41123.05.8)
-                    git reset --hard           | awk '{ print "  " $0 }'                                    # .(41123.05.9 RAM discards working files in the current branch#)
-                    git checkout ${aNewBranch} | awk '{ print "  " $0 }'; fi                                # .(41123.05.10 RAM Add awk "  " $0)
-                    git fetch ${aRemote_name}  | awk '{ print "  " $0 }'                                    # .(41123.05.11)
-                    git reset --hard ${aRemote_name}/${aNewBranch} | awk '{ print "  " $0 }'                # .(41123.05.12 RAM --hard not really necessary)
-                   Sudo find . -type f -name "*.sh" -exec chmod 755 {} +
-        aVerb="Updated"
-        else
-        aVerb="About to update"
-#       echo -e "\n      git pull"
-#       if [ "${bForce}" != "1" ]; then echo -e "\n      ${aStashEm}"; else echo ""; fi                     ##.(41123.05.13).(41123.05.33)
-        if [ "${bForce}" != "1" ]; then echo -e "\n      ${aStashEm}"; fi                                   # .(41123.05.33 RAM Remove else echo "")
-        if [ "${aNewBranch}" != "${aCurBranch}" ]; then                                                     # .(41123.05.14)
-        echo "      git reset hard"                                                                         # .(41123.05.15)
-        echo "      git checkout ${aNewBranch}"; fi                                                         # .(41123.05.16)
-        echo "      git fetch ${aRemote_name}"
-        echo "      git reset --hard ${aRemote_name}/${aNewBranch}  # add -d to doit"
-          fi
 
-        echo -e "\n  ${aVerb} repo, '${aRemote_name}', for branch, '${aBranch}', from remote, '${aRepo}'."; # .(41116.01.12)
+            if [ "${aNewBranch}" != "${aCurBranch}" ]; then                                                 # .(41123.05.8)
+                  git reset --hard           | awk '{ print "  " $0 }'                                      # .(41123.05.9 RAM Discard working files in the current branch#)
+                  git checkout ${aNewBranch} | awk '{ print "  " $0 }'                                      # .(41123.05.10 RAM Add awk "  " $0)
+                  fi
+               git fetch ${aRemote_name}  | awk '{ print "  " $0 }'                                         # .(41123.05.11)
+               git reset --hard ${aRemote_name}/${aNewBranch} | awk '{ print "  " $0 }'                     # .(41123.05.12 RAM --hard not really necessary)
+               Sudo find . -type f -name "*.sh" -exec chmod 755 {} +
+
+            aVerb="Updated"
+        echo -e "\n  ${aVerb} repo, '${aRemote_name}', for branch, '${aBranch}', from remote, '${aRepo}'."; # .(41226.05.4)
+          else # eif bDoit == 1
+            aVerb="About to update"
+#       echo -e "\n  ${aVerb} repo, '${aRemote_name}', for branch, '${aBranch}', from remote, '${aRepo}'."; ##.(41226.05.5)
+
+#           echo -e "\n      git pull"
+#           if [ "${bForce}" != "1" ]; then echo -e "\n    ${aStashEm}"; else echo ""; fi                   ##.(41123.05.13).(41123.05.33)
+            if [ "${bForce}" != "1" ]; then echo -e "\n    ${aStashEm}"; fi                                 # .(41123.05.33 RAM Remove else echo "")
+            if [ "${aNewBranch}" != "${aCurBranch}" ]; then                                                 # .(41123.05.14)
+                  echo "    git reset hard"                                                                 # .(41123.05.15)
+                  echo "    git checkout ${aNewBranch}";                                                    # .(41123.05.16)
+                  fi
+               echo    "    git fetch ${aRemote_name}"
+               echo    "    git reset --hard ${aRemote_name}/${aNewBranch}  # add -d to doit"
+            fi # eif bDoit == 0
+
+#       echo -e "\n  ${aVerb} repo, '${aRemote_name}', for branch, '${aBranch}', from remote, '${aRepo}'."; ##.(41116.01.12).(41226.05.6)
 
         exit_wCR  #${aLstSp}; exit
      fi # eoc Update Command                                                                                # .(41116.01.3 End)

@@ -47,6 +47,7 @@
 ##FD   FRT10_Main0.sh           |  75102| 12/25/24 17:33|  1032| p1.09`41225.1733
 ##FD   FRT10_Main0.sh           |  77263| 12/25/24 23:58|  1062| p1.09`41225.2358
 ##FD   FRT10_Main0.sh           |  79753| 12/26/24 10:15|  1091| p1.09`41226.1015
+##FD   FRT10_Main0.sh           |  80142| 12/26/24 17:30|  1094| p1.09`41226.1730
 #
 ##DESC     .--------------------+-------+---------------+------+-----------------+
 #            Use the commands in this script to manage FormR app resources.
@@ -153,6 +154,7 @@
 #.(41111.04c 12/26/24 RAM 10:00a| Copy file from lowercase branch altools
 #.(41111.04d 12/26/24 RAM 10:15a| Add -doit to frt copy command
 #.(41111.04e 12/26/24 RAM 10:15a| Add ${bDoit} to frt copy command
+#.(41226.05  12/26/24 RAM  5:30p| Rework frt update messages
 
 ##PRGM     +====================+===============================================+
 ##ID 69.600. Main0              |
@@ -160,7 +162,7 @@
 #*/
 #========================================================================================================== #  ===============================  #
 
-     aVdt="Dec 26, 2024 10:15a"; aVtitle="formR Tools"                                                      # .(21113.05.8 RAM Add aVtitle for Version in Begin)
+     aVdt="Dec 26, 2024 5:30p"; aVtitle="formR Tools"                                                      # .(21113.05.8 RAM Add aVtitle for Version in Begin)
      aVer="$( echo $0 | awk '{  match( $0, /_[dpstuv][0-9]+\.[0-9]+/ ); print substr( $0, RSTART+1, RLENGTH-1) }' )"  # .(21031.01.1 RAM Add [d...).(20416.03.8 "_p2.02", or _d1.09)
 
      LIB="FRT"; LIB_LOG=${LIB}_LOG; LIB_USER=${LIB}_USER; Lib=${LIB}; aDir=$( dirname "${BASH_SOURCE}" );   # .(41027.01.1 RAM).(80923.01.1)
@@ -749,12 +751,12 @@ function Help( ) {
         aBranch="$( git symbolic-ref --short HEAD )"                                                        # .(41107.01.6)
   if [ "${bDoit}" != "1" ]; then                                                                            # .(41123.04.11 RAM Account for bDoit Beg)
         aArgs="$( echo "${aBranch} $2 $3 $4 $5 -doit" | awk '{ gsub( / +/, " " ); print }' )"
-        echo -e "\n  About to update FRT in ${aProject_dir}."; # exit
-        echo "      gitR update ${aArgs}"
+#       echo -e "\n  About to update FRT in ${aProject_dir}."; # exit                                       # .(41226.05.1 RAM No message here)
+#       echo "      gitR update ${aArgs}"                                                                   # .(41226.05.2)
         gitr update ${aBranch} $2 $3 $4 $5
       else
         echo -e "\n  Updating FRT in ${aProject_dir}."; # exit                                              # .(41123.04.11 RAM Move to here End)
-        sayMsg    "FRT40[ 734]  gitR \" ${aBranch} $2 $3 $4 $5\"" -1;
+        sayMsg    "FRT40[ 757]  gitR \" ${aBranch} $2 $3 $4 $5\"" -1;
         gitr update ${aBranch} $2 $3 $4 $5                                                                  # .(41123.04.12).(41123.04.4 RAM Use gitr update)
         fi                                                                                                  # .(41123.04.13)
 
@@ -1022,7 +1024,7 @@ function copyFile() {                                                           
             if [ "${bUpdate}" != "1" ]; then                                                                # .(41115.02d.49)
             Sudo chmod 755 *.sh
             echo -e   "\n./set-anyllm.sh";                                              # .(41113.01.4 RAM Remove leading spaces)
-                         ./set-anyllm.sh doit 
+                         ./set-anyllm.sh doit
             echo -e   "\nanyllm help";                                                  # .(41113.01.5)
                          anyllm
             fi # eif bUpdate != "0"                                                                         # .(41115.02d.50)
