@@ -114,7 +114,7 @@
 #.(41028.01  10/28/24 RAM  9:32a| Change JPT app numbers
 #.(41107.01  11/07/24 RAM  8:15a| Add Update command
 #.(41111.01  11/11/24 RAM  7:45a| Add Install ALTools command
-#.(41111.04  11/11/24 RAM  7:30p| Copy run-anyllm to master branch
+#.(41111.04  11/11/24 RAM  7:30p| Copy run-anyllm.sh to master branch
 #.(41112.04  11/12/24 RAM  9:05a| Remove trailing quotes from .gitignore
 #.(41112.05  11/12/24 RAM  9:05a| Remove git git from install command
 #.(41112.06  11/12/24 RAM 10:00a| Add / fix Sudo
@@ -147,7 +147,8 @@
 #.(41115.02g 12/25/24 RAM  5:33p| Fix gitr add commit -m
 #.(41225.06  12/25/24 RAM  6:40p| Add command frt copy for copyFile
 #.(41115.02h 12/25/24 RAM 11:25p| Add -d to gitr add commit
-#.(41225.06b 12/25/24 RAM 11:58p| Add command frt copy for copyFile
+#.(41225.06b 12/25/24 RAM 11:58p| Use -d to gitr add commit after copyFile
+#.(41111.04b 12/26/24 RAM  7:15a| Add -d to frt copy 
 
 ##PRGM     +====================+===============================================+
 ##ID 69.600. Main0              |
@@ -787,7 +788,7 @@ function Help( ) {
 #>      INSTALL Command                                                                                     # .(41111.01.5 RAM Add Install Command beg)
 #====== =================================================================================================== #
 
-        sayMsg    "FRT40[ 747]  Install Command" -1;
+        sayMsg    "FRT40[ 791]  Install Command" -1;
 
 function Sudo() {
 #       echo "   sudo[1] \${OS:0:7}: '${OS:0:7}'"
@@ -795,14 +796,37 @@ function Sudo() {
 #                sudo "$@"; echo "sudo[2]  sudo \"$@\""; fi; fi                         ##.(41113.01.1)
         }
 function copyFile() {                                                                   # .(41111.04.1 RAM Write copyFile Beg)
-        git checkout "$3"                                        >/dev/null 2>&1        # Switch to master branch
-        git checkout "$1" -- "$2"                                >/dev/null 2>&1        # Get file from ALTools branch
-        Sudo chmod 775 "$2"; aTS="$( date +%y%m%d )"; aTS="${aTS:1}"                    # .(41113.01.2).(41112.06.1)
-        git add "$2"                                             >/dev/null 2>&1        # Add and commit in master
-        git commit -m ".(${aTS}.02_Add file, $2, from $1 branch" >/dev/null 2>&1        # Commit it
-        git checkout "$1"                                        >/dev/null 2>&1        # Switch back to ALTools
-        echo -e "\n  Copied file $2 to branch $1"                                       # .(41112.06.2)
-        } # eof copyFile                                                                # .(41111.04.1 End)
+#       copyFile    "ALTools"     "run-anyllm.sh"    "master"
+#       copyFile "${aFromBranch}"    "{aFile}"    "${aToBranch}"
+
+        aFromBranch="$1"; aFile="$2"; aToBranch="$3"; bDoit=$4                          # .(41111.04b.2 RAM Add bDoit)
+        aTS="$( date +%y%m%d )"; aTS="${aTS:1}"
+
+    if [ "${bDoit}" != "1" ]; then                                                      # .(41111.04b.3 Beg)
+        echo "  git checkout \"${aToBranch}\""                                               
+        echo "  git checkout \"${aFromBranch}\" -- \"${aFile}\""                                
+        echo "  git add \"${aFile}\""                                              
+        echo "  git commit -m \".(${aTS}.02_Add file, ${aFile}, from ${aFromBranch} branch\""  
+        echo "  git checkout \"${aFromBranch}\""                                        
+        exit_wCR
+        fi                                                                              # .(41111.04b.3 End)
+
+#       git checkout "$3"                                        >/dev/null 2>&1        # Switch to master branch
+#       git checkout "$1" -- "$2"                                >/dev/null 2>&1        # Get file from ALTools branch
+#       Sudo chmod 775 "$2"; aTS="$( date +%y%m%d )"; aTS="${aTS:1}"                    # .(41113.01.2).(41112.06.1)
+#       git add "$2"                                             >/dev/null 2>&1        # Add and commit in master
+#       git commit -m ".(${aTS}.02_Add file, $2, from $1 branch" >/dev/null 2>&1        # Commit it
+#       git checkout "$1"                                        >/dev/null 2>&1        # Switch back to ALTools
+#       echo -e "\n  Copied file $2 to branch $1"                                       # .(41112.06.2)
+
+        git checkout "${aToBranch}"                                                >/dev/null 2>&1          # Switch to master branch
+        git checkout "${aFromBranch}" -- "${aFile}"                                >/dev/null 2>&1          # Get file from ALTools branch
+        Sudo chmod 775 "${aFile}"; aTS="$( date +%y%m%d )"; aTS="${aTS:1}"                                  # .(41113.01.2).(41112.06.1)
+        git add "${aFile}"                                                         >/dev/null 2>&1          # Add and commit in master
+        git commit -m ".(${aTS}.02_Add file, ${aFile}, from ${aFromBranch} branch" >/dev/null 2>&1          # Commit it
+        git checkout "${aFromBranch}"                                              >/dev/null 2>&1          # Switch back to ALTools
+        echo -e "\n  Copied file ${aFile} to branch ${aToBranch}"                                           # .(41112.06.2)
+        } # eof copyFile                                                                                    # .(41111.04.1 End)
 #       ---------------------------------------------------------------------
 
   if [ "${aCmd}" == "Install" ]; then
@@ -915,15 +939,15 @@ function copyFile() {                                                           
                                               echo "    git checkout ALTools_prod1/ALTools -- ."
 #                                             echo "    git commit -m \".(${aTS}.02_Added ALTools files\""  ##.(41115.02d.43)
              fi    # eif bUpdate != "1"                                                                     ##.(41115.02e.6)
-                                             echo "    gitr add commit \"${aVerb} ALTools files\"";         # .(41115.02g.1 RAM get rid of -m).(41115.02d.44)
+                                              echo "    gitr add commit \"${aVerb} ALTools files\" -d";     # .(41115.02h.1 RAM Add -d).(41115.02g.1 RAM get rid of -m).(41115.02d.44)
 #            fi    # eif ???
-                                             echo "    frt copyFile \"ALTools\" \"run-anyllm.sh\" \"master\"" # .(41225.06.3)
+                                              echo "    frt copyFile \"ALTools\" \"run-anyllm.sh\" \"master\"" # .(41225.06.3)
 
-            if [ "${bUpdate}" != "1" ]; then echo "    ./set-anyllm.sh doit" ;                           fi # .(41115.02d.45)
-            if [ "${bUpdate}" != "1" ]; then echo -e "\n  The command, anyllm, will also be installed."; fi # .(41115.02d.46)
+             if [ "${bUpdate}" != "1" ]; then echo "    ./set-anyllm.sh doit" ;                           fi # .(41115.02d.45)
+             if [ "${bUpdate}" != "1" ]; then echo -e "\n  The command, anyllm, will also be installed."; fi # .(41115.02d.46)
 
-            ${aLstSp}; exit
-            fi # bDoit != `
+             ${aLstSp}; exit
+             fi # bDoit != `
 #           -------------------------------------------------------------------------------------
 
         sayMsg    "FRT40[ 929]  install altools aProjectStage: '${aProjectStage}', bDoit: '${bDoit}', bUpdate: '${bUpdate}'" -1
@@ -979,13 +1003,13 @@ function copyFile() {                                                           
         sayMsg    "FRT40[ 979]  gitr add commit \"${aVerb} ALTools files\" -d" -1
      echo -e "\ngitr add commit \"${aTS}.02_${aVerb} ALTools files\" -d";                                   # .(41225.06b.1.(41115.02g.2).(41115.02d.48)
 #               git commit -m ".(${aTS}.02_Added ALTools files" 2>&1 | awk '{ print "  " $0 }'              ##.(41115.02d.48 RAM Commit them)
-                gitr add commit            "${aVerb} ALTools files"  -d;                                    # .(41225.06b.2).(41115.02h.1 RAM Add -d).(41115.02g.3).(41115.02f.2).(41115.02d.48)
+                gitr add commit            "${aVerb} ALTools files"  -d;                                    # .(41225.06b.2).(41115.02h.2 RAM Add -d).(41115.02g.3).(41115.02f.2).(41115.02d.48)
 
             fi   # eif ???                                                                                  # .(41115.02f.3)
 
 #       sayMsg    "FRT40[ 986]  pwd: '$( pwd )'" 1
      echo -e   "gitr copyFile \"ALTools\" \"run-anyllm.sh\" \"master\"";                                    # .(41115.02g.4).(41115.02d.48)
-                     copyFile  "ALTools"   "run-anyllm.sh"   "master"                                       # .(41115.02g.5 RAM Could use gitr).(41111.04.2 RAM Use it to copy anyllm command to master so that it is always available)
+                     copyFile  "ALTools"   "run-anyllm.sh"   "master"  bDoit                                # .(41111.04b.1 RAM Use it).(41115.02g.5 RAM Could use gitr).(41111.04.2 RAM Use it to copy anyllm command to master so that it is always available)
 
        # 3. Run set-anyllm.sh
 
@@ -1023,9 +1047,9 @@ function copyFile() {                                                           
 
   if [ "${aCmd}" == "Copy File" ]; then
 
-        sayMsg    "FRT40[1019]  ${aCmd}" 1
+        sayMsg    "FRT40[1026]  ${aCmd}" 1
         aFrom="$2"; aFile="$3"; aTo="$4"
-        sayMsg    "FRT40[1021]  copyFile \"${aFrom}\" \"${aFile}\" \"${aTo}\"" 1
+        sayMsg    "FRT40[1028]  copyFile \"${aFrom}\" \"${aFile}\" \"${aTo}\"" 1
                                 copyFile  "${aFrom}"   "${aFile}"  "${aTo}"
      ${aLstSp}; exit
      fi # eoc Copy File                                                                                     # .(41225.06.4 End)
