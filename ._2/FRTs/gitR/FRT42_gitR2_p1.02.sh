@@ -28,6 +28,7 @@
 ##FD   FRT42_GitR2.sh           | 145239| 12/11/24 10:21|  2002| p1.02`.41211.1020
 ##FD   FRT42_GitR2.sh           | 147201| 12/17/24  9:05|  2022| p1.02`.41217.0905
 ##FD   FRT42_GitR2.sh           | 149239| 12/25/24 15:40|  2031| p1.02`.41225.1540
+##FD   FRT42_GitR2.sh           | 150500| 12/26/24  0:27|  2040| p1.02`.41226.0027
 #
 ##DESC     .--------------------+-------+---------------+------+-----------------+
 #            This script has usefull GIT functions.
@@ -52,104 +53,105 @@
 #            setFlags           |
 #                               |
 ##CHGS     .--------------------+----------------------------------------------+
-# .(41023.01  9/01/24 RAM 10:00a| Created
-# .(41024.01 10/26/24 RAM 10:00a| Did something
-# .(41025.02 10/26/24 RAM 10:00a| Did something else
-# .(41026.07 10/26/24 RAM 17:20p| Add doc header
-# .(41029.04 10/29/24 RAM  7:55a| Add msg to do make remote
-# .(41029.05 10/29/24 RAM  8:11a| Add setRemote
-# .(41029.06 10/29/24 RAM  8:44a| Add remote alias: frtools
-# .(41029.07 10/29/24 RAM  8:52a| Opps, change git:github-ram to git@github-ram
-# .(41030.04 10/29/24 RAM  5:56p| Fix show last n times
-# .(41030.05 10/29/24 RAM  8:28p| Add command: show commit
-# .(41031.03 10/31/24 RAM  7:25a| Add List last and list remotes
-# .(41031.04 10/31/24 RAM  8:00a| Reformat date for List last
-# .(41031.05 10/31/24 RAM  8:10a| Fix no more commits line
-# .(41031.06 10/31/24 RAM  8:10a| Chop list last comment
-# .(41031.07 10/31/24 RAM  9:45a| Add replace remote command
-# .(41031.08 10/31/24 RAM 10:35a| Add help for Add remote commmand
-# .(41102.01 11/02/24 RAM 11:52a| Add JPT12_Main2Fns_p1.07.sh
-# .(41102.03 11/02/24 RAM  3:29p| Write setRemote and setRemote1
-# .(41102.05 11/02/24 RAM  5:01p| Wierd fix for add remote origin, based on position
-# .(41103.01 11/03/24 RAM 12:22p| Fix List last for merge commits
-# .(41103.02 11/03/24 RAM  1:03p| Change FRT22_gitR1 to gitR2
-# .(41103.03 11/03/24 RAM  2:20p| Add gitr init with chkRepo
-# .(41103.04 11/03/24 RAM  3:48p| Found dangling if .. fi
-# .(41103.05 11/03/24 RAM  5:10p| Added default commands for remote and commit
-# .(41103.06 11/03/24 RAM  8:40p| Add gitr commands clone, pull and push
-# .(41104.01 11/04/24 RAM  9:15a| Write getRemoteName and getProjectStage_fromURL
-# .(41104.02 11/04/24 RAM 12:22p| Check for merge conflicts Beg
-# .(41104.04 11/04/24 RAM  7:47p| Write getBranch; awk '/*/ {}' not allowed on Mac
-# .(41104.05 11/04/24 RAM  8:33p| Move git clone and get branch
-# .(41104.06 11/04/24 RAM 11:10p| Kludges just for AnythingLLM
-# .(41104.07 11/04/24 RAM 11:55p| Add aCloneDir to gitR
-# .(41105.01 11/05/24 RAM  7:42p| Don't do light branch clone
-# .(41105.02 11/05/24 RAM  8:05p| Add -force option to git pull
-# .(41105.03 11/05/24 RAM  8:30p| Add Sudo and chmod to get pull/clone
-# .(41107.02 11/07/24 RAM  7:45a| Change default StageDir for clone
-# .(41109.01 11/09/24 RAM  9:45a| Add other Project/Stage arg combinations
-# .(41109.02 11/09/24 RAM  9:45a| Allow initGit with 1 arg
-# .(41109.03 11/09/24 RAM 10:30a| Create initGit vars
-# .(41109.04 11/09/24 RAM  1:55p| Add Docsify to initGit
-# .(41109.05 11/09/24 RAM  3:00p| Add last command and update others
-# .(41110.01 11/10/24 RAM  8:15a| See if commit exists for list last
-# .(41110.02 11/10/24 RAM 11:00a| Fix clone command args
-# .(41110.03 11/10/24 RAM  6:50p| Add .code-workspace file if needed for clone
-# .(41111.02 11/11/24 RAM  7:15p| Commit .code-workspace file after clone
-# .(41114.03 11/14/24 RAM 11:00a| Get branch name another way
-# .(41114.04 11/14/24 RAM 12:30p| Added gitr show branch and gitr branch command
-# .(41114.05 11/14/24 RAM  5.15p| Display branches if none given
-# .(41114.06 11/14/24 RAM  6.00p| Use askRequired
-# .(41114.07 11/14/24 RAM  6.30p| Write function chkUser
-# .(41116.01 11/16/24 RAM 11.25a| Add gitR update command
-# .(41118.01 11/18/24 RAM  8:30a| Fix AIDocs URL and clone help
-# .(41118.02 11/18/24 RAM  8:45a| Fix clone args processing
-# .(41116.01 11/18/24 RAM 10:15a| Fix gitR update issues
-# .(20420.07 11/19/24 RAM  8:10a| Add Version vars
-# .(41119.01 11/19/24 RAM  9:10a| Check for MT gitR clone dir
-# .(41119.01 11/19/24 RAM  9:50a| Fix clone aftermath
-# .(41120.01 11/20/24 RAM  9:00a| Fix exit_CR
-# .(41120.02 11/20/24 RAM 11:45a| Ignore file permissions globally
-# .(41120.02 11/23/24 RAM  9:20a| Don't Ignore file permissions globally
-# .(41123.02 11/23/24 RAM 10:00a| Add gitr status command
-# .(41123.03 11/23/24 RAM 10:20a| Fix git status awk END
-# .(41123.05 11/23/24 RAM  5:30p| Update a different remote/branch
-# .(41123.07 11/23/24 RAM  6:30p| Add List nCnt commits from nBeg
-# .(41123.08 11/23/24 RAM  7:00p| Add Show nCnt commits from nBeg
-# .(41123.05 11/24/24 RAM  4:15p| Fix gitr update for MacOS
-# .(41124.06 11/24/24 RAM  6:55p| Add Date to git status
-# .(41124.06 11/24/24 RAM  7:45p| Add Date to git show commit
-# .(41129.02 11/29/24 RAM  1:00p| Change git status -u to get all working files
-# .(41129.03 11/29/24 RAM  1:15p| Add add command
-# .(41129.04 11/29/24 RAM  2:50p| Fix make remote args
-# .(41031.04 12/01/24 RAM 12:32p| Fix List Commits Dec<-"Dev" date calc
-# .(41105.03 12/01/24 RAM  1:15p| Fix "${OS:0:7}" != "Windows"
-# .(41123.05 12/01/24 RAM  1:33p| Adjust spacing for gitr update
-# .(41123.05 12/01/24 RAM  2:25p| Fix if [ "aRemote" == "" ]
-# .(41201.03 12/01/24 RAM  7:30p| Kludge for cloning project in root dir
-# .(41202.03 12/02/24 RAM  5:30p| Deal with working files when changing branch
-# .(41202.03 12/02/24 RAM  6:30p| Use tr vs sed (Claude goofed)
-# .(41202.03 12/02/24 RAM  6:35p| Remmove exit ??
-# .(41203.02 12/03/24 RAM  8:30a| Change update branch tolower($aArg2)
-# .(41203.03 12/03/24 RAM  9:30a| Add Time to stash msg
-# .(41204.01 12/04/24 RAM  9:27a| Was ${nCnt// / }) in gitr status command
-# .(41204.02 12/04/24 RAM  9:25a| Add Commit        to gitr checkout command
-# .(41204.03 12/04/24 RAM  9:25a| Add shoCommitMsg  to gitr add command
-# .(41204.01 12/04/24 RAM  9:47a| Fix working files count var ${s}
+#.(41023.01   9/01/24 RAM 10:00a| Created
+#.(41024.01  10/26/24 RAM 10:00a| Did something
+#.(41025.02  10/26/24 RAM 10:00a| Did something else
+#.(41026.07  10/26/24 RAM 17:20p| Add doc header
+#.(41029.04  10/29/24 RAM  7:55a| Add msg to do make remote
+#.(41029.05  10/29/24 RAM  8:11a| Add setRemote
+#.(41029.06  10/29/24 RAM  8:44a| Add remote alias: frtools
+#.(41029.07  10/29/24 RAM  8:52a| Opps, change git:github-ram to git@github-ram
+#.(41030.04  10/29/24 RAM  5:56p| Fix show last n times
+#.(41030.05  10/29/24 RAM  8:28p| Add command: show commit
+#.(41031.03  10/31/24 RAM  7:25a| Add List last and list remotes
+#.(41031.04  10/31/24 RAM  8:00a| Reformat date for List last
+#.(41031.05  10/31/24 RAM  8:10a| Fix no more commits line
+#.(41031.06  10/31/24 RAM  8:10a| Chop list last comment
+#.(41031.07  10/31/24 RAM  9:45a| Add replace remote command
+#.(41031.08  10/31/24 RAM 10:35a| Add help for Add remote commmand
+#.(41102.01  11/02/24 RAM 11:52a| Add JPT12_Main2Fns_p1.07.sh
+#.(41102.03  11/02/24 RAM  3:29p| Write setRemote and setRemote1
+#.(41102.05  11/02/24 RAM  5:01p| Wierd fix for add remote origin, based on position
+#.(41103.01  11/03/24 RAM 12:22p| Fix List last for merge commits
+#.(41103.02  11/03/24 RAM  1:03p| Change FRT22_gitR1 to gitR2
+#.(41103.03  11/03/24 RAM  2:20p| Add gitr init with chkRepo
+#.(41103.04  11/03/24 RAM  3:48p| Found dangling if .. fi
+#.(41103.05  11/03/24 RAM  5:10p| Added default commands for remote and commit
+#.(41103.06  11/03/24 RAM  8:40p| Add gitr commands clone, pull and push
+#.(41104.01  11/04/24 RAM  9:15a| Write getRemoteName and getProjectStage_fromURL
+#.(41104.02  11/04/24 RAM 12:22p| Check for merge conflicts Beg
+#.(41104.04  11/04/24 RAM  7:47p| Write getBranch; awk '/*/ {}' not allowed on Mac
+#.(41104.05  11/04/24 RAM  8:33p| Move git clone and get branch
+#.(41104.06  11/04/24 RAM 11:10p| Kludges just for AnythingLLM
+#.(41104.07  11/04/24 RAM 11:55p| Add aCloneDir to gitR
+#.(41105.01  11/05/24 RAM  7:42p| Don't do light branch clone
+#.(41105.02  11/05/24 RAM  8:05p| Add -force option to git pull
+#.(41105.03  11/05/24 RAM  8:30p| Add Sudo and chmod to get pull/clone
+#.(41107.02  11/07/24 RAM  7:45a| Change default StageDir for clone
+#.(41109.01  11/09/24 RAM  9:45a| Add other Project/Stage arg combinations
+#.(41109.02  11/09/24 RAM  9:45a| Allow initGit with 1 arg
+#.(41109.03  11/09/24 RAM 10:30a| Create initGit vars
+#.(41109.04  11/09/24 RAM  1:55p| Add Docsify to initGit
+#.(41109.05  11/09/24 RAM  3:00p| Add last command and update others
+#.(41110.01  11/10/24 RAM  8:15a| See if commit exists for list last
+#.(41110.02  11/10/24 RAM 11:00a| Fix clone command args
+#.(41110.03  11/10/24 RAM  6:50p| Add .code-workspace file if needed for clone
+#.(41111.02  11/11/24 RAM  7:15p| Commit .code-workspace file after clone
+#.(41114.03  11/14/24 RAM 11:00a| Get branch name another way
+#.(41114.04  11/14/24 RAM 12:30p| Added gitr show branch and gitr branch command
+#.(41114.05  11/14/24 RAM  5.15p| Display branches if none given
+#.(41114.06  11/14/24 RAM  6.00p| Use askRequired
+#.(41114.07  11/14/24 RAM  6.30p| Write function chkUser
+#.(41116.01  11/16/24 RAM 11.25a| Add gitR update command
+#.(41118.01  11/18/24 RAM  8:30a| Fix AIDocs URL and clone help
+#.(41118.02  11/18/24 RAM  8:45a| Fix clone args processing
+#.(41116.01  11/18/24 RAM 10:15a| Fix gitR update issues
+#.(20420.07  11/19/24 RAM  8:10a| Add Version vars
+#.(41119.01  11/19/24 RAM  9:10a| Check for MT gitR clone dir
+#.(41119.01  11/19/24 RAM  9:50a| Fix clone aftermath
+#.(41120.01  11/20/24 RAM  9:00a| Fix exit_CR
+#.(41120.02  11/20/24 RAM 11:45a| Ignore file permissions globally
+#.(41120.02  11/23/24 RAM  9:20a| Don't Ignore file permissions globally
+#.(41123.02  11/23/24 RAM 10:00a| Add gitr status command
+#.(41123.03  11/23/24 RAM 10:20a| Fix git status awk END
+#.(41123.05  11/23/24 RAM  5:30p| Update a different remote/branch
+#.(41123.07  11/23/24 RAM  6:30p| Add List nCnt commits from nBeg
+#.(41123.08  11/23/24 RAM  7:00p| Add Show nCnt commits from nBeg
+#.(41123.05  11/24/24 RAM  4:15p| Fix gitr update for MacOS
+#.(41124.06  11/24/24 RAM  6:55p| Add Date to git status
+#.(41124.06  11/24/24 RAM  7:45p| Add Date to git show commit
+#.(41129.02  11/29/24 RAM  1:00p| Change git status -u to get all working files
+#.(41129.03  11/29/24 RAM  1:15p| Add add command
+#.(41129.04  11/29/24 RAM  2:50p| Fix make remote args
+#.(41031.04  12/01/24 RAM 12:32p| Fix List Commits Dec<-"Dev" date calc
+#.(41105.03  12/01/24 RAM  1:15p| Fix "${OS:0:7}" != "Windows"
+#.(41123.05  12/01/24 RAM  1:33p| Adjust spacing for gitr update
+#.(41123.05  12/01/24 RAM  2:25p| Fix if [ "aRemote" == "" ]
+#.(41201.03  12/01/24 RAM  7:30p| Kludge for cloning project in root dir
+#.(41202.03  12/02/24 RAM  5:30p| Deal with working files when changing branch
+#.(41202.03  12/02/24 RAM  6:30p| Use tr vs sed (Claude goofed)
+#.(41202.03  12/02/24 RAM  6:35p| Remmove exit ??
+#.(41203.02  12/03/24 RAM  8:30a| Change update branch tolower($aArg2)
+#.(41203.03  12/03/24 RAM  9:30a| Add Time to stash msg
+#.(41204.01  12/04/24 RAM  9:27a| Was ${nCnt// / }) in gitr status command
+#.(41204.02  12/04/24 RAM  9:25a| Add Commit        to gitr checkout command
+#.(41204.03  12/04/24 RAM  9:25a| Add shoCommitMsg  to gitr add command
+#.(41204.01  12/04/24 RAM  9:47a| Fix working files count var ${s}
 #.(41103.06b 12/05/24 RAM  8:40a| Add -doit to pullRemote
 #.(41103.03b 12/06/24 RAM 11:40a| Write and use getReposDir for gitR Init
-# .(41209.01 12/09/24 RAM  6:40a| Update gitR[] numbers
-# .(41209.02 12/09/24 RAM  9:40a| Add Delete Branch
+#.(41209.01  12/09/24 RAM  6:40a| Update gitR[] numbers
+#.(41209.02  12/09/24 RAM  9:40a| Add Delete Branch
 #.(41102.03b 12/09/24 RAM  3:00p| Update Add Remote for AIDocs
-# .(41210.01 12/10/24 RAM 10:30p| Revise gitr clone
-# .(41211.01 12/11/24 RAM  5:40p| Install the GIT CLI on Mac
+#.(41210.01  12/10/24 RAM 10:30p| Revise gitr clone
+#.(41211.01  12/11/24 RAM  5:40p| Install the GIT CLI on Mac
 #.(41208.02c 12/11/24 RAM  7:20a| Update finding .bashrc on unix
 #.(41211.01b 12/11/24 RAM  8:50a| Install the GIT CLI on Ubuntu
-# .(41211.03 12/11/24 RAM 10:20a| Enable set remote origin account ssh
+#.(41211.03  12/11/24 RAM 10:20a| Enable set remote origin account ssh
 #.(41111.02b 12/12/24 RAM  9:30a| Set .code-workspace to new StageDir
 #.(41124.06b 12/17/24 RAM  9:05a| Fix shoWorkingFiles
-# .(41217.01 12/17/24 RAM  3:00p| Add gh login
-# .(41225.05 12/25/24 RAM  3:40p| Modify gitr branch list
+#.(41217.01  12/17/24 RAM  3:00p| Add gh login
+#.(41225.05  12/25/24 RAM  3:40p| Modify gitr branch list
+#.(41226.01  12/26/24 RAM 12:27a| Add -force for delete branch
 
 ##PRGM     +====================+===============================================+
 ##ID 69.600. Main0              |
@@ -157,7 +159,7 @@
 #*/
 #========================================================================================================== #  ===============================  #
 
-        aVDt="Dec 25, 2024 3:40p"; aVer="p1.02"; aVTitle="Useful gitR2 Tools by formR";                                    # .(41103.02.2 RAM Was: gitR1)
+        aVDt="Dec 26, 2024 12:27a"; aVer="p1.02"; aVTitle="Useful gitR2 Tools by formR";                                    # .(41103.02.2 RAM Was: gitR1)
         aVer="$( echo "$0" | awk '{ match( $0, /_[dpstuv][0-9]+\.[0-9]+/ ); print substr( $0, RSTART+1, RLENGTH-1) }' )"  # .(21031.01.1 RAM Add [d...).(20416.03.8 "_p2.02", or _d1.09)
 
         LIB="gitR2"; LIB_LOG=${LIB}_LOG; LIB_USER=${LIB}_USER; Lib=${LIB}; aDir=$(dirname "${BASH_SOURCE}");              # .(41103.02.3).(41102.01.1 RAM Add JPT12_Main2Fns_p1.07.sh Beg).(80923.01.1)
@@ -274,7 +276,7 @@ while [[ $# -gt 0 ]]; do  # Loop through all arguments
          ;;
     esac
     shift
-done
+  done
     set -- "${mArgs[@]}"  # Restore the command arguments, lower case, three letters
     aArg1=${mARGs[0]}; aArg2=${mARGs[1]}; aArg3=${mARGs[2]}; aArg4=${mARGs[3]}; aArg5=${mARGs[4]}; aArg6=${mARGs[5]};
     aArg7=${mARGs[6]}; aArg8=${mARGs[7]}; aArg9=${mARGs[8]}                                                 # .(41107.02.1 RAM Add aArg7,,aArg9 and aArg8)
@@ -1377,16 +1379,23 @@ function getRemoteName() {                                                      
 #====== =================================================================================================== #
 
   if [ "${aCmd}" == "deleteBranch" ]; then                                                                  # .(41209.02.4 RAM write deleteBranche)
-     sayMsg  "gitR2[1309]  listBranches aArg3: '${aArg3}'" -1
+     sayMsg  "gitR2[1380]  listBranches aArg3: '${aArg3}', bForce: '${bForce}'" -1
         if [ "${aArg3}" == "" ]; then
            echo -e "\n* You must enter a branch name, from the following:"
            git branch | awk '{ print "  " $0 }'
            exit_wCR
         fi
+     if [ "${bForce}" == "1" ]; then                                                                        # .(41226.01.1)
+        aGIT1="git branch -D ${aArg3}"      # force delete (even if not merged)                             # .(41226.01.2)
+      else                                                                                                  # .(41226.01.3)
         aGIT1="git branch -d ${aArg3}"      # safe delete (only if merged)
-#       aGIT1="git branch -D ${aArg3}"      # force delete (even if not merged)
+        fi                                                                                                  # .(41226.01.4)
      if [ "${bDoit}" != "1" ]; then
-        echo -e "\n  ${aGIT1} # Add -d to doit"
+     if [ "${bForce}" == "1" ]; then                                                                        # .(41226.01.5)
+        echo -e "\n  ${aGIT1}  # Add -d to doit"                                                            # .(41226.01.6)
+      else                                                                                                  # .(41226.01.7)
+        echo -e "\n  ${aGIT1}  # Add -d to doit; -f to force if not merged"                                 # .(41226.01.8)
+        fi                                                                                                  # .(41226.01.9)
       else
         echo -e "\n  ${aGIT1} \n"
         eval        "${aGIT1}"  2>&1 | awk '{ print "  " $0 }'
