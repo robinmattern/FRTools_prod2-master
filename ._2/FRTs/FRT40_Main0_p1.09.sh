@@ -153,7 +153,6 @@
 #.(41111.04c 12/26/24 RAM 10:00a| Copy file from lowercase branch altools
 #.(41111.04d 12/26/24 RAM 10:15a| Add -doit to frt copy command
 #.(41111.04e 12/26/24 RAM 10:15a| Add ${bDoit} to frt copy command
-#.(41111.04e 12/26/24 RAM 10:15a| Add ${bDoit} to frt copy command
 
 ##PRGM     +====================+===============================================+
 ##ID 69.600. Main0              |
@@ -1006,14 +1005,14 @@ function copyFile() {                                                           
             git update-index --assume-unchanged ALTools_prod1-robin.code-workspace      # .(41113.01b.1 RAM Tell git to ignore the delete)
             git rm --cached                     ALTools_prod1-robin.code-workspace      # .(41113.01b.2 RAM Try this)
 
-        sayMsg    "FRT40[ 979]  gitr add commit \"${aVerb} ALTools files\" -d" -1
+        sayMsg    "FRT40[1009]  gitr add commit \"${aVerb} ALTools files\" -d" -1
      echo -e "\ngitr add commit \"${aTS}.02_${aVerb} ALTools files\" -d";                                   # .(41225.06b.1.(41115.02g.2).(41115.02d.48)
 #               git commit -m ".(${aTS}.02_Added ALTools files" 2>&1 | awk '{ print "  " $0 }'              ##.(41115.02d.48 RAM Commit them)
                 gitr add commit            "${aVerb} ALTools files"  -d;                                    # .(41225.06b.2).(41115.02h.2 RAM Add -d).(41115.02g.3).(41115.02f.2).(41115.02d.48)
 
             fi   # eif ???                                                                                  # .(41115.02f.3)
 
-#       sayMsg    "FRT40[ 986]  pwd: '$( pwd )'" 1
+#       sayMsg    "FRT40[1016]  pwd: '$( pwd )'" 1
      echo -e   "frt copy \"altools\" \"run-anyllm.sh\" \"master\" -doit";                                   # .(41115.02g.4).(41115.02d.48)
 #                   copyFile  "ALTools"   "run-anyllm.sh"   "master"    bDoit                               ##.(41111.04b.1 RAM Use it).(41115.02g.5 RAM Could use gitr).(41111.04.2 RAM Use it to copy anyllm command to master so that it is always available).(41111.04c.1)
                     copyFile  "altools"   "run-anyllm.sh"   "master"  ${bDoit}                              # .(41111.04e.1).(41111.04c.1 RAM Branch Needs to be 'anyllm').(41111.04b.1 RAM Use it).(41115.02g.5 RAM Could use gitr).(41111.04.2 RAM Use it to copy anyllm command to master so that it is always available)
@@ -1050,14 +1049,14 @@ function copyFile() {                                                           
 #
 #====== =================================================================================================== #
 
-        sayMsg    "FRT40[1015]  Copy File" sp 1;
+#       sayMsg    "FRT40[1053]  Copy File" sp 1;
 
   if [ "${aCmd}" == "Copy File" ]; then
 
-        sayMsg    "FRT40[1026]  ${aCmd}" 1
+        sayMsg    "FRT40[1026]  ${aCmd}" -1
         aFrom="$2"; aFile="$3"; aTo="$4"
-        sayMsg    "FRT40[1057]  copyFile \"${aFrom}\" \"${aFile}\" \"${aTo}\" -doit" 2
-                                copyFile  "${aFrom}"   "${aFile}"   "${aTo}"  bDoit
+        sayMsg    "FRT40[1057]  copyFile \"${aFrom}\" \"${aFile}\" \"${aTo}\" ${bDoit}" -1
+                                copyFile  "${aFrom}"   "${aFile}"   "${aTo}"  ${bDoit}
      ${aLstSp}; exit
      fi # eoc Copy File                                                                                     # .(41225.06.4 End)
 #    -- --- ---------------  =  ------------------------------------------------------  #  ---------------- #
