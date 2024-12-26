@@ -46,7 +46,7 @@
 ##FD   FRT10_Main0.sh           |  74458| 12/18/24 09:25|  1025| p1.09`41218.0925
 ##FD   FRT10_Main0.sh           |  75102| 12/25/24 17:33|  1032| p1.09`41225.1733
 ##FD   FRT10_Main0.sh           |  77263| 12/25/24 23:58|  1062| p1.09`41225.2358
-##FD   FRT10_Main0.sh           |  77623| 12/26/24 10:00|  1089| p1.09`41226.1000
+##FD   FRT10_Main0.sh           |  79753| 12/26/24 10:15|  1091| p1.09`41226.1015
 #
 ##DESC     .--------------------+-------+---------------+------+-----------------+
 #            Use the commands in this script to manage FormR app resources.
@@ -151,6 +151,7 @@
 #.(41225.06b 12/25/24 RAM 11:58p| Use -d to gitr add commit after copyFile
 #.(41111.04b 12/26/24 RAM  7:15a| Add -d to frt copy
 #.(41111.04c 12/26/24 RAM 10:00a| Copy file from lowercase branch altools
+#.(41111.04d 12/26/24 RAM 10:15a| Add -doit to frt copy command
 
 ##PRGM     +====================+===============================================+
 ##ID 69.600. Main0              |
@@ -158,7 +159,7 @@
 #*/
 #========================================================================================================== #  ===============================  #
 
-     aVdt="Dec 26, 2024 10:00a"; aVtitle="formR Tools"                                                      # .(21113.05.8 RAM Add aVtitle for Version in Begin)
+     aVdt="Dec 26, 2024 10:15a"; aVtitle="formR Tools"                                                      # .(21113.05.8 RAM Add aVtitle for Version in Begin)
      aVer="$( echo $0 | awk '{  match( $0, /_[dpstuv][0-9]+\.[0-9]+/ ); print substr( $0, RSTART+1, RLENGTH-1) }' )"  # .(21031.01.1 RAM Add [d...).(20416.03.8 "_p2.02", or _d1.09)
 
      LIB="FRT"; LIB_LOG=${LIB}_LOG; LIB_USER=${LIB}_USER; Lib=${LIB}; aDir=$( dirname "${BASH_SOURCE}" );   # .(41027.01.1 RAM).(80923.01.1)
@@ -807,6 +808,7 @@ function copyFile() {                                                           
     if [ "${bDoit}" != "1" ]; then                                                      # .(41111.04b.3 Beg)
         echo "  git checkout \"${aToBranch}\""
         echo "  git checkout \"${aFromBranch}\" -- \"${aFile}\""
+        echo "  sudo chmod 775 \"${aFile}\"";
         echo "  git add \"${aFile}\""
         echo "  git commit -m \".(${aTS}.02_Add file, ${aFile}, from ${aFromBranch} branch\""
         echo "  git checkout \"${aFromBranch}\""
@@ -943,7 +945,7 @@ function copyFile() {                                                           
              fi    # eif bUpdate != "1"                                                                     ##.(41115.02e.6)
                                               echo "    gitr add commit \"${aVerb} ALTools files\" -d";     # .(41115.02h.1 RAM Add -d).(41115.02g.1 RAM get rid of -m).(41115.02d.44)
 #            fi    # eif ???
-                                              echo "    frt copyFile \"ALTools\" \"run-anyllm.sh\" \"master\"" # .(41225.06.3)
+                                              echo "    frt copyFile \"ALTools\" \"run-anyllm.sh\" \"master\" -doit" # .(41225.06.3)
 
              if [ "${bUpdate}" != "1" ]; then echo "    ./set-anyllm.sh doit" ;                           fi # .(41115.02d.45)
              if [ "${bUpdate}" != "1" ]; then echo -e "\n  The command, anyllm, will also be installed."; fi # .(41115.02d.46)
@@ -1010,7 +1012,7 @@ function copyFile() {                                                           
             fi   # eif ???                                                                                  # .(41115.02f.3)
 
 #       sayMsg    "FRT40[ 986]  pwd: '$( pwd )'" 1
-     echo -e   "gitr copyFile \"altools\" \"run-anyllm.sh\" \"master\" -d";                                 # .(41115.02g.4).(41115.02d.48)
+     echo -e   "gitr copyFile \"altools\" \"run-anyllm.sh\" \"master\" -doit";                              # .(41115.02g.4).(41115.02d.48)
 #                    copyFile  "ALTools"   "run-anyllm.sh"   "master"  bDoit                                ##.(41111.04b.1 RAM Use it).(41115.02g.5 RAM Could use gitr).(41111.04.2 RAM Use it to copy anyllm command to master so that it is always available).(41111.04c.1)
                      copyFile  "altools"   "run-anyllm.sh"   "master"  bDoit                                # .(41111.04c.1 RAM Branch Needs to be 'anyllm').(41111.04b.1 RAM Use it).(41115.02g.5 RAM Could use gitr).(41111.04.2 RAM Use it to copy anyllm command to master so that it is always available)
 
@@ -1052,8 +1054,8 @@ function copyFile() {                                                           
 
         sayMsg    "FRT40[1026]  ${aCmd}" 1
         aFrom="$2"; aFile="$3"; aTo="$4"
-        sayMsg    "FRT40[1028]  copyFile \"${aFrom}\" \"${aFile}\" \"${aTo}\"" 1
-                                copyFile  "${aFrom}"   "${aFile}"  "${aTo}"
+        sayMsg    "FRT40[1055]  copyFile \"${aFrom}\" \"${aFile}\" \"${aTo}\" -doit" -1
+                                copyFile  "${aFrom}"   "${aFile}"  "${aTo}"  bDoit
      ${aLstSp}; exit
      fi # eoc Copy File                                                                                     # .(41225.06.4 End)
 #    -- --- ---------------  =  ------------------------------------------------------  #  ---------------- #
