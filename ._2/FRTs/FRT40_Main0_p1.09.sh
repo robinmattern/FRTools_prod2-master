@@ -45,7 +45,7 @@
 ##FD   FRT10_Main0.sh           |  72736| 12/16/24 10:20|   996| p1.09`41216.1020
 ##FD   FRT10_Main0.sh           |  74458| 12/18/24 09:25|  1025| p1.09`41218.0925
 ##FD   FRT10_Main0.sh           |  75102| 12/25/24 17:33|  1032| p1.09`41225.1733
-##FD   FRT10_Main0.sh           |  77086| 12/25/24 23:30|  1062| p1.09`41225.2330
+##FD   FRT10_Main0.sh           |  77263| 12/25/24 23:58|  1062| p1.09`41225.2358
 #
 ##DESC     .--------------------+-------+---------------+------+-----------------+
 #            Use the commands in this script to manage FormR app resources.
@@ -145,8 +145,9 @@
 #.(41113.01b 12/25/24 RAM  3:42p| Remove wrong altools .code-workspace file
 #.(41113.01b 12/25/24 RAM  3:52p| Remove wrong altools .code-workspace file again
 #.(41115.02g 12/25/24 RAM  5:33p| Fix gitr add commit -m
-#.(41225.06  12/25/24 RAM  6:40p| Add command frt copy
+#.(41225.06  12/25/24 RAM  6:40p| Add command frt copy for copyFile
 #.(41115.02h 12/25/24 RAM 11:25p| Add -d to gitr add commit
+#.(41225.06b 12/25/24 RAM 11:58p| Add command frt copy for copyFile
 
 ##PRGM     +====================+===============================================+
 ##ID 69.600. Main0              |
@@ -154,7 +155,7 @@
 #*/
 #========================================================================================================== #  ===============================  #
 
-     aVdt="Dec 25, 2024 11:30p"; aVtitle="formR Tools"                                                      # .(21113.05.8 RAM Add aVtitle for Version in Begin)
+     aVdt="Dec 25, 2024 11:58p"; aVtitle="formR Tools"                                                      # .(21113.05.8 RAM Add aVtitle for Version in Begin)
      aVer="$( echo $0 | awk '{  match( $0, /_[dpstuv][0-9]+\.[0-9]+/ ); print substr( $0, RSTART+1, RLENGTH-1) }' )"  # .(21031.01.1 RAM Add [d...).(20416.03.8 "_p2.02", or _d1.09)
 
      LIB="FRT"; LIB_LOG=${LIB}_LOG; LIB_USER=${LIB}_USER; Lib=${LIB}; aDir=$( dirname "${BASH_SOURCE}" );   # .(41027.01.1 RAM).(80923.01.1)
@@ -279,7 +280,7 @@ function Help( ) {
      echo "        Install [ALTools] [-doit]        Install ALTools"                                        # .(41111.01.2)
      echo "                [ALTools] [-doit] [-u]   Update ALTools"                                         # .(41115.02d.30)
      echo "                [AIDocs] [-doit]         Install AIDocs"                                         # .(41111.01.3)
-     echo "    FRT Copy    {FromBra} {File} {ToBra} Copy file from to a branch"                              # .(41225.06.1)
+     echo "    FRT Copy    {FromBra} {File} {ToBra} Copy file from to a branch"                             # .(41225.06.1)
      echo ""
      echo "    FRT Update [-doit]                   Update [ {FRTools} ]"                                   # .(41107.01.3)
      echo ""
@@ -806,7 +807,6 @@ function copyFile() {                                                           
 
   if [ "${aCmd}" == "Install" ]; then
 
-
 #       ---------------------------------------------------------------------
 
 #       copyFile "ALTools" "run-anyllm.sh" "master"
@@ -917,7 +917,7 @@ function copyFile() {                                                           
              fi    # eif bUpdate != "1"                                                                     ##.(41115.02e.6)
                                              echo "    gitr add commit \"${aVerb} ALTools files\"";         # .(41115.02g.1 RAM get rid of -m).(41115.02d.44)
 #            fi    # eif ???
-                                             echo "    frt copyFile \"ALTools\" \"run-anyllm.sh\" \"master\""
+                                             echo "    frt copyFile \"ALTools\" \"run-anyllm.sh\" \"master\"" # .(41225.06.3)
 
             if [ "${bUpdate}" != "1" ]; then echo "    ./set-anyllm.sh doit" ;                           fi # .(41115.02d.45)
             if [ "${bUpdate}" != "1" ]; then echo -e "\n  The command, anyllm, will also be installed."; fi # .(41115.02d.46)
@@ -976,14 +976,14 @@ function copyFile() {                                                           
             git update-index --assume-unchanged ALTools_prod1-robin.code-workspace      # .(41113.01b.1 RAM Tell git to ignore the delete)
             git rm --cached                     ALTools_prod1-robin.code-workspace      # .(41113.01b.2 RAM Try this)
 
-        sayMsg    "FRT40[ 919]  gitr add commit \"${aVerb} ALTools files\"" -1
-
-     echo -e "\ngitr add commit \"${aTS}.02_${aVerb} ALTools files\" -d";                                   # .(41115.02g.2).(41115.02d.48)
+        sayMsg    "FRT40[ 978]  gitr add commit \"${aVerb} ALTools files\" -d" -1
+     echo -e "\ngitr add commit \"${aTS}.02_${aVerb} ALTools files\" -d";                                   # .(41225.06b.1.(41115.02g.2).(41115.02d.48)
 #               git commit -m ".(${aTS}.02_Added ALTools files" 2>&1 | awk '{ print "  " $0 }'              ##.(41115.02d.48 RAM Commit them)
-                gitr add commit            "${aVerb} ALTools files"  -d;                                    # .(41115.02h.1 RAM Add -d).(41115.02g.3).(41115.02f.2).(41115.02d.48)
+                gitr add commit            "${aVerb} ALTools files"  -d;                                    # .(41225.06b.2).(41115.02h.1 RAM Add -d).(41115.02g.3).(41115.02f.2).(41115.02d.48)
 
             fi   # eif ???                                                                                  # .(41115.02f.3)
 
+        sayMsg    "FRT40[ 985]  pwd: '$( pwd )'" 1
      echo -e "\ngitr copyFile \"ALTools\" \"run-anyllm.sh\" \"master\"";                                    # .(41115.02g.4).(41115.02d.48)
                      copyFile  "ALTools"   "run-anyllm.sh"   "master"                                       # .(41115.02g.5 RAM Could use gitr).(41111.04.2 RAM Use it to copy anyllm command to master so that it is always available)
 
@@ -1015,7 +1015,7 @@ function copyFile() {                                                           
 
 # ------------------------------------------------------------------------------------
 #
-#>      GITR COPYFILE                                                                                        # .(41225.06.3 Beg RAM Added Command)
+#>      COPY COMMAND                                                                                        # .(41225.06.4 Beg RAM Added Command)
 #
 #====== =================================================================================================== #
 
@@ -1028,7 +1028,7 @@ function copyFile() {                                                           
         sayMsg    "FRT40[1021]  copyFile \"${aFrom}\" \"${aFile}\" \"${aTo}\"" 1
                                 copyFile  "${aFrom}"   "${aFile}"  "${aTo}"
      ${aLstSp}; exit
-     fi # eoc Copy File                                                                                 # .(41225.06.3 End)
+     fi # eoc Copy File                                                                                     # .(41225.06.4 End)
 #    -- --- ---------------  =  ------------------------------------------------------  #  ---------------- #
 
 #====== =================================================================================================== #  ===========

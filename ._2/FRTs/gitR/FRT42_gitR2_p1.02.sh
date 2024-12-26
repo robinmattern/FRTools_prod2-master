@@ -1105,7 +1105,7 @@ function getRemoteName() {                                                      
 
   if [ "${aCmd}" == "addCommit" ]; then                                                                     # .(41129.03.6 RAM Add Add CommitCommand Beg)
                                    aCMsg="";         aCN=""
-       sayMsg  sp "gitR2[1041] aArg2: '${aArg2}', aArg3: '${aArg3}', aArg4: '${aArg4}', \$2: '$2', \$3: '$3', \$4: '$4'" 1;
+       sayMsg  sp "gitR2[1041] aArg2: '${aArg2}', aArg3: '${aArg3}', aArg4: '${aArg4}', \$2: '$2', \$3: '$3', \$4: '$4'" -1;
 
      if [[ ${aArg2} =~ ^[0-9] ]]; then  aArg2="${aArg3}"; aArg3="$2"; fi
      if [ "${aArg2}" != "" ]; then aCMsg="${aArg2}"; fi
@@ -1145,7 +1145,7 @@ function getRemoteName() {                                                      
            echo -e   "  ${aGIT2} # Add -d to doit"
          else
            echo -e "\n  ${aGIT1}"
-           echo      "  ${aGIT2}"
+           echo -e   "  ${aGIT2}\n"                                                                        # .(41225.07.1 RAM Add line)
 #          eval        "${aGIT1}"
 #          eval        "${aGIT2}"
            eval        "${aGIT1}" 2>&1 | awk '{ print "  " $0 }'
