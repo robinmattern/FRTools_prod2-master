@@ -168,6 +168,7 @@
 #.(50102.03d  1/03/25 RAM 10:00a| Work on gitr init (d)
 #.(50102.03e  1/03/25 RAM  4:00p| Work on gitr init (e)
 #.(50102.03f  1/03/25 RAM  7:00p| Fiinish gitr init ordeal (f)
+#.(50103.01   1/03/25 RAM  8:00p| Create aStages for gitr init 
 
 ##PRGM     +====================+===============================================+
 ##ID 69.600. Main0              |
