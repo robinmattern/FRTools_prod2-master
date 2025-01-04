@@ -161,6 +161,8 @@
 #.(41226.05b 12/26/24 RAM  5:40p| Don't show aStashmsg if MT (b)
 #.(41124.06d 12/31/24 RAM  7:45p| Do shoWorkingFiles the same for unix (d)
 #.(41102.03c  1/01/25 RAM  4:15p| Revise add remote help (c)
+#.(50101.07   1/01/25 RAM  5:00p| gitR commit arg can be a commit hash
+#.(50102.03   1/02/25 RAM  5:00a| Begin the ordeal
 
 ##PRGM     +====================+===============================================+
 ##ID 69.600. Main0              |
