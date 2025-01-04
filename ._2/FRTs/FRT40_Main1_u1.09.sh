@@ -48,7 +48,7 @@
 ##FD   FRT10_Main0.sh           |  77263| 12/25/24 23:58|  1062| p1.09`41225.2358
 ##FD   FRT10_Main0.sh           |  79753| 12/26/24 10:15|  1091| p1.09`41226.1015
 ##FD   FRT10_Main0.sh           |  80142| 12/26/24 17:30|  1094| p1.09`41226.1730
-##FD   FRT10_Main0.sh           |  80142|  1/04/25 12:30|  1094| p1.09`50104.1230
+##FD   FRT10_Main0.sh           |  82088|  1/04/25 12:30|  1119| p1.09`50104.1230
 #
 ##DESC     .--------------------+-------+---------------+------+-----------------+
 #            Use the commands in this script to manage FormR app resources.
@@ -156,7 +156,7 @@
 #.(41111.04d 12/26/24 RAM 10:15a| Add -doit to frt copy command
 #.(41111.04e 12/26/24 RAM 10:15a| Add ${bDoit} to frt copy command
 #.(41226.05  12/26/24 RAM  5:30p| Rework frt update messages
-
+#.(50104.01   1/04/25 RAM 12:30p| Add install AICodeR
 
 ##PRGM     +====================+===============================================+
 ##ID 69.600. Main0              |
@@ -897,22 +897,22 @@ function copyFile() {                                                           
 
         if [ "${aArg2}" == "aicoder" ]; then                                                                # .(50104.01.2 Beg Add Install AICodeR)
 
-            aRepoName="AICodeR"; aReponame="$( echo "${aRepoName}" | awk '{ print tolower($0) }' )"         # .(50104.01.3)                                         
-            aStageDir=""; if [ "${aArg3}" != "" ]; then aStageDir="${aArg3}"; fi                            
-            aRepoStg=" no-stage"; if [ "${aStageDir}" != "" ]; then aRepoStg="_${aStageDir}"; fi            
+            aRepoName="AICodeR"; aReponame="$( echo "${aRepoName}" | awk '{ print tolower($0) }' )"         # .(50104.01.3)
+            aStageDir=""; if [ "${aArg3}" != "" ]; then aStageDir="${aArg3}"; fi
+            aRepoStg=" no-stage"; if [ "${aStageDir}" != "" ]; then aRepoStg="_${aStageDir}"; fi
 
         if [ "${bDoit}" != 1 ]; then
-            echo -e "\n  About to install ${aRepoName}{aRepoStg}"                                           # .(50104.01.4)                                         
-#           echo "    gitr clone aidocs no-stage${aBranch} -d"                                              
-            echo "    gitr clone ${aReponame}${aRepoStg}${aBranch} -d"                                      # .(50104.01.5)                                                               
+            echo -e "\n  About to install ${aRepoName}{aRepoStg}"                                           # .(50104.01.4)
+#           echo "    gitr clone aidocs no-stage${aBranch} -d"
+            echo "    gitr clone ${aReponame}${aRepoStg}${aBranch} -d"                                      # .(50104.01.5)
             ${aLstSp}; exit
             fi
-            echo -e "\n  Installing ${aRepoName}${aRepoStg}"       
-#                     gitr clone aidocs no-stage ${aBranch} -d                                              
-#                     gitr clone aidocs${aRepoStg} ${aBranch}                                               
-                      gitr clone ${aReponame}${aRepoStg} ${aBranch} -d                                      # .(50104.01.6)                                                           
+            echo -e "\n  Installing ${aRepoName}${aRepoStg}"
+#                     gitr clone aidocs no-stage ${aBranch} -d
+#                     gitr clone aidocs${aRepoStg} ${aBranch}
+                      gitr clone ${aReponame}${aRepoStg} ${aBranch} -d                                      # .(50104.01.6)
 
-            if [ "${OS:0:7}" != "Windows" ]; then sudo find . -type f -name "*.sh" -exec chmod 755 {} +; fi 
+            if [ "${OS:0:7}" != "Windows" ]; then sudo find . -type f -name "*.sh" -exec chmod 755 {} +; fi
 #           ${aLstSp}; exit
             exit
         fi # eif install aicoder                                                                            # .(50104.01.2 End)

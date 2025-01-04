@@ -31,7 +31,7 @@
 ##FD   FRT42_GitR2.sh           | 150500| 12/26/24  0:27|  2040| p1.02`.41226.0027
 ##FD   FRT42_GitR2.sh           | 152353| 12/26/24 17:40|  2064| p1.02`.41226.1740
 ##FD   FRT42_GitR2.sh           | 153647| 12/31/24 19:45|  2075| p1.02`.41231.1945
-##FD   FRT42_GitR2.sh           | 155440|  1/01/25 16:15|  2097| p1.02`.50101.1615
+##FD   FRT42_GitR2.sh           | 155440|  1/04/25 12:15|  2097| p1.02`.50104.1230
 #
 ##DESC     .--------------------+-------+---------------+------+-----------------+
 #            This script has usefull GIT functions.
@@ -169,6 +169,7 @@
 #.(50102.03e  1/03/25 RAM  4:00p| Work on gitr init (e)
 #.(50102.03f  1/03/25 RAM  7:00p| Fiinish gitr init ordeal (f)
 #.(50103.01   1/03/25 RAM  8:00p| Create aStages for gitr init 
+#.(50104.01   1/04/25 RAM 12:30p| Add install AICodeR 
 
 ##PRGM     +====================+===============================================+
 ##ID 69.600. Main0              |
@@ -176,7 +177,7 @@
 #*/
 #========================================================================================================== #  ===============================  #
 
-        aVDt="Jan 1, 2025 4:15p"; aVer="p1.02"; aVTitle="Useful gitR2 Tools by formR";                                    # .(41103.02.2 RAM Was: gitR1)
+        aVDt="Jan 4, 2025 12:30p"; aVer="p1.02"; aVTitle="Useful gitR2 Tools by formR";                                    # .(41103.02.2 RAM Was: gitR1)
         aVer="$( echo "$0" | awk '{ match( $0, /_[dpstuv][0-9]+\.[0-9]+/ ); print substr( $0, RSTART+1, RLENGTH-1) }' )"  # .(21031.01.1 RAM Add [d...).(20416.03.8 "_p2.02", or _d1.09)
 
         LIB="gitR2"; LIB_LOG=${LIB}_LOG; LIB_USER=${LIB}_USER; Lib=${LIB}; aDir=$(dirname "${BASH_SOURCE}");              # .(41103.02.3).(41102.01.1 RAM Add JPT12_Main2Fns_p1.07.sh Beg).(80923.01.1)
