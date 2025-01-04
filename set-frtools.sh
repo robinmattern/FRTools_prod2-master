@@ -60,7 +60,6 @@
 # .(41225.01 12/25/24 RAM 10:59a| Set aTS to include Y for year
 # .(41225.02 12/25/24 RAM 12:20p| Fix SetTHE_SERVER
 # .(41225.03 12/25/24 RAM 12:40p| Say ~/.bash_profile may need to be run
-# .(50102.02  1/02/25 RAM  5:10p| Set default profile if none exist
 
 ##PRGM     +====================+===============================================+
 ##ID 69.600. Main0              |
@@ -75,7 +74,6 @@
   aVer="v1.05\`41211.0720"
   aVer="v1.05\`41211.0840"
   aVer="v1.05\`41225.1240"
-  aVer="v1.05\`50102.1710"
 
   echo ""
 
@@ -95,7 +93,7 @@ function help() {
 
 function setOSvars() {
      aTS=$( date '+%y%m%d.%H%M' ); aTS=${aTS:1}                                                             # .(41225.01.1 RAM Was ${aTS:2})
-                                           aBashrc="$HOME/.bash_profile"                                    # .(50102.02.1 RAM Set default profile is none exist. Was .bashrc).(41208.02c.1)
+#    aBashrc="$HOME/.bashrc"                                                                                ##.(41208.02c.1)
      if [ -f "$HOME/.bashrc"       ]; then aBashrc="$HOME/.bashrc"; fi                                      # .(41208.02b.1).(41208.02c.2)
      if [ -f "$HOME/.bash_profile" ]; then aBashrc="$HOME/.bash_profile"; fi                                # .(41208.02b.2).(41208.02c.1)
      aBinDir="/home/._0/bin"                                                                                # .(41211.02.1 RAM Was /Home/._0/bin)

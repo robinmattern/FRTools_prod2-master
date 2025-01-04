@@ -10,7 +10,7 @@
 #   -----------------------------------------------------
 
 function exit_wCR() {
-  if [ "${OS:0:7}" != "Windows" ]; then echo ""; fi                                     # .(41120.01.5)
+  if [ "${OS:0:7}"     != "Windows" ]; then echo ""; fi                                 # .(41120.01.5)
     exit
     }
 #   -----------------------------------------------------
@@ -22,11 +22,11 @@ function download() {                    echo -e "\n  Downloading: $2";
          }
 #   -----------------------------------------------------
 
-function check7z {                  echo -e "\n  Unzipping:  7-Zip";
+function check7z {                  echo -e "\n  Unzipping: 7-Zip";
      if [ "$1" != ""     ]; then if [ -f "$1" ]; then a7z=$1; fi; fi
      if [ "$2" != ""     ]; then if [ -f "$2" ]; then a7z=$2; fi; fi
-     if [ "${a7z}" != "" ]; then    echo -e   "  Installed:  7-Zip as ${a7z}.";
-                            else    echo -e   "* Unzip of 7-Zip failed."; exit_wCR; fi
+     if [ "${a7z}" != "" ]; then    echo -e   "  Installed: 7-Zip as ${a7z}";
+                            else    echo -e "    Unzip of 7-Zip failed\n"; exit_wCR; fi
          }
 #   -----------------------------------------------------------------------
 
@@ -34,11 +34,10 @@ if [ "${OS:0:7}" == "Windows" ]; then
 
 #   curl -L  "https://7-zip.org/a/7zr.exe"         -o 7zr.exe 2>/dev/null
 #	curl -L  "https://7-zip.org/a/7z2409-extra.7z" -o 7zip.7z 2>/dev/null
-    download "https://7-zip.org/a/7zr.exe"            7zr.exe                           # minimal version of 7-Zip 
+    download "https://7-zip.org/a/7zr.exe"            7zr.exe
     download "https://7-zip.org/a/7z2409-extra.7z"    7zip.7z
 
-#   7zr.exe x 7zip.7z; check7z 7za.exe                                                  # extract the full version of 7-Zip v24.09  
-  ./7zr.exe x 7zip.7z | awk '{ print "    " $0 }'; check7z 7za.exe                      # .(50102.04.1 RAM Assumes we're running in Git Bash)
+	7zr.exe x 7zip.7z; check7z 7za.exe
 
 	echo -e "@echo off\n${winBIN}\\7za.exe %*"      >${a7zip}.cmd
 	echo -e "#\!/bin/bash\n${aBIN}/7za.exe \"\$@\"" >${a7zip}
@@ -85,6 +84,5 @@ if [ "${OSTYPE:0:5}" == "linux" ]; then
 	fi
 #   -----------------------------------------------------------------------
 
-    echo "${a7zip}" >"$HOME/bin/7z/@ZIP_Exe"                                            # .(50102.04.2 RAM Send 7zip name to parent script)
 	echo "  Command for 7-Zip is ${a7zip}"
 	exit_wCR
