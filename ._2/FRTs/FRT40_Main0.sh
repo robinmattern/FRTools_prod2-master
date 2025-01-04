@@ -9,8 +9,9 @@
 #       FRT_Scr=FRT40_Main0_p1.06.sh
 #       FRT_Scr=FRT40_Main0_u1.07.sh
 #       FRT_Scr=FRT40_Main0_p1.08.sh
-        FRT_Scr=FRT40_Main0_p1.09.sh        #.(30716.01 RAM)          # .(41210.02.1)
-#       FRT_Scr=._2/FRT40_Main0_p1.09.sh    #.(41026.02.1 RAM)
+#       FRT_Scr=FRT40_Main0_p1.09.sh        ##.(30716.01 RAM)         # .(41210.02.1).(41229.02.2)
+        FRT_Scr=FRT40_Main1_u1.09.sh        # .(41229.02.2 RAM Was _Main0_p1.09)
+#       FRT_Scr=._2/FRT40_Main0_p1.09.sh    # .(41026.02.1 RAM)
  
 #       FRT_Dir=$( realpath "$0" ); FRT_Dir=$( dirname ${FRT_Dir} )   ##.(41210.02.1)
         FRT_Dir="$( cd "$( dirname "$0" )" && pwd )"                  # .(41210.02.1)
