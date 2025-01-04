@@ -163,6 +163,11 @@
 #.(41102.03c  1/01/25 RAM  4:15p| Revise add remote help (c)
 #.(50101.07   1/01/25 RAM  5:00p| gitR commit arg can be a commit hash
 #.(50102.03a  1/02/25 RAM  9:00p| Move exit_wCR for gitr inits (a)
+#.(50102.03b  1/03/25 RAM  7:00a| Move exit_wCR for gitr inits (b)
+#.(50102.03c  1/03/25 RAM  9:00a| Work on gitr init (c)
+#.(50102.03d  1/03/25 RAM 10:00a| Work on gitr init (d)
+#.(50102.03e  1/03/25 RAM  4:00p| Work on gitr init (e)
+#.(50102.03f  1/03/25 RAM  7:00p| Fiinish gitr init ordeal (f)
 
 ##PRGM     +====================+===============================================+
 ##ID 69.600. Main0              |
