@@ -30,6 +30,8 @@
 ##FD   FRT42_GitR2.sh           | 149239| 12/25/24 15:40|  2031| p1.02`.41225.1540
 ##FD   FRT42_GitR2.sh           | 150500| 12/26/24  0:27|  2040| p1.02`.41226.0027
 ##FD   FRT42_GitR2.sh           | 152353| 12/26/24 17:40|  2064| p1.02`.41226.1740
+##FD   FRT42_GitR2.sh           | 153647| 12/31/24 19:45|  2075| p1.02`.41231.1945
+##FD   FRT42_GitR2.sh           | 155440|  1/01/25 16:15|  2097| p1.02`.50101.1615
 #
 ##DESC     .--------------------+-------+---------------+------+-----------------+
 #            This script has usefull GIT functions.
@@ -154,9 +156,10 @@
 #.(41225.05  12/25/24 RAM  3:40p| Modify gitr branch list
 #.(41226.01  12/26/24 RAM 12:27a| Add -force for delete branch
 #.(41129.03b 12/26/24 RAM  8:10a| 1st fix of add commit command
-#.(41124.06c 12/26/24 RAM 16:15p| Do shoWorkingFiles the same for unix
+#.(41124.06c 12/26/24 RAM 16:15p| Do shoWorkingFiles the same for unix (c)
 #.(41226.05  12/26/24 RAM  5:30p| Rework gitr update messages
-#.(41226.05b 12/26/24 RAM  5:40p| Don't show aStashmsg if MT
+#.(41226.05b 12/26/24 RAM  5:40p| Don't show aStashmsg if MT (b)
+#.(41124.06d 12/31/24 RAM  7:45p| Do shoWorkingFiles the same for unix (d)
 
 ##PRGM     +====================+===============================================+
 ##ID 69.600. Main0              |
@@ -164,7 +167,7 @@
 #*/
 #========================================================================================================== #  ===============================  #
 
-        aVDt="Dec 26, 2024 5:40p"; aVer="p1.02"; aVTitle="Useful gitR2 Tools by formR";                                    # .(41103.02.2 RAM Was: gitR1)
+        aVDt="Jan 1, 2025 4:15p"; aVer="p1.02"; aVTitle="Useful gitR2 Tools by formR";                                    # .(41103.02.2 RAM Was: gitR1)
         aVer="$( echo "$0" | awk '{ match( $0, /_[dpstuv][0-9]+\.[0-9]+/ ); print substr( $0, RSTART+1, RLENGTH-1) }' )"  # .(21031.01.1 RAM Add [d...).(20416.03.8 "_p2.02", or _d1.09)
 
         LIB="gitR2"; LIB_LOG=${LIB}_LOG; LIB_USER=${LIB}_USER; Lib=${LIB}; aDir=$(dirname "${BASH_SOURCE}");              # .(41103.02.3).(41102.01.1 RAM Add JPT12_Main2Fns_p1.07.sh Beg).(80923.01.1)
@@ -272,6 +275,7 @@ while [[ $# -gt 0 ]]; do  # Loop through all arguments
         -doit|--doit)    bDoit=1 ;;                                                     # .(41105.02.2 RAM Rewrite)
         -debug|--debug)  bDebug=1 ;;                                                    # .(41105.02.3)
         -force|--force)  bForce=1 ;;                                                    # .(41105.02.4)
+        -quiet|--quiet)  bQuiet=1 ;;                                                    # .(50104.03.1 Add bQuiet)
         -[bdf]*)         [[ "$1" =~ "b" ]] && bDebug=1; [[ "$1" =~ "d" ]] && bDoit=1; [[ "$1" =~ "f" ]] && bForce=1 ;;  # .(41105.02.5)
         *)
          mArgs+=("$( echo "${1:0:3}" | sed 'y/ABCDEFGHIJKLMNOPQRSTUVWXYZ/abcdefghijklmnopqrstuvwxyz/')"); # mARGs+=("$1")
@@ -432,14 +436,9 @@ function getBranch( ) {                                                         
 # ---------------------------------------------------------------------------
 
 function shoCommitMsg() {                                                                                   # .(41030.05.2 RAM Write showCommitMsg Beg)
-
-     n=$(($1-1)); if [ "${#n}" == "1" ]; then m=" ${n}"; else m="${n}"; fi                                  # .(41031.05.1 RAM Move to here)
-#    aAWK1='/^commit / { c = substr($0,8,8)        };                     /^Author:/ { a = substr($0,8) }; /^Date:/ { d = substr($0,6,27) }; NR == 5 {                                   m = sprintf( "\"%-50s", ($0 != "") ? substr( $0, 5                      )   "\"" : "n/a\"" ); print " " c d"   "m"  "a }' ##.(41031.06.1)
-#    aAWK1='/^commit / { c = substr($0,8,8)        };                     /^Author:/ { a = substr($0,8) }; /^Date:/ { d = substr($0,6,27) }; NR == 5 { p = length($0) > 63 ? "..." : ""; m = sprintf( "\"%-61s", ($0 != "") ? substr( $0, 5, 60-(p > "" ? 3 : 0) ) p "\"" : "n/a\"" ); print " " c d"   "m" "a  }' ##.(41031.06.1).(41103.01.1)
-     aAWK1='/^commit / { c = substr($0,8,8); n = 5 }; /^Merge/ { n = 6 }; /^Author:/ { a = substr($0,8) }; /^Date:/ { d = substr($0,6,27) }; NR == n { p = length($0) > 63 ? "..." : ""; m = sprintf( "\"%-61s", ($0 != "") ? substr( $0, 5, 60-(p > "" ? 3 : 0) ) p "\"" : "n/a\"" ); print " " c d"   "m"  "a }' # .(41103.01.1).(41031.06.1)
-#    aAWK2='{ m = $3;                       d = $4;                       t = $5; y = $6; m = ( 2 + index( "JanFebMarAprMayJunJulAugSepOctNovDev", m ) ) / 3;   print substr($0,1,15)" "y"."m"."d" "t"   "substr( $0, 40 ) }'; # echo "  aAWK2: '${aAWK2}'"; exit # .(41031.04.1)
-#    aAWK2='{ m = $3; m = m > 9 ? m : "0"m; d = $4; d = d > 9 ? d : "0"d; t = $5; y = $6; m = ( 2 + index( "JanFebMarAprMayJunJulAugSepOctNovDev", m ) ) / 3;   print substr($0,1,15)" "y"."m"."d" "t"   "substr( $0, 40 ) }';   sayMsg "gitR2[ 407]  aAWK2: '${aAWK2}'" 2; # .(41031.04.1)
-     aAWK2='{ d = $4; d = d > 9 ? d : "0"d; t = $5; y = $6;   m = ( 2 + index( "JanFebMarAprMayJunJulAugSepOctNovDec", $3 ) ) / 3; m = m > 9 ? m : "0"m;        print substr($0,1,15)" "y"."m"."d" "t"   "substr( $0, 40 ) }'; # sayMsg "gitR2[ 408]  aAWK2: '${aAWK2}'" 1; # .(41031.04.12 RAM Was Dev).(41031.04.2)
+#    n=$(($1-1)); if [ "${#n}" == "1" ]; then m=" ${n}"; else m="${n}"; fi                                  # .(41031.05.1 RAM Move to here)
+     n=$(($1-1)); if [ "${#n}" == "1" ]; then m="  ${n}"; elif [ "${#n}" == "2" ]; then m=" ${n}"; else m="${n}"; fi # .(41031.05.1 RAM Move to here)
+  if [ ${#2} -lt  4 ]; then                                                                                 # .(50101.07.1 RAM Arg can be a commit hash)
 #    aCommitHash="$( git rev-parse HEAD~$n 2>/dev/null )"; # echo "  aCommitHash: '${aCommitHash}'"         # Get commit hash at current position
 #    echo "  aCommitHash: ${aCommitHash}"; return
 #    if [ "${#n}" == "1" ]; then m=" ${n}"; else m="${n}"; fi
@@ -448,8 +447,19 @@ function shoCommitMsg() {                                                       
 #    echo "  ${m}. $( git show "$(git rev-parse HEAD~$n)" | awk "${aAWK1}" | awk "${aAWK2}" )"              ##.(41031.04.2).(41110.01.2)
 #    if [ "$?" -ne "0"        ]; then echo -e "* ${m}.  There are no more commits (HEAD~$n)!"; exit_wCR; fi ##.(41110.01.2 RAM Move to here).(41031.05.2 RAM Was ${1}).(41110.01.3)
      aComHash="$( git rev-parse HEAD~${n} 2>/dev/null | awk '! /HEAD/ { print $0 }' )"                      # .(41110.01.3
-#    sayMsg  "gitR2[ 417]  ${m}. \$( git show \$(git rev-parse HEAD~$n) | awk '${aAWK1}' ) '${aComHash}'" 2  ##.(41031.04.2 RAM git show $aCommitHash | awk "${aAWK}" )
+#    sayMsg  "gitR2[ 417]  ${m}. \$( git show \$(git rev-parse HEAD~$n) | awk '${aAWK1}' ) '${aComHash}'" 2 ##.(41031.04.2 RAM git show $aCommitHash | awk "${aAWK}" )
+   else                                                                                                     # .(50101.07.2)
+     aComHash="${2}"
+     fi                                                                                                     # .(50101.07.3)
      if [ "${aComHash}" == "" ]; then echo -e "* ${m}.  There are no more commits (HEAD~$n)!"; exit_wCR; fi # .(41110.01.4 RAM Move to here).(41031.05.2 RAM Was ${1})
+
+#    aAWK1='/^commit / { c = substr($0,8,8)        };                     /^Author:/ { a = substr($0,8) }; /^Date:/ { d = substr($0,6,27) }; NR == 5 {                                   m = sprintf( "\"%-50s", ($0 != "") ? substr( $0, 5                      )   "\"" : "n/a\"" ); print " " c d"   "m"  "a }' ##.(41031.06.1)
+#    aAWK1='/^commit / { c = substr($0,8,8)        };                     /^Author:/ { a = substr($0,8) }; /^Date:/ { d = substr($0,6,27) }; NR == 5 { p = length($0) > 63 ? "..." : ""; m = sprintf( "\"%-61s", ($0 != "") ? substr( $0, 5, 60-(p > "" ? 3 : 0) ) p "\"" : "n/a\"" ); print " " c d"   "m" "a  }' ##.(41031.06.1).(41103.01.1)
+     aAWK1='/^commit / { c = substr($0,8,8); n = 5 }; /^Merge/ { n = 6 }; /^Author:/ { a = substr($0,8) }; /^Date:/ { d = substr($0,6,27) }; NR == n { p = length($0) > 63 ? "..." : ""; m = sprintf( "\"%-61s", ($0 != "") ? substr( $0, 5, 60-(p > "" ? 3 : 0) ) p "\"" : "n/a\"" ); print " " c d"   "m"  "a }' # .(41103.01.1).(41031.06.1)
+#    aAWK2='{ m = $3;                       d = $4;                       t = $5; y = $6; m = ( 2 + index( "JanFebMarAprMayJunJulAugSepOctNovDev", m ) ) / 3;   print substr($0,1,15)" "y"."m"."d" "t"   "substr( $0, 40 ) }'; # echo "  aAWK2: '${aAWK2}'"; exit # .(41031.04.1)
+#    aAWK2='{ m = $3; m = m > 9 ? m : "0"m; d = $4; d = d > 9 ? d : "0"d; t = $5; y = $6; m = ( 2 + index( "JanFebMarAprMayJunJulAugSepOctNovDev", m ) ) / 3;   print substr($0,1,15)" "y"."m"."d" "t"   "substr( $0, 40 ) }';   sayMsg "gitR2[ 407]  aAWK2: '${aAWK2}'" 2; # .(41031.04.1)
+     aAWK2='{ d = $4; d = d > 9 ? d : "0"d; t = $5; y = $6;   m = ( 2 + index( "JanFebMarAprMayJunJulAugSepOctNovDec", $3 ) ) / 3; m = m > 9 ? m : "0"m;        print substr($0,1,15)" "y"."m"."d" "t"   "substr( $0, 40 ) }'; # sayMsg "gitR2[ 408]  aAWK2: '${aAWK2}'" 1; # .(41031.04.12 RAM Was Dev).(41031.04.2)
+
 #    sayMsg "gitR2[ 419] git show \"${aComHash}\" | awk '${aAWK2}'" 1; echo ""
      echo "  ${m}. $( git show "${aComHash}" | awk "${aAWK1}" | awk "${aAWK2}" )"                           # .(41110.01.5).(41031.04.2)
                                                                                                             # .(41030.05.2 End)
@@ -465,42 +475,54 @@ function shoWorkingFiles() {                                                    
 function getDate( aFile ) {
 #    if ((getline < aFile) < 0) { return "Not Found        " };  close( aFile )
 #    if ( ENVIRON["OS"] ~ /Windows/ ) { ... }                                                               ##.(41124.06c.1)
+
      if ( ENVIRON["OS"] !~ /darwin/ ) {                                                                     # .(41124.06c.1 RAM Unix and Windows are the same)
 #         cmd = "stat --format=\"%Y-%m-%d %H:%M\" \""      aFile "\" 2>/dev/null"
           cmd = "stat -c \"%y\" \""                        aFile "\" 2>/dev/null"
+#         return "hello " lastmod " --- stat -c \"%y\" \"" aFile "\""
+
 #    if ((cmd | getline lastmod) <= 0) { close( cmd ); return "Not Found       "  }
-     if ((cmd | getline lastmod) <= 0) { close( cmd ); return "       Not Found"  }
-          split( lastmod, dt, ".")       # Remove fractional seconds
-          return substr( dt[1], 1, 16 )  # Get just YYYY-MM-DD HH:MM
-      } else {
+     if ((cmd | getline lastmod) <= 0) { close( cmd ); return "       Not Found"  }  # Windows or Linux
+          split( lastmod, dt, ".")        # Remove fractional seconds
+          return substr(  dt[1], 1, 16 )  # Get just YYYY-MM-DD HH:MM
+      } else {                                                                       # Darwin
           cmd = "stat -f \"%Sm\" -t \"%Y-%m-%d %H:%M\" \"" aFile "\" 2>/dev/null" }
-#         cmd | getline lastmod
 #    if ((cmd | getline lastmod) <= 0) { close( cmd ); return "Access Error    "  }
      if ((cmd | getline lastmod) <= 0) { close( cmd ); return "Not Found    2  "  }
                                          close( cmd ); return lastmod
           } # eof getDate
 #         ----------------------------------------------------------------------------
-          { bOK = 0; aFile = substr( $0, 4 ); gsub(/"/, "", aFile ); a = substr( $0, 1, 3 ) }               # .(41124b.06.1 RAM Rmove "s)
-     /\(/ { bOK = 1; gsub( /\(/, "\\(", aFile ); gsub(/\)/, "\\)", aFile); }                                # .(41124b.06.2 RAM Add \ to parentheses)
-     !/`/ { bOK = 1; }                                                                                      # .(41124b.06.3 RAM Different method).(41124.06.3 RAM Remove files with "`")
-#    !/`/ { d = getDate( substr( $0, 4 ) ); print d " " $0 }                                                ##.(41124.06.3 RAM Remove files with "`").(41124b.06.3)
+          { bOK = 0; aFile = substr( $0, 7 ); gsub(/"/, "", aFile ); a = substr( $0, 1, 4 ) }               # .(41124.06d.1 RAM Was: 4 and 3).(41124b.06.1 RAM Rmove "s)
+     /\(/ { bOK = 1; gsub( /\(/, "\\(", aFile ); gsub(/\)/, "\\)", aFile); }                                # .(41124.06b.2 RAM Add \ to parentheses)
+     !/`/ { bOK = 1; }                                                                                      # .(41124.06b.3 RAM Different method).(41124.06.3 RAM Remove files with "`")
+#    !/`/ { d = getDate( substr( $0, 7 ) ); print d " " $0  }                                               ##.(41124.06d.2).(41124.06.3 RAM Remove files with "`").(41124b.06.3)
+#    !/`/ {      aFile = substr( $0, 7 );   print  "  aFile: [" aFile "]" }                                 ##.(41124.06d.3).(41124.06.3)
       bOK { d = getDate( aFile ); print a" "d"       "aFile }                                               # .(41124.06b.4 RAM Use bOK and switch a and d)
-#    !/`/ {      aFile = substr( $0, 4 );     print "  aFile: [" aFile "]" }                                ##.(41124.06.3)
+#     bOK { print "----- " a" "aFile }
+#     bOK { print  getDate( aFile ) }
      '                                                                                                      # .(41124.06.2 End)
 #      git status --short | awk '{ print "   " $1 "  " substr( $0, 4) }'                                    ##.(41124.06.4)
     if [ "$1" == "" ]; then                                                                                 # .(41124.06.11 RAM For status)
+       aAWK1='BEGIN{FPAT = "([^[:space:]]+)|(\"[^\"]+\")"} { printf "%-5s %s\n", $1, $2 }'                  # .(41124.06e.1 RAM Claude cleverness for quoted fields)
+#      aAWK2='{ printf "%17s %s\n", "", $0 }'                                                               ##.(41124.06e.2)
+       aAWK2='{ printf "%20s  %-16s  %s\n", substr( $1, 1, 1 ), $2" "$3, substr( $0, 29 ) }'                # .(41124.06e.2)
 #      git status    --short                                                                                ##.(41124.06.4)
-#      git status    --short | awk "${GetDate}"                                                             ##.(41124.06.4)
+#      git status    --short | awk "${aAWK1}" | awk "${GetDate}"                                            ##.(41124.06.4)
 #      git status -u --short | awk "${GetDate}" | awk '{ printf "%20s  %-16s  %s\n",$3,$1" "$2, s.($0,21)}' ##.(41129.02.3).(41124.06.4).(41124.06b.5)
-       git status -u --short | awk "${GetDate}" | awk '{ printf "%17s %s\n", "", $0 }'                      # .(41124.06b.5).(41129.02.3).(41124.06.4)
+       git status -u --short | awk "${aAWK1}" | awk "${GetDate}" | awk  "${aAWK2}"                          # .(41124.06e.3).(41129.02.3).(41124.06.4)
        fi                                                                                                   # .(41124.06.12)
     if [ "$1" == "commit" ]; then                                                                           # .(41124.06.13 RAM For commit)
-       aAWK1='{ print " " $0 }'
-       aAWK2='{ printf "%20s  %-16s  %s\n",$3,$1" "$2, substr( $0, 21 ) }'
+#      aAWK1='{ print " " $1 "   " $2 }'                                                                    ##.(41124.06.1)
+#      aAWK1='{ printf "%-5s \"%s\"\n", $1, ($1 ~ /^R/ ? $3 : $2) }'                                        ##.(41124.06.1)
+       aAWK1='{ printf "%-5s %s\n",     $1, ($1 ~ /^R/ ? $3 : $2) }'                                        # .(41124.06d.4 RAM Deal with rename)
+#      aAWK2='{ printf "%20s  %-16s  %s\n", $3, $1" "$2, substr( $0, 29 ) }'                                ##.(41124.06d.5)
+       aAWK2='{ printf "%20s  %-16s  %s\n", substr( $1, 1, 1 ), $2" "$3, substr( $0, 29 ) }'                # .(41124.06d.5 RAM Was 21 and $1 $3 reversed)
+       sayMsg  "gitR2[ 503]   git show --pretty="" --name-status HEAD~$2"  -1
 #      git status --short | awk "${GetDate}" | awk '{ printf "%4s  %-16s  %s\n",$3,$1" "$2, substr($0,21)}' ##.(41124.06.4).(41124.06.14)
 #      git show   --pretty="" --name-status HEAD~$2 | awk "${aAWK1}" | awk "${GetDate}"                     ##.(41124.06.14)
-#      git show   --pretty="" --name-status HEAD~$2 | awk "${aAWK1}"                                        ##.(41124.06.14)
-       git show   --pretty="" --name-status HEAD~$2 | awk "${aAWK1}" | awk "${GetDate}" | awk "${aAWK2}"    # .(41124.06.14)
+#      git show   --pretty="" --name-status HEAD~$2 | awk -F $'\t' "${aAWK1}"                               ##.(41124.06d.6).(41124.06.14)
+#      git show   --pretty="" --name-status HEAD~$2 | awk -F $'\t' "${aAWK1}" | awk "${GetDate}"            ##.(41124.06d.6 RAM Use tab delimiter).(41124.06.14)
+       git show   --pretty="" --name-status HEAD~$2 | awk -F $'\t' "${aAWK1}" | awk "${GetDate}" | awk "${aAWK2}"  # .(41124.06d.6 RAM Use tab delimiter).(41124.06.14)
        fi                                                                                                   # .(41124.06.15)
 
    } # eof shoWorkingFiles                                                                                  # .(41124.06.1 End)
@@ -509,26 +531,27 @@ function getDate( aFile ) {
 function getReposDir() {                                                                                    # .(41103.03b.1 RAM Write getReposDir for gitr Init Beg)
 
      aDir="$( pwd )"
-     aREpos="$( echo "${aDir}" | awk '{ match( $0, /.*[Rr][Ee][Pp][Oo][Ss]/); print substr($0,1,RLENGTH) }' )"
+     aREPOs="$( echo "${aDir}" | awk '{ match( $0, /.*[Rr][Ee][Pp][Oo][Ss]/); print substr($0,1,RLENGTH) }' )"
      aRDirs="$( echo "${aDir}" | awk '{ match( $0, /.*[Rr][Ee][Pp][Oo][Ss]/); print substr($0,RLENGTH+2) }' )"
 
-     if [ "${aREpos}" == "" ]; then
+     if [ "${aREPOs}" == "" ]; then
         echo -e "\n* You must be in a Repos folder."
         exit_wCR
         fi
 
         aSDirs="$( find . -maxdepth 2 -type d -name "?1_*" | awk '{ print; exit }' )"
-        sayMsg  "gitR2[ 477]  aSDirs: '${aSDirs}'" -1
-     if [ "${aRDirs}" != "" ]; then  # aRepos has no subfolder
+        bProjDir="0"; aProjDir="$(pwd)"; if [ "${aProjDir: -1}" == "_" ]; then bProjDir=1; fi               # .(50102.03f.1 RAM Ok, if a Project_ dir) 
+        sayMsg  "gitR2[ 477]  aSDirs: '${aSDirs}', bProjDir: ${bProjDir}" -1
+     if [ "${aRDirs}" != "" ] && [ bProjDir == "0" ]; then  # aRepos has no subfolder                       # .(50102.03f.1 RAM Ok, if a Project_ dir) 
         if [ "${aSDirs}" != "" ] || [ "$1" == "no-check" ]; then
-           aREpos="${aREpos}/${aRDirs}"  # It is a Repos dir
+           aREPOs="${aREPOs}/${aRDirs}"  # It is a Repos dir
          else
            if [ -d ".git" ]; then
               echo -e "\n* This project folder already contains a git repository"
               exit_wCR
               fi # eif .git exists
            echo -e "\n* You must be in a Repos folder with a subfolder: ._/!1_Support Files for ..."
-           aREpos=""
+           aREPOs=""
            exit_wCR
            fi;  # eif aSDirs
        else
@@ -537,8 +560,8 @@ function getReposDir() {                                                        
          sayMsg  "gitR2[ 493]  The Repos root folder does not contain a subfolder: ._/!1_Support Files for ..." -1
          fi
 
-         sayMsg  "gitR2[ 496]  aRepos: '${aREpos}', aRDirs: '${aRDirs}'" -1
-#       echo "${aREpos}"
+         sayMsg  "gitR2[ 496]  aRepos: '${aREPOs}', aRDirs: '${aRDirs}'" -1
+#       echo "${aREPOs}"
         } # // eof getReposDir                                                                              # .(41103.03b.1 End)
 #====== =================================================================================================== #  ===========
 #>      GITR2 INIT                                                                                          # .(20430.01.3 Beg RAM Add GitR Init Beg)
@@ -548,47 +571,59 @@ function getReposDir() {                                                        
 #         aCmd="init"
 
   if [ "${aCmd}" == "init" ]; then                                                                          # .(41103.03.5 RAM Actually write Gitr Init Beg)
-     sayMsg  "gitR2[ 507]  Git Init" -1
+     sayMsg  "gitR2[ 573]  Git Init" -1
 
      aNewRepo="${mARGs[1]}"                                                                                 # .(41103.03b.2 RAM Create folder if given Beg)
   if [ "${aNewRepo}" != "" ]; then
 #    aReposDir="$( getReposDir )"
-     getReposDir; aReposDir="${aREpos}"
-     sayMsg  "gitR2[ 513]  aReposDir: '${aReposDir}'" -1
-     sayMsg  "gitR2[ 514]  aSDirs: '${aSDirs}'" -1
-     if [ "${aReposDir}" != "" ]; then
+     getReposDir; aReposDir="${aREPOs}"
+#    sayMsg  "gitR2[ 579]  aReposDir: '${aReposDir}'" -1
+#    sayMsg  "gitR2[ 580]  aSuptDirs: '${aSDirs}' -- Can't be MT" -1
+     if [ "${aReposDir}" != ""  ]; then
         if [ ! -d "${aNewRepo}" ]; then
-           sayMsg  "gitR2[ 517]  Git Init: Making aNewRepo folder, ${aNewRepo}, in the Repos folder, ${aReposDir}. " -1
-           mkdir -p "${aNewRepo}";
+           sayMsg  "gitR2[ 583]  Git Init: Making a new Repo folder, ${aNewRepo}, in the Repos folder, ${aReposDir}. " -1
+#          if [ "${bDoit}" == "1" ]; then mkdir -p "${aNewRepo}"; fi                                        ##.(50102.03.1 RAM Add bDoit)
          else
-           sayMsg  "gitR2[ 520]  Git Init: aNewRepo folder, ${aNewRepo}, already exists in the Repos folder, ${aReposDir}." -1
+           sayMsg  "gitR2[ 586]  Git Init: The folder, ${aNewRepo}, already exists in the Repos folder, ${aReposDir}." -1
         fi
-        cd "${aNewRepo}"
+#          if [ "${bDoit}" == "1" ]; then cd "${aNewRepo}"; fi                                              ##.(50102.03.2) 
       else
-           sayMsg  "gitR2[ 524]  Git Init: Not in aRepos folder." -1
+           sayMsg  "gitR2[ 590]  Git Init: Not in aRepos folder." -1
            echo -e "\n* You must be in a Repos folder."
            exit_wCR
-        fi
+        fi # 
    else # eif no aNewRepo
-        getReposDir "no-check";
+        getReposDir "no-check";                                                                             # .(50102.03.3 RAM Check if "._/!1_Support .." folder exists)
      if [ "${aSDirs}" == "" ] && [ "${aRDirs}" != "" ]; then  # Only ok in Repos subfolders
         aReposDir="$( pwd )"; aReposDir="${aReposDir%/*}"
-        sayMsg  "gitR2[ 532]  Git Init: Assuming a repo will be initialized in a current non-repos folder. " -1
+        sayMsg  "gitR2[ 598]  Git Init: Assuming a repo will be initialized in a current non-repos folder. " -1
       else
-        sayMsg  "gitR2[ 534]  Git Init: You can't initialize a repo in the current repos folder. " -1
+        sayMsg  "gitR2[ 600]  Git Init: You can't initialize a repo in the current repos folder. " -1
         echo -e "\n* This folder contains other repositories. It can't be initialized as a repository!"
+        echo -e   "  You must either provide a folder name for a new repository, or be in a non-git folder."
         exit_wCR
         fi
      fi                                                                                                     # .(41103.03b.2 End)
-
   if [ -d ".git" ]; then
 #       getRepoDir
         echo -e "\n* This project folder already contains a git repository"
         exit_wCR
         fi # eif .git exists
 
-    sayMsg  "gitR2[ 546]  Git Init: Current folder is $( pwd )." -1
-    sayMsg  "gitR2[ 547]  Git Init:   Repos folder is ${aReposDir}." -1
+#     aCurrPath="$( pwd )"; aCurrDir="${aCurrPath##*/}"
+#if [ "${aCurrDir: -1}" == "_" ]; then 
+#    if [ "${aArg3}" != "" ]; then aArg2="${aArg2}_${aArg3}"; aArg3=""; fi 
+#  else 
+  if [ "${aArg3}" == "" ]; then 
+  if [[ "$aArg2" =~ [_][/].+ ]]; then
+          aArg3="${aArg2#*_/}"      # Get everything after "_/"
+          aArg2="${aArg2%$aArg3}"   # Remove aArg3 from aArg2
+elif [[ "$aArg2" =~ [_].+ ]]; then
+          aArg3="${aArg2#*_}"       # Get everything after "_"
+          aArg2="${aArg2%$aArg3}"   # Remove aArg3 from aArg2
+          fi; fi 
+    sayMsg  "gitR2[ 612]  Git Init: Current folder is $( pwd )." -1
+    sayMsg  "gitR2[ 613]  Git Init: NewRepo folder is ${aNewRepo}, aArg2: '${aArg2}', aArg3: '${aArg3}'" sp -1
 
 #  ----------------------------------------------------------------------
 
@@ -596,37 +631,75 @@ function initGit() { # assumes we're in folder to be initialized                
 
          aMainBranch="master"
          aProject="$1"; aStage="$2"
+         sayMsg sp "gitR2[ 621]  initGit( \"$1\", \"$2\" ) " -1
 
       if [ "${aStage}" == "" ]; then                                                    # .(41109.02.1 RAM Allow initGit with 1 arg Beg)
          m=(${aProject//_/ }); aProject="${m[0]}"; aStage="${m[1]}"
-         if [ "${aProject}" == "" ] || [ "${aStage}"   == "" ]; then
-            aProject_Name="$1";
+         if [ "${aProject}" == "" ] || [ "${aStage}" == "" ]; then
+            aProject_Name="${aProject}";
           else
             aProject_Name="${aProject}_${aStage}"; aStage="${aStage///}"; fi
-        else
+        else                                                                            # .(41109.02.1)
             aProject_Name="${aProject}_/${aStage}"                                      # .(41109.02.2 RAM Assign aProject_Name)
          fi                                                                             # .(41109.02.1 End)
+         sayMsg "gitR2[ 632]  aProject: \"${aProject}\", aStage: \"${aStage}\"" -1
 
          aSvr="${THE_SERVER:0:6}"; if [ "${aSvr}" == "" ]; then aSvr="{Svr}"; fi
          aOwner="$( whoami | awk '{ print $1 }' )"
          aStage2="${aStage}";         if [ "${aStage}" == "" ]; then aStage2="all"; fi
          aProject_="${aProject/_/}";  if [ "${aStage}" != "" ]; then aProject_="${aProject/_/}_"; fi
-         echo "  Creating a repository, '${aProject_}${aStage}', in folder: '${aProject_Name}'."; # .(41109.02.3 RAM Was: '${aProject}_/${aStage}')
+                                     
+         if [ "${aStage}" != "${aStage/_/}" ]; then aProject_=""; fi                                        # .(50102.03.4 RAM Remove Project_ if it exists) 
+         if [ "${aProject_Name/${aDir}/}" != "${aProject_Name}" ]; then 
+                 aProject_Name="${aProject_Name/${aDir}\//}"
+                 fi 
 
-#        sayMsg "gitR[342]  Bye" 2
-      if [ ! -z "$( ls -A "." )" ]; then echo "* But the folder is not empty or isn't created. Unable to create repository. ";
+#        aNewRepoDir="${aProject_Name/*_\//}"                                                               ##.(50102.03.5)
+         aNewRepoDir="${aProject_Name}"                                                                     # .(50102.03.5)
+#        if [ "${aProject_Name/\/}" != "${aProject_Name}" ]; then aNewRepoDir="${aProject_Name}"; fi        # .(50102.03e.1 RAM Put it back)
+         aNewRepoName="${aProject_}${aStage/\//}"
+         if [ "$1" == "" ]  && [ "$2" != "" ]; then aProject_=""; aProject_Name="$2"; aNewRepoDir="$2"; fi  # .(50102.03.6) 
+         echo "  * gitR2[ 646]--Creating a repository, '${aNewRepoName}', in folder: '${aProject_Name}' (${aNewRepoDir}).";       # .(50102.03.7).(41109.02.3 RAM Was: '${aProject}_/${aStage}')
+
+#     if [ ! -z "$( ls -A "." )" ]; then echo "* But the folder is not empty or isn't created. Unable to create repository.";
+#          echo "if [ -d \"${aNewRepoDir}\" ]; then echo \"it exists\"; fi"
+#          [ -d "${aNewRepoDir}" ] && echo "Directory exists" || echo "Directory not found"
+         
+#        aMT="empty"; if [ -d "${aNewRepoDir}" ]; then pwd; ls -A "${aNewRepoDir}"; echo "----"; fi; exit                         ##.(50102.03.8)  
+         aMT="empty"; if [ -d "${aNewRepoDir}" ]; then if [ "$( ls -A "${aNewRepoDir}" )" != "" ]; then aMT="existing"; fi; fi    # .(50102.03.8)  
+#     if [ -d "${aNewRepoDir}/.git" ]; then echo  "* But the folder already contains a repository. Unable to create a new one. "; # .(50102.03c.1) 
+      if [ -d "${aNewRepoDir}/.git" ]; then echo -e "\n* The folder already contains a repository. Unable to create a new one. "; # .(50102.03c.2) 
          exit_wCR;
          fi
-         echo "  The current folder is empty.";
-         sayMsg  "gitR2[ 577]  Creating a repository, '${aProject_}${aStage}', in folder: '${aProject_Name}'.'" -1
+         sayMsg "gitR2[ 654]  The new repo ${aMT} folder being created is: '${aNewRepoDir}'" -1
 
-         git init                               | awk '{ print "  " $0 }'
+      if [ "${bDoit}" != "1" ]; then                                                                        # .(50102.03.9)
+         sayMsg  "gitR2[ 657]  Creating a new folder, '${aProject_}${aStage}', in '${PWD##*/}': (${aNewRepoDir})." -1
+         echo -e "\n  About to create a new repository, '${aNewRepoName}', in an ${aMT} folder: '${aProject_Name}'." 
+#        echo -e   "  The current folder, '${aProject_Name}', is empty.";                                   ##.(50102.03.10 Beg)
+#        if [ ! -d "${aNewRepoDir}" ]; then                              
+#        echo -e   "    mkdir ${aNewRepoDir}"
+#        echo -e   "    cd ${aNewRepoDir}"; fi                                                              ##.(50102.03.10 End)            
+         if [ "${PWD##*/}" != "${aNewRepoDir}" ]; then                                                      # .(50102.03.10 Beg)                                         
+         if [ ! -d "${aNewRepoDir}" ]; then           
+         echo -e   "    mkdir -p ${aNewRepoDir}"; fi
+         echo -e   "    cd ${aNewRepoDir}"; fi
+         echo -e   "    git init                  # Add -d to doit"
+         echo -e   "    git checkout -b ${aMainBranch}" 
+         echo -e   "    - a formR project structure will be created."                                                            
+         exit_wCR                                                                                           # .(50102.03.10 End)
+      else                                                                                                  # .(50102.03.11 Beg)
+         echo -e "\n  Creating a new repository, '${aProject_}${aStage}', in an ${aMT} folder: '${aProject_Name}'."  
+         if [ ! -d "${aNewRepoDir}"                ]; then mkdir -p "${aNewRepoDir}"; fi                    
+         if [      "${aNewRepoDir}" != "${PWD##*/}" ]; then      cd "${aNewRepoDir}"; bCD=1; else bCD=0; fi # .(50102.03a.17)
+#                       cd  ${aNewRepoDir}                                                                  ##.(50102.03.12)
+                        git init                               | awk '{ print "  " $0 }'
          echo ""
-         git checkout -b "${aMainBranch}"  2>&1 | awk '{ print "  " $0 }'
-
+                        git checkout -b "${aMainBranch}"  2>&1 | awk '{ print "  " $0 }'
+         fi                                                                                                 # .(50102.03.11 End)
 #        touch README.md  # or any file                                                 # .(41109.03.1 RAM Create initGit vars Beg)
          aREADME_md="
-# Repository: ${aProject_}${aStage}
+# formR Project folder: ${aProject_}${aStage}                                                               # .(50103.01.9 RAM Was: Repository: )
 Created on $( date +'%a %b %d %Y at %T' )
 Created by ${aOwner}
 
@@ -690,12 +763,15 @@ yarn.lock
          aWorkspace_code="{ \"folders\": [ { \"path\": \".\" } ] }"
                                                                                         # .(41109.03.2 RAM Add initGit dirs & files Beg)
 #        sayMsg  "gitR2[ 648]  Adding files to repo, ${aProject}_${aStage}, in folder: ${aProject_Name}'" -1
-         sayMsg  "gitR2[ 649]  Current folder is: '$( pwd )'" -1
+         sayMsg  "gitR2[ 766]  Current folder is: '$( pwd )'" -1
 
 #        !2_formR Tools for 8020's FRTools Apps in rm228d on Stage Prod2-Master
-         aDir="!2_\${Title} for ${aOwner}'s ${aProject} Apps in ${aSvr} on Stage ${aStage2}"
-         aDirC="client/c01_client-first-app/!3_${aProject} Client No. 1 App in ${aSvr} on Stage ${aStage2}"
-         aDirS="server/s01_server-first-app/!3_${aProject} Server No. 1 App in ${aSvr} on Stage ${aStage2}"
+#        aDir="!2_\${Title} for ${aOwner}'s ${aProject} Apps in ${aSvr} on Stage ${aStage2}"
+         aStages="on Stage ${aStage}"; if [ "${aStage2}" == "all" ]; then aStages="for All Stages"; fi      # .(50103.01.1 RAM Create aStages) 
+         aDir="!2_${aOwner}s ${aProject} Apps in ${aSvr} ${aStages}"                                        # .(50103.01.2 RAM Was: on Stage ${aStage2})
+
+         aDirC="client/c01_client-first-app/!3_${aProject} Client No. 1 App in ${aSvr} ${aStages}"          # .(50103.01.3) 
+         aDirS="server/s01_server-first-app/!3_${aProject} Server No. 1 App in ${aSvr} ${aStages}"          # .(50103.01.4) 
          mkdir "${aDir}"
          mkdir -p "${aDirC}"
          mkdir -p "${aDirS}"
@@ -728,114 +804,172 @@ yarn.lock
          } # eof initGit                                                                                    # .(41103.03.2 End)
 #  ----------------------------------------------------------------------
 
-           echo ""
+#          echo ""
            aPath="$( pwd )"; aDir="${aPath##*/}"
-        sayMsg "gitR2[ 689]  git init in ${aDir}" -1
+        sayMsg "gitR2[ 782]  git init in ${aDir}/${aNewRepo}" -1
 
-        if [ "${aDir: -1}" == "_" ]; then  # in a Project_ dir
+        if [ "${aNewRepo}" == "" ]; then aNewRepo="${aDir}"; fi                                             # .(50102.03.13)
+#       -----------------------------------------------------------
+           bDone=0                                                                                          # .(50102.03b.1)
+
+        if [ "${aDir: -1}" == "_" ]; then    # last char in ${aDir}                     # in a Project_ dir
 
            aProject="${aDir/_/}"
-           echo "  The current folder is a Project folder: '${aProject}_";
+           echo "  The current folder, '${aProject}_', is a Projects folder. Use it to hold \"stage-author\" repo folders.";
 
            if [ "${aArg2}" == "" ]; then
-              ask4Default "Please provide a stage name. e.g. " "" "dev01-robin"         # .(41114.06.5 RAM Was: ask4Required)
-              aStage="${aAnswer}"
-            else
-              aStage="${aArg2}"
+              if [ "${bDoit}" != "1" ]; then                                                                # .(50103.01.5 RAM Only ask if not bDoit)
+                 ask4Default "Please provide a stage name. e.g. " "" "dev01-robin"         # .(41114.06.5 RAM Was: ask4Required)
+                 aStage="${aAnswer}"; aArg2="${aStage}"
+                 fi                                                                                         # .(50103.01.6)
+              if [ "${aArg2}" == "" ]; then                                                                 # .(50103.01.7 RAM Only ask if not bDoit)
+                 echo -e "\n* You must provide a stage name. e.g. dev01-owner."
+                 exit_wCR
+                 fi                                                                                         # .(50103.01.8)
+            else # aArg2 != ""
+         sayMsg "gitR2[ 809]  git init in ${aProject}_ aArg2: '${aArg2}', aArg3: '${aArg3}'" -1
+           
+              aStage="${aArg2}"; if [ "${aArg2: -1}" == "_" ]; then aStage="${aArg2/_/}"; fi                # .(50102.03f.1 RAM if last char is '_' End)
+#             if [ "${aArg3/_/}" == "${aArg3}" ] && [ "${aArg2/_/}" == "${aArg2}" ]; then aArg3="_${aArg3}"; fi 
+              if [ "${aArg3/_/}" == "${aArg3}" ]; then aArg3="_${aArg3}"; fi 
+#             if [ "${aArg3/_/}" == "${aArg3}" ] && [ "${aArg2/\//}" == "${aArg2}" ]; then aArg3="/${aArg3}"; fi
+#             if [ "${aArg3}" != "" ]; then aStage="${aStage}${aArg3/\//_\/}"; fi                           # .(50102.03f.2) 
+              if [ "${aArg3}" != "" ]; then aStage="${aStage}${aArg3}"; fi                                  # .(50102.03f.3) 
+              aStage="${aStage/_\/_/_\/}"; aStage="${aStage%_}"
               fi
            if [ -d "${aStage}" ]; then
-              echo "* The folder, ${aStage}, currently exists"
-            else
-              echo "  Creating a folder: ${aProject}_/${aStage}"
-              mkdir "${aStage}"
+              echo "  The Repo folder, ${aStage}, currently exists. This is OK if no .git folder exists."
+#           else                                                                                            ##.(50102.03d.1)
+#             echo "--Creating a folder: ${aProject}_/${aStage}"                                            ##.(50102.03d.2)
+#             mkdir "${aStage}"                                                                             ##.(50102.03d.3)                                                            
               fi
-              cd "${aStage}" || exit_wCR
-
+        sayMsg "gitR2[ 810]  git init in ${aProject}  ${aStage}" -1
+#             cd "${aStage}" || exit_wCR                                                                    ##.(50102.03.14)
+#       if [ "${aStage/*_\//}" != "${aStage}" ]; then                                                       ##.(50102.03d.4 RAM Remote double Project Beg) 
+#             aStage="${aStage/*_\//}"
+#             fi                                                                                            ##.(50102.03d.4 End) 
+        sayMsg "gitR2[ 815]  git init in ${aProject}  ${aStage}" -1
            initGit     "${aProject}" "${aStage}"                                                            # .(41103.03.6)
            chkUser                                                                      # .(41114.07.2 RAM Use it here too)
-
-           echo -e "\n  Please cd into the folder, '${aStage}'."
-           exit_wCR
+           bDone="1"                                                                                        # .(50102.03b.2)
+#          echo -e "\n  Please cd into the folder, '${aNewRepoDir}'."                                       ##.(50102.03a.1)
+#          exit_wCR                                                                                         ##.(50102.03a.2)
         fi # eif aProject_ dir
-#       --------------------------------------------------------------
+#       -----------------------------------------------------------
 
-        if [ "${aDir/-/}"  != "${aDir}" ]; then  # in aStage dir
-           aProject="$( cd .. && pwd )"; aProject="${aProject##*/}"; aProject="${aProject/_/}";
+        if [ "${bDone}" == "0" ] && [ "${aDir/-/}"  != "${aDir}" ]; then                # in aStage dir     # .(50102.03b.3)
+
+           aProject="$( cd .. && pwd )"; aProject="${aProject##*/}";      # aProject="${aProject/_/}";      # .(50102.03.15)
+           if [ "${aProject}" == "${aProject/_/}" ]; then aProject=""; else aProject="${aProject/_/}"; fi   # .(50102.03.16)
            aStage="${aDir}"
+           if [ "${aArg2/*_\//}" != "${aArg2}" ]; then aArg2="${aArg2/*_\//}"; fi                           # .(50102.03.17 RAM Remote double Project Beg) 
+           if [ "${aArg2}" != "" ]; then aProject="${aArg2}"; aStage=""; fi                                 # .(50102.03.18 RAM Use aArg2, not aDir)
 
-#          sayMsg "gitR2[ 722]  git init in ${aProject}${aStage}" 2
+           sayMsg "gitR2[ 843]  git init in ${aProject}${aStage}" -1
            initGit     "${aProject}" "${aStage}"                                                            # .(41103.03.7  RAM in ${aProject} ${aStage})
-           echo -e "\n  Please cd into the folder, '${aStage}'."
-           exit_wCR
+           bDone="1"                                                                                        # .(50102.03b.4)
+#          echo -e "\n  Please cd into the folder, '${aNewRepoDir}'."                                       ##.(50102.03a.3)
+#          exit_wCR                                                                                         ##.(50102.03a.4)
         fi # eif aDir == aStage
-#       --------------------------------------------------------------
+#       -----------------------------------------------------------
 
-        if [ "${aArg2}" != "" ] && [ "${aArg3}" != "" ]; then                                               # .(41109.01.1 RAM Add other Project/Stage arg combinations Beg)
-        sayMsg "gitR2[ 730]  aArg2: ${aArg2}, aArg3: ${aArg3}" -1
+        if [ "${bDone}" == "0" ] && [ "${aArg2}" != "" ] && [ "${aArg3}" != "" ]; then                      # .(50102.03b.5).(41109.01.1 RAM Add other Project/Stage arg combinations Beg)
+           sayMsg "gitR2[ 851]  aArg2: ${aArg2}, aArg3: ${aArg3}" -1
                                aStage="${aArg3}"; aProject="${aArg2}_"
         if [ "${aArg2%%_}"  != "${aArg2}" ]; then aProject="${aArg2}"; fi  # _ is last char in 1st argument
         if [ "${aArg2%%/}"  != "${aArg2}" ]; then aProject="${aArg2}"; fi # / is last char in 1st argument
         if [ "${aArg2%%_/}" != "${aArg2}" ]; then aProject="${aArg2}"; fi # _/ is last two chars in 1st argument
 
-           if [  !  -d "${aProject}${aStage}" ]; then
-              mkdir -p "${aProject}${aStage}";
-              echo  -e "  Creating a folder, '${aProject}${aStage}'."
-              fi;
-           sayMsg "gitR2[ 740]  git init in ${aProject}${aStage}" 2
-                cd     "${aProject}${aStage}" || exit_wCR; aFolder="${aProject}${aStage}"
+#         if [  !   -d "${aProject}${aStage}" ]; then                                                       # .(50102.03d.5 Beg)
+#            mkdir  -p "${aProject}${aStage}";
+#             echo  -e "  Creating a folder, '${aProject}${aStage}'."
+#            fi 
+#               cd     "${aProject}${aStage}" || exit_wCR; aFolder="${aProject}${aStage}"                   # .(50102.03d.5 End)
+           sayMsg "gitR2[ 862]  git init in \${aProject}\${aStage}: ${aProject}${aStage}" -1
+
            initGit     "${aProject}${aStage}"                                                               # .(41103.03.8  RAM in ${aProject}${aStage})
-           echo -e "\n  Please cd into the folder, '${aFolder}'."
-           exit_wCR
+           bDone="1"                                                                                        # .(50102.03b.6)
+#          echo -e "\n  Please cd into the folder, '${aNewRepoDir}'."                                       ##.(50102.03a.5)
+#          exit_wCR                                                                                         ##.(50102.03a.6)
         fi # eif aProject_aStage dir
-#       --------------------------------------------------------------
+#       -----------------------------------------------------------
 
-        if [ "${aArg3}" == "" ]; then  # Just a dir
+        if [ "${bDone}" == "0" ] && [ "${aArg3}" == "" ]; then                          # Just a dir        # .(50102.03b.7)   
+           sayMsg "gitR2[ 866]  git init in just a dir: '${aArg2}'" -1
+#         -------------------------------------------------------
 
-        if [ "${aArg2/_/}"  != "${aArg2}" ]; then  # _ is in 1st argument
+        if [ "${aArg2/_/}"  != "${aArg2}" ]; then                                       # _ is in 1st argument
 
            m=(${aArg2//_/ }); aProject="${m[0]}"; aStage="${m[1]}"
-           if [  !  -d "${aProject}_${aStage}" ]; then
-              mkdir -p "${aProject}_${aStage}";
-              echo  -e "  Creating a folder, '${aProject}_${aStage}'."
-              fi
-#          sayMsg "gitR2[ 757]  git init in ${aProject}_${aStage}" 2
-                cd     "${aProject}_${aStage}" || exit_wCR; aFolder="${aProject}_${aStage}"
-           initGit     "${aProject}_${aStage}"                                                              # .(41103.03.9  RAM in ${aProject}_${aStage})
-           echo -e "\n  Please cd into the folder, '${aFolder}'."
-           exit_wCR
-           fi # eif aProject_aStage
+#          if [  !  -d "${aProject}_${aStage}" ]; then                                                      # .(50102.03d.6 Beg)                        
+#             mkdir -p "${aProject}_${aStage}";
+#             echo  -e "  Creating a folder, '${aProject}_${aStage}'."
+#             fi
+#               cd     "${aProject}_${aStage}" || exit_wCR; aFolder="${aProject}_${aStage}"                 # .(50102.03d.6 End)   
+                                
+#          sayMsg "gitR2[ 883]  git init in ${aProject}_${aStage}" -1                     
+           sayMsg "gitR2[ 884]  git init in '${aArg2}', \${aArg2/${aProject}_\//}" -1     
+#          sayMsg "gitR2[ 885]  git init in ${aProject} _ ${aArg2/${aProject}_\//}" -1    
 
-        if [ "${aArg2///}" != "${aArg2}" ]; then  # / is in 1st argument
+        if [ "${aArg2/${aProject}_\//}" != "${aArg2}" ]; then                                               # .(50102.03.19 RAM Remote double Project Beg) 
+           sayMsg "gitR2[ 888]  git init in ${aArg2/${aProject}_\//}" -1                                              
+           initGit     "${aArg2/${aProject}_\//}"
+         else                                                                                               # .(50102.03.19 End) 
+           initGit     "${aProject}_${aStage}"                                                              # .(41103.03.9 RAM in ${aProject}_${aStage}).(50102.03.20)
+           fi                                                                                               # .(50102.03.21) 
+           bDone="1"                                                                                        # .(50102.03b.8)
+#          initGit     "${aProject}_${aArg2/${aProject}_\//}"                                               # .(50102.03.22).(41103.03.9  RAM in ${aProject}_${aStage})
+#          echo -e "\n  Please cd into the folder, '${aNewRepoDir}'."                                       ##.(50102.03a.7)
+#          exit_wCR                                                                                         ##.(50102.03a.8)
+           fi # eif aProject_aStage
+#         -------------------------------------------------------
+
+        if [ "${aArg2///}" != "${aArg2}" ]; then                                        # / is in 1st argument
 
            m=(${aArg2//// }); aProject="${m[0]}"; aStage="${m[1]}"
-           if [  !  -d "${aProject}/${aStage}" ]; then
-              mkdir -p "${aProject}/${aStage}";
-              echo  -e "  Creating a folder, '${aProject}/${aStage}'."
-              fi
-#          sayMsg "gitR2[ 771]  git init in ${aProject}/${aStage}" 2
-                cd     "${aProject}/${aStage}" || exit_wCR; aFolder="${aProject}/${aStage}"
+#          if [  !  -d "${aProject}/${aStage}" ]; then                                                      # .(50102.03d.7 Beg)
+#             mkdir -p "${aProject}/${aStage}";
+#             echo  -e "  Creating a folder, '${aProject}/${aStage}'."
+#             fi
+#               cd     "${aProject}/${aStage}" || exit_wCR; aFolder="${aProject}/${aStage}"                 # .(50102.03d.7 End)   
+           sayMsg "gitR2[ 907]  git init in ${aProject}/${aStage}" -1
+
            initGit     "${aProject}/${aStage}"                                                              # .(41103.03.10 RAM in ${aProject}/${aStage})
-           echo -e "\n  Please cd into the folder, '${aFolder}'."
-           exit_wCR
+           bDone="1"                                                                                        # .(50102.03b.9)
+#          echo -e "\n  Please cd into the folder, '${aNewRepoDir}'."                                       ##.(50102.03a.9)
+#          exit_wCR                                                                                         ##.(50102.03a.10)
            fi # eif aProject/aStage
+#         -------------------------------------------------------
 
-        if [ "${aArg2/_/}" == "${aArg2}" ]; then  # _ is not in 1st argument
+        if [ "${aArg2/_/}" == "${aArg2}" ]; then                                        # _ is not in 1st argument, really just a dir
 
-           aProject="${aArg2}"
-#          sayMsg "gitR2[ 781]  git init in ${aProject}" 2
-           if [  !  -d "${aProject}" ]; then
-              mkdir    "${aProject}";
-              echo -e "  Creating a folder, '${aProject}'."
-              fi
-                cd     "${aProject}" || exit_wCR; aFolder="${aProject}"
+           aProject="${aArg2}"; if [ "${aArg2}" == "" ]; then aProject="${aNewRepo}"; fi                    # .(50102.03.23) 
+#          sayMsg "gitR2[ 869]  git init in ${aProject}" 2
+#          if [  !  -d "${aProject}" ]; then                                                                # .(50102.03d.8 Beg)  
+#             mkdir    "${aProject}";
+#             echo -e "  Creating a folder, '${aProject}'."
+#             fi
+#               cd     "${aProject}" || exit_wCR; aFolder="${aProject}"                                     # .(50102.03d.8 End)   
+           sayMsg "gitR2[ 924]  git init in ${aProject}" -1
+
            initGit     "${aProject}"                                                                        # .(41103.03.11 RAM in ${aProject)
-           echo -e "\n  Please cd into the folder, '${aFolder}'."
-           exit_wCR
+           bDone="1"                                                                                        # .(50102.03b.10)
+#          echo -e "\n  Please cd into the folder, '${aNewRepoDir}'."                                       ##.(50102.03a.11)
+#          exit_wCR                                                                                         ##.(50102.03a.12)
            fi # eif aProject only
-        fi # eif # Just a dir                                                                               # .(41109.01.1 End)
+#         -------------------------------------------------------
 
-        echo -e "\n * Didn't know what folder to put .git into"                                             # .(41109.01.2 RAM If all else fails)
-        exit_wCR
+        fi # eif # Just a dir                                                                               # .(41109.01.1 End)
+#       -----------------------------------------------------------
+
+#       if [ "${aNewRepoDir}" != "${PWD##*/}" ]; then                                                       ##.(50102.03a.13)                                               
+        if [ "${bCD}" == "1" ]; then                                                                        # .(50102.03a.18)                                               
+           echo -e "\n  Please enter the new folder with: cd ${aNewRepoDir}"                                # .(50102.03a.14 RAM Was: aFolder)
+           echo -e   "     You can then open VSCode with: code *code*"                                      # .(50102.03a.15) 
+           fi
+           exit_wCR                                                                                         # .(50102.03a.16)
+#          echo -e "\n * Didn't know what folder to put .git into"                                          ##.(50102.03a.14).(41109.01.2 RAM If all else fails)
+#          exit_wCR                                                                                         ##.(50102.03a.16)
      fi # eoc Init                                                                                          # .(41103.03.5 End).(20430.01.3 End)
 #    -- --- ---------------  =  ------------------------------------------------------  #  ---------------- #
 #====== =================================================================================================== #  ===========
@@ -868,8 +1002,10 @@ function getRemoteName() {                                                      
      if [ "${aArg2}"  == "" ]; then aRemoteName="$( git remote | awk '{ print; exit }' )"; fi               # .(41110.02.1 RAM There can be more than one)
 #    if [ "${aArg4}"  == "" ]; then aBranch="$( git branch | awk '/\*/ { print substr($0,3) }' )"; fi       ##.(41104.04.2 RAM Was: /*/).(41104.04.3)
      if [ "${aArg3}"  == "" ]; then getBranch; fi                                                           # .(41104.04.3)
+
      if [ "${aProject}" == "anythingllm"  ]; then aProject="AnythingLLM"; aArg2="https://github.com/Mintplex-Labs/anything-llm.git";        fi   # .(41104.06.2 RAM Provide repo URLs)
      if [ "${aProject}" == "anyllm"       ]; then aProject="AnyLLM";      aArg2="https://github.com/robinmattern/AnyLLM_prod1-master.git";  fi
+     if [ "${aProject}" == "aicoder"      ]; then aProject="AICodeR";     aArg2="https://github.com/robinmattern/AICodeR_prod3-master.git"; fi   # .(50104.01.8 RAM Add AICodeR)
      if [ "${aProject}" == "frtools"      ]; then aProject="FRTools";     aArg2="https://github.com/robinmattern/FRTools_prod2-master.git"; fi
      if [ "${aProject:0:4}" == "iodd"     ]; then aProject="IODDCOM";     aArg2="https://github.com/brucetroutman-gmail/IODDCOM_prod-master.git";# .(41210.01.x)
                       if [ "$bSSH" == "1" ]; then aAcct="brucetroutman-gmail"; aArg2="https://github.com/${aAcct}/${aProject}_${aArg4}.git"; fi; fi   # .(41210.01.x)
@@ -937,7 +1073,6 @@ function getRemoteName() {                                                      
         }  # eof cloneRemote                                                                                                 # .(41104.01.2 End)
 #    -- --- ---------------  =  ------------------------------------------------------  #  ---------------- #
 
-
   if [ "${aCmd}" == "cloneRemote" ] || [ "${aCmd}" == "cloneBranch" ]; then                                 # .(41103.06.10 RAM write cloneRemote or cloneBranch Beg)
 
         sayMsg  "gitR2[ 901]  Git Clone ${aCmd:5}" -1;
@@ -1002,11 +1137,13 @@ function getRemoteName() {                                                      
         forBranch=", from ${aProject}_${aStage}${toStageDir} for branch, ${aBranch}"
 #       aGIT1="git clone -b ${aBranch} --depth 1 \"${aRemoteURL}\" ${aCloneDir}"                            ##.(41104.07.4).(41029.03.1 RAM An even lighter clone with just the latest commit).(41105.01.1)
         aGIT1="git clone --single-branch --branch ${aBranch} \"${aRemoteURL}\" ${aCloneDir}"                # .(41105.01.1)
+#       aGIT0="git clone --single-branch --branch ${aBranch} \"${aRemoteURL}\""                             ##.(50104.02.1)
         aGIT2="git branch -u origin/${aBranch} ${aBranch}"
         sayMsg  "gitR2[ 955]  git clone --single-branch '$aArg3' \$aProject: '${aRemoteURL##*/}', \$aStageDir: '${aStageDir}', \$aBranch: '${aBranch}'" -1
       else
         forBranch=", from ${aProject}_${aStage}${toStageDir}"                                               # .(41104.07.5)
         aGIT1="git clone \"${aRemoteURL}\" ${aCloneDir}"                                                    # .(41104.07.6)
+#       aGIT0="git clone \"${aRemoteURL}\""                                                                 ##.(50104.02.1)
 #       sayMsg  "gitR2[ 942]  git clone " +                       "aProject: '${aRemoteURL##*/}', aStageDir: '${aStageDir}', aBranch: '${aBranch}'" -1
         sayMsg  "gitR2[ 960]  git clone aProject: '${aRemoteURL##*/}', aStageDir: '${aStageDir}', aBranch: '${aBranch}'" -1
         fi
@@ -1024,7 +1161,7 @@ function getRemoteName() {                                                      
         aRepo1=${aStageDir/\/}; if [ "${aStageDir}" == "" ]; then aRepo1="${aProject}_${aStage}"; fi        # .(41111.02b.1 RAM For code-workspace)
         if [ "${aRepo1/_/}" == "${aRepo1}" ]; then aRepo1="${aProject}_${aRepo1}"; fi                       # .(41111.02b.2)
 
-        sayMsg  "gitR2[1004]  aCloneDir : '${aDir}', aBranch: '${aBranch}', aStage: '${aStage}', aRepo1: '${aRepo1}'" -1
+        sayMsg  "gitR2[1004]  aCloneDir:   '${aDir}', aBranch: '${aBranch}', aStage: '${aStage}', aRepo1: '${aRepo1}'" -1
 
      if [ "${bDoit}" != "1" ]; then
 #       echo -e "\n  ${aGIT1}\n  ${aGIT2}"
@@ -1032,9 +1169,18 @@ function getRemoteName() {                                                      
         echo -e   "  ${aGIT1} # Add -d to doit"                                         # .(41029.04.1)
       else
         echo -e "\n  ${aGIT1}"
-        eval        "${aGIT1}" 2>&1 | awk '{ print "  " $0 }'
+#       eval        "${aGIT1}" 2>&1 | awk '{ print "    " $0 }'
+#                   "${aGIT0}" "{aDir}" 2>&1 | awk '{ printf "    %s\n", $0 }' RS='\r?\n'                   ##.(50104.02.1)
+#       eval        "${aGIT1}" 2>&1 | awk '{ printf "    %s\n", $0 }' RS='\r?\n'                            ##.(50104.02.2)
+#       eval        "${aGIT1}" 2>&1 | sed 's/^/    /' | tr '\r' '\n'                                        ##.(50104.02.2)
+#       eval        "${aGIT1}" 2>&1 | sed '/^Updating files:/d; s/^/    /'                                  # .(50104.02.2 RAM Catch carriage returns)
+#       eval        "${aGIT1}" 2>&1 | awk '{ printf "    %s\n", $0 }' | tr '\r' '\n'
+        eval        "${aGIT1}" 2>&1 | tr '\r' '\n' | awk '/0%/ { printf "    %s\n", $0 }'  
 #       eval        "${aGIT2}"
-                Sudo find . -type f -name "*.sh" -exec chmod 755 {} +                                       # .(41119.01.4
+        if [  $? -ne 0           ]; then echo -e "\n* Clone of ${aProject} failed."; exit_wCR; fi           # .(50104.02.3 RAM Fails to catch failure)
+        if [ ! -d "${aDir}/.git" ]; then echo -e "\n* Clone of ${aProject} failed."; exit_wCR; fi           # .(50104.02.4 RAM Fix up gitr clone)
+                                          
+        Sudo find . -type f -name "*.sh" -exec chmod 755 {} +                                               # .(41119.01.4
 
         cd "${aDir}"; aTS="$( date +%y%m%d )"; aTS="${aTS:1}"                                               # .(41119.01.5 RAM Move to here).(41111.02.2 RAM or commit it)
 #    if [ ! -f "${aCloneDir}/*.code-workspace" ]; then                                                      ##.(41110.03.1)
@@ -1045,13 +1191,17 @@ function getRemoteName() {                                                      
         echo "${aWorkspace_code}" >"${aRepo1}.code-workspace"                                               # .(41111.02b.3).(41119.01.7).(41111.02.1 RAM Don't do it for now, cuz GIT detects it).(41110.03.3)
         echo ""                                                                                             # .(41111.02.3)
 
-        git add "${aRepo1}.code-workspace"                        2>&1| awk '{ print "  " $0 }'             # .(41111.02b.4).(41111.02.4)
-        git commit -m ".(${aTS}.01_Add ${aRepo1}.code-workspace)" 2>&1| awk '{ print "  " $0 }'             # .(41111.02b.5).(41111.02.5)
+        git add "${aRepo1}.code-workspace"                        2>&1| awk '{ print "    " $0 }'           # .(41111.02b.4).(41111.02.4)
+        git commit -m ".(${aTS}.01_Add ${aRepo1}.code-workspace)" 2>&1| awk '{ print "    " $0 }'           # .(41111.02b.5).(41111.02.5)
 #       git add "${aProject}_${aStage}.code-workspace"                        2>&1| awk '{ print "  " $0 }' ##.(41119.01.8)
 #       git commit -m ".(${aTS}.01_Add ${aProject}_${aStage}.code-workspace)" 2>&1| awk '{ print "  " $0 }' ##.(41119.01.9)
         fi # // eif add code-workspace                                                                      # .(41110.03.4)
-
+     if [ "${bQuiet}" != "1" ]; then                                                    # .(50104.03.2 RAM Add bQuiet)
         echo -e "\n  Please change into the project folder: ${aDir}"                                        # .(41210.01.x)
+        exit_wCR                                                                        # .(50104.03.3 Beg)
+      else 
+        exit   
+        fi                                                                              # .(50104.03.3 End)                                                                                            # .(50104.03.2)
         fi # // eif bDoit == 1
         exit_wCR
         fi # eoc getRemoteName                                                                              # .(41104.05.5 End).(41103.06.10 End)
@@ -1088,7 +1238,7 @@ function getRemoteName() {                                                      
 #>      GITR2 STATUS                                                                                        # .(41123.02.3)
 #====== =================================================================================================== #
 
-#       sayMsg    "gitR2[1016] Update Command" sp 1;
+#       sayMsg    "gitR2[1016] Status Command" sp 1;
 
   if [ "${aCmd}" == "status" ]; then                                                                        # .(41123.02.4 RAM Add Status Command Beg)
             bFilesInWork="$( git status | awk '/working tree clean/ { b = 1 }; END { print b ? b : 0 }' )"  # .(41123.03.1 RAM Was End)
@@ -1150,7 +1300,7 @@ function getRemoteName() {                                                      
      if [ "${bDoit}" != "1" ]; then
            aNum="$(git status -u --short | wc -l)"; s="s"; if [ "${aNum// /}" == "1" ]; then s=""; fi       # .(41204.01.4)
            echo -e "\n* There are ${aNum// /} working file${s} that will be committed."
-           shoWorkingFiles                                                                                  # .(41204.03.1 Add shoCommitMsg to Add command)
+           shoWorkingFiles                                                                                  # .(41204.03.1 Add shoWorkingFiles to Add command)
            echo -e "\n  ${aGIT1}"
            echo -e   "  ${aGIT2}  # Add -d to doit"
          else
@@ -1274,7 +1424,7 @@ function getRemoteName() {                                                      
 #    -- --- ---------------  =  ------------------------------------------------------  #  ---------------- #
 
 #====== =================================================================================================== #  ===========
-#>      GITR2 SHOW LAST                                                                                     # .(20430.01.3 Beg RAM Added)
+#>      GITR2 LIST COMMITS (aka SHOW LAST)                                                                                     # .(20430.01.3 Beg RAM Added)
 #====== =================================================================================================== #
 
   if [ "${aCmd}" == "shoLast" ]; then
@@ -1287,14 +1437,21 @@ function getRemoteName() {                                                      
 #    git show $(git rev-parse HEAD) | awk '/^commit / { c = substr($0,8,8) }; /^Author:/ { a = substr($0,8) }; /^Date:/ { d = substr($0,7,26) }; NR == 5 { print "\n  " c d a $0 }'
 #    git show $(git rev-parse HEAD) | awk '/^commit / { c = substr($0,8,8) }; /^Author:/ { a = substr($0,8) }; /^Date:/ { d = substr($0,6,27) }; NR == 5 { print "\n  " c $0 d"  "a }'
      echo ""; i=${nBeg}; nEnd=$(( nBeg + nCnt ))                                                            # .(41123.07.7)
-     while [[ $i -lt $nEnd ]]; do                                                                           # .(41123.07.8)
-#      sayMsg  "gitR[959]  i: $i, nEnd: $nEnd; nCnt: '${nCnt}'" 1
-       i=$((i+1)); shoCommitMsg $i                                                                          # .(41030.04.1).(41030.05.3 RAM Use showCommitMsg)
-#      aCommitHash=$(git rev-parse HEAD~$i 2>/dev/null); # echo "  aCommitHash: '${aCommitHash}'"  # Get commit hash at current position
-#      if [ "$?" -ne "0" ]; then echo -e "* $i.  There are no more commits (HEAD~$i)!"; exit_wCR; fi
-#      echo "  $i. $( git show $(git rev-parse HEAD~$i) | awk "${aAWK}" )"  # git show $aCommitHash | awk "${aAWK}"
-#      i=$((i+1));                                                                                          ##.(41030.04.1 RAM Move above)
-       done
+
+     git log --all --format=%H | head -n $nEnd | while read hash; do
+#      git show --format="%h %s" --name-status $hash
+       shoCommitMsg $((i+1)) "${hash:0:8}"
+       i=$((i+1));
+     done
+
+   # while [[ $i -lt $nEnd ]]; do                                                                           # .(41123.07.8)
+#  #   sayMsg  "gitR[959]  i: $i, nEnd: $nEnd; nCnt: '${nCnt}'" 1
+   #   i=$((i+1)); shoCommitMsg $i                                                                          # .(41030.04.1).(41030.05.3 RAM Use showCommitMsg)
+#  #   aCommitHash=$(git rev-parse HEAD~$i 2>/dev/null); # echo "  aCommitHash: '${aCommitHash}'"  # Get commit hash at current position
+#  #   if [ "$?" -ne "0" ]; then echo -e "* $i.  There are no more commits (HEAD~$i)!"; exit_wCR; fi
+#  #   echo "  $i. $( git show $(git rev-parse HEAD~$i) | awk "${aAWK}" )"  # git show $aCommitHash | awk "${aAWK}"
+#  #   i=$((i+1));                                                                                          ##.(41030.04.1 RAM Move above)
+   #   done
      fi
 #====== =================================================================================================== #  ===========
 #>      GITR2 SHOW COMMIT
@@ -1619,8 +1776,8 @@ function getRemoteName() {                                                      
 #    aSSH="github-ram"; aAcct='robinmattern';  aStage="${aArg3}";
      sayMsg  "gitR2[1555]  aArg3: '${aArg3}', aArg4: '${aArg4}', aArg5: '${aArg5}', aArg6: '${aArg6}', aArg7: '${aArg7}', aStage: '${aStage}'"  -1
 
-     if [ "$aArg4" == "ssh" ]; then bSSH="1"; aArg4="${aArg5}"; aArg5="${aArg6}"; aArg6="${aArg7}"; fi
-     if [ "$aArg5" == "ssh" ]; then bSSH="1"; aArg5="${aArg6}"; aArg6="${aArg7}"; fi
+     if [ "$aArg4" == "ssh" ] || [ "$aArg4" == "-ssh" ]; then bSSH="1"; aArg4="${aArg5}"; aArg5="${aArg6}"; aArg6="${aArg7}"; fi   # .(41102.03c.1 RAM Add -ssh)
+     if [ "$aArg5" == "ssh" ] || [ "$aArg5" == "-ssh" ]; then bSSH="1"; aArg5="${aArg6}"; aArg6="${aArg7}"; fi                     # .(41102.03c.2)
      sayMsg  "gitR2[1494]  aArg3: '${aArg3}', aArg4: '${aArg4}', aArg5: '${aArg5}', aArg6: '${aArg6}', bSSH: '${bSSH}', aStage: '${aStage}'"  -1
 
      if [ "${aArg3}" != "" ]; then aRemote_name="$( echo "${aArg3}" | awk '{ print tolower($0) }' )"; fi
@@ -1631,26 +1788,31 @@ function getRemoteName() {                                                      
 
              aRemoteURL=""                                                              # .(41103.04.4 RAM Move it to here)
 
-     if [ "${aRemote_name}" == "" ]; then echo -e "\n* You must provide a remote repo name, origin or help."; exit_wCR; fi  # .(41102.03b.x)
+     if [ "${aRemote_name}" == "" ]; then
+             echo -e "\n* You must provide a remote repo name, origin or help.";        # .(41102.03c.3 RAM Revise help)
+             echo ""; aRemote_name="help"; fi                                           # .(41102.03c.4 Beg)
      if [ "${aRemote_name}" == 'help' ]; then
-             echo -e "\n  The arguments are Account, Project, Stage, or you can use"
+             echo -e "\n  The arguments are RemoteName, Account, Project, Stage, [-ssh]: e.g."
+#            echo      "    gitr {add|set} remote {Name} {account} [-ssh] {Project_stage-author}"
+             echo      "    gitr {add|set} remote {Project_stage-author} {account} [-ssh]"
+             echo -e "\n  or you can use any of the following pre-defined Repositories" # .(41102.03c.4 End)
              echo      "    anything-llm   for   Mintplex-Labs"
              echo      "    anyllm         for   AnyLLM_${aStage}"
              echo      "    altools        for   ALTools_${aStage}"
              echo      "    frtools        for   FRTools_${aStage}"
 #            echo      "    jptools        for   JPTools_${aStage}"
-             echo      "    jptools        for   AIDocs_${aStage}  {aAcct}, or"
+             echo      "    jptools        for   AIDocs_${aStage}"
              echo      "    aidocs         for   AIDocs_${aStage}"                      # .(41102.03b.1)
              echo      "    [origin]   for any  {Project_Stage}"
              exit_wCR
              fi
-     sayMsg  "gitR2[1582]  aRemote_name: '${aRemote_name}', aArg3: '${aArg3}', aArg4: '${aArg4}', aStage: '${aStage}'"  -1
+     sayMsg  "gitR2[1680]  aRemote_name: '${aRemote_name}', aArg3: '${aArg3}', aArg4: '${aArg4}', aStage: '${aStage}'"  -1
 
      if [ "${aRemote_name}" == "origin" ] && [ "${aArg4}" != "" ]; then                 # .(41102.03.2 RAM Create origin project name Beg)
              aRemote_name="${aArg4}"; aArg4="${aArg5}"; # echo "    {aArg4}: '${aArg4}'"
              aRemoteName="origin"
              fi                                                                         # .(41102.03.2 End)
-     sayMsg  "gitR2[1574]  aRemote_name: '${aRemote_name}', aStage: '${aStage}', aStage_: ${aStage_}'"  -1
+     sayMsg  "gitR2[1686]  aRemote_name: '${aRemote_name}', aStage: '${aStage}', aStage_: ${aStage_}'"  -1
      if [ "${aCmd}" == "setRemote" ];then                                               # .(41210.04.1 RAM Check for set Beg)
          if [ "${aRemote_name}" == "origin" ] && [ "${aArg4}" == "" ]; then
              echo -e "\n    You must provide a Remote URL, ";
@@ -1667,7 +1829,7 @@ function getRemoteName() {                                                      
              aRemote_name="${aAnswer}"; aArg3="${aAnswer}"
              aRemoteName="origin"
              fi                                                                         # .(41102.03.1 End)
-     sayMsg  "gitR2[1605]  aRemote_name: '${aRemote_name}', aStage: '${aStage}', aStage_: ${aStage_}'"  -1
+     sayMsg  "gitR2[1703]  aRemote_name: '${aRemote_name}', aStage: '${aStage}', aStage_: ${aStage_}'"  -1
              fi # eif add remote                                                        # .(41210.04.2)
 
      if [ "${aRemote_name}" != "origin" ]; then                                         # .(41102.05.1 RAM Wierd fix, based on position)
@@ -1675,7 +1837,7 @@ function getRemoteName() {                                                      
              fi                                                                         # .(41102.05.3)
 #            aRemoteURL=""                                                              ##.(41103.04.4)
 
-     sayMsg  "gitR2[1613]  aRemote_name: '${aRemote_name}', aStage: '${aStage}', aStage_: ${aStage_}'"  -1
+     sayMsg  "gitR2[1711]  aRemote_name: '${aRemote_name}', aStage: '${aStage}', aStage_: ${aStage_}'"  -1
 #    --------------------------------------------------------------------------------
 
      if [ "${aRemote_name/_/}" != "${aRemote_name}"    ]; then   # for any  {Project_Stage}"                # .(41102.03.5 RAM Write this Beg)
@@ -1690,6 +1852,8 @@ function getRemoteName() {                                                      
           if [ "${aStage/dev}" != "${aStage}" ]; then
              aSSH="git@github-ram"; aAcct2=":${aAcct}"; else aSSH="https://github.com"; aAcct2="/${aAcct}";  #  echo "    {aAcct2}: '${aAcct2}'"
              fi
+     sayMsg  "gitR2[1726]  aRemote_name: '${aRemote_name}', aStage: '${aStage}', aStage_: ${aStage_}', aRemoteURL: '${aRemoteURL}', aSSH: '${aSSH}'"  -1
+
           if [ "${aArg4}" == "" ]; then
              if [ "${aStage/rick/}"  != "${aStage}" ];  then aAcct2="/blueNSX";  aSSH="${aSSH/.ram/.rsh}";  fi
              if [ "${aStage/bruce/}" != "${aStage}" ];  then aAcct2="/8020data"; aSSH="${aSSH/.ram/.btg}";  fi;
@@ -1698,7 +1862,7 @@ function getRemoteName() {                                                      
 
         fi # eif "${aRemote_name/_/}" != "${aRemote_name}"                                                  # .(41102.03.5 End)
 #    --------------------------------------------------------------------------------
-     sayMsg  "gitR2[1636]  aRemote_name: '${aRemote_name}', aStage: '${aStage}', aStage_: ${aStage_}', aRemoteURL: '${aRemoteURL}', bSSH: '${bSSH}'"  -1
+     sayMsg  "gitR2[1736]  aRemote_name: '${aRemote_name}', aStage: '${aStage}', aStage_: ${aStage_}', aRemoteURL: '${aRemoteURL}', bSSH: '${bSSH}'"  -1
 
 #    if [ "${aRemote_name}"     == "anythingllm_master" ]; then aRemote_name="anything-llm"; fi
 #    if [ "${aRemote_name}"     == "anythingllm"        ]; then aRemote_name="anything-llm"; fi
@@ -1773,7 +1937,8 @@ function getRemoteName() {                                                      
              aSSH="git@github-ram"; else aSSH="https://github.com"; fi
              aProject="${aPROJ}"
              aBranch="master"; aStage2="${aStage}"
-             sayMsg  "gitR2[1638]  aStage: '${aStage}', aStage_: ${aStage_}'" -1
+
+             sayMsg  "gitR2[1810]  aStage: '${aStage}', aStage_: ${aStage_}'" -1
 #            aStage="prod1-master"; if [ "${aSSH:0:3}" == "git" ]; then  aStage="${aRemote_name:${w1}}"; fi; aStage_="_${aStage}"
              aStage="${aRemote_name:${w1}}"; if [ "${aStage}" == "" ]; then aStage="${aStage2}"; fi  ; # echo "aStage: '${aStage}', aStage_: '${aStage_}'"
              aStage_="_${aStage}";  if [ "${aStage}" == "" ]; then aStage_=""; fi
@@ -1788,20 +1953,24 @@ function getRemoteName() {                                                      
    function  setRemote() {                                                                                  # .(41102.03.5 RAM Write setRemote Beg)
 #    if "${aArg3}" == "origin", then Dev stages to: git@github.[ram|rsh|btg], else all stages go to https://github.com
 
-             aPROJ=$1; aProj="$( echo "$1" | awk '{ print tolower($0) }' )"; w=${#aProj}; w1=$((w+1)); w2=$((w+4));  # echo "  ${aRemote_name}  w w1 w3: ${w} ${w1} ${w2}"
-     sayMsg  "gitR2[1728]  aPROJ: '${aPROJ}', aProj: '${aProj}', w: '${w}', w1: '${w1}', w2: '${w2}'"  -1
-     sayMsg  "gitR2[1729]  aRemote_name: '${aRemote_name}', aStage: '${aStage}', aStage_: '${aStage_}', aAcct: '${aAcct}', bSSH: '${bSSH}'"  -1
+              aPROJ=$1; aProj="$( echo "$1" | awk '{ print tolower($0) }' )"; w=${#aProj}; w1=$((w+1)); w2=$((w+4));  # echo "  ${aRemote_name}  w w1 w3: ${w} ${w1} ${w2}"
+     sayMsg  "gitR2[1826]  aPROJ: '${aPROJ}', aProj: '${aProj}', w: '${w}', w1: '${w1}', w2: '${w2}'"  -1
+     sayMsg  "gitR2[1827]  aRemote_name: '${aRemote_name}', aStage: '${aStage}', aStage_: '${aStage_}', aAcct: '${aAcct}', bSSH: '${bSSH}'"  -1
 
-     if [ "${bSSH}" == "1"  ]; then aSSH="git@github-ram"                                                   # .(41211.03.1 RAM Set it right Beg)
+        if [ "${aAcct}" == "bluensx" ]; then aAcct="blueNSX"; fi                                            # .(41102.03c.5)
+     if [ "${bSSH}" == "1"  ]; then                      aSSH="git@github-ram"                              # .(41211.03.1 RAM Set it right Beg)
         if [ "${aAcct}" == "blueNSX"             ]; then aSSH="git@github-rjs:"; fi
         if [ "${aAcct}" == "suzeeparker"         ]; then aSSH="git@github-sue:"; fi
         if [ "${aAcct}" == "brucetroutman-gmail" ]; then aSSH="git@github-btg:"; fi
-        aRemoteURL="${aRemoteURL/https:\/\/github.com\//git@${aSSH}:}";
+                                                         aRemoteURL="${aRemoteURL/https:\/\/github.com\//git@${aSSH}:}";
         fi
-     if [ "${aAcct}" == "blueNSX"             ]; then  aRemoteURL="${aSSH}${aAcct}/${aProject}_${aStage}.git"; fi
-     if [ "${aAcct}" == "burcetroutman-email" ]; then  aRemoteURL="${aSSH}${aAcct}/${aProject}_${aStage}.git"; fi
-     if [ "${aAcct}" == "suzeeparker"         ]; then  aRemoteURL="${aSSH}${aAcct}/${aProject}_${aStage}.git"; fi
+     sayMsg  "gitR2[1835]  aRemoteURL: '${aRemoteURL}', aSSH: '${aSSH}', aAcct: '${aAcct}', bSSH: '${bSSH}'"  -1
+
+        if [ "${aAcct}" == "blueNSX"             ]; then aRemoteURL="${aSSH}${aAcct}/${aProject}_${aStage}.git"; fi
+        if [ "${aAcct}" == "burcetroutman-email" ]; then aRemoteURL="${aSSH}${aAcct}/${aProject}_${aStage}.git"; fi
+        if [ "${aAcct}" == "suzeeparker"         ]; then aRemoteURL="${aSSH}${aAcct}/${aProject}_${aStage}.git"; fi
                                                                                                             # .(41211.03.1 End)
+     sayMsg  "gitR2[1841]  aRemoteURL: '${aRemoteURL}', aSSH: '${aSSH}', aAcct: '${aAcct}', bSSH: '${bSSH}'"  -1
 
      if [ "${aRemote_name:0:${w}}"  == "${aProj}"       ]; then                         # .(41029.06.1 RAM Add alias: frtools Beg)
 #    if [ "${aRemote_name}"         == "${aProj}_dev01" ]; then aRemote_name="${aProj}_dev01-robin"; fi
@@ -1819,8 +1988,8 @@ function getRemoteName() {                                                      
              if [ "${aRemoteName}"  != "origin"         ]; then aRemoteName="${aProject}${aStage_/-*/}"; fi
              aRemoteURL="${aSSH}${aAcct}/${aProject}${aStage_}.git"
         fi
-     sayMsg  "gitR2[1758]  aRemote_name: '${aRemote_name}', aStage: '${aStage}', aStage_: ${aStage_}', aRemoteURL: '${aRemoteURL}', bSSH: '${bSSH}'"  -1
-
+#    sayMsg  "gitR2[1859]  aRemote_name: '${aRemote_name}', aStage: '${aStage}', aStage_: ${aStage_}', aRemoteURL: '${aRemoteURL}', bSSH: '${bSSH}'"  -1
+     sayMsg  "gitR2[1860]  aRemoteURL: '${aRemoteURL}', aSSH: '${aSSH}', aAcct: '${aAcct}', bSSH: '${bSSH}'"  -1
      }                                                                                                      # .(41102.03.5 End)
 #    --------------------------------------------------------------------------------
 
@@ -1832,7 +2001,7 @@ function getRemoteName() {                                                      
          fi                                                                                                 # .(41102.03.8 End)
 
 #    sayMsg  "help"
-     sayMsg  "gitR2[1753]  aRemoteURL:   '${aRemoteURL}'"  -1      # Provided via aliases: frtools, altools* or anyllm*
+     sayMsg  "gitR2[1872]  aRemoteURL: '${aRemoteURL}'"  -1      # Provided via aliases: frtools, altools* or anyllm*
 
 #    --------------------------------------------------------------------------------
 
@@ -1875,14 +2044,14 @@ function getRemoteName() {                                                      
 #       ---------------------------------------------------
              aRemoteName="${aArg3}"
 
-     sayMsg  "gitR2[1796]  aRemoteName: ${aRemoteName}, aRemoteURL: ${aRemoteURL}" -1
+     sayMsg  "gitR2[1915]  aRemoteName: ${aRemoteName}, aRemoteURL: ${aRemoteURL}" -1
      fi # eif no ${aRemoteURL}
 #    fi # eif                                                                           # .(41103.04.7 RAM Removed)
 #    -------------------------------------------------------------
 
-#    sayMsg  "gitR2[1728]  aProject: '${aProject}';  aStage: '${aStage}',  aBranch: '${aBranch}',  aRemoteName: ${aRemoteName/origin/origin      }, aRemoteURL: ${aRemoteURL}"  -1
-     sayMsg  "gitR2[1729]  '${aBranch}'  ${aRemoteName/origin/origin      }  '${aProject}_${aStage}'  '${aRemoteURL}'"  -1
-#    sayMsg  "gitR2[1730]  aRemoteURL:  '${aRemoteURL}'"  -1; exit # Say it
+#    sayMsg  "gitR2[1920]  aProject: '${aProject}';  aStage: '${aStage}',  aBranch: '${aBranch}',  aRemoteName: ${aRemoteName/origin/origin      }, aRemoteURL: ${aRemoteURL}"  -1
+     sayMsg  "gitR2[1921]  '${aBranch}'  ${aRemoteName/origin/origin      }  '${aProject}_${aStage}'  '${aRemoteURL}'"  -1
+#    sayMsg  "gitR2[1922]  aRemoteURL:  '${aRemoteURL}'"  -1; exit # Say it
 
      if [ "${aRemoteName}"   == "" ]; then
         echo -e "\n* You must provide a remote repo name, i.e. origin or reponame:";
