@@ -3,7 +3,7 @@
 #    aVer=".(41208.05_Latest set-repos and set-repos-dir.sh"
 
      aCR=""; if [ "${OS:0:7}" != "Windows" ]; then aCR="\n"; fi                         # .(41120.01.6) 
-     bTest=1                                                                            # .(50102.05.1 RAM Test locally)               
+     bTest=0                                                                           # .(50102.05.1 RAM Test locally)               
 
      aRepos="$( pwd | awk '{ print tolower($0) }' )";
   if [ "${aRepos/repos}" == "${aRepos}" ]; then
@@ -44,7 +44,7 @@
      exit; 
      fi; fi                                                                             # .(50102.05.5)
      echo -e "\n  Unzipping, set-repos-dir.zip, with ${aZIP_Exe} --"
-     ${aZIP_Exe} x -y set-repos-dir.zip 2>&1 | awk '{ print "    " $0 }'                # .(50102.04.7 RAM Was 7zip) 
+     ${aZIP_Exe} x -y set-repos-dir.zip 2>&1 | awk '/Extract|Files|Folders/ { print "    " $0 }'  # .(50102.06.1 RAM awk 7zip output).(50102.04.7 RAM Was 7zip) 
 
      if [ ! -f "re-install.sh" ]; then 
      echo -e "\n* Failed to unzip, set-repos-dir.zip.${aCR}"
