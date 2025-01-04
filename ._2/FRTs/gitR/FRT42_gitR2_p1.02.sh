@@ -160,6 +160,7 @@
 #.(41226.05  12/26/24 RAM  5:30p| Rework gitr update messages
 #.(41226.05b 12/26/24 RAM  5:40p| Don't show aStashmsg if MT (b)
 #.(41124.06d 12/31/24 RAM  7:45p| Do shoWorkingFiles the same for unix (d)
+#.(41102.03c  1/01/25 RAM  4:15p| Revise add remote help
 
 ##PRGM     +====================+===============================================+
 ##ID 69.600. Main0              |
