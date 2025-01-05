@@ -32,7 +32,8 @@
 ##FD   FRT42_GitR2.sh           | 152353| 12/26/24 17:40|  2064| p1.02`.41226.1740
 ##FD   FRT42_GitR2.sh           | 153647| 12/31/24 19:45|  2075| p1.02`.41231.1945
 ##FD   FRT42_GitR2.sh           | 155440|  1/01/25 16:15|  2097| p1.02`.50101.1615
-##FD   FRT42_GitR2.sh           | 172633|  1/04/25  1:45|  2246| p1.02`.50104.1345
+##FD   FRT42_GitR2.sh           | 172633|  1/04/25 13:45|  2246| p1.02`.50104.1345
+##FD   FRT42_GitR2.sh           | 173633|  1/05/25 18:45|  2257| p1.02`.50105.1845
 #
 ##DESC     .--------------------+-------+---------------+------+-----------------+
 #            This script has usefull GIT functions.
@@ -173,6 +174,8 @@
 #.(50104.01   1/04/25 RAM 12:30p| Add install AICodeR
 #.(50104.02   1/04/25 RAM  1:30p| Improve git clone output
 #.(50104.03   1/04/25 RAM  1:45p| Add bQuiet to gitr clone & install-aidocs.sh
+#.(41118.02b  1/04/25 RAM  6:30p| Fix reversal of aArg4-aArg5 as stage-author
+#.(50104.01b  1/04/25 RAM  6:45p| Enable clone of remote repo stage for aicoder
 
 ##PRGM     +====================+===============================================+
 ##ID 69.600. Main0              |
@@ -180,7 +183,7 @@
 #*/
 #========================================================================================================== #  ===============================  #
 
-        aVDt="Jan 4, 2025 12:30p"; aVer="p1.02"; aVTitle="Useful gitR2 Tools by formR";                                    # .(41103.02.2 RAM Was: gitR1)
+        aVDt="Jan 5, 2025 6:45p"; aVer="p1.02"; aVTitle="Useful gitR2 Tools by formR";                                    # .(41103.02.2 RAM Was: gitR1)
         aVer="$( echo "$0" | awk '{ match( $0, /_[dpstuv][0-9]+\.[0-9]+/ ); print substr( $0, RSTART+1, RLENGTH-1) }' )"  # .(21031.01.1 RAM Add [d...).(20416.03.8 "_p2.02", or _d1.09)
 
         LIB="gitR2"; LIB_LOG=${LIB}_LOG; LIB_USER=${LIB}_USER; Lib=${LIB}; aDir=$(dirname "${BASH_SOURCE}");              # .(41103.02.3).(41102.01.1 RAM Add JPT12_Main2Fns_p1.07.sh Beg).(80923.01.1)
@@ -377,7 +380,7 @@ while [[ $# -gt 0 ]]; do  # Loop through all arguments
 # if [ "${bDebug}" == "1" ]; then
 #   echo -e "\n  aCmd: ${aCmd}, bDoit: ${bDoit}, bDebug: ${bDebug}, 1)$1, 2)$2, 3)$3, 4)$4, 5)$5, 6)$6."; # exit_wCR
 #   echo -e "\n  aCmd: ${aCmd}, bDoit: ${bDoit}, bDebug: ${bDebug}; 1)${aArg1}, 2)${aArg2}, 3)${aArg3}, 4)${aArg4}, 5)${aArg5}, 6)${aArg6}."; # exit_wCR
-    sayMsg  "gitR2[ 330]  aCmd: ${aCmd}, aArg1: '$aArg1', aArg2: '$aArg2', aArg3: '$aArg4', aArg4: '$aArg4', bDoit: '$bDoit', bForce: '$bForce'" -1
+    sayMsg  "gitR2[ 330]  aCmd: ${aCmd}, aArg1: '$aArg1', aArg2: '$aArg2', aArg3: '$aArg3', aArg4: '$aArg4', bDoit: '$bDoit', bForce: '$bForce'" -1
 #    fi
 # ---------------------------------------------------------------------------
 
@@ -945,7 +948,7 @@ yarn.lock
 #             echo  -e "  Creating a folder, '${aProject}/${aStage}'."
 #             fi
 #               cd     "${aProject}/${aStage}" || exit_wCR; aFolder="${aProject}/${aStage}"                 # .(50102.03d.7 End)
-           sayMsg "gitR2[ 907]  git init in ${aProject}/${aStage}" -1
+           sayMsg "gitR2[ 948]  git init in ${aProject}/${aStage}" -1
 
            initGit     "${aProject}/${aStage}"                                                              # .(41103.03.10 RAM in ${aProject}/${aStage})
            bDone="1"                                                                                        # .(50102.03b.9)
@@ -1003,7 +1006,7 @@ function getProjectStage_fromURL() {                                            
 #        aArg2="git@github-ram:robinmattern/FRTools_prod2-master.git"
 
 function getRemoteName() {                                                                                  # .(41104.01.2 RAM Write getRemoteName Beg)
-     sayMsg  "gitR2[ 822]  aProject: '${aProject}', aStage: '${aStage}', aArg2: '${aArg2}', aArg3: '${aArg3}', aArg4: '${aArg4}', aSSH: '${bSSH}" -1
+     sayMsg  "gitR2[1006]  aProject: '${aProject}', aStage: '${aStage}', aArg2: '${aArg2}', aArg3: '${aArg3}', aArg4: '${aArg4}', aSSH: '${bSSH}" -1
 
 #       getRepoDir                                                                                          # .(41104.05.4)
 
@@ -1016,31 +1019,37 @@ function getRemoteName() {                                                      
 #    if [ "${aArg4}"  == "" ]; then aBranch="$( git branch | awk '/\*/ { print substr($0,3) }' )"; fi       ##.(41104.04.2 RAM Was: /*/).(41104.04.3)
      if [ "${aArg3}"  == "" ]; then getBranch; fi                                                           # .(41104.04.3)
 
-     if [ "${aProject}" == "anythingllm"  ]; then aProject="AnythingLLM"; aArg2="https://github.com/Mintplex-Labs/anything-llm.git";        fi   # .(41104.06.2 RAM Provide repo URLs)
-     if [ "${aProject}" == "anyllm"       ]; then aProject="AnyLLM";      aArg2="https://github.com/robinmattern/AnyLLM_prod1-master.git";  fi
-     if [ "${aProject}" == "aicoder"      ]; then aProject="AICodeR";     aArg2="https://github.com/robinmattern/AICodeR_prod3-master.git"; fi   # .(50104.01.8 RAM Add AICodeR)
-     if [ "${aProject}" == "frtools"      ]; then aProject="FRTools";     aArg2="https://github.com/robinmattern/FRTools_prod2-master.git"; fi
-     if [ "${aProject:0:4}" == "iodd"     ]; then aProject="IODDCOM";     aArg2="https://github.com/brucetroutman-gmail/IODDCOM_prod-master.git";# .(41210.01.x)
-                      if [ "$bSSH" == "1" ]; then aAcct="brucetroutman-gmail"; aArg2="https://github.com/${aAcct}/${aProject}_${aArg4}.git"; fi; fi   # .(41210.01.x)
-     if [ "${aProject}" == "aidocs"       ]; then aProject="AIDocs";      aArg2="https://github.com/robinmattern/AIDocs_demo1-master.git";       # .(41210.01.x).(41118.01.1 RAM Was: AIDocs_prod1-master)
-                      if [ "$bSSH" == "1" ]; then                         aArg2="https://github.com/${aAcct}/${aProject}_${aArg4}.git"; fi; fi   # .(41210.01.x RAM Change aProject))
+           aProject="$( echo "${aProject}" | awk '{ print tolower($0) }' )"                                 # .(50104.01b.1 RAM Gotta start out lowercase)
+     if [ "${aProject}" == "anythingllm"  ]; then aProject="AnythingLLM"; aArg2="https://github.com/Mintplex-Labs/anything-llm.git";         fi     # .(41104.06.2 RAM Provide repo URLs)
+     if [ "${aProject}" == "anyllm"       ]; then aProject="AnyLLM";      aArg2="https://github.com/robinmattern/AnyLLM_prod1-master.git";   fi
+
+     if [ "${aProject}" == "aicoder"      ]; then aProject="AICodeR";     aArg2="https://github.com/robinmattern/AICodeR_prod3-master.git";  fi     # .(50104.01.8 RAM Add AICodeR)
+     if [ "${aProject}" == "AICodeR"      ]; then aProject="AICodeR";  if [ "${aStage/\//}" == "dev06" ]; then aArg2="git@github-ram:robinmattern/AICodeR_dev06-robin.git";  fi; fi  # .(50104.01b.2 RAM Add AICodeR)
+
+     if [ "${aProject}" == "frtools"      ]; then aProject="FRTools";     aArg2="https://github.com/robinmattern/FRTools_prod2-master.git";  fi
+
+     if [ "${aProject:0:4}" == "iodd"     ]; then aProject="IODDCOM";     aArg2="https://github.com/brucetroutman-gmail/IODDCOM_prod-master.git";   # .(41210.01.x)
+                 if [ "$bSSH" == "1" ]; then aAcct="brucetroutman-gmail";     aArg2="git@github-btg:${aAcct}/${aProject}_${aArg4}.git";  fi; fi     # .(41210.01.x)
+
+     if [ "${aProject}" == "aidocs"       ]; then aProject="AIDocs";      aArg2="https://github.com/robinmattern/AIDocs_demo1-master.git";          # .(41210.01.x).(41118.01.1 RAM Was: AIDocs_prod1-master)
+                 if [ "$bSSH" == "1" ]; then                                  aArg2="git@github-ram:${aAcct}/${aProject}_${aArg4}.git";  fi; fi     # .(41210.01.x RAM Change aProject))
 #    if [ "${aStage}" == ""               ]; then echo "* No stage given"; exit_wCR; fi                     ##.(41104.06.3)
 
-     sayMsg  "gitR2[ 841]  aProject: '${aProject}', aStage: '${aStage}', aBranch: '${aBranch}', aArg2: '${aArg2}', aArg3: '${aArg3}', aArg4: '${aArg4}', aArg5: '${aArg5}'" -1
+     sayMsg  "gitR2[1030]  aProject: '${aProject}', aStage: '${aStage}', aBranch: '${aBranch}', aArg2: '${aArg2}', aArg3: '${aArg3}', aArg4: '${aArg4}', aArg5: '${aArg5}'" 1
 
      if [ "${aRemoteName}" == ""                    ]; then aRemoteName="$( echo "${aProject}" | awk '{ print tolower($0) }' )";
-     sayMsg  "gitR2[ 844]  aRemoteName: '${aRemoteName}', aStage: '${aStage}', aBranch: '${aBranch}', aArg2: '${aArg2}', aArg3: '${aArg3}', aArg4: '${aArg4}', aArg5: '${aArg5}'" -1
+     sayMsg  "gitR2[1033]  aRemoteName: '${aRemoteName}', aStage: '${aStage}', aBranch: '${aBranch}', aArg2: '${aArg2}', aArg3: '${aArg3}', aArg4: '${aArg4}', aArg5: '${aArg5}'" -1
      if [ "${aProject}"    != "origin"              ]; then aRemoteName="$( echo "${aProject}_${aStage/-*/}" | awk '{ print tolower($0) }' )"; fi; fi
 
      if [ "${aRemoteName}" == "anything-llm"        ]; then aRemoteName="anythingllm"; fi                   # .(41104.06.4)
      if [ "${aRemoteName}" == "anyllm_prod1"        ]; then aRemoteName="anythingllm"; fi
      if [ "${aRemoteName}" == "anythingllm"         ]; then aStage="prod1-master"; aStageDir=""; fi         # .(41107.02.3 RAM Was: aStageDir=${aStage).(41104.06.5 RAM Just for AnythingLLM)
 #    if [ "${aRemoteName:0:4}" == "iodd"            ]; then aStage="prod-master"; aStageDir=""; fi          # .(41210.01.x RAM Add iodd)
-     sayMsg  "gitR2[ 852]  aRemoteName: '${aRemoteName}', aStage: '${aStage}', aBranch: '${aBranch}', aArg2: '${aArg2}', aArg3: '${aArg3}', aArg4: '${aArg4}', aArg5: '${aArg5}', aArg6: '${aArg6}'" -1
+     sayMsg  "gitR2[1040]  aRemoteName: '${aRemoteName}', aStage: '${aStage}', aBranch: '${aBranch}', aArg2: '${aArg2}', aArg3: '${aArg3}', aArg4: '${aArg4}', aArg5: '${aArg5}', aArg6: '${aArg6}'" -1
 
      if [ "${aRemoteName/dev/}" != "${aRemoteName}" ]; then aRemoteName="origin"; fi
 
-     sayMsg  "gitR2[ 854]  aRemoteName: '${aRemoteName}', aStage: '${aStage}', aBranch: '${aBranch}', aArg2: '${aArg2}', aArg3: '${aArg3}', aArg5: '${aArg4}', '$1'" -1
+     sayMsg  "gitR2[1044]  aRemoteName: '${aRemoteName}', aStage: '${aStage}', aBranch: '${aBranch}', aArg2: '${aArg2}', aArg3: '${aArg3}', aArg5: '${aArg4}', '$1'" -1
 
      if [ "$1" == "forClone" ]; then # --------------------------------------------------------------------
 
@@ -1051,7 +1060,7 @@ function getRemoteName() {                                                      
      if [ "${aArg4}" != ""   ]; then            aStageDir="${aArg4}"; else aStageDir=""; fi                 # .(41107.02.4 RAM Don't set default).(41104.07.1 RAM Set aStageDir)
      if [ "${aArg5}" != ""   ]; then            aStageDir="${aArg5}"; fi                                    # .(41210.01.x)
 
-     sayMsg  "gitR2[ 863]  aRemoteName: '${aRemoteName}', aStage: '${aStage}', aBranch: '${aBranch}', aStageDir: '${aStageDir}' aAccount: '${aAcct}" -1
+     sayMsg  "gitR2[1055]  aRemoteName: '${aRemoteName}', aStage: '${aStage}', aBranch: '${aBranch}', aStageDir: '${aStageDir}' aAccount: '${aAcct}" -1
 
                                            else aRemoteURL="https://github.com/robinmattern/${aProject}_${aStage}.git"; fi
        else # not for clone -------------------------------------------------------------------------------
@@ -1088,7 +1097,7 @@ function getRemoteName() {                                                      
 
   if [ "${aCmd}" == "cloneRemote" ] || [ "${aCmd}" == "cloneBranch" ]; then                                 # .(41103.06.10 RAM write cloneRemote or cloneBranch Beg)
 
-        sayMsg  "gitR2[ 901]  Git Clone ${aCmd:5}" -1;
+        sayMsg  "gitR2[1092]  Git Clone ${aCmd:5}" -1;
         if [ "${aCmd:5}" == "Branch" ]; then                                                                # .(41201.03.1 RAM Start dealing with clone branch Beg)
            aArg1="${aArg2}"; aArg2="${aArg3}";  aArg3="${aArg4}"; aArg4="${aArg5}"; aArg5="${aArg6}"; aArg6=""
            fi
@@ -1097,15 +1106,17 @@ function getRemoteName() {                                                      
         if [ "${aArg4}" == 'ssh' ]; then bSSH="1"; aArg4=""; fi                                             # .(41210.01.2)
         if [ "${aArg5}" == 'ssh' ]; then bSSH="1"; aArg5="${aArg6}"; fi                                     # .(41210.01.2)
 
-        sayMsg  "gitR2[ 907]  \$aArg2:      '$aArg2',  \$aArg3: '$aArg3',    \$aArg4: '$aArg4',  \$aArg5: '$aArg5',  \$aArg6: '$aArg6',  \$aArg7: '$aArg7'" -1
+        sayMsg  "gitR2[1101]  \$aArg2:      '$aArg2',  \$aArg3: '$aArg3',    \$aArg4: '$aArg4',  \$aArg5: '$aArg5',  \$aArg6: '$aArg6',  \$aArg7: '$aArg7'" -1
         if [ "${aArg3}"    == "no-stage" ]; then bNoStage=1; aArg3=""; aArg5="no-stage"; fi                 # .(41201.03.2)
-        if [ "${aArg2/_/}" != "${aArg2}" ]; then
-             if [  "${aArg5}" != "" ]; then aArg6="${aArg5}"; fi; aArg5="${aArg4}";                         # .(41118.02.3)
-             aArg4="${aArg2/*_/}"; aArg2="${aArg2/_*/}"
-#          else aArg4="${aArg3}";                                                                           # .(41118.02.4)
-           else aArg3="${aArg4}"; aArg4="${aArg5}";                                                                           # .(41118.02.4)
+
+        if [ "${aArg2/_/}" != "${aArg2}" ]; then                                                            #
+             if [  "${aArg5}" != "" ]; then aArg6="${aArg5}"; fi; aArg5="${aArg4}";                         # .(41118.02b.1 RAM Explain this!).(41118.02.3)
+             aArg4="${aArg2/*_/}"; aArg2="${aArg2/_*/}"                                                     # .(41118.02b.2 RAM     and this?)
+#          else aArg4="${aArg3}";                                                                           ##.(41118.02.4)
+#          else aArg3="${aArg4}"; aArg4="${aArg5}";                                                         ##.(41118.02.4).(41118.02b.3 RAM This is not right)
+           else aArg5="${aArg4}"; aArg4="${aArg3}";                                                         # .(41118.02b.3 RAM aArg4-aArg5 is the stage-author).(41118.02.4)
            fi
-        sayMsg  "gitR2[ 917]  \$aArg2:      '$aArg2',  \$aArg3: '$aArg3',    \$aArg4: '$aArg4',  \$aArg5: '$aArg5',  \$aArg6: '$aArg6', bSSH: '${bSSH}' " -1
+        sayMsg  "gitR2[1110]  \$aArg2:      '$aArg2',  \$aArg3: '$aArg3',    \$aArg4: '$aArg4',  \$aArg5: '$aArg5',  \$aArg6: '$aArg6', bSSH: '${bSSH}' " -1
 
         if [ "${aArg2}" == "" ]  || [ "${aArg2}" == "help" ]; then                                                                       # .(41110.02.2 RAM Was aArg3).(41107.02.5 Provide help beg)
 #            aStage="$(   echo "${aStgDir}" | awk '{ sub( "^[_/]+", "" ); print }' )"
