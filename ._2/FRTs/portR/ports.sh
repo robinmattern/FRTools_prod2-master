@@ -30,7 +30,7 @@ if [ "${aShow}" == "ps" ]; then
 #  -------------------------------------------------------------------------
 
     declare -a mPIDs
-echo "hello"
+ 
     if [ "${OS:0:7}" == "Windows" ]; then
     netstat -ano    2>&1 | awk '/node_*/ { printf "  %8d %-20s %-20s\n", $5, $2, "" }' | sort -u  >@tmp
       else
