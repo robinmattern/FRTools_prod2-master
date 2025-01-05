@@ -1,6 +1,7 @@
 #!/bin/bash
 
 #  --------------------------------------------------------------
+   aInstall="re-install"; if [ "$1" == "install" ]; then aInstall="$1"; shift; fi                           # .(50105.04.6 RAM Add Install command for help)
 
 function deleteDir() {
    aRepoDir=$1; # echo -e "\n  Deleting ${aRepoDir}"; return
@@ -36,20 +37,27 @@ function reinstall() {
    aRepo="$( echo "${aRepo}" | awk '{ print tolower($0) }' )"
 
 #  echo "  ./install-${aRepo}.sh ${aRepoDir}"
-           ./install-${aRepo}.sh ${aRepoDir}
+           ./install-${aRepo}.sh ${aRepoDir} "$2" "$3"                                                      # .(50105.04.7)                                                                          
    }
 #  --------------------------------------------------------------
 
 if [ "$1" == "" ]; then
-   echo -e "\n  You can do: ./re-install.sh FRTools, AnyLLM or AIDocs"
-   echo -e   "          or: ./re-install.sh all"
-   echo -e "\n  Other possible forms to install into different project folders:"
-   echo -e   "              ./re-install.sh frtools                           ->  FRTools"
-   echo -e   "              ./re-install.sh aicoder                           ->  AICodeR"                  # .(50104.01.15)
-   echo -e   "              ./re-install.sh aidocs                            ->  AIDocs_demo1-master"
-   echo -e   "              ./re-install.sh aidocs dev01-rick                 ->  AIDocs_dev01-rick"
-   echo -e   "              ./re-install.sh aidocs /aidocs/aidocs_dev03-robin ->  AIDocs_/AIDocs_dev03-robin"
-   echo ""; exit
+   echo -e "\n  You can do: bash ${aInstall} FRTools, AICoder, AnyLLM or AIDocs"                            # .(50105.04.8 RAM Add dynamic ${aInstall} Beg)
+   echo -e   "          or: bash ${aInstall} all"
+   echo -e "\n  Other possible ways to install formR projects into their own repository folders:"
+   echo -e   "              bash ${aInstall} frtools                     ->  FRTools"
+   echo -e   "              bash ${aInstall} aicoder                     ->  AICodeR"                       # .(50104.01.15)
+   echo -e   "              bash ${aInstall} anyllm                      ->  AnyLLM"                        # .(50105.04.10)
+   echo -e   "              bash ${aInstall} aidocs                      ->  AIDocs_demo1-master"
+   echo -e   "              bash ${aInstall} aidocs dev01-rick           ->  AIDocs_dev01-rick"
+   echo -e   "              bash ${aInstall} aidocs aidocs_/dev03-robin  ->  AIDocs_/dev03-robin"           # .(50105.04.8 End)
+   echo -e "\n* Note: You must install FRTools before any other projects.  After that,"                     # .(50105.04.9 RAM Add more options Beg)
+   echo -e   "        you can clone or create your own projects folder with:"                                    
+   echo -e "\n              frt clone {GitHub-Account} {Repo-Name}   -> {Repo-Name}" 
+   echo -e   "              frt gitr init AI-Tests_/dev03-robin      ->  AI-Tests_/dev03-robin"         
+   echo -e   "      or just     gitr init AI-Tests                   ->  AI-Tests"                          # .(50105.04.9 End)
+
+   if [ "${OS:0:7}" != "Windows" ]; then echo ""; fi; exit
    fi
 #  --------------------------------------------------------------
 

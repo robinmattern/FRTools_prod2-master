@@ -21,7 +21,4 @@ After that you can run any of these install commands:
   - <code>bash install aicoder</code>
   - <code>bash install anyllm</code>
   - <code>bash install aidocs</code>
-
-
-
-
+  

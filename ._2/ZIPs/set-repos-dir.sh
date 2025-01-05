@@ -54,10 +54,13 @@
      exit
      fi
      if [ "${OS:0:7}" != "Windows" ]; then echo ""; sudo chmod 755 *.sh; fi             # .(50101.04.1 RAM Opps Windows check)
-     if 
+    
      mv re-install.sh re-install
+     mv install.sh re-install                                                           # .(50105.04.3 RAM For the new `install` script)
 
-     echo -e "\n  The FormR install scripts have been downloaded into your Repos folder."
+     echo -e "  The FormR install scripts have been downloaded into your Repos folder."
+     echo -e "  You can now run these install scripts -- "                              # .(50105.04.4 RAM Add install help)
+     bash install                                                                       # .(50105.04.5)
 
      if [ "${bTest}" == "0" ]; then rm set-repos-dir.zip; fi                            # .(50102.05.6 RAM If not testing locally).(41226.04.1 RAM Erase it)
      if [ "${aCR}" != "" ]; then echo ""; fi

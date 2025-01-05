@@ -4,10 +4,10 @@
 #  frt install AIDocs_/demo1-master -d; aRepo="AIDocs_/demo1-master"
 #  frt install AIDocs               -d; aRepo="AIDocs"
 
-   aRepo="$1"; if [ "$1" == "" ]; then  aRepo="AIDocs"; fi
+   aRepo="$1"; if [ "$1" == "" ]; then aRepo="AIDocs"; fi
 #  ----------------------------------------------------------------------------
 
-   frt install ${aRepo} $2 -dq;                                                         # .(50104.03.4 RAM Add -q)
+   frt install ${aRepo} $2 $3 -dq;                                                      # .(50104.03.4 RAM Add -q)
 
    echo -e "\n  cd ${aRepo}/client1"                                                    # .(50104.03.5)
    cd ${aRepo}/client1
