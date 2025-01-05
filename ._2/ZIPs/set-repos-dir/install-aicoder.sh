@@ -2,6 +2,7 @@
 
    aRepo="$1"; if [ "$1" == "" ]; then  aRepo="AICodeR"; fi                             # .(50104.01.9 RAM Add AICodeR)
 #  ----------------------------------------------------------------------------
+   export aQuiet=q                                                                      # .(50105.05b.6 RAM Add aQuiet)
 
    frt install ${aRepo} $2 -dq;                                                         
 

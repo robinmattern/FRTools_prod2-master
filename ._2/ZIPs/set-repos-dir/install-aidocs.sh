@@ -4,16 +4,18 @@
 #  frt install AIDocs_/demo1-master -d; aRepo="AIDocs_/demo1-master"
 #  frt install AIDocs               -d; aRepo="AIDocs"
 
-   aRepo="$1"; if [ "$1" == "" ]; then aRepo="AIDocs"; fi
+   aRepo="$1"; if [ "$1" == "" ]; then aRepo="AIDocs_demo1-master"; fi
 #  ----------------------------------------------------------------------------
+   export aQuiet=q                                                                      # .(50105.05b.7 RAM Add aQuiet)
 
-   frt install ${aRepo} $2 $3 -dq;                                                      # .(50104.03.4 RAM Add -q)
+   echo "  frt install ${aRepo} '$2' '$3' -d;"
+           frt install ${aRepo}  $2   $3  -d;                                           # .(50105.05b.8 RAM Remove -q)
 
-   echo -e "\n  cd ${aRepo}/client1"                                                    # .(50104.03.5)
-   cd ${aRepo}/client1
+   echo -e "\n  cd ${aRepo}/client1"; # exit                                             
+                cd ${aRepo}/client1
 
-   echo "  npm install"                                                                 # .(50104.03.6)
-   npm install | awk '{ print "    " $0 }'                                              # .(50104.03.7)
+#  echo "  npm install"                                                                 
+           npm install | awk '{ print "    " $0 }'                                       
 
    cp -p ./c16_aidocs-review-app/utils/FRTs/_env_local-local.txt ./c16_aidocs-review-app/utils/FRTs/_env
 
@@ -22,6 +24,6 @@
    echo -e "      cd ${aRepo}"
    echo -e "      nano client1/c16_aidocs-review-app/utils/FRTs/_env"
    echo -e "     ./run-client.sh\n"
-   echo -e "  or  code *code* for VSCode"   
+   echo -e "  or  code *code* for VSCode"
 
-   if [ "${OS:0:7}"     != "Windows" ]; then echo ""; fi 
+   if [ "${OS:0:7}"     != "Windows" ]; then echo ""; fi

@@ -43,12 +43,13 @@
 ##FD   FRT10_Main0.sh           |  70250| 12/05/24  9:40|   957| p1.09`41205.0940
 ##FD   FRT10_Main0.sh           |  70443| 12/09/24  7:30|   959| p1.09`41209.0730
 ##FD   FRT10_Main0.sh           |  72736| 12/16/24 10:20|   996| p1.09`41216.1020
-##FD   FRT10_Main0.sh           |  74458| 12/18/24 09:25|  1025| p1.09`41218.0925
+##FD   FRT10_Main0.sh           |  74458| 12/18/24  9:25|  1025| p1.09`41218.0925
 ##FD   FRT10_Main0.sh           |  75102| 12/25/24 17:33|  1032| p1.09`41225.1733
 ##FD   FRT10_Main0.sh           |  77263| 12/25/24 23:58|  1062| p1.09`41225.2358
 ##FD   FRT10_Main0.sh           |  79753| 12/26/24 10:15|  1091| p1.09`41226.1015
 ##FD   FRT10_Main0.sh           |  80142| 12/26/24 17:30|  1094| p1.09`41226.1730
 ##FD   FRT10_Main0.sh           |  82088|  1/04/25 12:30|  1119| p1.09`50104.1230
+##FD   FRT10_Main0.sh           |  82088|  1/05/25 14:45|  1119| p1.09`50105.1445
 #
 ##DESC     .--------------------+-------+---------------+------+-----------------+
 #            Use the commands in this script to manage FormR app resources.
@@ -66,7 +67,9 @@
 #            keyS commands      |
 #            proX commands      |
 #            update command     |                                                                           # .(41107.01.1)
-#            install command    |                                                                           # .(41111.01.1)
+#            install commands   |                                                                           # .(41111.01.1)
+#            init command       |                                                                           # .(41218.04.1) 
+#            clone command      |                                                                           # .(50105.06.1)
 #            set var command    |
 #                               |
 ##CHGS     .--------------------+----------------------------------------------+
@@ -157,6 +160,8 @@
 #.(41111.04e 12/26/24 RAM 10:15a| Add ${bDoit} to frt copy command
 #.(41226.05  12/26/24 RAM  5:30p| Rework frt update messages
 #.(50104.01   1/04/25 RAM 12:30p| Add install AICodeR
+#.(50105.05   1/05/25 RAM  2:45p| Rework frt install aidocs quietly
+#.(50105.06   1/05/25 RAM  3:30p| Add frt clone command
 
 ##PRGM     +====================+===============================================+
 ##ID 69.600. Main0              |
@@ -164,7 +169,7 @@
 #*/
 #========================================================================================================== #  ===============================  #
 
-     aVdt="Dec 26, 2024 5:30p"; aVtitle="formR Tools"                                                      # .(21113.05.8 RAM Add aVtitle for Version in Begin)
+     aVdt="Jan 5, 2025 2:45p"; aVtitle="formR Tools"                                                        # .(21113.05.8 RAM Add aVtitle for Version in Begin)
      aVer="$( echo $0 | awk '{  match( $0, /_[dpstuv][0-9]+\.[0-9]+/ ); print substr( $0, RSTART+1, RLENGTH-1) }' )"  # .(21031.01.1 RAM Add [d...).(20416.03.8 "_p2.02", or _d1.09)
 
      LIB="FRT"; LIB_LOG=${LIB}_LOG; LIB_USER=${LIB}_USER; Lib=${LIB}; aDir=$( dirname "${BASH_SOURCE}" );   # .(41027.01.1 RAM).(80923.01.1)
@@ -284,7 +289,8 @@ function Help( ) {
      echo "             RSS Dir (RDir)"                                                 # .(21107.02.3)
      echo "             RSS DirList (DirList)"                                          # .(21107.02.4)
      echo ""                                                                                                # .(41107.01.2)
-     echo "    FRT Init                             Create a local repo folder"                             # .(41218.04.1)
+     echo "    FRT New Repo                         Create a new local repo folder"                         # .(41218.04b.1).(41218.04.1)
+     echo "    FRT Clone                            Clone a remote Github repo"                             # .(50105.06.2)
      echo "    FRT Install                          Run ./set-frtools.sh"                                   # .(41124.02.1)
      echo "        Install [ALTools] [-doit]        Install ALTools"                                        # .(41111.01.2)
      echo "                [ALTools] [-doit] [-u]   Update ALTools"                                         # .(41115.02d.30)
@@ -373,10 +379,12 @@ function Help( ) {
      getCmd1   "set"     "path" "Set Var"                                                                   # .(21120.03.2)
      getCmd1   "setpath" ""     "Set Var"   1                                                               # .(21120.03.3)
      getCmd1   "upd"     ""     "Update"    1                                                               # .(41107.01.4)
+     getCmd1   "clo"     ""     "Clone"     1                                                               # .(50105.06.3)
      getCmd1   "ini"     ""     "Init"      1                                                               # .(41218.04.2)
+     getCmd1   "new"     "rep"  "Init"      1                                                               # .(41218.04b.2)
      getCmd1   "ins"     ""     "Install"   1                                                               # .(41111.01.4)
 #    getCmd1   "ins"     "-df"  "Install"   1                                                               ##.(41115.02d.36)
-     getCmd1   "cop"     ""     "Copy File"   1                                                             # .(41225.06.2)
+     getCmd1   "cop"     ""     "Copy File" 1                                                               # .(41225.06.2)
 
 #    -- --- ---------------  =  ------------------------------------------------------  #  ---------------- #
 
@@ -792,6 +800,24 @@ function Help( ) {
      fi # eoc Init Command                                                                                  # .(41218.04.3 End)
 #    -- --- ---------------  =  ------------------------------------------------------  #  ---------------- #
 
+#====== =================================================================================================== #  ===========
+#>      CLONE Command                                                                                       # .(50105.06.4 RAM Add Clone Command beg)
+#====== =================================================================================================== #
+
+        sayMsg    "FRT40[ 755]  Clone Command" -1;
+
+  if [ "${aCmd}" == "Clone" ]; then
+        shift
+  if [ "$1" == "" ]; then
+        echo -e "\n* Please enter a name of a GitHub repository to clone."
+        echo -e   "  See: gitr clone help, for more information"
+        exit_wCR
+        fi
+        gitr clone "$@"
+
+     fi # eoc Init Command                                                                                  # .(50105.06.4 End)
+#    -- --- ---------------  =  ------------------------------------------------------  #  ---------------- #
+
 ##====== =================================================================================================== #  ===========
 #>      INSTALL Command                                                                                     # .(41111.01.5 RAM Add Install Command beg)
 #====== =================================================================================================== #
@@ -872,11 +898,14 @@ function copyFile() {                                                           
            fi                                                                                               # .(41201.04b.3)
 #          echo "[794] aArg2: '${aArg2}', aArg3: '${aArg3}', aArgs: '${aArgs}', bDoit: '${bDoit}'"; exit
 # ----  ---------------------------------------------------------------------  ----
-        if [ "${aArg2}" == "aidocs" ]; then                                                                 # .(41124.03.1 RAM Add install aidocs Beg)
 
+        if [ "${aArg2}" == "aidocs" ]; then                                                                 # .(41124.03.1 RAM Add install aidocs Beg)
+#       -------------------------------------------
+         if [ "${aArg3:0:2}" == "-q" ]; then aArg3=""; fi; q=""; if [ "${aQuiet}" == "q" ]; then q="q"; fi  # .(50105.05b.1)
 #           aBranch="";   if [ "${aArg4}" != "" ]; then aBranch=" ${aArg4}"; fi                             ##.(41201.04.1 RAM Clarity).(41201.04b.4)
             aStageDir=""; if [ "${aArg3}" != "" ]; then aStageDir="${aArg3}"; fi                            # .(41201.04b.4 RAM Not aBranch)
-            aRepoStg=" no-stage"; if [ "${aStageDir}" != "" ]; then aRepoStg="_${aStageDir}"; fi            # .(41201.04b.5)
+#           aRepoStg=" no-stage"; if [ "${aStageDir}" != ""         ]; then aRepoStg="_${aStageDir}"; fi    ##.(41201.04b.5).(50105.05b.2)
+            aRepoStg=" no-stage"; if [ "${aStageDir}" != "no-stage" ]; then aRepoStg="_${aStageDir}"; fi    # .(50105.05b.2).(41201.04b.5)
 
         if [ "${bDoit}" != 1 ]; then
             echo -e "\n  About to install AIDocs${aRepoStg}"                                                # .(41201.04b.6 RAM Add aRepoStg ??)
@@ -887,7 +916,9 @@ function copyFile() {                                                           
             echo -e "\n  Installing AIDocs${aRepoStg}"                                                      # .(41201.04b.8)
 #                     gitr clone aidocs no-stage ${aBranch} -d                                              ##.(41201.04.3).(41201.04b.9)
 #                     gitr clone aidocs${aRepoStg} ${aBranch}                                               ##.(41201.04b.9)
-                      gitr clone aidocs${aRepoStg} ${aBranch} -d                                            # .(41201.04b.9)
+#                     gitr clone aidocs${aRepoStg} ${aBranch} -d                                            ##.(41201.04b.9).(50105.05b.3)
+#     echo         "* gitr clone aidocs${aRepoStg} ${aBranch} -d${q}"                                        
+                      gitr clone aidocs${aRepoStg} ${aBranch} -d${q}                                        # .(50105.05b.3).(41201.04b.9)
 
             if [ "${OS:0:7}" != "Windows" ]; then sudo find . -type f -name "*.sh" -exec chmod 755 {} +; fi # .(41201.04.4)
 #           ${aLstSp}; exit
@@ -896,7 +927,8 @@ function copyFile() {                                                           
 # ----  ---------------------------------------------------------------------  ----
 
         if [ "${aArg2}" == "aicoder" ]; then                                                                # .(50104.01.2 Beg Add Install AICodeR)
-
+#       -------------------------------------------
+         if [ "${aArg3:0:2}" == "-q" ]; then aArg3=""; fi; q=""; if [ "${aQuiet}" == "q" ]; then q="q"; fi  # .(50105.05b.4)
             aRepoName="AICodeR"; aReponame="$( echo "${aRepoName}" | awk '{ print tolower($0) }' )"         # .(50104.01.3)
             aStageDir=""; if [ "${aArg3}" != "" ]; then aStageDir="${aArg3}"; fi
             aRepoStg=" no-stage"; if [ "${aStageDir}" != "" ]; then aRepoStg="_${aStageDir}"; fi
@@ -910,7 +942,7 @@ function copyFile() {                                                           
             echo -e "\n  Installing ${aRepoName}${aRepoStg}"
 #                     gitr clone aidocs no-stage ${aBranch} -d
 #                     gitr clone aidocs${aRepoStg} ${aBranch}
-                      gitr clone ${aReponame}${aRepoStg} ${aBranch} -d                                      # .(50104.01.6)
+                      gitr clone ${aReponame}${aRepoStg} ${aBranch} -d${q}                                  # .(50105.05b.5).(50104.01.6)
 
             if [ "${OS:0:7}" != "Windows" ]; then sudo find . -type f -name "*.sh" -exec chmod 755 {} +; fi
 #           ${aLstSp}; exit
@@ -920,7 +952,7 @@ function copyFile() {                                                           
 #        echo "[816] aArg2: '${aArg2}', aArg3: '${aArg3}', aArgs: '${aArgs}'";
 
         if [ "${aArg2}" == "altools" ]; then
-
+#       -------------------------------------------
 #          aBranch=""; if [ "${aArg3}" != "" ]; then aBranch=" ${aArg3}"; fi                                ##.(41201.04.5 RAM Clarity)
 
         sayMsg    "FRT40[ 871]  Install: aArg2: '${aArg2}', aArg3: '${aArg3}', bDoit: '${bDoit}', bUpdate: '${bUpdate}'" -1  # .(41115.02d.37 RAM Do Update ALTools)
@@ -1059,6 +1091,7 @@ function copyFile() {                                                           
 #           git checkout ALTools     # 768 files plus your 22 changes
 
         ${aLstSp}; exit;
+
         fi # eif install altools
 # ----  ---------------------------------------------------------------------  ----
 

@@ -2,25 +2,29 @@
 
 #  --------------------------------------------------------------
    aInstall="re-install"; if [ "$1" == "install" ]; then aInstall="$1"; shift; fi                           # .(50105.04.6 RAM Add Install command for help)
+   if [ "$1" == "help" ]; then set -- ""; fi
 
 function deleteDir() {
    aRepoDir=$1; # echo -e "\n  Deleting ${aRepoDir}"; return
 
    if ! rm -rf "${aRepoDir}" 2>/dev/null;
    then echo -e "\n* Could not remove the Repo Folder ${aRepoDir}"; exit 1;
-   else echo -e "\n  Deleted Repo Folder: ${aRepoDir}\n"; fi
+   else echo -e "\n* Deleted Repo Folder: ${aRepoDir}"; fi
    }
 #  --------------------------------------------------------------
 
 function reinstall() {
 
    aAppDir="$( echo $1 | awk '{ print tolower($0) }' )";
-   aStage="$(  echo $2 | awk '{ print tolower($0) }' )";
+   aStage="$(  echo $2 | awk '{ print tolower($0) }' )"; bOk=0
 
-   if [ "${aAppDir}" == "frtools" ]; then aAppDir="FRTools"; aStage="${aStage//frtools/FRTools}"; fi
-   if [ "${aAppDir}" == "anyllm"  ]; then aAppDir="AnyLLM";  aStage="${aStage//anyllm/AnyLLM}";   fi
-   if [ "${aAppDir}" == "aidocs"  ]; then aAppDir="AIDocs";  aStage="${aStage//aidocs/AIDocs}";   fi
-   if [ "${aAppDir}" == "aicoder" ]; then aAppDir="AICodeR"; aStage="${aStage//aicoder/AICodeR}"; fi        # .(50104.01.14)
+   if [ "${aAppDir}" == "frtools" ]; then aAppDir="FRTools"; aStage="${aStage//frtools/FRTools}"; bOk=1; fi
+   if [ "${aAppDir}" == "anyllm"  ]; then aAppDir="AnyLLM";  aStage="${aStage//anyllm/AnyLLM}";   bOk=1; fi
+   if [ "${aAppDir}" == "aidocs"  ]; then aAppDir="AIDocs";  aStage="${aStage//aidocs/AIDocs}";   bOk=1; fi
+   if [ "${aAppDir}" == "AIDocs"  ]; then if [ "${aStage}" == "" ]; then aStage="demo1-master";   fi;    fi # .(50105.05b.9)
+   if [ "${aAppDir}" == "aicoder" ]; then aAppDir="AICodeR"; aStage="${aStage//aicoder/AICodeR}"; bOk=1; fi # .(50104.01.14)
+
+   if [ "${bOk}" == "0" ]; then echo -e "\n* Invalid install project, '${aAppDir}'.  See: bash install help\n"; exit; fi # .(50105.05b.10)
 
    aRepos="$( pwd | awk '{ print tolower($0) }' )";
    if [ "${aRepos/repos/}" == "${aRepos}" ]; then
@@ -28,7 +32,8 @@ function reinstall() {
 #     cd ${aRepos}; echo -e "\n  aRepos: $( pwd )\n"; exit
 
    aRepo="${aAppDir}";
-   aRepoDir="${aRepo}"; if [ "${aStage}" != "" ]; then aRepoDir="${aRepo}_${aStage}"; fi
+   aRepoDir="${aRepo}"; if [ "${aStage}" != "" ]; then aRepoDir="${aRepo}_${aStage}";
+                 if [ "${aStage}" == "no-stage" ]; then aRepoDir="${aRepo} ${aStage}"; fi; fi        # .(5
 
 #  if [ -d "${aRepo}"    ]; then deleteDir "${aRepo}"; fi
 #  if [ -d "${aRepoDir}" ]; then deleteDir "${aRepoDir}"; echo ""; fi
@@ -37,7 +42,8 @@ function reinstall() {
    aRepo="$( echo "${aRepo}" | awk '{ print tolower($0) }' )"
 
 #  echo "  ./install-${aRepo}.sh ${aRepoDir}"
-           ./install-${aRepo}.sh ${aRepoDir} "$2" "$3"                                                      # .(50105.04.7)                                                                          
+#          ./install-${aRepo}.sh ${aRepoDir} "$2" "$3"                                                      # .(50105.04.7)
+           ./install-${aRepo}.sh ${aRepoDir}                                                                # .(50105.04.7)
    }
 #  --------------------------------------------------------------
 
@@ -49,12 +55,13 @@ if [ "$1" == "" ]; then
    echo -e   "              bash ${aInstall} aicoder                     ->  AICodeR"                       # .(50104.01.15)
    echo -e   "              bash ${aInstall} anyllm                      ->  AnyLLM"                        # .(50105.04.10)
    echo -e   "              bash ${aInstall} aidocs                      ->  AIDocs_demo1-master"
+   echo -e   "              bash ${aInstall} aidocs no-stage             ->  AIDocs"
    echo -e   "              bash ${aInstall} aidocs dev01-rick           ->  AIDocs_dev01-rick"
-   echo -e   "              bash ${aInstall} aidocs aidocs_/dev03-robin  ->  AIDocs_/dev03-robin"           # .(50105.04.8 End)
+   echo -e   "              bash ${aInstall} aidocs /dev03-robin         ->  AIDocs_/dev03-robin"           # .(50105.04.8 End)
    echo -e "\n* Note: You must install FRTools before any other projects.  After that,"                     # .(50105.04.9 RAM Add more options Beg)
-   echo -e   "        you can clone or create your own projects folder with:"                                    
-   echo -e "\n              frt clone {GitHub-Account} {Repo-Name}   -> {Repo-Name}" 
-   echo -e   "              frt gitr init AI-Tests_/dev03-robin      ->  AI-Tests_/dev03-robin"         
+   echo -e   "        you can clone or create your own projects folder with:"
+   echo -e "\n              frt clone {GitHub-Account} {Repo-Name}   -> {Repo-Name}"
+   echo -e   "              frt gitr init AI-Tests_/dev03-robin      ->  AI-Tests_/dev03-robin"
    echo -e   "      or just     gitr init AI-Tests                   ->  AI-Tests"                          # .(50105.04.9 End)
 
    if [ "${OS:0:7}" != "Windows" ]; then echo ""; fi; exit
