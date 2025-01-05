@@ -170,6 +170,7 @@
 #.(50102.03f  1/03/25 RAM  7:00p| Fiinish gitr init ordeal (f)
 #.(50103.01   1/03/25 RAM  8:00p| Create aStages for gitr init 
 #.(50104.01   1/04/25 RAM 12:30p| Add install AICodeR 
+#.(50104.02   1/04/25 RAM  1:30p| Improve git clone output
 
 ##PRGM     +====================+===============================================+
 ##ID 69.600. Main0              |
