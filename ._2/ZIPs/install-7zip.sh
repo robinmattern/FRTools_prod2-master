@@ -47,6 +47,7 @@ if [ "${OS:0:7}" == "Windows" ]; then
     if [ ! -d  /c/Home/._0/Cmds ]; then mkdir -p /c/Home/._0/Cmds; fi
 	cp ${a7zip}     /c/Home/._0/bin/${a7zip}
 	cp ${a7zip}.cmd /c/Home/._0/Cmds/${a7zip}.cmd
+	echo "${a7zip}" >"$HOME/bin/7z/@ZIP_Exe"                    # .(50102.04.9 RAM Save 7Zip name)
 	fi
 #   -----------------------------------------------------------------------
 
@@ -60,10 +61,11 @@ if [ "${OSTYPE:0:6}" == "darwin" ]; then
 	echo -e "#\!/bin/bash\n${aBIN}/${a7z} \"\$@\"" >${a7zip}
 	echo -e "if [ \"\$1\" == \"\" ]; then ${aBIN}/${a7z} | awk '/<Switches>/ { exit }; { print }'; exit; fi" >>${a7zip}
 	chmod 755 ${a7zip}
-
+ 
     if [ ! -d  /Users/Shared/._0/bin ]; then mkdir -p /Users/Shared/._0/bin; fi
 	     cp ${a7zip}  /Users/Shared/._0/bin/${a7zip}
 	sudo cp ${a7zip}         /usr/local/bin/${a7zip}
+	echo "${a7zip}" >"$HOME/bin/7z/@ZIP_Exe"                    # .(50102.04.10 RAM Save 7Zip name)
 	fi
 #   -----------------------------------------------------------------------
 
@@ -81,8 +83,9 @@ if [ "${OSTYPE:0:5}" == "linux" ]; then
     if [ ! -d   /home/._0/bin ]; then mkdir -p /home/._0/bin; fi
      	 cp ${a7zip}  /home/._0/bin/${a7zip}
 	sudo cp ${a7zip} /usr/local/bin/${a7zip}
+	echo "${a7zip}" >"$HOME/bin/7z/@ZIP_Exe"                    # .(50102.04.11 RAM Save 7Zip name)
 	fi
 #   -----------------------------------------------------------------------
 
-	echo "  Command for 7-Zip is ${a7zip}"
+	echo "  Your command for 7-Zip is: ${a7zip}"
 	exit_wCR
