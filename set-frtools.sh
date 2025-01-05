@@ -15,6 +15,7 @@
 ##FD         set-frtools.sh     |  25171| 12/11/24  7:21|   446| v1.05`41211.0720
 ##FD         set-frtools.sh     |  26049| 12/11/24  8:41|   453| v1.05`41211.0840
 ##FD         set-frtools.sh     |  28002| 12/25/24 12:40|   472| v1.05`41225.1240
+##FD         set-frtools.sh     |  29196|  1/05/25 16:40|   480| v1.05`50105.1640
 #
 ##DESC     .--------------------+-------+-----------------+------+---------------+
 #            Create ._0/bin folder and copy all command scripts there as well as
@@ -33,7 +34,7 @@
 #            cpyToBin           |
 #            cpyScript          |
 #            setOSvars          |
-#            exit_withCR        |
+#            exit_wCR        |
 #            Sudo               |
 #                               |
 ##CHGS     .--------------------+-------+-------------------+------+-----------+
@@ -60,6 +61,7 @@
 # .(41225.01 12/25/24 RAM 10:59a| Set aTS to include Y for year
 # .(41225.02 12/25/24 RAM 12:20p| Fix SetTHE_SERVER
 # .(41225.03 12/25/24 RAM 12:40p| Say ~/.bash_profile may need to be run
+# .(50105.07  1/05/25 RAM  4:40p| Cleanup balank lines in set-frtools.sh
 
 ##PRGM     +====================+===============================================+
 ##ID 69.600. Main0              |
@@ -86,8 +88,9 @@ function help() {
   echo "    doit            Do scripts and profile"                                                         # .(41031.02.1)
   echo "    scripts [doit]  Copy FRTools scripts"
   echo "    profile [doit]  Update ${aBashrc} file"
-  echo "    wipe    [doit]  Erase all setup changes"                                                        # .(41030.03.1)
-  echo ""
+  echo "    wipe    [doit]  Erase all setup changes"                                                        #.(41030.03.1)
+# echo ""                                                                                                   ##.(50105.07.1)
+  exit_wCR                                                                                                  # .(50105.07.1 RAM Add exit_wCR)
   }
 # -----------------------------------------------------------
 
@@ -119,8 +122,8 @@ function Sudo() {
      }
 # -----------------------------------------------------------
 
-function exit_withCR() {
-  if [[ "${aOS}" != "windows" ]]; then echo ""; fi
+function exit_wCR() {
+  if [[ "${aOS}" != "windows" ]]; then echo ""; fi; exit                                                    # .(50105.07.2 RAM Add exit)
      }
 # -----------------------------------------------------------
 
@@ -152,13 +155,15 @@ function showEm() {
 
   echo "  \$PATH (bin folders only):"
   echo "${PATH}" | awk '{ gsub( /:/, "\n" );  print }' | awk '/[.]*bin$/ { print "    " $0 }'
+  exit_wCR                                                                                                  # .(50105.07.3)
   }
 # -----------------------------------------------------------
 
 function clnHouse() {
 
   if [[  "${bDoWipe}" == "0" ]]; then                                                                       # .(41030.03.3 Beg)
-   echo "  About to delete the JPTs scripts from ${aBinDir}"; return
+   echo "  About to delete the JPTs scripts from ${aBinDir}.  Add -d to doit";
+    exit_wCR  # return                                                                                      # .(50105.07.4)
    else
      PATH="${PATH/${aBinDir}:}"
 
@@ -176,6 +181,7 @@ function clnHouse() {
 
    echo "  Wipe of \$PATH and ${aBashrc} file complete";
      fi
+     exit_wCR                                                                                               # .(50105.07.5)
   }
 # -----------------------------------------------------------
 
@@ -200,7 +206,7 @@ function setBashrc() {
      if [ "${bDoProfile}" == "0" ]; then aWill_add="Will add"; else aWill_add="Adding"; fi
      if [ "${bDoProfile}" == "1" ]; then cp -p   "${aBashrc}" "${aBashrc}_v${aTS}"; fi
 
-     echo "  ${aWill_add} path, '${aBinDir}', to User's PATH in '${aBashrc/_@tmp/}'."; # exit
+     echo -e "  ${aWill_add} path, '${aBinDir}', to User's PATH in '${aBashrc/_@tmp/}'.\n"; # exit          # .(50105.07.6 RAM Add \n)
 #    echo "  BASH_VERSION: '${BASH_VERSION}', ZSH_VERSION: '${ZSH_VERSION}'"; exit
 
      echo ""                                                >>"${aBashrc}"
@@ -282,7 +288,7 @@ function setBashrc() {
      echo -e "  .Bashrc: '${aBashrc}' contents:"                                        # .(41030.06.3 Beg)
      echo      "  ------------------------------------------------"
      if [[ -f "${aBashrc}" ]]; then cat "${aBashrc}" | awk '{ print "    " $0 }'; fi
-     echo -e "\n  ------------------------------------------------";
+     echo -e   "  ------------------------------------------------";                    # .(50105.07.7 Remove blank line)
 
   if [ "${bDoProfile}" == "0" ]; then
      if [[ -f "${aBashrc}" ]]; then rm  "${aBashrc}"; fi
@@ -292,7 +298,7 @@ function setBashrc() {
 #    source "${aBashrc}" ""
      fi                                                                                 # .(41030.06.3 End)
      fi  # eif Recreate "${aBashrc}"
-
+     echo ""                                                                            # .(50105.07.8 Add blank line)
   }  # eof setBashrc
 # -----------------------------------------------------------
 
@@ -463,10 +469,12 @@ function  makScript() {
 # if [ -z "$(command -v frt 2>/dev/null)" ]; then
 # if [ -z "$(which frt)" ]; then                                                        # .(41225.03.1 RAM)
      echo -e "* You may need to run, source ${aBashrc}, or login again."
-#  else                                                                                 # .(41225.03.2)
-     echo -e "\n  FRTools are installed."
+#  else
+     if [ "${bDoScripts}" == "1" ]; then                                                # .(50105.07.9)
+     echo -e "\n  FRTools are installed.";
+     fi                                                                                 # .(50105.07.10)
 #    fi                                                                                 # .(41225.03.3)
 
-  exit_withCR
+  exit_wCR
 
 
