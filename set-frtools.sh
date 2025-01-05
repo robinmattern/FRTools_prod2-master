@@ -61,7 +61,7 @@
 # .(41225.01 12/25/24 RAM 10:59a| Set aTS to include Y for year
 # .(41225.02 12/25/24 RAM 12:20p| Fix SetTHE_SERVER
 # .(41225.03 12/25/24 RAM 12:40p| Say ~/.bash_profile may need to be run
-# .(50105.07  1/05/25 RAM  4:40p| Cleanup balank lines in set-frtools.sh
+# .(50105.07  1/05/25 RAM  4:40p| Cleanup blank lines in set-frtools.sh
 
 ##PRGM     +====================+===============================================+
 ##ID 69.600. Main0              |

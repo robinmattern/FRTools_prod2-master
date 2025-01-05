@@ -174,8 +174,8 @@
 #.(50104.01   1/04/25 RAM 12:30p| Add install AICodeR
 #.(50104.02   1/04/25 RAM  1:30p| Improve git clone output
 #.(50104.03   1/04/25 RAM  1:45p| Add bQuiet to gitr clone & install-aidocs.sh
-#.(41118.02b  1/04/25 RAM  6:30p| Fix reversal of aArg4-aArg5 as stage-author
-#.(50104.01b  1/04/25 RAM  6:45p| Enable clone of remote repo stage for aicoder
+#.(41118.02b  1/04/25 RAM  6:30p| Fix reversal of aArg4-aArg5 as stage-author (n)
+#.(50104.01b  1/04/25 RAM  6:45p| Enable clone of remote repo stage for aicoder (b)
 
 ##PRGM     +====================+===============================================+
 ##ID 69.600. Main0              |

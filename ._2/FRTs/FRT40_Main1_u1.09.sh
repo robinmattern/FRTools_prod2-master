@@ -935,7 +935,7 @@ function copyFile() {                                                           
             aRepoStg=" no-stage"; if [ "${aStageDir}" != "" ]; then aRepoStg="_${aStageDir}"; fi
 
         if [ "${bDoit}" != 1 ]; then
-            echo -e "\n  About to install ${aRepoName}{aRepoStg}"                                           # .(50104.01.4)
+            echo -e "\n  About to install ${aRepoName}${aRepoStg}"                                          # .(50104.01.4)
 #           echo "    gitr clone aidocs no-stage${aBranch} -d"
             echo "    gitr clone ${aReponame}${aRepoStg}${aBranch} -d"                                      # .(50104.01.5)
             echo "    cd ${aReponame}${aRepoStg/ no-stage/}"                                                # .(50105.08.1)
