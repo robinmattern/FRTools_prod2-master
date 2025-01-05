@@ -63,4 +63,4 @@
      bash install                                                                       # .(50105.04.5)
 
      if [ "${bTest}" == "0" ]; then rm set-repos-dir.zip; fi                            # .(50102.05.6 RAM If not testing locally).(41226.04.1 RAM Erase it)
-     if [ "${aCR}" != "" ]; then echo ""; fi
+#   if [ "${aCR}" != "" ]; then echo ""; fi                                             # .(50105.04.6)
