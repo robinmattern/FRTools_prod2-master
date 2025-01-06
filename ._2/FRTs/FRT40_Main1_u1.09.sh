@@ -164,6 +164,7 @@
 #.(50105.06   1/05/25 RAM  3:45p| Add frt clone command
 #.(50105.08   1/05/25 RAM  4:45p| Run set-aicoder.sh during install
 #.(50105.08b  1/05/25 RAM  8:15p| Run set-aicoder.sh with bash (b)
+#.(50105.08c  1/05/25 RAM  8:45p| Use AICodeR case and run set-aicoder doit (c)
 
 ##PRGM     +====================+===============================================+
 ##ID 69.600. Main0              |
@@ -939,16 +940,16 @@ function copyFile() {                                                           
             echo -e "\n  About to install ${aRepoName}${aRepoStg}"                                          # .(50104.01.4)
 #           echo "    gitr clone aidocs no-stage${aBranch} -d"
             echo "    gitr clone ${aReponame}${aRepoStg}${aBranch} -d"                                      # .(50104.01.5)
-            echo "    cd ${aReponame}${aRepoStg/ no-stage/}"                                                # .(50105.08.1)
-            echo "    set-aicoder.sh"                                                                       # .(50105.08.2)
+            echo "    cd ${aRepoName}${aRepoStg/ no-stage/}"                                                # .(50105.08c.1).(50105.08.1)
+            echo "    bash set-aicoder.sh doit"                                                             # .(50105.08c.2).(50105.08b.1).(50105.08.2)
             ${aLstSp}; exit
             fi
             echo -e "\n  Installing ${aRepoName}${aRepoStg}"
 #                     gitr clone aidocs no-stage ${aBranch} -d
 #                     gitr clone aidocs${aRepoStg} ${aBranch}
                       gitr clone ${aReponame}${aRepoStg} ${aBranch} -d${q}                                  # .(50105.05b.5).(50104.01.6)
-                      cd "${aReponame}${aRepoStg/ no-stage/}"                                               # .(50105.08.3)
-                      bash set-aicoder.sh                                                                   # .(50105.08b.1).(50105.08.4 RAM Run set-aicoder.sh here)
+                      cd "${aRepoName}${aRepoStg/ no-stage/}"                                               # .(50105.08c.3).(50105.08.3)
+                      bash set-aicoder.sh doit                                                              # .(50105.08c.4).(50105.08b.2).(50105.08.4 RAM Run set-aicoder.sh here)
 
             if [ "${OS:0:7}" != "Windows" ]; then sudo find . -type f -name "*.sh" -exec chmod 755 {} +; fi
 #           ${aLstSp}; exit
