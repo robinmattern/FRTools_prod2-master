@@ -8,7 +8,7 @@ function deleteDir() {
    aRepoDir=$1; # echo -e "\n  Deleting ${aRepoDir}"; return
 
    if ! rm -rf "${aRepoDir}" 2>/dev/null;
-   then echo -e "\n* Could not remove the Repo Folder ${aRepoDir}"; exit 1;
+   then echo -e "\n* Could not remove the Repo Folder ${aRepoDir}"; if [ "${OS:0:7}" != "Windows" ]; then echo ""; fi; exit 1;
    else echo -e "\n* Deleted Repo Folder: ${aRepoDir}"; fi
    }
 #  --------------------------------------------------------------

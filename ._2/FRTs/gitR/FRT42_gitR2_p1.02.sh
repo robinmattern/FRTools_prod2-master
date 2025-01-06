@@ -1020,22 +1020,18 @@ function getRemoteName() {                                                      
      if [ "${aArg3}"  == "" ]; then getBranch; fi                                                           # .(41104.04.3)
 
            aProject="$( echo "${aProject}" | awk '{ print tolower($0) }' )"                                 # .(50104.01b.1 RAM Gotta start out lowercase)
-     if [ "${aProject}" == "anythingllm"  ]; then aProject="AnythingLLM"; aArg2="https://github.com/Mintplex-Labs/anything-llm.git";         fi     # .(41104.06.2 RAM Provide repo URLs)
-     if [ "${aProject}" == "anyllm"       ]; then aProject="AnyLLM";      aArg2="https://github.com/robinmattern/AnyLLM_prod1-master.git";   fi
+     if [ "${aProject}" == "anythingllm" ]; then aProject="AnythingLLM";  aArg2="https://github.com/Mintplex-Labs/anything-llm.git";         fi   # .(41104.06.2 RAM Provide repo URLs)
+     if [ "${aProject}" == "anyllm"      ]; then aProject="AnyLLM";       aArg2="https://github.com/robinmattern/AnyLLM_prod1-master.git";   fi
+     if [ "${aProject}" == "aicoder"     ]; then aProject="AICodeR";      aArg2="https://github.com/robinmattern/AICodeR_prod3-master.git";  fi   # .(50104.01.8 RAM Add AICodeR)
+     if [ "${aProject}" == "AICodeR"     ]; then aProject="AICodeR";   if [ "${aStage/\//}" == "dev06" ]; then aArg2="git@github-ram:robinmattern/AICodeR_dev06-robin.git";  fi; fi  # .(50104.01b.2 RAM Add AICodeR)
+     if [ "${aProject}" == "frtools"     ]; then aProject="FRTools";      aArg2="https://github.com/robinmattern/FRTools_prod2-master.git";  fi
+     if [ "${aProject:0:4}" == "iodd"    ]; then aProject="IODDCOM";      aArg2="https://github.com/brucetroutman-gmail/IODDCOM_prod-master.git"; # .(41210.01.x)
+                 if [ "$bSSH" == "1"     ]; then aAcct="brucetroutman-gmail"; aArg2="git@github-btg:${aAcct}/${aProject}_${aArg4}.git";  fi; fi   # .(41210.01.x)
+     if [ "${aProject}" == "aidocs"      ]; then aProject="AIDocs";       aArg2="https://github.com/robinmattern/AIDocs_demo1-master.git";        # .(41210.01.x).(41118.01.1 RAM Was: AIDocs_prod1-master)
+                 if [ "$bSSH" == "1"     ]; then                              aArg2="git@github-ram:${aAcct}/${aProject}_${aArg4}.git";  fi; fi   # .(41210.01.x RAM Change aProject))
+#    if [ "${aStage}" == ""              ]; then echo "* No stage given"; exit_wCR; fi                     ##.(41104.06.3)
 
-     if [ "${aProject}" == "aicoder"      ]; then aProject="AICodeR";     aArg2="https://github.com/robinmattern/AICodeR_prod3-master.git";  fi     # .(50104.01.8 RAM Add AICodeR)
-     if [ "${aProject}" == "AICodeR"      ]; then aProject="AICodeR";  if [ "${aStage/\//}" == "dev06" ]; then aArg2="git@github-ram:robinmattern/AICodeR_dev06-robin.git";  fi; fi  # .(50104.01b.2 RAM Add AICodeR)
-
-     if [ "${aProject}" == "frtools"      ]; then aProject="FRTools";     aArg2="https://github.com/robinmattern/FRTools_prod2-master.git";  fi
-
-     if [ "${aProject:0:4}" == "iodd"     ]; then aProject="IODDCOM";     aArg2="https://github.com/brucetroutman-gmail/IODDCOM_prod-master.git";   # .(41210.01.x)
-                 if [ "$bSSH" == "1" ]; then aAcct="brucetroutman-gmail";     aArg2="git@github-btg:${aAcct}/${aProject}_${aArg4}.git";  fi; fi     # .(41210.01.x)
-
-     if [ "${aProject}" == "aidocs"       ]; then aProject="AIDocs";      aArg2="https://github.com/robinmattern/AIDocs_demo1-master.git";          # .(41210.01.x).(41118.01.1 RAM Was: AIDocs_prod1-master)
-                 if [ "$bSSH" == "1" ]; then                                  aArg2="git@github-ram:${aAcct}/${aProject}_${aArg4}.git";  fi; fi     # .(41210.01.x RAM Change aProject))
-#    if [ "${aStage}" == ""               ]; then echo "* No stage given"; exit_wCR; fi                     ##.(41104.06.3)
-
-     sayMsg  "gitR2[1030]  aProject: '${aProject}', aStage: '${aStage}', aBranch: '${aBranch}', aArg2: '${aArg2}', aArg3: '${aArg3}', aArg4: '${aArg4}', aArg5: '${aArg5}'" 1
+     sayMsg  "gitR2[1030]  aProject: '${aProject}', aStage: '${aStage}', aBranch: '${aBranch}', aArg2: '${aArg2}', aArg3: '${aArg3}', aArg4: '${aArg4}', aArg5: '${aArg5}'" -1
 
      if [ "${aRemoteName}" == ""                    ]; then aRemoteName="$( echo "${aProject}" | awk '{ print tolower($0) }' )";
      sayMsg  "gitR2[1033]  aRemoteName: '${aRemoteName}', aStage: '${aStage}', aBranch: '${aBranch}', aArg2: '${aArg2}', aArg3: '${aArg3}', aArg4: '${aArg4}', aArg5: '${aArg5}'" -1

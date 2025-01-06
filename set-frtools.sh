@@ -76,6 +76,7 @@
   aVer="v1.05\`41211.0720"
   aVer="v1.05\`41211.0840"
   aVer="v1.05\`41225.1240"
+  aVer="v1.05\`50105.1640"
 
   echo ""
 
@@ -83,12 +84,12 @@
 
 function help() {
   echo "  Run ./set-frtools.sh commands: (${aVer}, OS: ${aOS})"
-  echo "    help            This help"
+  echo "    help             This help"
   echo "    show            ${aBashrc} and script files"
-  echo "    doit            Do scripts and profile"                                                         # .(41031.02.1)
-  echo "    scripts [doit]  Copy FRTools scripts"
-  echo "    profile [doit]  Update ${aBashrc} file"
-  echo "    wipe    [doit]  Erase all setup changes"                                                        #.(41030.03.1)
+  echo "    doit             Do scripts and profile"                                                        # .(41031.02.1)
+  echo "    scripts [-doit]  Copy FRTools scripts"
+  echo "    profile [-doit]  Update ${aBashrc} file"
+  echo "    wipe    [-doit]  Erase all setup changes"                                                       # .(41030.03.1)
 # echo ""                                                                                                   ##.(50105.07.1)
   exit_wCR                                                                                                  # .(50105.07.1 RAM Add exit_wCR)
   }
@@ -173,13 +174,14 @@ function clnHouse() {
 #    rm   "${aBinDir}"/gitr*;
    else
    echo "  Nothing to delete from ${aBinDir}";
+   exit_wCR
      fi
 
      cp -p "${aBashrc}" "${aBashrc}_v${aTS}"
      cat   "${aBashrc}" | awk '/._0/ { exit }; NF > 0 { print }' >"${aBashrc}_@tmp"
      mv    "${aBashrc}_@tmp" "${aBashrc}"
 
-   echo "  Wipe of \$PATH and ${aBashrc} file complete";
+   echo "  Wipe of \$PATH and ${aBashrc} file and FRTools scripts complete";
      fi
      exit_wCR                                                                                               # .(50105.07.5)
   }
@@ -353,22 +355,21 @@ function setTHE_SERVER() {                                                      
 # -----------------------------------------------------------
 
 function cpyToBin() {
-# return
 
-     aJPTs_JDir="${aBinDir}"; # if [ "${aOS}" == "darwin" ]; then aJPTs_JDir="/Users/Shared/._0/bin"; fi    # .(41211.02.2 RAM aBinDir is this on mac)
+     aScrDir="${aBinDir}"; # if [ "${aOS}" == "darwin" ]; then aScrDir="/Users/Shared/._0/bin"; fi    # .(41211.02.2 RAM aBinDir is this on mac)
 
 #    echo ""
-#    echo " aJPTs_JDir: ${aJPTs_JDir}";
+#    echo " aScrDir:    ${aScrDir}";
 #    echo " aJPTs_GitR: ${aJPTs_GitR}";
 #    echo " alias gitr: ${aJPTs_JDir}/gitr.sh";
-#    echo " copying run-anyllm.sh and gitr to: \"${aJPTs_JDir}\""; echo ""
+#    echo " copying run-anyllm.sh and gitr to: \"${aScrDir}\""; echo ""
 
- if [   -d "${aJPTs_JDir}"   ]; then                                                     echo "  Wont create BinDir: it exists in \"${aJPTs_JDir}\""; fi
- if [ ! -d "${aJPTs_JDir}"   ]; then
- if [ "${bDoScripts}" == "0" ]; then                                                     echo "  Will create BinDir: doesnt exist \"${aJPTs_JDir}\""; else
- if [ "${aOS}" == "windows"  ]; then      mkdir -p  "${aJPTs_JDir}";
-                                else Sudo mkdir -p  "${aJPTs_JDir}"; fi;                 echo "  Created BinDir:  it didn't exist \"${aJPTs_JDir}\""
-                                     Sudo chmod 777 "${aJPTs_JDir}"; fi;
+ if [   -d "${aScrDir}"   ]; then                                                     echo "  Won't create BinDir. It already exists: \"${aScrDir}\""; fi
+ if [ ! -d "${aScrDir}"   ]; then
+ if [ "${bDoScripts}" == "0" ]; then                                                  echo "  Will create BinDir: doesnt exist \"${aScrDir}\""; else
+ if [ "${aOS}" == "windows"  ]; then      mkdir -p  "${aScrDir}";
+                                else Sudo mkdir -p  "${aScrDir}"; fi;                 echo "  Created BinDir:  it didn't exist \"${aScrDir}\""
+                                     Sudo chmod 777 "${aScrDir}"; fi;
         fi;
 #   echo  "  cpyScript \"${aAnyLLMscr}\" \"anyllm\""
 
@@ -423,24 +424,26 @@ function cpyToBin() {
 
 function cpyScript() {
 
-  aJPTs_Script="$2"; aName1="$1"; aName="${aName1// /}"   # echo "  cp -p \"${aJPTs_Script}\" to \"${aJPTs_JDir}/${aName}\""
-#                                                  echo "  copying script: \"${aJPTs_Script}\" to \"${aJPTs_JDir}/${aName}\""
+  aScript="$2"; aName1="$1"; aName="${aName1// /}"   # echo "  cp -p \"${aScript}\" to \"${aScrDir}/${aName}\""
+#                                                      echo "  copying script:    \"${aScript}\" to \"${aScrDir}/${aName}\""
 
-  if [ ! -f "${aJPTs_Script}" ]; then                                                           echo "* Script not found:  \"${aJPTs_Script}\""; return; fi                       # .(41211.02.3 RAM Can't create it in aBinDir if not found in FRTools)
+  if [ ! -f "${aScript}" ]; then                       echo "* Script not found:  \"${aScript}\""; return; fi                                                                # .(41211.02.3 RAM Can't create it in aBinDir if not found in FRTools)
 
-  if [ "${bDoScripts}" == "0" ]; then                                                           echo "  Will create script: ${aJPTs_JDir}/${aName1} for \"${aJPTs_Script}\""; return; fi
-
-  if [ "${bDoScripts}" == "1" ]; then                                                                                                                                             # .(41211.02.4 RAM Add if bDoScripts for clarity)
-# if [   -f "${aJPTs_Script}" ]; then cp     -p  "${aJPTs_Script}" "${aJPTs_JDir}/";            echo "  Copied  script for: ${aName1}  in \"${aJPTs_Script}\""; fi                ##.(41211.02.5 RAM It's not copied, rather  ..)
-  if [   -f "${aJPTs_Script}" ]; then makScript  "${aJPTs_Script}" "${aJPTs_JDir}" "${aName}";  echo "  Created script in: ${aJPTs_JDir}/${aName1}  for \"${aJPTs_Script}\""; fi  # .(41211.02.6 RAM It's created it in aBinDir)
-#                                Sudo chmod  777 "${aJPTs_Script}";                     ##.(41104.03.1 RAM No need to set permission for each script
+  if [ "${bDoScripts}" == "0" ]; then                  echo "  Will create script: ${aScrDir}/${aName1} for \"${aScript}\""; return; fi
+  if [ "${bDoScripts}" == "1" ]; then                                                                                                                                        # .(41211.02.4 RAM Add if bDoScripts for clarity)
+# if [   -f "${aScript}" ]; then cp     -p  "${aScript}" "${aScrDir}/";                  echo "  Copied  script for: ${aName1}  in \"${aScript}\""; fi                       ##.(41211.02.5 RAM It's not copied, rather  ..)
+  if [   -f "${aScript}" ]; then 
+                                      makScript  "${aScript}" "${aScrDir}" "${aName}";   echo "  Created script in: ${aScrDir}/${aName1} for \"${aScript}\"";                # .(41211.02.6 RAM It's created it in aBinDir)
+                                 fi
+#                                Sudo chmod  777 "${aScript}";                           ##.(41104.03.1 RAM No need to set permission for each script
        fi # eif bDoScripts
   }
 # ---------------------------------------------------------------------------
 
 function  makScript() {
-# echo "  making script in $2/$3"; # exit
+# echo -e "\n  Making script in: $2/$3"; # exit
 # echo "    aAnyLLMscr:  $2/$3"
+# return
   echo "#!/bin/bash"   >"$2/$3"
   echo "  $1 \"\$@\"" >>"$2/$3"
   chmod 777 "$2/$3"
@@ -457,10 +460,10 @@ function  makScript() {
   if [[ "${aCmd}" == "help"    ]]; then help; fi
   if [[ "${aCmd}" == "doit"    ]]; then cpyToBin; setBashrc; fi                                             # .(41031.02.3)
   if [[ "${aCmd}" == "showEm"  ]]; then showEm; fi
-  if [[ "${aCmd}" == "wipeIt"  ]]; then clnHouse; fi
   if [[ "${aCmd}" == "profile" ]]; then setBashrc "$2 $3 $4"; fi                        # .(41030.07.4)
 # if [[ "${aCmd}" == "profile" ]]; then setBashrc; fi                                   # .(41030.07.5)
   if [[ "${aCmd}" == "copyEm"  ]]; then cpyToBin; fi
+  if [[ "${aCmd}" == "wipeIt"  ]]; then clnHouse; fi
 
 # ---------------------------------------------------------------------------
 
@@ -476,5 +479,4 @@ function  makScript() {
 #    fi                                                                                 # .(41225.03.3)
 
   exit_wCR
-
 
