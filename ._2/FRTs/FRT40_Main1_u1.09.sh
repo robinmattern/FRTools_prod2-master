@@ -49,7 +49,7 @@
 ##FD   FRT10_Main0.sh           |  79753| 12/26/24 10:15|  1091| p1.09`41226.1015
 ##FD   FRT10_Main0.sh           |  80142| 12/26/24 17:30|  1094| p1.09`41226.1730
 ##FD   FRT10_Main0.sh           |  82088|  1/04/25 12:30|  1119| p1.09`50104.1230
-##FD   FRT10_Main0.sh           |  85261|  1/05/25 20:45|  1157| p1.09`50105.2015
+##FD   FRT10_Main0.sh           |  85261|  1/05/25 20:45|  1157| p1.09`50105.2045
 #
 ##DESC     .--------------------+-------+---------------+------+-----------------+
 #            Use the commands in this script to manage FormR app resources.
@@ -172,7 +172,7 @@
 #*/
 #========================================================================================================== #  ===============================  #
 
-     aVdt="Jan 5, 2025 8:15p"; aVtitle="formR Tools"                                                        # .(21113.05.8 RAM Add aVtitle for Version in Begin)
+     aVdt="Jan 5, 2025 8:45p"; aVtitle="formR Tools"                                                        # .(21113.05.8 RAM Add aVtitle for Version in Begin)
      aVer="$( echo $0 | awk '{  match( $0, /_[dpstuv][0-9]+\.[0-9]+/ ); print substr( $0, RSTART+1, RLENGTH-1) }' )"  # .(21031.01.1 RAM Add [d...).(20416.03.8 "_p2.02", or _d1.09)
 
      LIB="FRT"; LIB_LOG=${LIB}_LOG; LIB_USER=${LIB}_USER; Lib=${LIB}; aDir=$( dirname "${BASH_SOURCE}" );   # .(41027.01.1 RAM).(80923.01.1)
