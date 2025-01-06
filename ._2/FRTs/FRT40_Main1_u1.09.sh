@@ -49,7 +49,7 @@
 ##FD   FRT10_Main0.sh           |  79753| 12/26/24 10:15|  1091| p1.09`41226.1015
 ##FD   FRT10_Main0.sh           |  80142| 12/26/24 17:30|  1094| p1.09`41226.1730
 ##FD   FRT10_Main0.sh           |  82088|  1/04/25 12:30|  1119| p1.09`50104.1230
-##FD   FRT10_Main0.sh           |  85261|  1/05/25 16:45|  1157| p1.09`50105.1645
+##FD   FRT10_Main0.sh           |  85261|  1/05/25 20:45|  1157| p1.09`50105.2015
 #
 ##DESC     .--------------------+-------+---------------+------+-----------------+
 #            Use the commands in this script to manage FormR app resources.
@@ -163,6 +163,7 @@
 #.(50105.05   1/05/25 RAM  2:45p| Rework frt install aidocs quietly
 #.(50105.06   1/05/25 RAM  3:45p| Add frt clone command
 #.(50105.08   1/05/25 RAM  4:45p| Run set-aicoder.sh during install
+#.(50105.08b  1/05/25 RAM  8:15p| Run set-aicoder.sh with bash (b)
 
 ##PRGM     +====================+===============================================+
 ##ID 69.600. Main0              |
@@ -170,7 +171,7 @@
 #*/
 #========================================================================================================== #  ===============================  #
 
-     aVdt="Jan 5, 2025 4:45p"; aVtitle="formR Tools"                                                        # .(21113.05.8 RAM Add aVtitle for Version in Begin)
+     aVdt="Jan 5, 2025 8:15p"; aVtitle="formR Tools"                                                        # .(21113.05.8 RAM Add aVtitle for Version in Begin)
      aVer="$( echo $0 | awk '{  match( $0, /_[dpstuv][0-9]+\.[0-9]+/ ); print substr( $0, RSTART+1, RLENGTH-1) }' )"  # .(21031.01.1 RAM Add [d...).(20416.03.8 "_p2.02", or _d1.09)
 
      LIB="FRT"; LIB_LOG=${LIB}_LOG; LIB_USER=${LIB}_USER; Lib=${LIB}; aDir=$( dirname "${BASH_SOURCE}" );   # .(41027.01.1 RAM).(80923.01.1)
@@ -947,7 +948,7 @@ function copyFile() {                                                           
 #                     gitr clone aidocs${aRepoStg} ${aBranch}
                       gitr clone ${aReponame}${aRepoStg} ${aBranch} -d${q}                                  # .(50105.05b.5).(50104.01.6)
                       cd "${aReponame}${aRepoStg/ no-stage/}"                                               # .(50105.08.3)
-                      set-aicoder.sh                                                                        # .(50105.08.2 RAM Run set-aicoder.sh here)
+                      bash set-aicoder.sh                                                                   # .(50105.08b.1).(50105.08.4 RAM Run set-aicoder.sh here)
 
             if [ "${OS:0:7}" != "Windows" ]; then sudo find . -type f -name "*.sh" -exec chmod 755 {} +; fi
 #           ${aLstSp}; exit
