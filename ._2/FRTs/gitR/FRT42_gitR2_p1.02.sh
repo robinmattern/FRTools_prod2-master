@@ -35,7 +35,7 @@
 ##FD   FRT42_GitR2.sh           | 172633|  1/04/25 13:45|  2246| p1.02`.50104.1345
 ##FD   FRT42_GitR2.sh           | 173633|  1/05/25 18:45|  2257| p1.02`.50105.1845
 ##FD   FRT42_GitR2.sh           | 175151|  1/06/25 21:00|  2272| p1.02`.50106.2100
-##FD   FRT42_GitR2.sh           | 175576|  1/07/25 13:15|  2275| p1.02`.50107.1315
+##FD   FRT42_GitR2.sh           | 175660|  1/07/25 15:30|  2276| p1.02`.50107.1530
 #
 ##DESC     .--------------------+-------+---------------+------+-----------------+
 #            This script has usefull GIT functions.
@@ -180,6 +180,7 @@
 #.(50104.01b  1/04/25 RAM  6:45p| Enable clone of remote repo stage for aicoder (b)
 #.(50106.04   1/06/25 RAM  2:30p| Check if repo is valid, and exit 1
 #.(50105.05c  1/07/25 RAM  1:15p| Use same ".. work on it in VSCode ..\" msg
+#.(50107.01   1/07/25 RAM  3:30p| Add [0-2]? to aRepos
 
 ##PRGM     +====================+===============================================+
 ##ID 69.600. Main0              |
@@ -187,7 +188,7 @@
 #*/
 #========================================================================================================== #  ===============================  #
 
-        aVDt="Jan 7, 2025 1:15p"; aVer="p1.02"; aVTitle="Useful gitR2 Tools by formR";                                    # .(41103.02.2 RAM Was: gitR1)
+        aVDt="Jan 7, 2025 3:30p"; aVer="p1.02"; aVTitle="Useful gitR2 Tools by formR";                                    # .(41103.02.2 RAM Was: gitR1)
         aVer="$( echo "$0" | awk '{ match( $0, /_[dpstuv][0-9]+\.[0-9]+/ ); print substr( $0, RSTART+1, RLENGTH-1) }' )"  # .(21031.01.1 RAM Add [d...).(20416.03.8 "_p2.02", or _d1.09)
 
         LIB="gitR2"; LIB_LOG=${LIB}_LOG; LIB_USER=${LIB}_USER; Lib=${LIB}; aDir=$(dirname "${BASH_SOURCE}");              # .(41103.02.3).(41102.01.1 RAM Add JPT12_Main2Fns_p1.07.sh Beg).(80923.01.1)
