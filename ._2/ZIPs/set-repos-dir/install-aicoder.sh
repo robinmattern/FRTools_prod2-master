@@ -8,7 +8,7 @@
 #  frt install ${aRepo} $2    -q -b;                                                    # .(50105.05b.7)
 
    aRepoDir="${aRepo}"; aRepo="${aRepo/\.code.workspace/}"                              # .(50106.06.1 RAM Create aRepoDir)
-
+ 
 if [ $? -ne 1 ]; then                                                                   # .(50106.04.13)
 
 #  echo -e "\n  cd ${aRepoDir}/client1"                                                 ##.(50106.06.2).(50104.01.10)

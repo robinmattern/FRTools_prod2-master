@@ -7,7 +7,7 @@
    aRepo="$1"; if [ "$1" == "" ]; then aRepo="AIDocs_demo1-master"; fi
 #  ----------------------------------------------------------------------------
    export aQuiet=q                                                                      # .(50105.05b.7 RAM Add aQuiet)
-
+ 
    echo "  frt install ${aRepo} '$2' '$3' -d;"
            frt install ${aRepo}  $2   $3  -d;                                           # .(50105.05b.8 RAM Remove -q)
 
