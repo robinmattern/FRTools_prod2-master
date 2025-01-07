@@ -50,6 +50,7 @@
 ##FD   FRT10_Main0.sh           |  80142| 12/26/24 17:30|  1094| p1.09`41226.1730
 ##FD   FRT10_Main0.sh           |  82088|  1/04/25 12:30|  1119| p1.09`50104.1230
 ##FD   FRT10_Main0.sh           |  85261|  1/05/25 20:45|  1157| p1.09`50105.2045
+##FD   FRT10_Main0.sh           |  87246|  1/06/25 21:00|  1170| p1.09`50106.2100
 #
 ##DESC     .--------------------+-------+---------------+------+-----------------+
 #            Use the commands in this script to manage FormR app resources.
@@ -165,6 +166,8 @@
 #.(50105.08   1/05/25 RAM  4:45p| Run set-aicoder.sh during install
 #.(50105.08b  1/05/25 RAM  8:15p| Run set-aicoder.sh with bash (b)
 #.(50105.08c  1/05/25 RAM  8:45p| Use AICodeR case and run set-aicoder doit (c)
+#.(41218.04b  1/06/25 RAM  7:00a| Add gitr New Repo command for init
+#.(50106.04   1/06/25 RAM  9:00p| Add exit 1 for invalid clone and bDoit=0
 
 ##PRGM     +====================+===============================================+
 ##ID 69.600. Main0              |
@@ -172,7 +175,7 @@
 #*/
 #========================================================================================================== #  ===============================  #
 
-     aVdt="Jan 5, 2025 8:45p"; aVtitle="formR Tools"                                                        # .(21113.05.8 RAM Add aVtitle for Version in Begin)
+     aVdt="Jan 6, 2025 9:00p"; aVtitle="formR Tools"                                                        # .(21113.05.8 RAM Add aVtitle for Version in Begin)
      aVer="$( echo $0 | awk '{  match( $0, /_[dpstuv][0-9]+\.[0-9]+/ ); print substr( $0, RSTART+1, RLENGTH-1) }' )"  # .(21031.01.1 RAM Add [d...).(20416.03.8 "_p2.02", or _d1.09)
 
      LIB="FRT"; LIB_LOG=${LIB}_LOG; LIB_USER=${LIB}_USER; Lib=${LIB}; aDir=$( dirname "${BASH_SOURCE}" );   # .(41027.01.1 RAM).(80923.01.1)
@@ -384,7 +387,7 @@ function Help( ) {
      getCmd1   "upd"     ""     "Update"    1                                                               # .(41107.01.4)
      getCmd1   "clo"     ""     "Clone"     1                                                               # .(50105.06.3)
      getCmd1   "ini"     ""     "Init"      1                                                               # .(41218.04.2)
-     getCmd1   "new"     "rep"  "Init"      1                                                               # .(41218.04b.2)
+     getCmd1   "new"     "rep"  "Init"      1                                                               # .(41218.04b.2 RAM Add FRT New Repo command)
      getCmd1   "ins"     ""     "Install"   1                                                               # .(41111.01.4)
 #    getCmd1   "ins"     "-df"  "Install"   1                                                               ##.(41115.02d.36)
      getCmd1   "cop"     ""     "Copy File" 1                                                               # .(41225.06.2)
@@ -791,13 +794,16 @@ function Help( ) {
         echo -e "\n  It must be in a folder named, C:\\Repos or /Users/Shared/Repos."
         echo -e   "     or in unix, /home/shared/repos/owner.  Owner is optional."
         echo -e "\n  It can have any of the following names:"
-        echo -e   "     Project_/Project_stage-author"
-        echo -e   "     Project_/stage-author"
-        echo -e   "     Project_stage-author"
         echo -e   "     Project"
+        echo -e   "     Project_stage-author"
+        echo -e   "     Project /stage-author"
+#       echo -e   "     Project /Project_stage-author"
         echo -e "\n  Stage can be: prod1, test2 or dev03."
         exit_wCR
         fi
+#       if [ "rep" == "$( echo "${2:0:3}" | awk '{ print tolower($0) }' )" ]; then set -- "$1" "${@:3}"; fi ##.(41218.04b.3 RAM Remove $2 thanks to Claude)
+        if [ "rep" == "$( echo "${2:0:3}" | awk '{ print tolower($0) }' )" ]; then shift; shift; fi         # .(41218.04b.3 RAM Remove $1 and $2)
+        if [ "rep" == "$( echo "${1:0:3}" | awk '{ print tolower($0) }' )" ]; then shift;        fi         # .(41218.04b.4 RAM Remove $1)
         gitr init "$@"
 
      fi # eoc Init Command                                                                                  # .(41218.04.3 End)
@@ -873,7 +879,7 @@ function copyFile() {                                                           
 
 #       copyFile "ALTools" "run-anyllm.sh" "master"
 
-        sayMsg    "FRT40[ 769]  Install: aArg1: '${aArg1}', aArg2: '${aArg2}', aArg3: '${aArg3}', bDoit: '${bDoit}', bDebug: '${bDebug}', bUpdate: '${bUpdate}'" -1
+        sayMsg    "FRT40[ 880]  Install: aArg1: '${aArg1}', aArg2: '${aArg2}', aArg3: '${aArg3}', bDoit: '${bDoit}', bDebug: '${bDebug}', bUpdate: '${bUpdate}', bQuiet: '${bQuiet}'" -1
 
 #       ---------------------------------------------------------------------
 #       if [ "${aArg1}" == "install" ]; then                                                                # .(41124.02.2)
@@ -899,7 +905,8 @@ function copyFile() {                                                           
         if [ "${aArg2/_/}" != "${aArg2}" ]; then                                                            # .(41201.04b.1 Fix aArg2)
            aArg4="${aArg3}"; aArg3="${aArg2/*_/}"; aArg2="${aArg2/_*/}"                                     # .(41201.04b.2)
            fi                                                                                               # .(41201.04b.3)
-#          echo "[794] aArg2: '${aArg2}', aArg3: '${aArg3}', aArgs: '${aArgs}', bDoit: '${bDoit}'"; exit
+#       sayMsg    "FRT40[ 906]  Install: aArg1: '${aArg1}', aArg2: '${aArg2}', aArg3: '${aArg3}', bDoit: '${bDoit}', bDebug: '${bDebug}', bUpdate: '${bUpdate}', bQuiet: '${bQuiet}'" 2
+
 # ----  ---------------------------------------------------------------------  ----
 
         if [ "${aArg2}" == "aidocs" ]; then                                                                 # .(41124.03.1 RAM Add install aidocs Beg)
@@ -912,25 +919,27 @@ function copyFile() {                                                           
 
         if [ "${bDoit}" != 1 ]; then
             echo -e "\n  About to install AIDocs${aRepoStg}"                                                # .(41201.04b.6 RAM Add aRepoStg ??)
-#           echo "    gitr clone aidocs no-stage${aBranch} -d"                                              ##.(41201.04.2 RAM Add aBranch).(41201.04b.7)
-            echo "    gitr clone aidocs${aRepoStg}${aBranch} -d"                                            # .(41201.04b.7).(41201.04.2 RAM Add aBranch)
-            ${aLstSp}; exit
+#           echo "    gitr clone aidocs no-stage -d"                                                        ##.(41124.03.2).(41201.04.2 RAM Add aBranch).(41201.04b.7)
+            echo "    gitr clone aidocs${aRepoStg} -d${q}"                                                  # .(41124.03.3 RAM No Branch).(41201.04b.7).(41201.04.2 RAM Add aBranch)
+            ${aLstSp}; exit 1                                                                               # .(50106.04.9 RAM Don't say we're installed)
             fi
-            echo -e "\n  Installing AIDocs${aRepoStg}"                                                      # .(41201.04b.8)
-#                     gitr clone aidocs no-stage ${aBranch} -d                                              ##.(41201.04.3).(41201.04b.9)
-#                     gitr clone aidocs${aRepoStg} ${aBranch}                                               ##.(41201.04b.9)
-#                     gitr clone aidocs${aRepoStg} ${aBranch} -d                                            ##.(41201.04b.9).(50105.05b.3)
-#     echo         "* gitr clone aidocs${aRepoStg} ${aBranch} -d${q}"
-                      gitr clone aidocs${aRepoStg} ${aBranch} -d${q}                                        # .(50105.05b.3).(41201.04b.9)
+            echo -e "\n  Installing AIDocs${aRepoStg} (gitr clone aidocs${aRepoStg} -d${q})"                # .(41201.04b.8)
+#                     gitr clone aidocs no-stage   -d                                                       ##.(41201.04.3).(41201.04b.9)
+#                     gitr clone aidocs${aRepoStg}                                                          ##.(41201.04b.9)
+#                     gitr clone aidocs${aRepoStg} -d                                                       ##.(41201.04b.9).(50105.05b.3)
+#     echo         "* gitr clone aidocs${aRepoStg} -d${q}"
+                      gitr clone aidocs${aRepoStg} -d${q}                                                   # .(50105.05b.3).(41201.04b.9)
 
             if [ "${OS:0:7}" != "Windows" ]; then sudo find . -type f -name "*.sh" -exec chmod 755 {} +; fi # .(41201.04.4)
 #           ${aLstSp}; exit
-            exit
+            exit 0                                                                                          # .(50106.04.10 RAM Just to be safe)
         fi # eif install aidocs                                                                             # .(41124.03.1 End)
 # ----  ---------------------------------------------------------------------  ----
 
         if [ "${aArg2}" == "aicoder" ]; then                                                                # .(50104.01.2 Beg Add Install AICodeR)
 #       -------------------------------------------
+        sayMsg    "FRT40[ 939]  Install: aArg1: '${aArg1}', aArg2: '${aArg2}', aArg3: '${aArg3}', bDoit: '${bDoit}', bDebug: '${bDebug}', bUpdate: '${bUpdate}', bQuiet: '${bQuiet}', aQuiet: '${aQuiet}'" -1
+
          if [ "${aArg3:0:2}" == "-q" ]; then aArg3=""; fi; q=""; if [ "${aQuiet}" == "q" ]; then q="q"; fi  # .(50105.05b.4)
             aRepoName="AICodeR"; aReponame="$( echo "${aRepoName}" | awk '{ print tolower($0) }' )"         # .(50104.01.3)
             aStageDir=""; if [ "${aArg3}" != "" ]; then aStageDir="${aArg3}"; fi
@@ -938,22 +947,24 @@ function copyFile() {                                                           
 
         if [ "${bDoit}" != 1 ]; then
             echo -e "\n  About to install ${aRepoName}${aRepoStg}"                                          # .(50104.01.4)
-#           echo "    gitr clone aidocs no-stage${aBranch} -d"
-            echo "    gitr clone ${aReponame}${aRepoStg}${aBranch} -d"                                      # .(50104.01.5)
+#           echo "    gitr clone aidocs no-stage -d"
+            echo "    gitr clone ${aReponame}${aRepoStg} -d${q}"                                            # .(50104.01.5)
             echo "    cd ${aRepoName}${aRepoStg/ no-stage/}"                                                # .(50105.08c.1).(50105.08.1)
             echo "    bash set-aicoder.sh doit"                                                             # .(50105.08c.2).(50105.08b.1).(50105.08.2)
-            ${aLstSp}; exit
+
+            ${aLstSp}; exit 1                                                                               # .(50106.04.11 RAM Don't say we're installed)
             fi
-            echo -e "\n  Installing ${aRepoName}${aRepoStg}"
-#                     gitr clone aidocs no-stage ${aBranch} -d
-#                     gitr clone aidocs${aRepoStg} ${aBranch}
-                      gitr clone ${aReponame}${aRepoStg} ${aBranch} -d${q}                                  # .(50105.05b.5).(50104.01.6)
+            echo -e "\n  Installing ${aRepoName}${aRepoStg} (gitr clone aicoder${aRepoStg} -d${q})"
+#                     gitr clone aidocs no-stage -d
+#                     gitr clone aidocs${aRepoStg}
+                      gitr clone ${aReponame}${aRepoStg} -d${q}                                             # .(50105.05b.5).(50104.01.6)
+                 if [ $? -eq 1 ]; then exit 1; fi                                                           # .(
                       cd "${aRepoName}${aRepoStg/ no-stage/}"                                               # .(50105.08c.3).(50105.08.3)
                       bash set-aicoder.sh doit                                                              # .(50105.08c.4).(50105.08b.2).(50105.08.4 RAM Run set-aicoder.sh here)
 
             if [ "${OS:0:7}" != "Windows" ]; then sudo find . -type f -name "*.sh" -exec chmod 755 {} +; fi
 #           ${aLstSp}; exit
-            exit
+            exit 0                                                                                          # .(50106.04.12 RAM Just to be safe)                                                                                          #
         fi # eif install aicoder                                                                            # .(50104.01.2 End)
 # ----  ---------------------------------------------------------------------  ----
 #        echo "[816] aArg2: '${aArg2}', aArg3: '${aArg3}', aArgs: '${aArgs}'";
