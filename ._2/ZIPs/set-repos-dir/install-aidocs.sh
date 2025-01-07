@@ -16,7 +16,7 @@
    if [ $? -ne 1 ]; then                                                                # .(50106.04.15 RAM Exit if bDoit=0)
 
    echo -e "\n  cd ${aRepoDir}/client1" # exit                                          ##.(50106.06.6).(50104.01.10)
-#  cd ${aRepoDir}/client1                                                               # .(50106.06.7) 
+   cd ${aRepoDir}/client1                                                               # .(50106.06.7) 
 
    echo "  npm install"                                                                 
            npm install | awk '{ print "    " $0 }'                                       
@@ -28,7 +28,7 @@
    echo -e   "     cd ${aRepoDir}"                                                      # .(50106.06.8 
    echo -e "      nano client1/c16_aidocs-review-app/utils/FRTs/_env"
    echo -e "     ./run-client.sh\n"
-   echo -e   "  or open VSCode with: code ${aRepo/\//}*"                                ##.(50106.06.8).(50104.01.13 End)
+   echo -e   "  or work on it in VSCode with: code ${aRepo/\//}*"                       # .(50105.05c.7).(50106.06.8).(50104.01.13 End)
    fi                                                                                   # .(50106.04.16 RAM Exit if bDoit=0)
 
    if [ "${OS:0:7}"     != "Windows" ]; then echo ""; fi

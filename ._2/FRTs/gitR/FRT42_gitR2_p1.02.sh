@@ -35,6 +35,7 @@
 ##FD   FRT42_GitR2.sh           | 172633|  1/04/25 13:45|  2246| p1.02`.50104.1345
 ##FD   FRT42_GitR2.sh           | 173633|  1/05/25 18:45|  2257| p1.02`.50105.1845
 ##FD   FRT42_GitR2.sh           | 175151|  1/06/25 21:00|  2272| p1.02`.50106.2100
+##FD   FRT42_GitR2.sh           | 175576|  1/07/25 13:15|  2275| p1.02`.50107.1315
 #
 ##DESC     .--------------------+-------+---------------+------+-----------------+
 #            This script has usefull GIT functions.
@@ -178,6 +179,7 @@
 #.(41118.02b  1/04/25 RAM  6:30p| Fix reversal of aArg4-aArg5 as stage-author (n)
 #.(50104.01b  1/04/25 RAM  6:45p| Enable clone of remote repo stage for aicoder (b)
 #.(50106.04   1/06/25 RAM  2:30p| Check if repo is valid, and exit 1
+#.(50105.05c  1/07/25 RAM  1:15p| Use same ".. work on it in VSCode ..\" msg
 
 ##PRGM     +====================+===============================================+
 ##ID 69.600. Main0              |
@@ -185,7 +187,7 @@
 #*/
 #========================================================================================================== #  ===============================  #
 
-        aVDt="Jan 6, 2025 9:00p"; aVer="p1.02"; aVTitle="Useful gitR2 Tools by formR";                                    # .(41103.02.2 RAM Was: gitR1)
+        aVDt="Jan 7, 2025 1:15p"; aVer="p1.02"; aVTitle="Useful gitR2 Tools by formR";                                    # .(41103.02.2 RAM Was: gitR1)
         aVer="$( echo "$0" | awk '{ match( $0, /_[dpstuv][0-9]+\.[0-9]+/ ); print substr( $0, RSTART+1, RLENGTH-1) }' )"  # .(21031.01.1 RAM Add [d...).(20416.03.8 "_p2.02", or _d1.09)
 
         LIB="gitR2"; LIB_LOG=${LIB}_LOG; LIB_USER=${LIB}_USER; Lib=${LIB}; aDir=$(dirname "${BASH_SOURCE}");              # .(41103.02.3).(41102.01.1 RAM Add JPT12_Main2Fns_p1.07.sh Beg).(80923.01.1)
@@ -425,8 +427,8 @@ function getBranch( ) {                                                         
 # ---------------------------------------------------------------------------
 
  function getRepoDir() {
-
-   aRepos="$( echo "$(pwd)"       | awk '{ match( $0, /.*[Rr][Ee][Pp][Oo][Ss]/); print substr($0,1,RLENGTH) }' )"
+   rRepos="/.*[Rr][Ee][Pp][Oo][Ss][0-2]?/"                                                                  # .(50107.01.1 RAM Add [0-2]? to aRepos)
+   aRepos="$( echo "$(pwd)"       | awk '{ match( $0, '${rRepos}' ); print substr($0,1,RLENGTH) }' )"       # .(50107.01.2)
    if [ "${aRepos}" == "" ];        then aRepos="$( dirname $(pwd) )"; fi; # echo "  aRepos: '${aRepos}'"   # .(41129.05.1 RAM What if no Repos dir)
    aRepo="$( git remote -v        | awk '/origin.+push/ { sub( /.+\//, ""); sub( /\.git.+/, "" ); print }' )"
 #  aProjDir="${aRepoDir%%_*}"
@@ -434,7 +436,7 @@ function getBranch( ) {                                                         
 #  aAWK='{ sub( "'${aRepos//\//\/}'/", "" ); sub( /[\/_].*/, "_"); print }';             # echo "  aAWK:    '${aAWK}'"  # double up /s
    aAWK='{ sub( "'${aRepos}'/", "" );  sub( /_\/*.+/, "" ); sub( /\/.+/, "" ); print }'; # echo "  aAWK: echo \"\$(pwd)\" | awk '${aAWK}'"
    aProject="$( echo "$(pwd)"     | awk "${aAWK}" )"
-#  echo "  aProject:    '${aProject}'"; exit
+#  echo "  aProject:    '${aProject}'"; # exit
    aStgDir="$(  echo "$(pwd)"     | awk '{ sub( "'.+"${aProject}"'", "" ); print }' )"                      # .(41103.04.1 RAM Added "{aProject}" based on ShellCheck)
    aStage="$(   echo "${aStgDir}" | awk '{ sub( "^[_/]+", "" ); print }' )"
    aRepoDir="${aRepos}/${aProject}${aStgDir}"
@@ -985,8 +987,8 @@ yarn.lock
 
 #       if [ "${aNewRepoDir}" != "${PWD##*/}" ]; then                                                       ##.(50102.03a.13)
         if [ "${bCD}" == "1" ]; then                                                                        # .(50102.03a.18)
-           echo -e "\n  Please enter the new folder with: cd ${aNewRepoDir}"                                # .(50102.03a.14 RAM Was: aFolder)
-           echo -e   "     You can then open VSCode with: code *code*"                                      # .(50102.03a.15)
+           echo -e "\n  Please change into the project folder: cd ${aNewRepoDir}"                           # .(50105.05c.1).(50102.03a.14 RAM Was: aFolder)
+           echo -e   "  You can now work on it in VSCode with: code ${aProject}*"                           # .(50105.05c.2).(50102.03a.15)
            fi
            exit_wCR                                                                                         # .(50102.03a.16)
 #          echo -e "\n * Didn't know what folder to put .git into"                                          ##.(50102.03a.14).(41109.01.2 RAM If all else fails)
@@ -1235,10 +1237,11 @@ function getRemoteName() {                                                      
         fi # // eif add code-workspace                                                                      # .(41110.03.4)
 
      if [ "${bQuiet}" != "1" ]; then                                                    # .(50104.03.2 RAM Add bQuiet)
-        echo -e "\n  Please change into the project folder: ${aDir}"                                        # .(41210.01.x)
-        exit_wCR                                                                        # .(50104.03.3 Beg)
+           echo -e "\n  Please change into the project folder: cd ${aDir}"              # .(50105.05c.3)    # .(41210.01.x)
+           echo -e   "  You can now work on it in VSCode with: code ${aRepo1}*"         # .(50105.05c.4)
+           exit_wCR                                                                     # .(50104.03.3 Beg)
       else
-        exit 0                                                                                              # .(50106.04.8 RAM It was 1)
+           exit 0                                                                                            # .(50106.04.8 RAM It was 1)
         fi                                                                              # .(50104.03.3 End)
 
         fi # // eif bDoit == 1
