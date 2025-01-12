@@ -1,11 +1,26 @@
 <HTML>
   <HEAD>
 <!-- <script>document.redirect "http://92.112.184.206/set-repos.html"</script> -->
-     <style> code { font-weight:bold; text-decoration:italic; background-color: #d8e7ec; color: blue; }</style>
+     <style>
+         code { font-weight:bold; text-decoration:italic; background-color: #d8e7ec; color: blue; }
+
+        .collapsible               { list-style: none; }
+        .collapsible       summary { list-style: none; }
+        .collapsible       summary::-webkit-details-marker { display: none; }
+
+        .collapsible       summary::before { content: "+ ";  display: inline-block; width: 2em; text-align: right; margin-right: .5em }
+        .collapsible[open] summary::before { content: "- ";  text-align: right; }
+
+/*      .collapsible       summary::marker { content: "+ ";  display: inline-block; width: 1.2em; } */
+/*      .collapsible[open] summary::marker { content: "- ";  display: inline-block; width: 1.2em; } */
+
+         .collapsible ol { margin-left: 20px; }  /* or padding-left: 20px */
+
+     </style>
   </HEAD>
   <BODY style="font-family: arial">
     <br>
-    <h1> Welcome to the formR Repos starter page</h1>
+    <h1> Here is the formR Repos starter page</h1>
 
     <p>From your new Repos folder, you can either</p>
     <li>Option 1 in a browser:</li>
@@ -28,31 +43,61 @@
       </ul>
 
     <p>To work on these projects run any of these commands:</p>
-    <li>Your own project</li>
+
+    <details class="collapsible">
+      <summary>For your own project (use -d to doit)</summary>
       <ol>
-        <li><code>frt new repo MyProject_dev01 -d</code></li>
+        <li><code>frt new repo MyProject_dev01</code></li>
         <li><code>cd MyProject_dev01; code MyProject_dev01.*</code></li>
-        <li><code>gitr add remote MyProject_dev01-bruce {GitHub_Account} -d</code></li>
-        <li><code>gitr mak remote MyProject_dev01-bruce -d</code></li>
+        <li><code>gitr add remote MyProject_dev01-bruce {GitHub_Account}</code></li>
+        <li><code>gitr mak remote MyProject_dev01-bruce</code></li>
         <li>Make changes to your code</li>
         <li>Use VSCode to commit and sync you changes</li>
       </ol>
+    </details>
 
-    <li>The AI Model Test project</li>  
+    <details class="collapsible">
+      <summary>For your AI Model Test project (use -d to doit)</summary>
       <ol>
-        <li><code>gitr clone AI-Tests_dev01-robin -d</code></li>
-        <li><code>gitr clone AI-Tests_dev01-robin '' test1-master -d</code></li>
-        <li><code>gitr clone AI-Tests_dev01-robin '' dev01-bruce -d</code></li>
-        <li><code>cd AI-Tests_dev01-bruce; code Ai-Tests_dev01-bruce.*</code></li>
-        <li><code>gitr add remote MyProject_dev01-bruce {GitHub_Account} -d</code></li>
-        <li><code>gitr mak remote MyProject_dev01-bruce -d</code></li>
-        <li><code>./savMarkdown.sh c51 claude.md</code></li>
+        <li><code>gitr clone AI-Tests_dev01-robin</code></li>
+        <li><code>gitr clone AI-Tests_dev01-robin '' final-bruce</code></li>
+        <li><code>gitr clone AI-Tests_dev01-robin '' dev01-bruce</code></li>
+        <li><code>cd AI-Tests_dev01-bruce; code AI-Tests_dev01-bruce.*</code></li>
+        <li><code>gitr add remote AI-Tests_dev01-bruce {GitHub_Account}</code></li>
+        <li><code>gitr mak remote AI-Tests_dev01-bruce</code></li>
         <li><code>aic list models</code></li>
-        <li><code>aic list scripts c51 c35sanm</code></li>
-        <li><code>aic save scripts c51 c35sanm</code></li>
-        <li>Use VSCode to commit and sync you changes</li>
+        <li><code>ai2code save markdown {ANo} claude.md [{model}]</code></li>
+        <li><code>aic list scripts {ANo} [{model}]</code></li>
+        <li><code>ai2 save scripts {ANo} [{model}]</code></li>
+        <li>Use VSCode to test, commit and sync your test model results</li>
       </ol>
+    </details>
 
+    <details class="collapsible">
+      <summary>For your AI Model Final project (use -d to doit)</summary>
+      <ol>
+        <li><code>gitr clone AI-Tests_dev01-robin '' final-bruce</code></li>
+        <li><code>cd AI-Tests_dev01-bruce; code AI-Tests_dev01-bruce.*</code></li>
+        <li><code>gitr add remote AI-Tests_final-bruce {GitHub_Account}</code></li>
+        <li><code>gitr mak remote AI-Tests_final-bruce</code></li>
+        <li>Use BeyondCompare or WinMerge to copy apps to AI-Tests_final-bruce</li>
+        <li>Use VSCode to test, commit and sync your final model results</li>
+      <ol>
+    </details>
+
+<!--
+    <li>
+      For your AI Model Final project (use -d to doit)
+      <ol>
+        <li><code>gitr clone AI-Tests_dev01-robin '' final-bruce</code></li>
+        <li><code>cd AI-Tests_dev01-bruce; code AI-Tests_dev01-bruce.*</code></li>
+        <li><code>gitr add remote AI-Tests_final-bruce {GitHub_Account}</code></li>
+        <li><code>gitr mak remote AI-Tests_final-bruce</code></li>
+        <li>Use BeyondCompare or WinMerge to copy apps to AI-Tests_final-bruce</li>
+        <li>Use VSCode to test, commit and sync your final model results</li>
+      <ol>
+    </li>
+-->
   </BODY>
 </HTML>
 
