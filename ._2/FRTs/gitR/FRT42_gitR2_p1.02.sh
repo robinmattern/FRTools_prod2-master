@@ -36,6 +36,7 @@
 ##FD   FRT42_GitR2.sh           | 173633|  1/05/25 18:45|  2257| p1.02`.50105.1845
 ##FD   FRT42_GitR2.sh           | 175151|  1/06/25 21:00|  2272| p1.02`.50106.2100
 ##FD   FRT42_GitR2.sh           | 175660|  1/07/25 15:30|  2276| p1.02`.50107.1530
+##FD   FRT42_GitR2.sh           | 176852|  2/26/25  8:00|  2284| p1.02`.50226.0900
 #
 ##DESC     .--------------------+-------+---------------+------+-----------------+
 #            This script has usefull GIT functions.
@@ -181,6 +182,8 @@
 #.(50106.04   1/06/25 RAM  2:30p| Check if repo is valid, and exit 1
 #.(50105.05c  1/07/25 RAM  1:15p| Use same ".. work on it in VSCode ..\" msg
 #.(50107.01   1/07/25 RAM  3:30p| Add [0-2]? to aRepos
+#.(50226.01   2/26/25 RAM  7:45a| List remote commits
+#.(50226.02   2/26/25 RAM  8:00a| Fix list from nBeg to nCnt, not nEnd
 
 ##PRGM     +====================+===============================================+
 ##ID 69.600. Main0              |
@@ -188,7 +191,7 @@
 #*/
 #========================================================================================================== #  ===============================  #
 
-        aVDt="Jan 7, 2025 3:30p"; aVer="p1.02"; aVTitle="Useful gitR2 Tools by formR";                                    # .(41103.02.2 RAM Was: gitR1)
+        aVDt="Feb 26, 2025 8:00a"; aVer="p1.02"; aVTitle="Useful gitR2 Tools by formR";                                    # .(41103.02.2 RAM Was: gitR1)
         aVer="$( echo "$0" | awk '{ match( $0, /_[dpstuv][0-9]+\.[0-9]+/ ); print substr( $0, RSTART+1, RLENGTH-1) }' )"  # .(21031.01.1 RAM Add [d...).(20416.03.8 "_p2.02", or _d1.09)
 
         LIB="gitR2"; LIB_LOG=${LIB}_LOG; LIB_USER=${LIB}_USER; Lib=${LIB}; aDir=$(dirname "${BASH_SOURCE}");              # .(41103.02.3).(41102.01.1 RAM Add JPT12_Main2Fns_p1.07.sh Beg).(80923.01.1)
@@ -1471,22 +1474,27 @@ function getRemoteName() {                                                      
 #====== =================================================================================================== #
 
   if [ "${aCmd}" == "shoLast" ]; then
+       bRemote="0";   if [ "${aArg5}" == "remote" ]; then bRemote="1"; fi                                   # .(50226.01.1 RAM List remote commits Beg)
+                      if [ "${aArg3}" == "remote" ]; then bRemote="1"; aArg3="${aArg4}"; aArg4="${aArg5}"; fi
+                      if [ "${aArg4}" == "remote" ]; then bRemote="1"; aArg4="${aArg5}"; fi                 # .(50226.01.1 End)
        nCnt=${aArg3}; if [ "${nCnt}" == "" ]; then  nCnt=9; fi # echo "  nCnt: ${nCnt}"                     # .(41109.05.4 RAM Was: nCnt=1)
        if [ "${aArg4}" != "" ]; then nCnt=${aArg4}; nBeg=${aArg3}; else nBeg=0; fi                          # .(41123.07.6 RAM Add nBeg)
-     sayMsg  "gitR[951]  aArg3: '${aArg3}', aArg4: '${aArg4}', nBeg: '${nBeg}', nCnt: '${nCnt}', " -1
+     sayMsg  "gitR[951]  aArg3: '${aArg3}', aArg4: '${aArg4}', nBeg: '${nBeg}', nCnt: '${nCnt}', bRemote: ${bRemote}" 1
 #    aAWK='/^commit / { c = substr($0,8,8) }; /^Author:/ { a = substr($0,8) }; /^Date:/ { d = substr($0,6,27) }; NR == 5 { print "\n  " c $0 d"  "a }'
 #    aAWK='/^commit / { c = substr($0,8,8) }; /^Author:/ { a = substr($0,8) }; /^Date:/ { d = substr($0,6,27) }; NR == 5 { m = sprintf( "\"%-50s", ($0 != "") ? substr($0,5)"\"" : "n/a\"" ); print " " c d"   "m"  "a }'
 #    git show $(git rev-parse HEAD) | awk '/^commit / { c = substr($0,8,8) }; /^Author:/ { a = substr($0,8) }; /^Date:/ { print "\n" c substr($0,7,26) a }'
 #    git show $(git rev-parse HEAD) | awk '/^commit / { c = substr($0,8,8) }; /^Author:/ { a = substr($0,8) }; /^Date:/ { d = substr($0,7,26) }; NR == 5 { print "\n  " c d a $0 }'
 #    git show $(git rev-parse HEAD) | awk '/^commit / { c = substr($0,8,8) }; /^Author:/ { a = substr($0,8) }; /^Date:/ { d = substr($0,6,27) }; NR == 5 { print "\n  " c $0 d"  "a }'
      echo ""; i=${nBeg}; nEnd=$(( nBeg + nCnt ))                                                            # .(41123.07.7)
-
-     git log --all --format=%H | head -n $nEnd | while read hash; do
+     aRemote=""; if [ "${bRemote}" == "1" ]; then aRemote="origin/master"; fi                               # .(50226.01.2)
+     git log ${aRemote} --all --format=%H | head -n ${nCnt} | while read hash; do                           # .(50226.01.2).(50226.02.1 RAM Was nBeg)
 #      git show --format="%h %s" --name-status $hash
        shoCommitMsg $((i+1)) "${hash:0:8}"
        i=$((i+1));
      done
-
+    if [ "${bRemote}" == "1" ]; then                                                                        # .(50226.01.3)
+        echo -e "\n  These commits are from Remote: ${aRemote}."                                            # .(50226.01.4)
+        fi                                                                                                  # .(50226.01.5)
    # while [[ $i -lt $nEnd ]]; do                                                                           # .(41123.07.8)
 #  #   sayMsg  "gitR[959]  i: $i, nEnd: $nEnd; nCnt: '${nCnt}'" 1
    #   i=$((i+1)); shoCommitMsg $i                                                                          # .(41030.04.1).(41030.05.3 RAM Use showCommitMsg)
