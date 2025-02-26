@@ -1,6 +1,11 @@
 {
     "folders": [
         {
+            "name": "._",
+            "path": "../._"
+        },
+        {
+            "name": "FRTools_prod2-master",
             "path": "."
         }
     ]

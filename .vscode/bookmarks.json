@@ -1,0 +1,1049 @@
+{
+	"files": [
+		{
+			"path": "set-frtools.sh",
+			"bookmarks": [
+				{
+					"label": "help",
+					"line": 85,
+					"column": 0
+				},
+				{
+					"label": "setOSvars",
+					"line": 98,
+					"column": 0
+				},
+				{
+					"label": "Sudo",
+					"line": 121,
+					"column": 0
+				},
+				{
+					"label": "exit_wCR",
+					"line": 126,
+					"column": 0
+				},
+				{
+					"label": "showEm",
+					"line": 146,
+					"column": 0
+				},
+				{
+					"label": "clnHouse",
+					"line": 163,
+					"column": 0
+				},
+				{
+					"label": "setBashrc",
+					"line": 190,
+					"column": 0
+				},
+				{
+					"label": "setTHE_SERVER",
+					"line": 307,
+					"column": 0
+				},
+				{
+					"label": "cpyToBin",
+					"line": 357,
+					"column": 0
+				},
+				{
+					"label": "cpyScript",
+					"line": 425,
+					"column": 0
+				},
+				{
+					"label": "makScript",
+					"line": 443,
+					"column": 0
+				}
+			]
+		},
+		{
+			"path": "._2/FRTs/FRT40_Main1_u1.09.sh",
+			"bookmarks": [
+				{
+					"label": "Help",
+					"line": 219,
+					"column": 0
+				},
+				{
+					"label": "Sudo",
+					"line": 836,
+					"column": 0
+				},
+				{
+					"label": "copyFile",
+					"line": 841,
+					"column": 0
+				}
+			]
+		},
+		{
+			"path": "._2/FRTs/FRT46_docR0_p1.01.sh",
+			"bookmarks": [
+				{
+					"label": "Help",
+					"line": 74,
+					"column": 0
+				},
+				{
+					"label": "subFunction",
+					"line": 153,
+					"column": 0
+				}
+			]
+		},
+		{
+			"path": "._2/FRTs/FRT99_Template0_p1.01.sh",
+			"bookmarks": [
+				{
+					"label": "Help",
+					"line": 65,
+					"column": 0
+				},
+				{
+					"label": "subFunction",
+					"line": 119,
+					"column": 0
+				}
+			]
+		},
+		{
+			"path": "._2/FRTs/dokR/dockr",
+			"bookmarks": [
+				{
+					"label": "echo_exit",
+					"line": 38,
+					"column": 0
+				}
+			]
+		},
+		{
+			"path": "._2/FRTs/dokR/dockr_u1",
+			"bookmarks": [
+				{
+					"label": "echo_exit",
+					"line": 38,
+					"column": 0
+				}
+			]
+		},
+		{
+			"path": "._2/FRTs/dokR/FRT44_run-dockr_p1.02.sh",
+			"bookmarks": [
+				{
+					"label": "echo_exit",
+					"line": 5,
+					"column": 0
+				},
+				{
+					"label": "prtItem",
+					"line": 84,
+					"column": 0
+				},
+				{
+					"label": "dockr_start",
+					"line": 191,
+					"column": 0
+				}
+			]
+		},
+		{
+			"path": "._2/FRTs/dokR/FRT45_dokR1_p1.02.sh",
+			"bookmarks": [
+				{
+					"label": "Help",
+					"line": 16,
+					"column": 0
+				},
+				{
+					"label": "setCmd1",
+					"line": 53,
+					"column": 0
+				},
+				{
+					"label": "setCmd2",
+					"line": 63,
+					"column": 0
+				},
+				{
+					"label": "getCName",
+					"line": 154,
+					"column": 0
+				},
+				{
+					"label": "prtHistory",
+					"line": 185,
+					"column": 0
+				},
+				{
+					"label": "prtImages",
+					"line": 205,
+					"column": 0
+				},
+				{
+					"label": "trim",
+					"line": 223,
+					"column": 0
+				},
+				{
+					"label": "chop",
+					"line": 224,
+					"column": 0
+				},
+				{
+					"label": "prtContainers",
+					"line": 243,
+					"column": 0
+				},
+				{
+					"label": "trim",
+					"line": 280,
+					"column": 0
+				},
+				{
+					"label": "chop",
+					"line": 281,
+					"column": 0
+				},
+				{
+					"label": "prtCmd",
+					"line": 316,
+					"column": 0
+				}
+			]
+		},
+		{
+			"path": "._2/FRTs/dokR/run-node-apps.sh",
+			"bookmarks": [
+				{
+					"label": "PM2",
+					"line": 124,
+					"column": 0
+				},
+				{
+					"label": "deleteIfRunning",
+					"line": 143,
+					"column": 0
+				}
+			]
+		},
+		{
+			"path": "._2/FRTs/dokR/webs-help.sh",
+			"bookmarks": [
+				{
+					"label": "Help",
+					"line": 3,
+					"column": 0
+				},
+				{
+					"label": "setLog1",
+					"line": 107,
+					"column": 0
+				},
+				{
+					"label": "setLog2",
+					"line": 124,
+					"column": 0
+				},
+				{
+					"label": "chkLogFile",
+					"line": 147,
+					"column": 0
+				},
+				{
+					"label": "LogIt",
+					"line": 165,
+					"column": 0
+				}
+			]
+		},
+		{
+			"path": "._2/FRTs/gitR/FRT42_gitR1_p2.07.sh",
+			"bookmarks": [
+				{
+					"label": "Help",
+					"line": 175,
+					"column": 0
+				},
+				{
+					"label": "setBranch",
+					"line": 401,
+					"column": 0
+				},
+				{
+					"label": "chkGitDir",
+					"line": 421,
+					"column": 0
+				},
+				{
+					"label": "setProjVars",
+					"line": 436,
+					"column": 0
+				},
+				{
+					"label": "getCurRemote",
+					"line": 559,
+					"column": 0
+				},
+				{
+					"label": "getCurBranch",
+					"line": 570,
+					"column": 0
+				},
+				{
+					"label": "shoGitRemotes1",
+					"line": 582,
+					"column": 0
+				},
+				{
+					"label": "shoGitRemotes2",
+					"line": 681,
+					"column": 0
+				},
+				{
+					"label": "shoGitRemotes3",
+					"line": 775,
+					"column": 0
+				},
+				{
+					"label": "getConfigFile",
+					"line": 990,
+					"column": 0
+				},
+				{
+					"label": "setConfigFile",
+					"line": 1032,
+					"column": 0
+				},
+				{
+					"label": "cdDir",
+					"line": 1074,
+					"column": 0
+				},
+				{
+					"label": "shoLastCommit",
+					"line": 1126,
+					"column": 0
+				},
+				{
+					"label": "setA",
+					"line": 1176,
+					"column": 0
+				}
+			]
+		},
+		{
+			"path": "._2/FRTs/gitR/FRT42_gitR2_p1.02.sh",
+			"bookmarks": [
+				{
+					"label": "help",
+					"line": 207,
+					"column": 0
+				},
+				{
+					"label": "exit_wCR",
+					"line": 254,
+					"column": 0
+				},
+				{
+					"label": "setOSvars",
+					"line": 262,
+					"column": 0
+				},
+				{
+					"label": "Sudo",
+					"line": 281,
+					"column": 0
+				},
+				{
+					"label": "chkUser",
+					"line": 396,
+					"column": 0
+				},
+				{
+					"label": "chkRepo",
+					"line": 412,
+					"column": 0
+				},
+				{
+					"label": "getBranch",
+					"line": 425,
+					"column": 0
+				},
+				{
+					"label": "getRepoDir",
+					"line": 433,
+					"column": 0
+				},
+				{
+					"label": "shoCommitMsg",
+					"line": 465,
+					"column": 0
+				},
+				{
+					"label": "shoWorkingFiles",
+					"line": 496,
+					"column": 0
+				},
+				{
+					"label": "getDate",
+					"line": 502,
+					"column": 0
+				},
+				{
+					"label": "getReposDir",
+					"line": 558,
+					"column": 0
+				},
+				{
+					"label": "initGit",
+					"line": 657,
+					"column": 0
+				},
+				{
+					"label": "getProjectStage_fromURL",
+					"line": 1006,
+					"column": 0
+				},
+				{
+					"label": "getRemoteName",
+					"line": 1019,
+					"column": 0
+				},
+				{
+					"label": "setRemote1",
+					"line": 1982,
+					"column": 0
+				},
+				{
+					"label": "setRemote",
+					"line": 2004,
+					"column": 0
+				}
+			]
+		},
+		{
+			"path": "._2/FRTs/gitR/api/fetch.mjs",
+			"bookmarks": [
+				{
+					"label": "getRepo2",
+					"line": 204,
+					"column": 0
+				},
+				{
+					"label": "getRepoName",
+					"line": 212,
+					"column": 0
+				},
+				{
+					"label": "fmtRepo2",
+					"line": 220,
+					"column": 0
+				},
+				{
+					"label": "selRepo1",
+					"line": 243,
+					"column": 0
+				},
+				{
+					"label": "selRepo2",
+					"line": 245,
+					"column": 0
+				}
+			]
+		},
+		{
+			"path": "._2/FRTs/gitR/api/gh2.njs",
+			"bookmarks": [
+				{
+					"label": "fmtRepo1",
+					"line": 50,
+					"column": 0
+				},
+				{
+					"label": "fmtRepo2",
+					"line": 67,
+					"column": 0
+				},
+				{
+					"label": "selRepo",
+					"line": 83,
+					"column": 0
+				}
+			]
+		},
+		{
+			"path": "._2/FRTs/gitR/api/githup-api-example.html",
+			"bookmarks": [
+				{
+					"label": "clear{",
+					"line": 179,
+					"column": 0
+				}
+			]
+		},
+		{
+			"path": "._2/FRTs/gitR/api/githup-api-example.mjs",
+			"bookmarks": [
+				{
+					"label": "clear{",
+					"line": 154,
+					"column": 0
+				}
+			]
+		},
+		{
+			"path": "._2/FRTs/gitR/lstRemotes/dir.sh",
+			"bookmarks": [
+				{
+					"label": "isDir",
+					"line": 3,
+					"column": 0
+				}
+			]
+		},
+		{
+			"path": "._2/FRTs/gitR/lstRemotes/lstRemotes_u2.sh",
+			"bookmarks": [
+				{
+					"label": "getRemotes",
+					"line": 5,
+					"column": 0
+				},
+				{
+					"label": "isDir",
+					"line": 66,
+					"column": 0
+				}
+			]
+		},
+		{
+			"path": "._2/FRTs/keyS/FRT41_KeyS2_u2.01.sh",
+			"bookmarks": [
+				{
+					"label": "sayMsg",
+					"line": 69,
+					"column": 0
+				},
+				{
+					"label": "pickFile",
+					"line": 511,
+					"column": 0
+				}
+			]
+		},
+		{
+			"path": "._2/FRTs/keyS/setSSH_Host.njs",
+			"bookmarks": [
+				{
+					"label": "fmtSSH_Config",
+					"line": 190,
+					"column": 0
+				},
+				{
+					"label": "getSSH_Cfgs",
+					"line": 217,
+					"column": 0
+				},
+				{
+					"label": "putHost",
+					"line": 239,
+					"column": 0
+				},
+				{
+					"label": "sayHosts",
+					"line": 253,
+					"column": 0
+				},
+				{
+					"label": "sayHost",
+					"line": 258,
+					"column": 0
+				},
+				{
+					"label": "srtConfigs",
+					"line": 266,
+					"column": 0
+				},
+				{
+					"label": "srtConfig",
+					"line": 269,
+					"column": 0
+				},
+				{
+					"label": "fmtHostAlias",
+					"line": 275,
+					"column": 0
+				},
+				{
+					"label": "getHostAlias",
+					"line": 305,
+					"column": 0
+				},
+				{
+					"label": "getHostUser",
+					"line": 389,
+					"column": 0
+				},
+				{
+					"label": "sayMsg",
+					"line": 409,
+					"column": 0
+				},
+				{
+					"label": "getArg",
+					"line": 424,
+					"column": 0
+				},
+				{
+					"label": "fmtObj",
+					"line": 442,
+					"column": 0
+				},
+				{
+					"label": "ifExists",
+					"line": 447,
+					"column": 0
+				},
+				{
+					"label": "getFile",
+					"line": 454,
+					"column": 0
+				},
+				{
+					"label": "savFile",
+					"line": 461,
+					"column": 0
+				}
+			]
+		},
+		{
+			"path": "._2/FRTs/netR/FRT44_netR1_p1.01.sh",
+			"bookmarks": [
+				{
+					"label": "exit_wCR",
+					"line": 42,
+					"column": 0
+				},
+				{
+					"label": "setOSvars",
+					"line": 49,
+					"column": 0
+				},
+				{
+					"label": "listIPs_Windows",
+					"line": 66,
+					"column": 0
+				},
+				{
+					"label": "listIPs_Linux",
+					"line": 97,
+					"column": 0
+				},
+				{
+					"label": "netCmds",
+					"line": 215,
+					"column": 0
+				}
+			]
+		},
+		{
+			"path": "._2/FRTs/portR/run-node-apps.sh",
+			"bookmarks": [
+				{
+					"label": "PM2",
+					"line": 124,
+					"column": 0
+				},
+				{
+					"label": "deleteIfRunning",
+					"line": 143,
+					"column": 0
+				}
+			]
+		},
+		{
+			"path": "._2/FRTs/portR/webs-help.sh",
+			"bookmarks": [
+				{
+					"label": "Help",
+					"line": 3,
+					"column": 0
+				},
+				{
+					"label": "setLog1",
+					"line": 107,
+					"column": 0
+				},
+				{
+					"label": "setLog2",
+					"line": 124,
+					"column": 0
+				},
+				{
+					"label": "chkLogFile",
+					"line": 147,
+					"column": 0
+				},
+				{
+					"label": "LogIt",
+					"line": 165,
+					"column": 0
+				}
+			]
+		},
+		{
+			"path": "._2/JPTs/info",
+			"bookmarks": [
+				{
+					"label": "logIt",
+					"line": 75,
+					"column": 0
+				},
+				{
+					"label": "Help",
+					"line": 170,
+					"column": 0
+				},
+				{
+					"label": "cvt2winPath",
+					"line": 333,
+					"column": 0
+				},
+				{
+					"label": "cvt",
+					"line": 345,
+					"column": 0
+				},
+				{
+					"label": "setBashrc",
+					"line": 693,
+					"column": 0
+				}
+			]
+		},
+		{
+			"path": "._2/JPTs/JPT12_Main2Fns_p1.07.sh",
+			"bookmarks": [
+				{
+					"label": "exit_wCR",
+					"line": 116,
+					"column": 0
+				},
+				{
+					"label": "setOS",
+					"line": 123,
+					"column": 0
+				},
+				{
+					"label": "logIt",
+					"line": 226,
+					"column": 0
+				},
+				{
+					"label": "pause",
+					"line": 236,
+					"column": 0
+				},
+				{
+					"label": "ask4Anything",
+					"line": 242,
+					"column": 0
+				},
+				{
+					"label": "ask4Required",
+					"line": 247,
+					"column": 0
+				},
+				{
+					"label": "ask4Default",
+					"line": 256,
+					"column": 0
+				},
+				{
+					"label": "askYN",
+					"line": 265,
+					"column": 0
+				},
+				{
+					"label": "Begin",
+					"line": 275,
+					"column": 0
+				},
+				{
+					"label": "End",
+					"line": 308,
+					"column": 0
+				},
+				{
+					"label": "isDir",
+					"line": 323,
+					"column": 0
+				},
+				{
+					"label": "sayMBugEnd",
+					"line": 334,
+					"column": 0
+				},
+				{
+					"label": "sayMsg",
+					"line": 341,
+					"column": 0
+				},
+				{
+					"label": "setArgs",
+					"line": 411,
+					"column": 0
+				},
+				{
+					"label": "getOpts",
+					"line": 442,
+					"column": 0
+				},
+				{
+					"label": "getOpt",
+					"line": 457,
+					"column": 0
+				},
+				{
+					"label": "setCmds",
+					"line": 488,
+					"column": 0
+				},
+				{
+					"label": "setLv",
+					"line": 507,
+					"column": 0
+				},
+				{
+					"label": "getCmd1",
+					"line": 531,
+					"column": 0
+				},
+				{
+					"label": "getCmd",
+					"line": 543,
+					"column": 0
+				}
+			]
+		},
+		{
+			"path": "._2/JPTs/JPT13_reNum_p1.08.sh",
+			"bookmarks": [
+				{
+					"label": "Echo",
+					"line": 45,
+					"column": 0
+				}
+			]
+		},
+		{
+			"path": "._2/JPTs/JPT21_Dirs1_p1.01.sh",
+			"bookmarks": [
+				{
+					"label": "makDir",
+					"line": 203,
+					"column": 0
+				},
+				{
+					"label": "makDirName",
+					"line": 258,
+					"column": 0
+				},
+				{
+					"label": "shoEm",
+					"line": 291,
+					"column": 0
+				},
+				{
+					"label": "fixAppName",
+					"line": 311,
+					"column": 0
+				}
+			]
+		},
+		{
+			"path": "._2/JPTs/JPT30_Main1_u1.06.sh",
+			"bookmarks": [
+				{
+					"label": "Help",
+					"line": 111,
+					"column": 0
+				},
+				{
+					"label": "subFunction",
+					"line": 387,
+					"column": 0
+				}
+			]
+		},
+		{
+			"path": "._2/JPTs/RSS/RSS01_Main1_p1.07.sh",
+			"bookmarks": [
+				{
+					"label": "Help",
+					"line": 112,
+					"column": 0
+				}
+			]
+		},
+		{
+			"path": "._2/JPTs/RSS/RSS02_Main1_p2.01.sh",
+			"bookmarks": [
+				{
+					"label": "Help",
+					"line": 74,
+					"column": 0
+				}
+			]
+		},
+		{
+			"path": "._2/JPTs/RSS/dirList/dirlist.sh",
+			"bookmarks": [
+				{
+					"label": "logIt",
+					"line": 61,
+					"column": 0
+				},
+				{
+					"label": "echo_exit",
+					"line": 68,
+					"column": 0
+				},
+				{
+					"label": "getCnts1",
+					"line": 136,
+					"column": 0
+				},
+				{
+					"label": "getCnts2",
+					"line": 142,
+					"column": 0
+				}
+			]
+		},
+		{
+			"path": "._2/JPTs/RSS/dirList/RSS22_DirList_u1.05.sh",
+			"bookmarks": [
+				{
+					"label": "logIt",
+					"line": 61,
+					"column": 0
+				},
+				{
+					"label": "echo_exit",
+					"line": 68,
+					"column": 0
+				},
+				{
+					"label": "getCnts1",
+					"line": 136,
+					"column": 0
+				},
+				{
+					"label": "getCnts2",
+					"line": 142,
+					"column": 0
+				}
+			]
+		},
+		{
+			"path": "._2/JPTs/RSS/fileList/RSS21_FileList_p1.09.sh",
+			"bookmarks": [
+				{
+					"label": "exit_wCR",
+					"line": 92,
+					"column": 0
+				}
+			]
+		},
+		{
+			"path": "._2/JPTs/RSS/infoR/RSS23_Info_p0.09.sh",
+			"bookmarks": [
+				{
+					"label": "logIt",
+					"line": 81,
+					"column": 0
+				},
+				{
+					"label": "sayMsg",
+					"line": 87,
+					"column": 0
+				},
+				{
+					"label": "Help",
+					"line": 247,
+					"column": 0
+				},
+				{
+					"label": "cvt2winPath",
+					"line": 412,
+					"column": 0
+				},
+				{
+					"label": "cvt",
+					"line": 424,
+					"column": 0
+				},
+				{
+					"label": "setBashrc",
+					"line": 758,
+					"column": 0
+				}
+			]
+		},
+		{
+			"path": "._2/JPTs/RSS/infoR/RSS24_setServer.sh",
+			"bookmarks": [
+				{
+					"label": "Help",
+					"line": 3,
+					"column": 0
+				},
+				{
+					"label": "chkArg",
+					"line": 17,
+					"column": 0
+				}
+			]
+		},
+		{
+			"path": "._2/ZIPs/install-7zip.sh",
+			"bookmarks": [
+				{
+					"label": "exit_wCR",
+					"line": 12,
+					"column": 0
+				},
+				{
+					"label": "download",
+					"line": 18,
+					"column": 0
+				},
+				{
+					"label": "check7z",
+					"line": 25,
+					"column": 0
+				}
+			]
+		},
+		{
+			"path": "._2/ZIPs/set-repos-dir/re-install.sh",
+			"bookmarks": [
+				{
+					"label": "deleteDir",
+					"line": 7,
+					"column": 0
+				},
+				{
+					"label": "reinstall",
+					"line": 16,
+					"column": 0
+				}
+			]
+		}
+	]
+}
