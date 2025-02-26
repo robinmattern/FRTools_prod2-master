@@ -36,7 +36,7 @@
 ##FD   FRT42_GitR2.sh           | 173633|  1/05/25 18:45|  2257| p1.02`.50105.1845
 ##FD   FRT42_GitR2.sh           | 175151|  1/06/25 21:00|  2272| p1.02`.50106.2100
 ##FD   FRT42_GitR2.sh           | 175660|  1/07/25 15:30|  2276| p1.02`.50107.1530
-##FD   FRT42_GitR2.sh           | 177174|  2/26/25  8:30|  2286| p1.02`.50226.0830
+##FD   FRT42_GitR2.sh           | 177441|  2/26/25  8:52|  2288| p1.02`.50226.0852
 #
 ##DESC     .--------------------+-------+---------------+------+-----------------+
 #            This script has usefull GIT functions.
@@ -185,14 +185,15 @@
 #.(50226.01   2/26/25 RAM  7:45a| List remote commits
 #.(50226.02   2/26/25 RAM  7:52a| Fix list from nBeg to nCnt, not nEnd
 #.(50226.01b  2/26/25 RAM  8:30a| Fix origin/remote commits confusion
-
+#.(50226.01c  2/26/25 RAM  8:52a| Move origin/remote notice to cover git's msgs
+#
 ##PRGM     +====================+===============================================+
 ##ID 69.600. Main0              |
 ##SRCE     +====================+===============================================+
 #*/
 #========================================================================================================== #  ===============================  #
 
-        aVDt="Feb 26, 2025 8:30a"; aVer="p1.02"; aVTitle="Useful gitR2 Tools by formR";                                    # .(41103.02.2 RAM Was: gitR1)
+        aVDt="Feb 26, 2025 8:52a"; aVer="p1.02"; aVTitle="Useful gitR2 Tools by formR";                                    # .(41103.02.2 RAM Was: gitR1)
         aVer="$( echo "$0" | awk '{ match( $0, /_[dpstuv][0-9]+\.[0-9]+/ ); print substr( $0, RSTART+1, RLENGTH-1) }' )"  # .(21031.01.1 RAM Add [d...).(20416.03.8 "_p2.02", or _d1.09)
 
         LIB="gitR2"; LIB_LOG=${LIB}_LOG; LIB_USER=${LIB}_USER; Lib=${LIB}; aDir=$(dirname "${BASH_SOURCE}");              # .(41103.02.3).(41102.01.1 RAM Add JPT12_Main2Fns_p1.07.sh Beg).(80923.01.1)
@@ -1487,16 +1488,17 @@ function getRemoteName() {                                                      
 #    git show $(git rev-parse HEAD) | awk '/^commit / { c = substr($0,8,8) }; /^Author:/ { a = substr($0,8) }; /^Date:/ { d = substr($0,7,26) }; NR == 5 { print "\n  " c d a $0 }'
 #    git show $(git rev-parse HEAD) | awk '/^commit / { c = substr($0,8,8) }; /^Author:/ { a = substr($0,8) }; /^Date:/ { d = substr($0,6,27) }; NR == 5 { print "\n  " c $0 d"  "a }'
      echo ""; i=${nBeg}; nEnd=$(( nBeg + nCnt ))                                                            # .(41123.07.7)
-     aRemote="--all"; if [ "${bRemote}" == "1" ]; then                                                      # .(50226.01b.1 RAM --all includes all local branches
-     git fetch origin; aRemote="origin/${aBranch}"; fi                                                      # .(50226.01b.2 RAM git fetch origin updates all remote branches)
+     aRemote="--all"; if [ "${bRemote}" == "1" ]; then aRemote="origin/${aBranch}"                          # .(50226.01b.1 RAM --all includes all local branches
+        echo -e "  Retreiving commits from remote repo, aka: ${aRemote}."                                   # .(50226.01c.1 RAN cover git msgs)
+     git fetch origin; echo ""; fi                                                                          # .(50226.01b.2 RAM git fetch origin updates all remote branches)
      git log ${aRemote} --format=%H | head -n ${nCnt} | while read hash; do                                 # .(50226.01b.3 RAM Remove --all).(50226.02.1 RAM Was nBeg)
 #      git show --format="%h %s" --name-status $hash
        shoCommitMsg $((i+1)) "${hash:0:8}"
        i=$((i+1));
      done
-    if [ "${bRemote}" == "1" ]; then                                                                        # .(50226.01.3)
-        echo -e "\n  These commits are from Remote: ${aRemote}."                                            # .(50226.01.4)
-        fi                                                                                                  # .(50226.01.5)
+#   if [ "${bRemote}" == "1" ]; then                                                                        # .(50226.01c.2).(50226.01.3)
+#       echo -e "\n  These commits are from Remote: ${aRemote}."                                            # .(50226.01c.3).(50226.01.4)
+#       fi                                                                                                  # .(50226.01c.4).(50226.01.5)
    # while [[ $i -lt $nEnd ]]; do                                                                           # .(41123.07.8)
 #  #   sayMsg  "gitR[959]  i: $i, nEnd: $nEnd; nCnt: '${nCnt}'" 1
    #   i=$((i+1)); shoCommitMsg $i                                                                          # .(41030.04.1).(41030.05.3 RAM Use showCommitMsg)

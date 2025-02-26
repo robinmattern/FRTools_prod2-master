@@ -340,87 +340,87 @@
 			"bookmarks": [
 				{
 					"label": "help",
-					"line": 208,
+					"line": 209,
 					"column": 0
 				},
 				{
 					"label": "exit_wCR",
-					"line": 255,
+					"line": 256,
 					"column": 0
 				},
 				{
 					"label": "setOSvars",
-					"line": 263,
+					"line": 264,
 					"column": 0
 				},
 				{
 					"label": "Sudo",
-					"line": 282,
+					"line": 283,
 					"column": 0
 				},
 				{
 					"label": "chkUser",
-					"line": 397,
+					"line": 398,
 					"column": 0
 				},
 				{
 					"label": "chkRepo",
-					"line": 413,
+					"line": 414,
 					"column": 0
 				},
 				{
 					"label": "getBranch",
-					"line": 426,
+					"line": 427,
 					"column": 0
 				},
 				{
 					"label": "getRepoDir",
-					"line": 434,
+					"line": 435,
 					"column": 0
 				},
 				{
 					"label": "shoCommitMsg",
-					"line": 466,
+					"line": 467,
 					"column": 0
 				},
 				{
 					"label": "shoWorkingFiles",
-					"line": 497,
+					"line": 498,
 					"column": 0
 				},
 				{
 					"label": "getDate",
-					"line": 503,
+					"line": 504,
 					"column": 0
 				},
 				{
 					"label": "getReposDir",
-					"line": 559,
+					"line": 560,
 					"column": 0
 				},
 				{
 					"label": "initGit",
-					"line": 658,
+					"line": 659,
 					"column": 0
 				},
 				{
 					"label": "getProjectStage_fromURL",
-					"line": 1007,
+					"line": 1008,
 					"column": 0
 				},
 				{
 					"label": "getRemoteName",
-					"line": 1020,
+					"line": 1021,
 					"column": 0
 				},
 				{
 					"label": "setRemote1",
-					"line": 1984,
+					"line": 1986,
 					"column": 0
 				},
 				{
 					"label": "setRemote",
-					"line": 2006,
+					"line": 2008,
 					"column": 0
 				}
 			]

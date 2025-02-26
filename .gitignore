@@ -12,3 +12,5 @@ yarn.lock
 
 *_v[0-9]*
 *_t[0-9]*
+
+bookmarks.json
