@@ -1,18 +1,14 @@
 <!-- <script>document.redirect "http://92.112.184.206/set-repos.html"</script> -->
 <style> code { font-weight:bold; font-style: italic; background-color: #d8e7ec; color: blue; }</style>
 
-
-
-
-
 ## This is the formR Repos starter page
  
  From your new Repos folder, you can either
 
   - Option 1 in a browser:  
 
-      1. Download this file, <a href="https://gist.github.com/robinmattern/eb55b95233395b774f746ba18006bb9e">set-repos</a>  
-      2. Save it as <code>set-repos</code> in a Repos folder   
+      1. Download this file, <a href="https://raw.githubusercontent.com/robinmattern/FRTools_prod2-master/master/._2/ZIPs/set-repos">set-repos</a> (use: save link as...) 
+      2. Save it as <code>set-repos</code> in a Repos folder (with no extension)  
       3. Run it with: <code>bash set-repos</code>      
 
   - Option 2 in a bash terminal: 
@@ -20,20 +16,17 @@
       - Copy this line of code: <code>curl -s http&#58;//aidocs4u.com/set-repos | bash</code>
       - Paste and run it in a terminal.  
        
-   - Option 3 if the above link isn't available:
+  - Option 3 if the above link isn't available:
 
-      - Copy this line of code: <code>curl -s http&#58;//gist.github.com/robinmattern/eb55b95233395b774f746ba18006bb9e</code>
+      - Copy this line of code: <code>curl -s https&#58;//raw.githubusercontent.com/robinmattern/FRTools_prod2-master/master/._2/ZIPs/set-repos | bash</code>
       - Paste and run it in a terminal.  
               
-
  After that, you can run any of these install commands from your Repos folder: 
 
   - <code>bash install frtools # first</code>
-  - <code>bash install aicoder</code>
   - <code>bash install anyllm</code>
   - <code>bash install aidocs</code>
   
-
  To work on these projects, run any of these commands from your Repos folder:
    - Your own project  (use -d to doit)  
 
@@ -44,10 +37,10 @@
       5. Make changes to your code   
       6. Use VSCode to commit and sync your changes   
  
-
   - The AI Model Test project  (use -d to doit)
 
-      1. <code>gitr clone AI-Tests_dev01-robin</code>   
+      1. <code>bash install aicoder</code>
+      2. <code>gitr clone AI-Tests_dev01-robin</code>   
       3. <code>gitr clone AI-Tests_dev01-robin  '' dev01-bruce -d</code>   
       4. <code>cd AI-Tests_dev01-bruce; code Ai-Tests_dev01-bruce.*</code>   
       5. <code>gitr add remote AI-Tests_dev01-robin {GitHub_Account}</code>   

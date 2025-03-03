@@ -8,5 +8,9 @@
             "name": "FRTools_prod2-master",
             "path": "."
         }
-    ]
+    ],
+    "settings": {
+        "liveServer.settings.multiRootWorkspaceName": "FRTools_prod2-master",
+        "liveServer.settings.port": 5501
+    }
 }
