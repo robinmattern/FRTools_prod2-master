@@ -11,14 +11,20 @@
 
   - Option 1 in a browser:  
 
-      1. Download this file, <a href="http://92.112.184.206/set-repos">set-repos</a>  
+      1. Download this file, <a href="https://gist.github.com/robinmattern/eb55b95233395b774f746ba18006bb9e">set-repos</a>  
       2. Save it as <code>set-repos</code> in a Repos folder   
       3. Run it with: <code>bash set-repos</code>      
 
   - Option 2 in a bash terminal: 
 
-      - Run it with: <code>curl -s http&#58;//92.112.184.206/set-repos | bash</code>  
+      - Copy this line of code: <code>curl -s http&#58;//aidocs4u.com/set-repos | bash</code>
+      - Paste and run it in a terminal.  
        
+   - Option 3 if the above link isn't available:
+
+      - Copy this line of code: <code>curl -s http&#58;//gist.github.com/robinmattern/eb55b95233395b774f746ba18006bb9e</code>
+      - Paste and run it in a terminal.  
+              
 
  After that, you can run any of these install commands from your Repos folder: 
 
