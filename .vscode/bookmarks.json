@@ -5,57 +5,57 @@
 			"bookmarks": [
 				{
 					"label": "help",
-					"line": 85,
+					"line": 88,
 					"column": 0
 				},
 				{
 					"label": "setOSvars",
-					"line": 98,
+					"line": 101,
 					"column": 0
 				},
 				{
 					"label": "Sudo",
-					"line": 121,
+					"line": 124,
 					"column": 0
 				},
 				{
 					"label": "exit_wCR",
-					"line": 126,
+					"line": 129,
 					"column": 0
 				},
 				{
 					"label": "showEm",
-					"line": 146,
+					"line": 152,
 					"column": 0
 				},
 				{
 					"label": "clnHouse",
-					"line": 163,
+					"line": 169,
 					"column": 0
 				},
 				{
 					"label": "setBashrc",
-					"line": 190,
+					"line": 196,
 					"column": 0
 				},
 				{
 					"label": "setTHE_SERVER",
-					"line": 307,
+					"line": 313,
 					"column": 0
 				},
 				{
 					"label": "cpyToBin",
-					"line": 357,
+					"line": 363,
 					"column": 0
 				},
 				{
 					"label": "cpyScript",
-					"line": 425,
+					"line": 431,
 					"column": 0
 				},
 				{
 					"label": "makScript",
-					"line": 443,
+					"line": 449,
 					"column": 0
 				}
 			]

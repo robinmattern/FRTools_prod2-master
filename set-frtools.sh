@@ -16,6 +16,7 @@
 ##FD         set-frtools.sh     |  26049| 12/11/24  8:41|   453| v1.05`41211.0840
 ##FD         set-frtools.sh     |  28002| 12/25/24 12:40|   472| v1.05`41225.1240
 ##FD         set-frtools.sh     |  29196|  1/05/25 16:40|   480| v1.05`50105.1640
+##FD         set-frtools.sh     |  29854|  3/02/25 16:40|   488| v1.05`50302.2055
 #
 ##DESC     .--------------------+-------+-----------------+------+---------------+
 #            Create ._0/bin folder and copy all command scripts there as well as
@@ -56,12 +57,13 @@
 # .(41208.02 12/08/24 RAM  4:55p| Set different ${aBashrc}) in darwin20
 #.(41208.02b 12/08/24 RAM 11:50p| Who is right re setopt for MacOS
 #.(41208.02c 12/11/24 RAM  7:20a| Update finding .bashrc on unix
-# .(41211.02 12/11/24 RAM  8:40a| Fix wierdness copying script files
+#.(41211.02  12/11/24 RAM  8:40a| Fix wierdness copying script files
 #.(41208.02d 12/25/24 RAM 10:50a| Reverse priority for .bash_profile
-# .(41225.01 12/25/24 RAM 10:59a| Set aTS to include Y for year
-# .(41225.02 12/25/24 RAM 12:20p| Fix SetTHE_SERVER
-# .(41225.03 12/25/24 RAM 12:40p| Say ~/.bash_profile may need to be run
-# .(50105.07  1/05/25 RAM  4:40p| Cleanup blank lines in set-frtools.sh
+#.(41225.01  12/25/24 RAM 10:59a| Set aTS to include Y for year
+#.(41225.02  12/25/24 RAM 12:20p| Fix SetTHE_SERVER
+#.(41225.03  12/25/24 RAM 12:40p| Say ~/.bash_profile may need to be run
+#.(50105.07   1/05/25 RAM  4:40p| Cleanup blank lines in set-frtools.sh
+#.(41031.02b  3/02/25 RAM  8:54p| Add -d for arg2
 
 ##PRGM     +====================+===============================================+
 ##ID 69.600. Main0              |
@@ -77,6 +79,7 @@
   aVer="v1.05\`41211.0840"
   aVer="v1.05\`41225.1240"
   aVer="v1.05\`50105.1640"
+  aVer="v1.05\`50302.2055"
 
   echo ""
 
@@ -135,11 +138,14 @@ function exit_wCR() {
    if [[ "${1:0:2}" == "-d"  ]]; then aCmd="doit";                    bDoProfile="1";   bDoScripts="1";  fi # .(41124.01.1)
    if [[ "${1:0:3}" == "doi" ]]; then aCmd="doit";                    bDoProfile="1";   bDoScripts="1";  fi # .(41031.02.2 Add doit command)
    if [[ "${1:0:3}" == "wip" ]]; then aCmd="wipeIt";  if [[    "$2" == "doit"  ]]; then bDoWipe="1"; fi; fi # .(41030.03.2 Add doit option)
+   if [[ "${1:0:3}" == "wip" ]]; then aCmd="wipeIt";  if [[ "${2:0:2}" == "-d" ]]; then bDoWipe="1"; fi; fi # .(41031.02b.1).(41030.03.2 Add doit option)
    if [[ "${1:0:3}" == "pro" ]]; then aCmd="profile"; if [[ "${!#}" == "doit"  ]]; then bDoProfile="1";  fi; fi
+   if [[ "${1:0:3}" == "pro" ]]; then aCmd="profile"; if [[ "${2:0:2}" == "-d" ]]; then bDoProfile="1";  fi; fi                          # .(41031.02b.2 RAM -d for arg2)
 #  if [[ "${1:0:3}" == "pro" ]]; then aCmd="profile"; if [[ "${!#}" == "show"  ]]; then bDoProfile="0";  bShoProfile="1"; fi; fi         ##.(41208.02b.3)
    if [[ "${1:0:3}" == "pro" ]]; then aCmd="profile"; if [[    "$2" == "show"  ]]; then bDoProfile="0";  bShoProfile="1"; shift; fi; fi  # .(41208.02b.3)
    if [[ "${1:0:3}" == "pro" ]]; then aCmd="profile"; if [[    "$2" == "again" ]]; then bDoProfile="1";  bShoProfile="1"; shift; fi; fi  # .(41208.02b.4)
    if [[ "${1:0:3}" == "scr" ]]; then aCmd="copyEm";  if [[    "$2" == "doit"  ]]; then bDoScripts="1";  fi; fi
+   if [[ "${1:0:3}" == "scr" ]]; then aCmd="copyEm";  if [[ "${2:0:2}" == "-d" ]]; then bDoScripts="1";  fi; fi                          # .(41031.02b.3)
 
 # ---------------------------------------------------------------------------
 
@@ -432,7 +438,7 @@ function cpyScript() {
   if [ "${bDoScripts}" == "0" ]; then                  echo "  Will create script: ${aScrDir}/${aName1} for \"${aScript}\""; return; fi
   if [ "${bDoScripts}" == "1" ]; then                                                                                                                                        # .(41211.02.4 RAM Add if bDoScripts for clarity)
 # if [   -f "${aScript}" ]; then cp     -p  "${aScript}" "${aScrDir}/";                  echo "  Copied  script for: ${aName1}  in \"${aScript}\""; fi                       ##.(41211.02.5 RAM It's not copied, rather  ..)
-  if [   -f "${aScript}" ]; then 
+  if [   -f "${aScript}" ]; then
                                       makScript  "${aScript}" "${aScrDir}" "${aName}";   echo "  Created script in: ${aScrDir}/${aName1} for \"${aScript}\"";                # .(41211.02.6 RAM It's created it in aBinDir)
                                  fi
 #                                Sudo chmod  777 "${aScript}";                           ##.(41104.03.1 RAM No need to set permission for each script
