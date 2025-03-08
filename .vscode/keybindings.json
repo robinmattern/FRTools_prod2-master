@@ -1,0 +1,5 @@
+{
+    "key": "ctrl+alt+t", // Customize key
+    "command": "workbench.action.terminal.sendSequence",
+    "args": { "text": "start \"\" \"C:\\Program Files (x86)\\TextPad 4\\TextPad.exe\" \"${file}\"\r\n" }
+  }
