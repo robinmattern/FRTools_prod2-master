@@ -3,40 +3,41 @@
 ##=========+====================+================================================+
 ##RD         Main0              | GitR Tools
 ##RFILE    +====================+=======+===============+======+=================+
-##FD   FRT22_GitR1.sh           |  21714| 10/26/24 17:20|   461| p1.02`.41026.1720
-##FD   FRT42_GitR2.sh           |  24865| 10/29/24  8:52|   488| p1.02`.41029.0852
-##FD   FRT42_GitR2.sh           |  27486| 10/30/24 20:28|   513| p1.02`.41030.2028
-##FD   FRT42_GitR2.sh           |  30370| 10/31/24 10:11|   544| p1.02`.41031.0810
-##FD   FRT42_GitR2.sh           |  43817| 11/03/24 13:03|   692| p1.02`.41103.1303
-##FD   FRT42_GitR2.sh           |  62603| 11/04/24  9:45|   979| p1.02`.41104.1222
-##FD   FRT42_GitR2.sh           |  67220| 11/07/24  9:15|  1023| p1.02`.41107.0745
-##FD   FRT42_GitR2.sh           |  78987| 11/09/24 10:32|  1196| p1.02`.41109.1355
-##FD   FRT42_GitR2.sh           |  86844| 11/09/24 15:00|  1291| p1.02`.41109.1500
-##FD   FRT42_GitR2.sh           |  88127| 11/11/24 19:15|  1305| p1.02`.41111.1915
-##FD   FRT42_GitR2.sh           |  88208| 11/12/24 10:00|  1306| p1.02`.41112.1000
-##FD   FRT42_GitR2.sh           |  92817| 11/14/24 18:32|  1367| p1.02`.41114.1830
-##FD   FRT42_GitR2.sh           |  96740| 11/16/24 11:25|  1423| p1.02`.41116.1125
-##FD   FRT42_GitR2.sh           |  98952| 11/18/24 10:15|  1444| p1.02`.41118.1015
-##FD   FRT42_GitR2.sh           | 101830| 11/20/24 11:45|  1474| p1.02`.41120.1145
-##FD   FRT42_GitR2.sh           | 108122| 11/23/24 19:00|  1534| p1.02`.41123.1900
-##FD   FRT42_GitR2.sh           | 113886| 11/24/24 19:45|  1596| p1.02`.41124.1945
-##FD   FRT42_GitR2.sh           | 123098| 12/01/24 19:30|  1722| p1.02`.41201.1930
-##FD   FRT42_GitR2.sh           | 125748| 12/03/24  9:30|  1753| p1.02`.41203.0930
-##FD   FRT42_GitR2.sh           | 128720| 12/05/24  8:40|  1778| p1.02`.41205.0840
-##FD   FRT42_GitR2.sh           | 132995| 12/09/24  6:40|  1850| p1.02`.41209.0640
-##FD   FRT42_GitR2.sh           | 140914| 12/11/24  7:14|  1953| p1.02`.41211.0540
-##FD   FRT42_GitR2.sh           | 145239| 12/11/24 10:21|  2002| p1.02`.41211.1020
-##FD   FRT42_GitR2.sh           | 147201| 12/17/24  9:05|  2022| p1.02`.41217.0905
-##FD   FRT42_GitR2.sh           | 149239| 12/25/24 15:40|  2031| p1.02`.41225.1540
-##FD   FRT42_GitR2.sh           | 150500| 12/26/24  0:27|  2040| p1.02`.41226.0027
-##FD   FRT42_GitR2.sh           | 152353| 12/26/24 17:40|  2064| p1.02`.41226.1740
-##FD   FRT42_GitR2.sh           | 153647| 12/31/24 19:45|  2075| p1.02`.41231.1945
-##FD   FRT42_GitR2.sh           | 155440|  1/01/25 16:15|  2097| p1.02`.50101.1615
-##FD   FRT42_GitR2.sh           | 172633|  1/04/25 13:45|  2246| p1.02`.50104.1345
-##FD   FRT42_GitR2.sh           | 173633|  1/05/25 18:45|  2257| p1.02`.50105.1845
-##FD   FRT42_GitR2.sh           | 175151|  1/06/25 21:00|  2272| p1.02`.50106.2100
-##FD   FRT42_GitR2.sh           | 175660|  1/07/25 15:30|  2276| p1.02`.50107.1530
-##FD   FRT42_GitR2.sh           | 177441|  2/26/25  8:52|  2288| p1.02`.50226.0852
+##FD   FRT22_GitR1.sh           |  21714| 10/26/24 17:20|   461| p1.02`41026.1720
+##FD   FRT42_GitR2.sh           |  24865| 10/29/24  8:52|   488| p1.02`41029.0852
+##FD   FRT42_GitR2.sh           |  27486| 10/30/24 20:28|   513| p1.02`41030.2028
+##FD   FRT42_GitR2.sh           |  30370| 10/31/24 10:11|   544| p1.02`41031.0810
+##FD   FRT42_GitR2.sh           |  43817| 11/03/24 13:03|   692| p1.02`41103.1303
+##FD   FRT42_GitR2.sh           |  62603| 11/04/24  9:45|   979| p1.02`41104.1222
+##FD   FRT42_GitR2.sh           |  67220| 11/07/24  9:15|  1023| p1.02`41107.0745
+##FD   FRT42_GitR2.sh           |  78987| 11/09/24 10:32|  1196| p1.02`41109.1355
+##FD   FRT42_GitR2.sh           |  86844| 11/09/24 15:00|  1291| p1.02`41109.1500
+##FD   FRT42_GitR2.sh           |  88127| 11/11/24 19:15|  1305| p1.02`41111.1915
+##FD   FRT42_GitR2.sh           |  88208| 11/12/24 10:00|  1306| p1.02`41112.1000
+##FD   FRT42_GitR2.sh           |  92817| 11/14/24 18:32|  1367| p1.02`41114.1830
+##FD   FRT42_GitR2.sh           |  96740| 11/16/24 11:25|  1423| p1.02`41116.1125
+##FD   FRT42_GitR2.sh           |  98952| 11/18/24 10:15|  1444| p1.02`41118.1015
+##FD   FRT42_GitR2.sh           | 101830| 11/20/24 11:45|  1474| p1.02`41120.1145
+##FD   FRT42_GitR2.sh           | 108122| 11/23/24 19:00|  1534| p1.02`41123.1900
+##FD   FRT42_GitR2.sh           | 113886| 11/24/24 19:45|  1596| p1.02`41124.1945
+##FD   FRT42_GitR2.sh           | 123098| 12/01/24 19:30|  1722| p1.02`41201.1930
+##FD   FRT42_GitR2.sh           | 125748| 12/03/24  9:30|  1753| p1.02`41203.0930
+##FD   FRT42_GitR2.sh           | 128720| 12/05/24  8:40|  1778| p1.02`41205.0840
+##FD   FRT42_GitR2.sh           | 132995| 12/09/24  6:40|  1850| p1.02`41209.0640
+##FD   FRT42_GitR2.sh           | 140914| 12/11/24  7:14|  1953| p1.02`41211.0540
+##FD   FRT42_GitR2.sh           | 145239| 12/11/24 10:21|  2002| p1.02`41211.1020
+##FD   FRT42_GitR2.sh           | 147201| 12/17/24  9:05|  2022| p1.02`41217.0905
+##FD   FRT42_GitR2.sh           | 149239| 12/25/24 15:40|  2031| p1.02`41225.1540
+##FD   FRT42_GitR2.sh           | 150500| 12/26/24  0:27|  2040| p1.02`41226.0027
+##FD   FRT42_GitR2.sh           | 152353| 12/26/24 17:40|  2064| p1.02`41226.1740
+##FD   FRT42_GitR2.sh           | 153647| 12/31/24 19:45|  2075| p1.02`41231.1945
+##FD   FRT42_GitR2.sh           | 155440|  1/01/25 16:15|  2097| p1.02`50101.1615
+##FD   FRT42_GitR2.sh           | 172633|  1/04/25 13:45|  2246| p1.02`50104.1345
+##FD   FRT42_GitR2.sh           | 173633|  1/05/25 18:45|  2257| p1.02`50105.1845
+##FD   FRT42_GitR2.sh           | 175151|  1/06/25 21:00|  2272| p1.02`50106.2100
+##FD   FRT42_GitR2.sh           | 175660|  1/07/25 15:30|  2276| p1.02`50107.1530
+##FD   FRT42_GitR2.sh           | 177441|  2/26/25  8:52|  2288| p1.02`50226.0852
+##FD   FRT42_GitR2.sh           | 179028|  3/08/25 11:45|  2304| p1.02`50308.1145
 #
 ##DESC     .--------------------+-------+---------------+------+-----------------+
 #            This script has usefull GIT functions.
@@ -186,6 +187,7 @@
 #.(50226.02   2/26/25 RAM  7:52a| Fix list from nBeg to nCnt, not nEnd
 #.(50226.01b  2/26/25 RAM  8:30a| Fix origin/remote commits confusion
 #.(50226.01c  2/26/25 RAM  8:52a| Move origin/remote notice to cover git's msgs
+#.(50308.01   3/08/25 RAM 11:45a| Enhance track[branch] command
 #
 ##PRGM     +====================+===============================================+
 ##ID 69.600. Main0              |
@@ -193,7 +195,7 @@
 #*/
 #========================================================================================================== #  ===============================  #
 
-        aVDt="Feb 26, 2025 8:52a"; aVer="p1.02"; aVTitle="Useful gitR2 Tools by formR";                                    # .(41103.02.2 RAM Was: gitR1)
+        aVDt="Mar 8, 2025 11:45a"; aVer="p1.02"; aVTitle="Useful gitR2 Tools by formR";                                    # .(41103.02.2 RAM Was: gitR1)
         aVer="$( echo "$0" | awk '{ match( $0, /_[dpstuv][0-9]+\.[0-9]+/ ); print substr( $0, RSTART+1, RLENGTH-1) }' )"  # .(21031.01.1 RAM Add [d...).(20416.03.8 "_p2.02", or _d1.09)
 
         LIB="gitR2"; LIB_LOG=${LIB}_LOG; LIB_USER=${LIB}_USER; Lib=${LIB}; aDir=$(dirname "${BASH_SOURCE}");              # .(41103.02.3).(41102.01.1 RAM Add JPT12_Main2Fns_p1.07.sh Beg).(80923.01.1)
@@ -212,16 +214,16 @@ function help() {
      echo "  ${aVTitle} (${aVer})         (${aVDt})"
      echo "  -------------------------------------------  ---------------------------------"
 #    echo ""
-     echo "    clone [name] [stagedir]                    Clone files from remote name to stagedir"         # .(41103.06.1)
-     echo "    clone branch [name] [stagedir] [branch]    Clone files from remote name/branch to stagedir"  # .(41103.06.2)
+     echo "    clone [name] [stagedir]                    Clone files from remote name to stagedir"                   # .(41103.06.1)
+     echo "    clone branch [name] [stagedir] [branch]    Clone files from remote {name}/{branch} to stagedir"        # .(41103.06.2)
      echo "    Status                                     Show uncommitted files in working tree, if any"   # .(41123.02.1)
      echo "    Add commit {msg}                           Add and commit working files to .({TS})"          # .(41129.03.1)
      echo "    Show commit  [{beg}|{hash}] [{cnt}]        Show files for {cnt} commits from {beg}/{hash}"   # .(41123.08.1).(41030.05.1)
      echo "    List commits [{beg}] [{cnt}]               List last {cnt} commits from {beg}"               # .(41123.07.1).(41031.03.1).(51030.05.1)
      echo "    List remotes                               List current remote repositories"                 # .(41031.03.2)
-     echo "    List branches                              List current remote repositories"                 # .(41114.04.1)
+     echo "    List branches                              List current local branches"                      # .(41114.04b.1 RAM Was: repositories 50308.1037).(41114.04.1)
      echo "    Branch {branch}                            Checkout branch {branch}"                         # .(41114.04.2)
-     echo "    Track Branch                               Set tracking for origin/branch"
+     echo "    Track Branch                               Set/Show current tracking for {remmote}/{branch}" # .(50308.01.1 RAM Modify Track Branch command)
      echo "    Delete Branch {branch}                     Delete branch"                                    # .(41209.02.1)
      echo "    Set remote  {name} [{acct}] [{repo}] [-d]  Set current remote repository"
      echo "    Add remote  {name} [{acct}] [{repo}] [-d]  Add new origin remote repository"
@@ -350,13 +352,16 @@ while [[ $# -gt 0 ]]; do  # Loop through all arguments
   if [ "$1" == "bra" ] && [ "$2" != ""    ]; then aCmd="checkoutBranch";  fi                                # .(41225.05.1).(41114.04.3 RAM Checkout Branch).(41103.05.2)
   if [ "$1" == "che" ];                      then aCmd="checkoutBranch";  fi                                # .(41114.04.4 RAM Checkout Branch).(41103.05.2)
 
-  if [ "$1" == "bra" ] && [ "$2" == ""    ]; then aCmd="listBranches";    fi                                # .(41225.05.2)
-  if [ "$1" == "lis" ] && [ "$2" == "bra" ]; then aCmd="listBranches";  fi              # .(41103.05.2 RAM List Branchs)
-  if [ "$1" == "bra" ] && [ "$2" == "lis" ]; then aCmd="listBranches";  fi              # .(41103.05.2 RAM List Branchs)
-  if [ "$1" == "tra" ] && [ "$2" == "bra" ]; then aCmd="trackBranch";   fi
-  if [ "$1" == "bra" ] && [ "$2" == "tra" ]; then aCmd="trackBranch";   fi
-  if [ "$1" == "del" ] && [ "$2" == "bra" ]; then aCmd="deleteBranch";  fi              # .(41209.02.2)
-  if [ "$1" == "bra" ] && [ "$2" == "del" ]; then aCmd="deleteBranch";  fi              # .(41209.02.3)
+  if [ "$1" == "bra" ] && [ "$2" == ""    ]; then aCmd="listBranches"; fi                                  # .(41225.05.2)
+  if [ "$1" == "lis" ] && [ "$2" == "bra" ]; then aCmd="listBranches"; fi               # .(41103.05.2 RAM List Branchs)
+  if [ "$1" == "bra" ] && [ "$2" == "lis" ]; then aCmd="listBranches"; fi               # .(41103.05.2 RAM List Branchs)
+
+  if [ "$1" == "tra" ] && [ "$2" == ""    ]; then aCmd="trackBranch";  fi               # .(50308.01.2)
+  if [ "$1" == "tra" ] && [ "$2" == "bra" ]; then aCmd="trackBranch";  fi
+  if [ "$1" == "bra" ] && [ "$2" == "tra" ]; then aCmd="trackBranch";  fi
+
+  if [ "$1" == "del" ] && [ "$2" == "bra" ]; then aCmd="deleteBranch"; fi               # .(41209.02.2)
+  if [ "$1" == "bra" ] && [ "$2" == "del" ]; then aCmd="deleteBranch"; fi               # .(41209.02.3)
 
   if [ "$1" == "bac" ] && [ "$2" == "loc" ]; then aCmd="backupLocal";  fi
   if [ "$1" == "rep" ] && [ "$2" == "loc" ]; then aCmd="replaceLocal"; fi               # .(41031.07.2)
@@ -1744,19 +1749,30 @@ function getRemoteName() {                                                      
 # ---------------------------------------------------------------------------
 #    sayMsg  "gitR2[1407] aCmd: '${aCmd}'" 1
 
+
   if [ "${aCmd}" == "trackBranch" ]; then
 #    aName="origin"; aBranch="${aArg3}"; if [ "${aBranch}" == "" ]; then aBranch="$( git branch | awk '/\*/ { print substr($0,3) }' )"; fi  ##.(41104.04.8)
-     aName="origin"; aBranch="${aArg3}"; if [ "${aBranch}" == "" ]; then getBranch; fi  # .(41104.04.9)
 
+     aName="origin";     if [ "${aArg4}" != "" ]; then aName="${aArg4}"; fi             # .(50308.01.3)
+     aBranch="${aArg3}"; if [ "${aArg3}" == "" ]; then getBranch; fi                    # .(41104.04.9)
+#    aBranch1=$( git rev-parse --abbrev-ref HEAD)  # Get current branch
+     aTracking=$( git branch -vv | grep "^\*\s$branch" | awk '{print $4}' | sed 's/^\[\(.*\)\].*/\1/' )  # .(50308.01.4)
+     if [ "${aTracking}" == "" ]; then aTracking="origin/${aBranch}"; fi                # .(50308.01.5)
+# .(50308.01.1 RAM Modify Track Branch command)
      aGIT1="git push origin \"HEAD:refs/heads/${aBranch}\""
      aGIT2="git fetch origin"
-     aGIT3="git branch --set-upstream-to  \"${aName}/${aBranch}\"  \"${aBranch}\""
-     echo -e "\n  ${aGIT1}\n  ${aGIT2}\n  ${aGIT3}"; # exit
+#    aGIT3="git branch --set-upstream-to \"${aName}/${aBranch}\"  \"${aBranch}\""       ##.(50308.01.6)
+     aGIT3="git branch --set-upstream-to \"${aName}/${aBranch}\""                       # .(50308.01.6)
   if [ "${bDoit}" == "1" ]; then
-     eval        "${aGIT1}"
-     eval        "${aGIT2}"
-     eval        "${aGIT3}"
-     fi
+#    echo -e "\n  ${aGIT1}\n  ${aGIT2}\n  ${aGIT3}"; # exit                             ##.(50308.01.7)
+     echo -e "\n  ${aGIT3}"; # exit                                                     # .(50308.01.7)
+#    eval        "${aGIT1}"                                                             ##.(50308.01.7)
+#    eval        "${aGIT2}"                                                             ##.(50308.01.7)
+#    eval        "${aGIT3}"
+   else                                                                                 # .(50308.01.8 Beg)
+     echo -e "\n  Push and pulls are set to use: \"${aTracking}\"."
+     echo -e "    ${aGIT3} # Add -d to doit"; # exit
+     fi                                                                                 # .(50308.01.8 End)
      exit_wCR
      fi
 # ---------------------------------------------------------------------------

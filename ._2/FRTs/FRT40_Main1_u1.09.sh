@@ -1099,8 +1099,8 @@ function copyFile() {                                                           
             Sudo chmod 755 *.sh
             echo -e   "\n./set-anyllm.sh";                                              # .(41113.01.4 RAM Remove leading spaces)
                          ./set-anyllm.sh doit
-            echo -e   "\nanyllm help";                                                  # .(41113.01.5)
-                         anyllm
+            echo -e     "anyllm help";                                                  # .(41113.01b.1 RAM Remove \n).(41113.01.5)
+                         anyllm help                                                    # .(41113.01b.2)
             fi # eif bUpdate != "0"                                                                         # .(41115.02d.50)
 
        # 4. Now you can switch between branches:
