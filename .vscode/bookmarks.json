@@ -340,201 +340,206 @@
 			"bookmarks": [
 				{
 					"label": "help",
-					"line": 211,
+					"line": 212,
 					"column": 0
 				},
 				{
 					"label": "exit_wCR",
-					"line": 258,
+					"line": 259,
 					"column": 0
 				},
 				{
 					"label": "setOSvars",
-					"line": 266,
+					"line": 267,
 					"column": 0
 				},
 				{
 					"label": "Sudo",
-					"line": 285,
+					"line": 286,
 					"column": 0
 				},
 				{
 					"label": "chkUser",
-					"line": 403,
+					"line": 404,
 					"column": 0
 				},
 				{
 					"label": "chkRepo",
-					"line": 419,
+					"line": 420,
 					"column": 0
 				},
 				{
 					"label": "getBranch",
-					"line": 432,
+					"line": 433,
 					"column": 0
 				},
 				{
+					"line": 442,
+					"column": 0,
+					"label": "getTrackingRemote"
+				},
+				{
 					"label": "getRepoDir",
-					"line": 440,
+					"line": 448,
 					"column": 0
 				},
 				{
 					"label": "shoCommitMsg",
-					"line": 472,
+					"line": 480,
 					"column": 0
 				},
 				{
 					"label": "shoWorkingFiles",
-					"line": 503,
+					"line": 511,
 					"column": 0
 				},
 				{
 					"label": "getDate",
-					"line": 509,
+					"line": 517,
 					"column": 0
 				},
 				{
 					"label": "getReposDir",
-					"line": 565,
+					"line": 573,
 					"column": 0
 				},
 				{
 					"label": "initGit",
-					"line": 664,
+					"line": 672,
 					"column": 0
 				},
 				{
 					"label": "getProjectStage_fromURL",
-					"line": 1013,
+					"line": 1021,
 					"column": 0
 				},
 				{
 					"label": "getRemoteName",
-					"line": 1026,
+					"line": 1034,
 					"column": 0
 				},
 				{
-					"line": 1118,
+					"line": 1126,
 					"column": 0,
 					"label": "cloneRemote"
 				},
 				{
-					"line": 1269,
+					"line": 1277,
 					"column": 0,
 					"label": "setGlobals"
 				},
 				{
-					"line": 1286,
+					"line": 1294,
 					"column": 0,
 					"label": "help"
 				},
 				{
-					"line": 1295,
+					"line": 1303,
 					"column": 0,
 					"label": "gitStatus"
 				},
 				{
-					"line": 1316,
+					"line": 1324,
 					"column": 0,
 					"label": "addCommit"
 				},
 				{
-					"line": 1377,
+					"line": 1385,
 					"column": 0,
 					"label": "updateRepo"
 				},
 				{
-					"line": 1483,
+					"line": 1491,
 					"column": 0,
 					"label": "shoLast"
 				},
 				{
-					"line": 1520,
+					"line": 1529,
 					"column": 0,
 					"label": "shoCommit"
 				},
 				{
-					"line": 1542,
+					"line": 1551,
 					"column": 0,
 					"label": "pullRemote"
 				},
 				{
-					"line": 1586,
+					"line": 1595,
 					"column": 0,
 					"label": "pushRemote"
 				},
 				{
-					"line": 1607,
+					"line": 1616,
 					"column": 0,
 					"label": "listBranches"
 				},
 				{
-					"line": 1622,
+					"line": 1631,
 					"column": 0,
 					"label": "deleteBranch"
 				},
 				{
-					"line": 1650,
+					"line": 1659,
 					"column": 0,
 					"label": "checkoutBranch"
 				},
 				{
-					"line": 1697,
+					"line": 1706,
 					"column": 0,
 					"label": "makRemote"
 				},
 				{
-					"line": 1753,
+					"line": 1762,
 					"column": 0,
 					"label": "trackBranch"
 				},
 				{
-					"line": 1780,
+					"line": 1789,
 					"column": 0,
 					"label": "replaceLocal"
 				},
 				{
-					"line": 1798,
+					"line": 1807,
 					"column": 0,
 					"label": "mergeRemote"
 				},
 				{
-					"line": 1845,
+					"line": 1854,
 					"column": 0,
 					"label": "addRemote"
 				},
 				{
-					"line": 1846,
+					"line": 1855,
 					"column": 0,
 					"label": "setRemote"
 				},
 				{
 					"label": "setRemote1",
-					"line": 2002,
+					"line": 2011,
 					"column": 0
 				},
 				{
 					"label": "setRemote",
-					"line": 2024,
+					"line": 2033,
 					"column": 0
 				},
 				{
-					"line": 2171,
+					"line": 2180,
 					"column": 0,
 					"label": "deleteRemote"
 				},
 				{
-					"line": 2186,
+					"line": 2195,
 					"column": 0,
 					"label": "shoRemote"
 				},
 				{
-					"line": 2198,
+					"line": 2207,
 					"column": 0,
 					"label": "installGH"
 				},
 				{
-					"line": 2276,
+					"line": 2285,
 					"column": 0,
 					"label": "backupLocal"
 				}

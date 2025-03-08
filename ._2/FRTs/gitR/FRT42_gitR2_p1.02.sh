@@ -37,7 +37,7 @@
 ##FD   FRT42_GitR2.sh           | 175151|  1/06/25 21:00|  2272| p1.02`50106.2100
 ##FD   FRT42_GitR2.sh           | 175660|  1/07/25 15:30|  2276| p1.02`50107.1530
 ##FD   FRT42_GitR2.sh           | 177441|  2/26/25  8:52|  2288| p1.02`50226.0852
-##FD   FRT42_GitR2.sh           | 179028|  3/08/25 11:45|  2304| p1.02`50308.1145
+##FD   FRT42_GitR2.sh           | 180303|  3/08/25 13:25|  2316| p1.02`50308.1325
 #
 ##DESC     .--------------------+-------+---------------+------+-----------------+
 #            This script has usefull GIT functions.
@@ -188,6 +188,7 @@
 #.(50226.01b  2/26/25 RAM  8:30a| Fix origin/remote commits confusion
 #.(50226.01c  2/26/25 RAM  8:52a| Move origin/remote notice to cover git's msgs
 #.(50308.01   3/08/25 RAM 11:45a| Enhance track[branch] command
+#.(50308.02   3/08/25 RAM  1:25p| Write and Use getTrackingReport for list comm
 #
 ##PRGM     +====================+===============================================+
 ##ID 69.600. Main0              |
@@ -195,7 +196,7 @@
 #*/
 #========================================================================================================== #  ===============================  #
 
-        aVDt="Mar 8, 2025 11:45a"; aVer="p1.02"; aVTitle="Useful gitR2 Tools by formR";                                    # .(41103.02.2 RAM Was: gitR1)
+        aVDt="Mar 8, 2025  1:25p"; aVer="p1.02"; aVTitle="Useful gitR2 Tools by formR";                                    # .(41103.02.2 RAM Was: gitR1)
         aVer="$( echo "$0" | awk '{ match( $0, /_[dpstuv][0-9]+\.[0-9]+/ ); print substr( $0, RSTART+1, RLENGTH-1) }' )"  # .(21031.01.1 RAM Add [d...).(20416.03.8 "_p2.02", or _d1.09)
 
         LIB="gitR2"; LIB_LOG=${LIB}_LOG; LIB_USER=${LIB}_USER; Lib=${LIB}; aDir=$(dirname "${BASH_SOURCE}");              # .(41103.02.3).(41102.01.1 RAM Add JPT12_Main2Fns_p1.07.sh Beg).(80923.01.1)
@@ -416,7 +417,7 @@ function chkUser() {                                                            
     } # eof chkUser                                                                     # .(41114.07.1 End)
 # ---------------------------------------------------------------------------
 
-function chkRepo() {                                                                                        # .(41103.03.3 RAM Write chkRepo Beg)
+  function  chkRepo() {                                                                                     # .(41103.03.3 RAM Write chkRepo Beg)
 
 #if [ "${aStage}"   == "$(pwd)" ]; then
  if [ "${aRepoDir}" == "" ]; then
@@ -429,7 +430,7 @@ function chkRepo() {                                                            
     }                                                                                                       # .(41103.03.3 End)
 # ---------------------------------------------------------------------------
 
-function getBranch( ) {                                                                                     # .(41104.04.1 RAM Create getBranch function Beg)
+  function  getBranch( ) {                                                                                  # .(41104.04.1 RAM Create getBranch function Beg)
      if [ -d .git ]; then                                                                                   # .(41104.05.1)
 #       aBranch="$( git branch | awk '/\*/ { sub( /.+at /, "" ); sub( /\)$/, "" ); print substr($0,3) }' )" ##.(41114.03.1)
         aBranch="$( git symbolic-ref --short HEAD )"                                                        # .(41114.03.1 RAM More reliable).(41102.02.1)
@@ -437,7 +438,15 @@ function getBranch( ) {                                                         
      }                                                                                                      # .(41104.04.1 End)
 # ---------------------------------------------------------------------------
 
- function getRepoDir() {
+  function  getTrackingRemote() {                                                                           # .(50308.03.1 RAM Write getTrackingRemote Beg)
+        aCurBrnch=$( git rev-parse --abbrev-ref HEAD )
+        aTracking=$( git branch -vv | awk '/^\* '${aCurBrnch}'/ { sub(/^\[/, "", $4); sub(/[\]:].*/, "", $4); print $4 }' )
+if [ "${aTracking}" == "" ]; then aTracking="origin/${aBranch}"; fi
+        echo "${aTracking}"
+        }                                                                                                   # .(50308.03.1 End)
+# ---------------------------------------------------------------------------
+
+  function  getRepoDir() {
    rRepos="/.*[Rr][Ee][Pp][Oo][Ss][0-2]?/"                                                                  # .(50107.01.1 RAM Add [0-2]? to aRepos)
    aRepos="$( echo "$(pwd)"       | awk '{ match( $0, '${rRepos}' ); print substr($0,1,RLENGTH) }' )"       # .(50107.01.2)
    if [ "${aRepos}" == "" ];        then aRepos="$( dirname $(pwd) )"; fi; # echo "  aRepos: '${aRepos}'"   # .(41129.05.1 RAM What if no Repos dir)
@@ -460,7 +469,8 @@ function getBranch( ) {                                                         
    echo "  - aRepo:    '${aRepo}'"
    echo "  - aProject: '${aProject}'"
    echo "  - aStage:   '${aStage}'"
-   echo "  - aBranch:  '${aBranch}'"                                                                          # .(41102.02.2)
+   echo "  - aBranch:  '${aBranch}'"                                                                        # .(41102.02.2)
+   echo "  = aRemote:  '$(getTrackingRemote)'"                                                              # .(50308.03.2)
    echo "  - aRepoDir: '${aRepoDir}'"
    echo "  - aAcct:    '${aAcct}'"
    echo ""
@@ -1486,14 +1496,15 @@ function getRemoteName() {                                                      
                       if [ "${aArg4}" == "remote" ]; then bRemote="1"; aArg4="${aArg5}"; fi                 # .(50226.01.1 End)
        nCnt=${aArg3}; if [ "${nCnt}" == "" ]; then  nCnt=9; fi # echo "  nCnt: ${nCnt}"                     # .(41109.05.4 RAM Was: nCnt=1)
        if [ "${aArg4}" != "" ]; then nCnt=${aArg4}; nBeg=${aArg3}; else nBeg=0; fi                          # .(41123.07.6 RAM Add nBeg)
-     sayMsg  "gitR[951]  aArg3: '${aArg3}', aArg4: '${aArg4}', nBeg: '${nBeg}', nCnt: '${nCnt}', bRemote: ${bRemote}, aBranch: ${aBranch}" -1
+     sayMsg  "gitR[1497]  aArg3: '${aArg3}', aArg4: '${aArg4}', nBeg: '${nBeg}', nCnt: '${nCnt}', bRemote: ${bRemote}, aBranch: ${aBranch}" -1
 #    aAWK='/^commit / { c = substr($0,8,8) }; /^Author:/ { a = substr($0,8) }; /^Date:/ { d = substr($0,6,27) }; NR == 5 { print "\n  " c $0 d"  "a }'
 #    aAWK='/^commit / { c = substr($0,8,8) }; /^Author:/ { a = substr($0,8) }; /^Date:/ { d = substr($0,6,27) }; NR == 5 { m = sprintf( "\"%-50s", ($0 != "") ? substr($0,5)"\"" : "n/a\"" ); print " " c d"   "m"  "a }'
 #    git show $(git rev-parse HEAD) | awk '/^commit / { c = substr($0,8,8) }; /^Author:/ { a = substr($0,8) }; /^Date:/ { print "\n" c substr($0,7,26) a }'
 #    git show $(git rev-parse HEAD) | awk '/^commit / { c = substr($0,8,8) }; /^Author:/ { a = substr($0,8) }; /^Date:/ { d = substr($0,7,26) }; NR == 5 { print "\n  " c d a $0 }'
 #    git show $(git rev-parse HEAD) | awk '/^commit / { c = substr($0,8,8) }; /^Author:/ { a = substr($0,8) }; /^Date:/ { d = substr($0,6,27) }; NR == 5 { print "\n  " c $0 d"  "a }'
      echo ""; i=${nBeg}; nEnd=$(( nBeg + nCnt ))                                                            # .(41123.07.7)
-     aRemote="--all"; if [ "${bRemote}" == "1" ]; then aRemote="origin/${aBranch}"                          # .(50226.01b.1 RAM --all includes all local branches
+#    aRemote="--all"; if [ "${bRemote}" == "1" ]; then aRemote="origin/${aBranch}"                          ##.(50226.01b.1 RAM --all includes all local branches).(50308.03.3)
+     aRemote="--all"; if [ "${bRemote}" == "1" ]; then aRemote="$( getTrackingRemote \"${aBranch}\" )"      # .(50308.03.3 RAM Use getTrackingBranch).(50226.01b.1 RAM--all includes all local branches)
         echo -e "  Retreiving commits from remote repo, aka: ${aRemote}."                                   # .(50226.01c.1 RAN cover git msgs)
      git fetch origin; echo ""; fi                                                                          # .(50226.01b.2 RAM git fetch origin updates all remote branches)
      git log ${aRemote} --format=%H | head -n ${nCnt} | while read hash; do                                 # .(50226.01b.3 RAM Remove --all).(50226.02.1 RAM Was nBeg)
@@ -1756,9 +1767,10 @@ function getRemoteName() {                                                      
      aName="origin";     if [ "${aArg4}" != "" ]; then aName="${aArg4}"; fi             # .(50308.01.3)
      aBranch="${aArg3}"; if [ "${aArg3}" == "" ]; then getBranch; fi                    # .(41104.04.9)
 #    aBranch1=$( git rev-parse --abbrev-ref HEAD)  # Get current branch
-     aTracking=$( git branch -vv | grep "^\*\s$branch" | awk '{print $4}' | sed 's/^\[\(.*\)\].*/\1/' )  # .(50308.01.4)
-     if [ "${aTracking}" == "" ]; then aTracking="origin/${aBranch}"; fi                # .(50308.01.5)
-# .(50308.01.1 RAM Modify Track Branch command)
+#    aTracking=$( git branch -vv | grep "^\*\s${aBranch}" | awk '{print $4}' | sed 's/^\[\(.*\):.*\]$/\1/' )       ##.(50308.01.4).(50308.03.4)
+#    aTracking=$( git branch -vv | awk '/^\* '${aBranch}'/ { sub(/^\[/, "", $4); sub(/:.*/, "", $4); print $4 }' ) ##.(50308.01.4).(50308.03.4)
+     aTracking=$( getTrackingRemote "${aBranch}" )                                      # .(50308.03.4).(50308.01.4)
+#    if [ "${aTracking}" == "" ]; then aTracking="origin/${aBranch}"; fi                ##.(50308.01.5).(50308.03.4)
      aGIT1="git push origin \"HEAD:refs/heads/${aBranch}\""
      aGIT2="git fetch origin"
 #    aGIT3="git branch --set-upstream-to \"${aName}/${aBranch}\"  \"${aBranch}\""       ##.(50308.01.6)
@@ -1781,8 +1793,8 @@ function getRemoteName() {                                                      
 
        getBranch # aBranch="$( git branch | awk '/\*/ { print substr($0,3)}' )          # .(41104.04.10)
 
-                                  aRemote_name="origin"; if [ "${aBranch}" == "" ]; then aBranch="master"; fi
-    if [ "${aArg3}" != "" ]; then aRemote_name="$( echo "${aArg3}" | awk '{ print tolower($0) }' )"; fi
+                                   aRemote_name="origin"; if [ "${aBranch}" == "" ]; then aBranch="master"; fi
+    if [ "${aArg3}" != ""  ]; then aRemote_name="$( echo "${aArg3}" | awk '{ print tolower($0) }' )"; fi
     if [ "${bDoit}" != "1" ]; then
        echo ""
        git fetch "${aRemote_name}" | awk '{ print "  " $0 }; END{ if (NR > 0) { print "" }; print "Fetch complete " NR }'
