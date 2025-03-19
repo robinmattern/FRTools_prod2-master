@@ -394,212 +394,152 @@
 			"path": "._2/FRTs/gitR/FRT42_gitR2_p1.02.sh",
 			"bookmarks": [
 				{
-					"label": "help",
-					"line": 214,
-					"column": 0
-				},
-				{
-					"label": "exit_wCR",
-					"line": 261,
-					"column": 0
-				},
-				{
-					"label": "setOSvars",
-					"line": 269,
-					"column": 0
-				},
-				{
-					"label": "Sudo",
-					"line": 288,
-					"column": 0
-				},
-				{
-					"label": "chkUser",
-					"line": 411,
-					"column": 0
-				},
-				{
-					"label": "chkRepo",
-					"line": 427,
-					"column": 0
-				},
-				{
-					"label": "getBranch",
-					"line": 440,
-					"column": 0
-				},
-				{
-					"line": 449,
-					"column": 0,
-					"label": "getTrackingRemote"
-				},
-				{
-					"label": "getRepoDir",
-					"line": 455,
-					"column": 0
-				},
-				{
-					"label": "shoCommitMsg",
-					"line": 487,
-					"column": 0
-				},
-				{
-					"label": "shoWorkingFiles",
-					"line": 518,
-					"column": 0
-				},
-				{
-					"label": "getDate",
-					"line": 524,
-					"column": 0
-				},
-				{
 					"label": "getReposDir",
-					"line": 580,
+					"line": 602,
 					"column": 0
 				},
 				{
 					"label": "initGit",
-					"line": 679,
+					"line": 701,
 					"column": 0
 				},
 				{
 					"label": "getProjectStage_fromURL",
-					"line": 1028,
+					"line": 1050,
 					"column": 0
 				},
 				{
 					"label": "getRemoteName",
-					"line": 1041,
+					"line": 1063,
 					"column": 0
 				},
 				{
-					"line": 1133,
+					"line": 1155,
 					"column": 0,
 					"label": "cloneRemote"
 				},
 				{
-					"line": 1284,
+					"line": 1306,
 					"column": 0,
 					"label": "setGlobals"
 				},
 				{
-					"line": 1301,
+					"line": 1323,
 					"column": 0,
 					"label": "help"
 				},
 				{
-					"line": 1310,
+					"line": 1332,
 					"column": 0,
 					"label": "gitStatus"
 				},
 				{
-					"line": 1331,
+					"line": 1353,
 					"column": 0,
 					"label": "addCommit"
 				},
 				{
-					"line": 1392,
+					"line": 1414,
 					"column": 0,
 					"label": "updateRepo"
 				},
 				{
-					"line": 1498,
+					"line": 1520,
 					"column": 0,
 					"label": "shoLast"
 				},
 				{
-					"line": 1536,
+					"line": 1558,
 					"column": 0,
 					"label": "shoCommit"
 				},
 				{
-					"line": 1558,
+					"line": 1580,
 					"column": 0,
 					"label": "pullRemote"
 				},
 				{
-					"line": 1602,
+					"line": 1624,
 					"column": 0,
 					"label": "pushRemote"
 				},
 				{
-					"line": 1623,
+					"line": 1645,
 					"column": 0,
 					"label": "listBranches"
 				},
 				{
-					"line": 1638,
+					"line": 1660,
 					"column": 0,
 					"label": "deleteBranch"
 				},
 				{
-					"line": 1666,
+					"line": 1688,
 					"column": 0,
 					"label": "checkoutBranch"
 				},
 				{
-					"line": 1713,
+					"line": 1735,
 					"column": 0,
 					"label": "makRemote"
 				},
 				{
-					"line": 1769,
+					"line": 1791,
 					"column": 0,
 					"label": "trackBranch"
 				},
 				{
-					"line": 1796,
+					"line": 1818,
 					"column": 0,
 					"label": "replaceLocal"
 				},
 				{
-					"line": 1814,
+					"line": 1836,
 					"column": 0,
 					"label": "mergeRemote"
 				},
 				{
-					"line": 1861,
+					"line": 1883,
 					"column": 0,
 					"label": "addRemote"
 				},
 				{
-					"line": 1862,
+					"line": 1884,
 					"column": 0,
 					"label": "setRemote"
 				},
 				{
 					"label": "setRemote1",
-					"line": 2018,
-					"column": 0
-				},
-				{
-					"label": "setRemote",
 					"line": 2040,
 					"column": 0
 				},
 				{
-					"line": 2192,
+					"label": "setRemote",
+					"line": 2062,
+					"column": 0
+				},
+				{
+					"line": 2214,
 					"column": 0,
 					"label": "deleteRemote"
 				},
 				{
-					"line": 2207,
+					"line": 2229,
 					"column": 0,
 					"label": "shoRemote"
 				},
 				{
-					"line": 2220,
+					"line": 2242,
 					"column": 0,
 					"label": "installGH"
 				},
 				{
-					"line": 2299,
+					"line": 2321,
 					"column": 0,
 					"label": "backupLocal"
 				},
 				{
-					"line": 2326,
+					"line": 2348,
 					"column": 0,
 					"label": "listWorkingFiles"
 				}
