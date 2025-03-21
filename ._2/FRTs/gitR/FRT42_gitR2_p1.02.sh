@@ -38,8 +38,8 @@
 ##FD   FRT42_GitR2.sh           | 175660|  1/07/25 15:30|  2276| p1.02`50107.1530
 ##FD   FRT42_GitR2.sh           | 177441|  2/26/25  8:52|  2288| p1.02`50226.0852
 ##FD   FRT42_GitR2.sh           | 180303|  3/08/25 13:25|  2316| p1.02`50308.1325
-##FD   FRT42_GitR2.sh           | 183497|  3/18/25 17:00|  2369| p1.02`50318.1700
 ##FD   FRT42_GitR2.sh           | 184797|  3/18/25 17:30|  2391| p1.02`50318.1730
+##FD   FRT42_GitR2.sh           | 185037|  3/21/25 15:05|  2394| p1.02`50321.1505
 #
 ##DESC     .--------------------+-------+---------------+------+-----------------+
 #            This script has usefull GIT functions.
@@ -192,7 +192,8 @@
 #.(50308.01   3/08/25 RAM 11:45a| Enhance track[branch] command
 #.(50308.02   3/08/25 RAM  1:25p| Write and Use getTrackingReport for list comm
 #.(50318.01   3/18/25 RAM  5:00p| Write list working files
-#.(50318.01b  3/18/25 RAM  5:30p| Make it work on a mac
+#.(50318.01b  3/18/25 RAM  5:30p| Make list working files work on a mac
+#.(50318.01c  3/21/25 RAM  3:05p| Add row nos. to working files
 #
 ##PRGM     +====================+===============================================+
 ##ID 69.600. Main0              |
@@ -200,7 +201,7 @@
 #*/
 #========================================================================================================== #  ===============================  #
 
-        aVDt="Mar 18, 2025  5:30p"; aVer="p1.02"; aVTitle="Useful gitR2 Tools by formR";                                    # .(41103.02.2 RAM Was: gitR1)
+        aVDt="Mar 21, 2025  3:05p"; aVer="p1.02"; aVTitle="Useful gitR2 Tools by formR";                                    # .(41103.02.2 RAM Was: gitR1)
         aVer="$( echo "$0" | awk '{ match( $0, /_[dpstuv][0-9]+\.[0-9]+/ ); print substr( $0, RSTART+1, RLENGTH-1) }' )"  # .(21031.01.1 RAM Add [d...).(20416.03.8 "_p2.02", or _d1.09)
 
         LIB="gitR2"; LIB_LOG=${LIB}_LOG; LIB_USER=${LIB}_USER; Lib=${LIB}; aDir=$(dirname "${BASH_SOURCE}");              # .(41103.02.3).(41102.01.1 RAM Add JPT12_Main2Fns_p1.07.sh Beg).(80923.01.1)
@@ -573,6 +574,8 @@ function getDate( aFile ) {
        aAWK1='BEGIN{ FPAT = "([^[:space:]]+)|(\"[^\"]+\")"} { printf "%-5s %s\n", $1, $2 }'                 # .(41124.06e.1 RAM Claude cleverness for quoted fields)
 #      aAWK2='{ printf "%17s %s\n", "", $0 }'                                                               ##.(41124.06e.2)
        aAWK2='{ printf "%20s   %-16s  %s\n", substr( $1, 1, 1 ), $2" "$3, substr( $0, 29 ) }'               # .(41124.06e.2)
+       aAWK3='{ printf "%5s. %s\n", NR, substr( $0, 8 ) }'                                                  # .(50318.01c.1 RAM Add Line Nos)
+
 
        sayMsg  "gitR2[ 576]   aAWK1=\"${aAWK1}\""  -1
        sayMsg  "gitR2[ 577]   aAWK2=\"${aAWK2}\""  -1
@@ -580,8 +583,8 @@ function getDate( aFile ) {
 #      git status    --short                                                                                ##.(41124.06.4)
 #      git status    --short | awk "${aAWK1}"   | awk "${GetDate}"                                          ##.(41124.06.4)
 #      git status -u --short | awk "${GetDate}" | awk '{ printf "%20s  %-16s  %s\n",$3,$1" "$2, s.($0,21)}' ##.(41129.02.3).(41124.06.4).(41124.06b.5)
-#      git status -u --short | awk "${aAWK1}"   | awk "${GetDate}" | awk  "${aAWK2}"                        ##.(50318.01b.4 RAM Sort it).(41124.06e.3).(41129.02.3).(41124.06.4)
-       git status -u --short | awk "${aAWK1}"   | awk "${GetDate}" | awk  "${aAWK2}" | sort -k4             # .(50318.01b.4 RAM Sort it).(41124.06e.3).(41129.02.3).(41124.06.4)
+#      git status -u --short | awk "${aAWK1}"   | awk "${GetDate}" | awk "${aAWK2}"                        ##.(50318.01b.4 RAM Sort it).(41124.06e.3).(41129.02.3).(41124.06.4)
+       git status -u --short | awk "${aAWK1}"   | awk "${GetDate}" | awk "${aAWK2}" | sort -k4 | awk "${aAWK3}" # .(50318.01c.2).(50318.01b.4 RAM Sort it).(41124.06e.3).(41129.02.3).(41124.06.4)
        fi # eif working files                                                                               # .(41124.06.12)
 
     if [ "$1" == "commit" ]; then                                                                           # .(41124.06.13 RAM For commit)
