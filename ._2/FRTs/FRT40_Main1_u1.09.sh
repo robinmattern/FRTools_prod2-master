@@ -168,6 +168,7 @@
 #.(50105.08c  1/05/25 RAM  8:45p| Use AICodeR case and run set-aicoder doit (c)
 #.(41218.04b  1/06/25 RAM  7:00a| Add gitr New Repo command for init
 #.(50106.04   1/06/25 RAM  9:00p| Add exit 1 for invalid clone and bDoit=0
+#.(50324.01   3/24/25 RAM  8:50a| Commit update on the hour
 
 ##PRGM     +====================+===============================================+
 ##ID 69.600. Main0              |
@@ -843,14 +844,14 @@ function copyFile() {                                                           
 #       copyFile "${aFromBranch}"    "{aFile}"    "${aToBranch}"
 
         aFromBranch="$1"; aFile="$2"; aToBranch="$3"; bDoit=$4                          # .(41111.04b.2 RAM Add bDoit)
-        aTS="$( date +%y%m%d )"; aTS="${aTS:1}"
+        aTS="$( date +%y%m%d )"; aTS="${aTS:1}"; aHR="$( date +%H )"                    # .(50324.01.1 RAM Commit on HR)
 
     if [ "${bDoit}" != "1" ]; then                                                      # .(41111.04b.3 Beg)
         echo "  git checkout \"${aToBranch}\""
         echo "  git checkout \"${aFromBranch}\" -- \"${aFile}\""
         echo "  sudo chmod 775 \"${aFile}\"";
         echo "  git add \"${aFile}\""
-        echo "  git commit -m \".(${aTS}.02_Add file, ${aFile}, from ${aFromBranch} branch\""
+        echo "  git commit -m \".(${aTS}.${aHR}_Add file, ${aFile}, from ${aFromBranch} branch\""           # .(50324.01.2) 
         echo "  git checkout \"${aFromBranch}\""
         exit_wCR
         fi                                                                              # .(41111.04b.3 End)
@@ -863,12 +864,12 @@ function copyFile() {                                                           
 #       git checkout "$1"                                        >/dev/null 2>&1        # Switch back to ALTools
 #       echo -e "\n  Copied file $2 to branch $1"                                       # .(41112.06.2)
 
-        git checkout "${aToBranch}"                                                >/dev/null 2>&1          # Switch to master branch
-        git checkout "${aFromBranch}" -- "${aFile}"                                >/dev/null 2>&1          # Get file from ALTools branch
+        git checkout "${aToBranch}"                                                >/dev/null 2>&1          #  Switch to master branch
+        git checkout "${aFromBranch}" -- "${aFile}"                                >/dev/null 2>&1          #  Get file from ALTools branch
         Sudo chmod 775 "${aFile}"; aTS="$( date +%y%m%d )"; aTS="${aTS:1}"                                  # .(41113.01.2).(41112.06.1)
-        git add "${aFile}"                                                         >/dev/null 2>&1          # Add and commit in master
-        git commit -m ".(${aTS}.02_Add file, ${aFile}, from ${aFromBranch} branch" >/dev/null 2>&1          # Commit it
-        git checkout "${aFromBranch}"                                              >/dev/null 2>&1          # Switch back to ALTools
+        git add "${aFile}"                                                         >/dev/null 2>&1          #  Add and commit in master
+        git commit -m ".(${aTS}.${aHR}_Add file, ${aFile}, from ${aFromBranch} branch" >/dev/null 2>&1      # .(50324.01.2 RAM Commit it on Hr)
+        git checkout "${aFromBranch}"                                              >/dev/null 2>&1          #  Switch back to ALTools
         echo -e "\n  Copied file ${aFile} to branch ${aToBranch}"                                           # .(41112.06.2)
         } # eof copyFile                                                                                    # .(41111.04.1 End)
 #       ---------------------------------------------------------------------
