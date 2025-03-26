@@ -48,21 +48,30 @@ function reinstall() {
 #  --------------------------------------------------------------
 
 if [ "$1" == "" ]; then
-   echo -e "\n  You can do: bash ${aInstall} FRTools, AICoder, AnyLLM or AIDocs"                            # .(50105.04.8 RAM Add dynamic ${aInstall} Beg)
-   echo -e   "          or: bash ${aInstall} all"
-   echo -e "\n  Other possible ways to install formR projects into their own repository folders:"
-   echo -e   "              bash ${aInstall} frtools                     ->  FRTools"
-   echo -e   "              bash ${aInstall} aicoder                     ->  AICodeR"                       # .(50104.01.15)
-   echo -e   "              bash ${aInstall} anyllm                      ->  AnyLLM"                        # .(50105.04.10)
-   echo -e   "              bash ${aInstall} aidocs                      ->  AIDocs_demo1-master"
-   echo -e   "              bash ${aInstall} aidocs no-stage             ->  AIDocs"
-   echo -e   "              bash ${aInstall} aidocs dev01-rick           ->  AIDocs_dev01-rick"
-   echo -e   "              bash ${aInstall} aidocs /dev03-robin         ->  AIDocs_/dev03-robin"           # .(50105.04.8 End)
+#  echo -e "\n  You can do: bash ${aInstall} FRTools, AICoder, AnyLLM or AIDocs"                            ##.(50105.04.8 RAM Add dynamic ${aInstall} Beg).(50226.03.1 Beg) 
+#  echo -e   "          or: bash ${aInstall} all"
+#  echo -e "\n  Other possible ways to install formR projects into their own repository folders:"
+#  echo -e   "              bash ${aInstall} frtools                     ->  FRTools"
+#  echo -e   "              bash ${aInstall} aicoder                     ->  AICodeR"                       # .(50104.01.15)
+#  echo -e   "              bash ${aInstall} anyllm                      ->  AnyLLM"                        # .(50105.04.10)
+#  echo -e   "              bash ${aInstall} aidocs                      ->  AIDocs_demo1-master"
+#  echo -e   "              bash ${aInstall} aidocs no-stage             ->  AIDocs"
+#  echo -e   "              bash ${aInstall} aidocs dev01-rick           ->  AIDocs_dev01-rick"
+#  echo -e   "              bash ${aInstall} aidocs /dev03-robin         ->  AIDocs_/dev03-robin"           # .(50105.04.8 End)
+#  echo -e "\n* Note: You must install FRTools before any other projects.  After that,"                     # .(50105.04.9 RAM Add more options Beg)
+#  echo -e   "        you can clone or create your own projects folder with:"
+#  echo -e "\n              frt clone {GitHub-Account} {Repo-Name}   -> {Repo-Name}"
+#  echo -e   "              frt gitr init AI-Tests_/dev03-robin      ->  AI-Tests_/dev03-robin"
+#  echo -e   "      or just     gitr init AI-Tests                   ->  AI-Tests"                          ##.(50105.04.9 End).(50226.03.1 End) 
+
+   echo -e "\n  You can now run any of these install commands from your Repos folder:"                      # .(50226.03.1 Rewrite Help Beg) 
+   echo -e "\n     bash ${aInstall} frtools     # first, then"
+   echo -e   "     source ~/.zshrc,         # then run, frt, to check it."
+   echo -e   "     bash ${aInstall} anyllm      # then run, anyllm, to check it."
+   echo -e   "     bash ${aInstall} aidocs      # then run, aidocs, to check it."
    echo -e "\n* Note: You must install FRTools before any other projects.  After that,"                     # .(50105.04.9 RAM Add more options Beg)
-   echo -e   "        you can clone or create your own projects folder with:"
-   echo -e "\n              frt clone {GitHub-Account} {Repo-Name}   -> {Repo-Name}"
-   echo -e   "              frt gitr init AI-Tests_/dev03-robin      ->  AI-Tests_/dev03-robin"
-   echo -e   "      or just     gitr init AI-Tests                   ->  AI-Tests"                          # .(50105.04.9 End)
+   echo -e   "  you can clone or create your own projects folder with:"
+   echo -e "\n     bash frt clone {GitHub-Account} {Repo-Name}"                                             # .(50226.03.1 End) 
 
    if [ "${OS:0:7}" != "Windows" ]; then echo ""; fi; exit
    fi
