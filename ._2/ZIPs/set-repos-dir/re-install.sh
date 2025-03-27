@@ -44,6 +44,7 @@ function reinstall() {
 #  echo "  ./install-${aRepo}.sh ${aRepoDir}"
 #          ./install-${aRepo}.sh ${aRepoDir} "$2" "$3"                                                      # .(50105.04.7)
            ./install-${aRepo}.sh ${aRepoDir}                                                                # .(50105.04.7)
+           ./._/INSTs/install-${aRepo}.sh ${aRepoDir}                                                       # .(50327.01.1 RAM Move install scripts to INSTs)
    }
 #  --------------------------------------------------------------
 
