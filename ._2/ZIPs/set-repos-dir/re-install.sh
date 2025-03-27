@@ -43,8 +43,8 @@ function reinstall() {
 
 #  echo "  ./install-${aRepo}.sh ${aRepoDir}"
 #          ./install-${aRepo}.sh ${aRepoDir} "$2" "$3"                                                      # .(50105.04.7)
-           ./install-${aRepo}.sh ${aRepoDir}                                                                # .(50105.04.7)
-           ./._/INSTs/install-${aRepo}.sh ${aRepoDir}                                                       # .(50327.01.1 RAM Move install scripts to INSTs)
+#          ./install-${aRepo}.sh ${aRepoDir}                                                                ##.(50105.04.7)..(50327.01.2)
+           ./._/INSTs/install-${aRepo}.sh ${aRepoDir}                                                       # .(50327.01.2 RAM Move install scripts to INSTs)
    }
 #  --------------------------------------------------------------
 
@@ -72,7 +72,8 @@ if [ "$1" == "" ]; then
    echo -e   "     bash ${aInstall} aidocs      # then run, aidocs, to check it."
    echo -e "\n* Note: You must install FRTools before any other projects.  After that,"                     # .(50105.04.9 RAM Add more options Beg)
    echo -e   "  you can clone or create your own projects folder with:"
-   echo -e "\n     bash frt clone {GitHub-Account} {Repo-Name}"                                             # .(50226.03.1 End) 
+#  echo -e "\n     bash frt clone {GitHub-Account} {Repo-Name}"                                             # .(50226.03.1 End).(50327.02.9)  
+   echo -e "\n     bash frt clone {RepoName} '' {CloneDir} {branch} {Account}"                              # .(50327.02.9) 
 
    if [ "${OS:0:7}" != "Windows" ]; then echo ""; fi; exit
    fi
