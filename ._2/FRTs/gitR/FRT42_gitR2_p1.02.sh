@@ -1102,10 +1102,15 @@ function getRemoteName() {                                                      
      if [ "${aRemoteName}" == "anyllm_prod1"        ]; then aRemoteName="anythingllm"; fi
      if [ "${aRemoteName}" == "anythingllm"         ]; then aStage="prod1-master"; aStageDir=""; fi         # .(41107.02.3 RAM Was: aStageDir=${aStage).(41104.06.5 RAM Just for AnythingLLM)
 #    if [ "${aRemoteName:0:4}" == "iodd"            ]; then aStage="prod-master"; aStageDir=""; fi          # .(41210.01.x RAM Add iodd)
+        
+     if [ "${aArg5}" == "master" ] || [ "${aArg5}" == "main" ]; then aBranch="${aArg5}"; fi                 # .(50327.02.1 RAM Fix branch name)   
      sayMsg  "gitR2[1040]  aRemoteName: '${aRemoteName}', aStage: '${aStage}', aBranch: '${aBranch}', aArg2: '${aArg2}', aArg3: '${aArg3}', aArg4: '${aArg4}', aArg5: '${aArg5}', aArg6: '${aArg6}'" -1
 
-     if [ "${aRemoteName/dev/}" != "${aRemoteName}" ]; then aRemoteName="origin"; fi
-
+#    if [ "${aRemoteName/dev/}" != "${aRemoteName}" ]; then aRemoteName="origin"; fi                        ##.(50327.02.2 RAM Add dev to aRemoteName ??)
+     if [ "${aRemoteName/\//}"  == "${aRemoteName}" ] && [ "yes" == "no" ]; then                            # .(50327.02.3 RAM check if / is not in aRemoteName)
+        echo -e "\n* Invalid RemoteName: '${aRemoteName}'"; exit_wCR;                                       # .(50327.02.4)
+        fi                                                                                                  # .(50327.02.5)
+  
      sayMsg  "gitR2[1044]  aRemoteName: '${aRemoteName}', aStage: '${aStage}', aBranch: '${aBranch}', aArg2: '${aArg2}', aArg3: '${aArg3}', aArg5: '${aArg4}', '$1'" -1
 
      if [ "$1" == "forClone" ]; then # --------------------------------------------------------------------
@@ -1140,15 +1145,15 @@ function getRemoteName() {                                                      
 #       aRemoteURL="$( echo "${aRemoteURL}" | awk '{ split( "/", m ); m[3] = "'"${aAcct}"'"; print m[1] m[2] m[3] m[4] m[5] m[6] m[7] m[8] m[9] }' )"
         aRemoteURL="$( echo "${aRemoteURL}" | awk "${aAWK}" | awk '{ sub( "/+$", "" ); print }' )"          # .(41118.02.1 RAM Remove trailing slashes)
 #       https://github.com/robinmattern/Anythin-llm_stage.git'
-        fi                                                                                                  # .(41104.09.1 End)
+        fi  # eif "${aArg6}" != ""                                                                          # .(41104.09.1 End)
 #    ------------------------------------------------------------------------------------------------------
 
         aRemoteURL="$( echo "${aRemoteURL}" | awk '{ sub( /_.git/, ".git"); print }' )"                     # .(41118.02.2 RAM Remove trailing _ from project)
         sayMsg  "gitR2[1086]  aRemoteURL:  '${aRemoteURL}'" -1
 
      if [ "${aStage}" == "" ]; then aStage="prod1-master"; fi                                               # .(41104.06.7)
-        sayMsg  "gitR2[1081]  aProject:    '${aProject}', aStage: '${aStage}', aStageDir: '${aStageDir}'"  -1
-        sayMsg  "gitR2[1092]  aRemoteName: '${aRemoteName}', aBranch: '${aBranch}', aRemoteURL: '${aRemoteURL}'" -1
+        sayMsg  "gitR2[1089]  aProject:    '${aProject}', aStage: '${aStage}', aStageDir: '${aStageDir}'"  -1
+        sayMsg  "gitR2[1100]  aRemoteName: '${aRemoteName}', aBranch: '${aBranch}', aRemoteURL: '${aRemoteURL}'" -1
 #       echo "    git ls-remote \"${aRemoteURL}\""; GIT_TERMINAL_PROMPT=0 git ls-remote "${aRemoteURL}"
         bOK="$( GIT_TERMINAL_PROMPT=0 git ls-remote "${aRemoteURL}" 2>&1 | awk '/HEAD/ { print 1 }' )"      # .(50106.04.2)
         if [ "${bOK}" != "1" ]; then echo -e "\n* Invalid Remote URL: '${aRemoteURL}'."                     # .(50106.04.3)
@@ -1163,7 +1168,7 @@ function getRemoteName() {                                                      
         chkUser                                                                                             # .(50106.0x.x RAM Probably not necessary)
 
         sayMsg  "" -1
-        sayMsg  "gitR2[1097]  Git Clone ${aCmd:5}" -1;
+        sayMsg  "gitR2[1171]  Git Clone ${aCmd:5}" -1;
         if [ "${aCmd:5}" == "Branch" ]; then                                                                # .(41201.03.1 RAM Start dealing with clone branch Beg)
            aArg1="${aArg2}"; aArg2="${aArg3}";  aArg3="${aArg4}"; aArg4="${aArg5}"; aArg5="${aArg6}"; aArg6=""
            fi
@@ -1223,6 +1228,8 @@ function getRemoteName() {                                                      
         aRemoteURL="${aRemoteURL/https:\/\/github.com\//git@${aSSH}:}";
         fi                                                                                                  # .(41210.01.10 End)
 
+        aCloneDir=$( echo "${aCloneDir}" | awk '{ if ( 1 < gsub("_", "_", $0) ) { sub( /^[^_]*_/, "" ); } print }' )  # .(50327.02.6)
+
      if [ "${aArg3}" != ""   ] && [ "${aBranch}" != "" ]; then # for branch                                 # .(41104.06.8 RAM aArg3 means user asked for it )
         forBranch=", from ${aProject}_${aStage}${toStageDir} for branch, ${aBranch}"
 #       aGIT1="git clone -b ${aBranch} --depth 1 \"${aRemoteURL}\" ${aCloneDir}"                            ##.(41104.07.4).(41029.03.1 RAM An even lighter clone with just the latest commit).(41105.01.1)
@@ -1237,14 +1244,14 @@ function getRemoteName() {                                                      
 #       sayMsg  "gitR2[1180]  git clone " +                       "aProject: '${aRemoteURL##*/}', aStageDir: '${aStageDir}', aBranch: '${aBranch}'" -1
         sayMsg  "gitR2[1181]  git clone aProject: '${aRemoteURL##*/}', aStageDir: '${aStageDir}', aBranch: '${aBranch}'" -1
         fi
-
      if [ "${aCloneDir}" == "" ]; then aDir="${aRemoteURL##*/}"; aDir="${aDir/.git/}"; else aDir="${aCloneDir}"; fi # .(41119.01.1 RAM Check if clone dir is empty Beg)
+        
         sayMsg  "gitR2[1185]  aCloneDir:   '${aDir}', aBranch: '${aBranch}', aRemoteURL: '${aRemoteURL}'" -1
 
      if [ -d "${aDir}" ]; then echo -e "\n* The folder, '${aDir}', is not empty. Unable to clone repository.";   # .(41119.01.2)
          exit_wCR;
          fi                                                                                                 # .(41119.01.1 End)
-     if [ -d ".git" ]; then echo -e "\n* The current folder is already a repository.";                      # .(41119.01.3)
+     if [ -d ".git" ]; then echo -e "\n* The current folder, '$( pwd )' is already a repository.";          # .(41119.01.3).(50327.02.7 RAM Add '$( pwd )')
          exit_wCR;
          fi                                                                                                 # .(41119.01.3 End)
 
@@ -1255,8 +1262,9 @@ function getRemoteName() {                                                      
 
      if [ "${bDoit}" != "1" ]; then
 #       echo -e "\n  ${aGIT1}\n  ${aGIT2}"
-        echo -e "\n  About to clone remote name, ${aRemoteName}${forBranch}:"
-        echo -e   "  ${aGIT1} # Add -d to doit"                                         # .(41029.04.1)
+#       echo -e "\n  About to clone remote name, ${aRemoteName}${forBranch}:"                               ##.(50327.02.8)
+        echo -e "\n  About to clone remote URL, ${aRemoteURL}' into '${aCloneDir}':"                        # .(50327.02.8 RAM new prompt)
+        echo -e   "  ${aGIT1} # Add -d to doit"                                                             # .(41029.04.1)
         exit_wCR 1                                                                                          # .(50106.04.5)
 
       else # bDoit == 1

@@ -54,7 +54,7 @@
      exit
      fi
      if [ "${OS:0:7}" != "Windows" ]; then echo ""; sudo chmod 755 *.sh; fi             # .(50101.04.1 RAM Opps Windows check)
-     if [ "${OS:0:7}" != "Windows" ]; then echo ""; sudo chmod 755 ._/INSTs/*.sh; fi    # .(50327.01.2 RAM Set chmod on moved INSTs scripts)
+     if [ "${OS:0:7}" != "Windows" ]; then echo ""; sudo chmod 755 ._/INSTs/*.sh; fi    # .(50327.01.1 RAM Set chmod on moved INSTs scripts)
     
      mv re-install.sh re-install
      mv    install.sh    install                                                        # .(50105.04.3 RAM For the new `install` script)
