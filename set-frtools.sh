@@ -1,5 +1,4 @@
 #!/bin/bash
-#!/bin/bash
 #*\
 ##=========+====================+================================================+
 ##RD         set-frtools        | JScriptWare Power Tools
@@ -17,6 +16,7 @@
 ##FD         set-frtools.sh     |  28002| 12/25/24 12:40|   472| v1.05`41225.1240
 ##FD         set-frtools.sh     |  29196|  1/05/25 16:40|   480| v1.05`50105.1640
 ##FD         set-frtools.sh     |  29854|  3/02/25 16:40|   488| v1.05`50302.2055
+##FD         set-frtools.sh     |  33251|  4/06/25  6:25|   532| v1.05`50406.0625
 #
 ##DESC     .--------------------+-------+-----------------+------+---------------+
 #            Create ._0/bin folder and copy all command scripts there as well as
@@ -64,6 +64,8 @@
 #.(41225.03  12/25/24 RAM 12:40p| Say ~/.bash_profile may need to be run
 #.(50105.07   1/05/25 RAM  4:40p| Cleanup blank lines in set-frtools.sh
 #.(41031.02b  3/02/25 RAM  8:54p| Add -d for arg2
+#.(50405.04   4/05/25 RAM  7:00p| Set shell profile file for ZSH or Bash
+#.(41208.02e  4/06/25 RAM  6:25a| More futzing around with .zshrc profile
 
 ##PRGM     +====================+===============================================+
 ##ID 69.600. Main0              |
@@ -80,13 +82,15 @@
   aVer="v1.05\`41225.1240"
   aVer="v1.05\`50105.1640"
   aVer="v1.05\`50302.2055"
+  aVer="v1.05\`50406.0625"
 
   echo ""
 
 # ---------------------------------------------------------------------------
 
 function help() {
-  echo "  Run ./set-frtools.sh commands: (${aVer}, OS: ${aOS})"
+  echo "  set-frtools.sh commands: (${aVer}, OS: ${aOS})"
+  echo "  ------------------------------------------------"
   echo "    help             This help"
   echo "    show            ${aBashrc} and script files"
   echo "    doit             Do scripts and profile"                                                        # .(41031.02.1)
@@ -101,23 +105,44 @@ function help() {
 function setOSvars() {
      aTS=$( date '+%y%m%d.%H%M' ); aTS=${aTS:1}                                                             # .(41225.01.1 RAM Was ${aTS:2})
 #    aBashrc="$HOME/.bashrc"                                                                                ##.(41208.02c.1)
-     if [ -f "$HOME/.bashrc"       ]; then aBashrc="$HOME/.bashrc"; fi                                      # .(41208.02b.1).(41208.02c.2)
-     if [ -f "$HOME/.bash_profile" ]; then aBashrc="$HOME/.bash_profile"; fi                                # .(41208.02b.2).(41208.02c.1)
+                                            aBashrc=""                                                      # .(41208.02e.1)
+
+  if [ "${OS:0:7}" == "Windows"     ]; then
+     if [ -f "$HOME/.profile"       ]; then aBashrc="$HOME/.profile";      fi                               # .(41208.02e.2)
+     if [ -f "$HOME/.bash_profile"  ]; then aBashrc="$HOME/.bash_profile"; fi                               # .(41208.02e.3)
+     if [ -f "$HOME/.bashrc"        ]; then aBashrc="$HOME/.bashrc";       fi                               # .(41208.02e.4)
+     if [ "${aBashrc}" == ""        ]; then aBashrc="$HOME/.bash_profile"; fi                               # .(41208.02e.5)
+
+     aBinDir="/C/Home/._0/bin"
+     aOS="windows";
+     fi
+
+  if [ "${OSTYPE:0:5}" == "linux"   ] || [ "${OSTYPE:0:4}" == "msys"  ]; then                               # .(41208.02e.6)
+     if [ -f "$HOME/.profile"       ]; then aBashrc="$HOME/.profile";      fi                               # .(41208.02e.7)
+     if [ -f "$HOME/.bash_profile " ]; then aBashrc="$HOME/.bash_profile"; fi                               # .(41208.02b.2)
+     if [ -f "$HOME/.bashrc"        ]; then aBashrc="$HOME/.bashrc";       fi                               # .(41208.02b.1)
+     if [ "${aBashrc}" == ""        ]; then aBashrc="$HOME/.bash_profile"; fi                               # .(41208.02e.8)
+
      aBinDir="/home/._0/bin"                                                                                # .(41211.02.1 RAM Was /Home/._0/bin)
      aOS="linux"
-  if [[ "${OS:0:7}" == "Windows" ]]; then
-     aOS="windows";
-     aBinDir="/C/Home/._0/bin"
-     fi
-  if [[ "${OSTYPE:0:6}" == "darwin" ]]; then
-     if [ -f "$HOME/.bashrc"       ]; then aBashrc="$HOME/.bashrc"; fi                                      # .(41208.02b.3).(41208.02.2)
-     if [ -f "$HOME/.bash_profile" ]; then aBashrc="$HOME/.bash_profile"; fi                                # .(41208.02b.4).(41208.02.1)
-     if [ -f "$HOME/.zshrc"        ]; then aBashrc="$HOME/.zshrc"; fi                                       # .(41208.02.3)
+     fi                                                                                                     # .(41208.02e.9)
+
+  if [ "${OSTYPE:0:6}" == "darwin"  ]; then
      bZSHver="0"; if [[ "${OSTYPE:6:2}" > 21 ]]; then bZSHver="1"; fi                                       # .(41208.02b.1)
 #    echo "  bZSHver: '${bZSHver}', OSTYPE:6:2: '${OSTYPE:6:2}'"; exit
+  if [ "${bZSHver}" == "0" ]; then                                                                          # .(41208.02e.10)
+     if [ -f "$HOME/.bashrc"        ]; then aBashrc="$HOME/.bashrc";       fi                               # .(41208.02b.3).(41208.02.2)
+     if [ -f "$HOME/.bash_profile"  ]; then aBashrc="$HOME/.bash_profile"; fi                               # .(41208.02b.4).(41208.02.1)
+   else                                                                                                     # .(41208.02e.11)
+     if [ -f "$HOME/.zprofile"      ]; then aBashrc="$HOME/.profile"; fi                                    #
+     if [ -f "$HOME/.zshrc"         ]; then aBashrc="$HOME/.zshrc"; fi                                      # .(41208.02.3)
+     fi                                                                                                     # .(41208.02e.12)
+     if [ "${aBashrc}" == ""        ]; then aBashrc="$HOME/.zshrc"; fi                                      # .(41208.02e.13)
+
      aBinDir="/Users/Shared/._0/bin"
      aOS="darwin"
      fi
+
      }
 # -----------------------------------------------------------
 
@@ -155,7 +180,7 @@ function showEm() {
   if [ -f "${aBinDir}/frt" ]; then ls -l "${aBinDir}" | awk 'NR > 1 { print "    " $0 }'; fi
   echo ""
 
-  echo "  .Bashrc: '${aBashrc}' contents:"
+  echo "  Shell Profile: '${aBashrc}' contents:"                                                            # .(50405.04.1 RAM Was .Bashrc)
   echo "  ------------------------------------------------"
   if [ -f "${aBashrc}" ]; then cat  "${aBashrc}" | awk '{ print "    " $0 }'; fi
   echo "  ------------------------------------------------"; echo ""
@@ -199,6 +224,17 @@ function setBashrc() {
 
 # if [ "${PATH/._0/}" != "${PATH}" ]; then
 
+  if [ ! -f "${aBashrc}" ]; then                                                        # .(41208.02e.14 RAM Check if aBashrc exists. Beg)
+     echo "* No Interactive Shell Profile found. Creating ${aBashrc}"
+     echo "# Created by Install FRTools on ${aTS}" 				 	   >"${aBashrc}";
+     echo ""                                       				      >>"${aBashrc}";
+     echo "  alias ll=\"ls -la\""                   			      >>"${aBashrc}";
+     echo "  alias cd-repos=\"cd /Users/Shared/Repos\""		          >>"${aBashrc}";
+	 echo "  alias cd-anyllm=\"cd /Users/Shared/Repos/AnyLLM\""	      >>"${aBashrc}";
+	 echo "  alias cd-frtools=\"cd /Users/Shared/Repos/FRTools\""	  >>"${aBashrc}";
+	 echo "  alias cd-aidocs=\"cd /Users/Shared/Repos/AIDocs_demo1\"" >>"${aBashrc}";
+     fi                                                                                 # .(41208.02e.14 End)
+
      inRC=$( cat "${aBashrc}" | awk '/\._0/ { print 1 }' );                             # .(41208.05.1 RAM Added /\._0/)
   if [[ "${inRC}" == "1" ]]; then
 
@@ -209,18 +245,27 @@ function setBashrc() {
   if [[ "${inRC}" == "" ]] || [[ "${bShoProfile}" == "1" ]]; then # Recreate "${aBashrc}"                   # .(41208.02b.6)
 #  else  # Recreate "${aBashrc}"                                                                            # .(41208.02b.7)
 
+  if [ "${bZSHver}" == "0" ]; then
+     aBASH_VERSION=$( bash --version | awk '{ print $4 }' )
+     aZSH_VERSION=""
+  else
+     aBASH_VERSION=""
+     aZSH_VERSION="$( zsh --version | awk '{ print $2 }' )"
+     fi
+
      if [ "${bDoProfile}" == "0" ]; then cat     "${aBashrc}" | awk '/._0/ { exit }; NF > 0 { print }' >"${aBashrc}_@tmp"
                                          aBashrc="${aBashrc}_@tmp"; fi
      if [ "${bDoProfile}" == "0" ]; then aWill_add="Will add"; else aWill_add="Adding"; fi
      if [ "${bDoProfile}" == "1" ]; then cp -p   "${aBashrc}" "${aBashrc}_v${aTS}"; fi
 
      echo -e "  ${aWill_add} path, '${aBinDir}', to User's PATH in '${aBashrc/_@tmp/}'.\n"; # exit          # .(50105.07.6 RAM Add \n)
-#    echo "  BASH_VERSION: '${BASH_VERSION}', ZSH_VERSION: '${ZSH_VERSION}'"; exit
+
+     echo "  BASH_VERSION: '${aBASH_VERSION}', ZSH_VERSION: '${aZSH_VERSION}', bZSHver: '${bZSHver}'"; # exit_wCR
 
      echo ""                                                >>"${aBashrc}"
-#    echo "export PATH=\"/Users/Shared/._0/bin:\$PATH\""    >>"${aBashrc}"
-     echo "export PATH=\"${aBinDir}:\$PATH\""               >>"${aBashrc}"
-     echo "export THE_SERVER=\"${THE_SERVER}\""             >>"${aBashrc}"              # .(41030.07.2)
+#    echo "  export PATH=\"/Users/Shared/._0/bin:\$PATH\""  >>"${aBashrc}"
+     echo "  export PATH=\"${aBinDir}:\$PATH\""             >>"${aBashrc}"
+     echo "  export THE_SERVER=\"${THE_SERVER}\""           >>"${aBashrc}"              # .(41030.07.2)
      echo ""                                                >>"${aBashrc}"
 
   if [ "${aOS}" != "windows" ]; then
@@ -235,21 +280,21 @@ function setBashrc() {
      echo "  }"                                             >>"${aBashrc}"
      echo ""                                                >>"${aBashrc}"
 
-     echo -e "\n  BASH_VERSION: '${BASH_VERSION}', ZSH_VERSION: '${ZSH_VERSION}', bZSHver: '${bZSHver}'\n";
+#    echo -e "\n  BASH_VERSION: '${aBASH_VERSION}', ZSH_VERSION: '${aZSH_VERSION}', bZSHver: '${bZSHver}'"; exit_wCR
 
 # if [ "${aOS}" != "darwin" ]; then                                                     ##.(41030.06.1 Beg).(41030.06b.1)
-  if [ -n "${BASH_VERSION}" ] && [ "${bZSHver}" == "0" ]; then                          # .(41208.02b.8).(41030.06b.1)
+  if [ -n "${aBASH_VERSION}" ] && [ "${bZSHver}" == "0" ]; then                         # .(41208.02e.15 RAM These are alll the same??).(41208.02b.8).(41030.06b.1)
      echo "  PROMPT_SUBST=true   # bash style"              >>"${aBashrc}"              # .(41123.01b.1 RAM Set Prompt correctly)
      echo "# setopt prompt_subst # zsh style"               >>"${aBashrc}"              # .(41123.01b.2)
      echo "# set -o PROMPT_SUBST # another bash style"      >>"${aBashrc}"              # .(41123.01b.3).(41123.01 RAM Change setopt for MacOS)
      fi
-  if [ -n "${BASH_VERSION}" ] && [ "${bZSHver}" == "1" ]; then                          # .(41208.02b.9).(41030.06b.1)
+  if [ -n "${aBASH_VERSION}" ] && [ "${bZSHver}" == "1" ]; then                         # .(41208.02e.16).(41208.02b.9).(41030.06b.1)
      echo "# PROMPT_SUBST=true   # bash style"              >>"${aBashrc}"              # .(41123.01b.1 RAM Set Prompt correctly)
      echo "# setopt prompt_subst # zsh style"               >>"${aBashrc}"              # .(41123.01b.2)
      echo "  set -o PROMPT_SUBST # another bash style"      >>"${aBashrc}"              # .(41123.01b.3).(41123.01 RAM Change setopt for MacOS)
      fi
-# if [ "${aOS}" == "darwin" ]; then
-  if [ -n "${ZSH_VERSION}"  ]; then                                                     ##.(41030.06.1 Beg).(41030.06b.2)
+# if [ "${aOS}" == "darwin" ]; then                                                     ##.(41030.06.1 Beg).(41030.06b.2)
+  if [ -n "${aZSH_VERSION}"  ]; then                                                    # .(41208.02e.17 RAM Use aZSH_VERSION)
      echo "# PROMPT_SUBST=true   # bash style"              >>"${aBashrc}"              # .(41030.06b.2).(41123.01b.1)
      echo "  setopt prompt_subst # zsh style"               >>"${aBashrc}"              # .(41123.01b.2)
      echo "# set -o PROMPT_SUBST # another bash style"      >>"${aBashrc}"              # .(41123.01b.3).(41123.01 RAM Change setopt for MacOS)
@@ -260,14 +305,14 @@ function setBashrc() {
      fi # eif windows prompt handled by git bash
 
      echo "# Add timestamps and user to history"            >>"${aBashrc}"
-  if [ -n "${BASH_VERSION}" ]; then    # for older Macs
+  if [ -n "${aBASH_VERSION}" ]; then   # for older Macs                                 # .(41208.02e.18)
      echo "  export HISTTIMEFORMAT=\"%F %T \$(whoami) \""   >>"${aBashrc}"
      echo "  PROMPT_COMMAND=\"history -a; $PROMPT_COMMAND\"">>"${aBashrc}"
                                        # Only for non-macOS Bash (Git Bash, Ubuntu)
      if [ "${aOS}" != "darwin" ]; then
      echo "  shopt -s histappend"                           >>"${aBashrc}"
      fi; fi
-  if [ -n "$ZSH_VERSION" ]; then       # For Zsh (newer macOS)
+  if [ -n "$aZSH_VERSION" ]; then      # For Zsh (newer macOS)                          # .(41208.02e.19)
      echo "  setopt EXTENDED_HISTORY   # Save timestamps"   >>"${aBashrc}"
      echo "  setopt INC_APPEND_HISTORY # Append immediately">>"${aBashrc}"
      echo "  alias history="fc -il 1"  # Format output"     >>"${aBashrc}"
@@ -460,8 +505,9 @@ function  makScript() {
   cd ..
   aProj_Dir="$(pwd)"
 
-  setOSvars;          # echo "  OS: ${aOS}"
-# setTHE_SERVER "$2";   echo "  THE_SERVER: ${THE_SERVER}"; exit
+  setOSvars;          # echo "  OS: '${aOS}', aBashrc: '${aBashrc}'"; exit_wCR
+
+# setTHE_SERVER "$2";   echo "  THE_SERVER: ${THE_SERVER}"; exit_wCR
 
   if [[ "${aCmd}" == "help"    ]]; then help; fi
   if [[ "${aCmd}" == "doit"    ]]; then cpyToBin; setBashrc; fi                                             # .(41031.02.3)

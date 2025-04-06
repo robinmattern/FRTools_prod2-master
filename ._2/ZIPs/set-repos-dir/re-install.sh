@@ -1,6 +1,6 @@
 #!/bin/bash
-
 #  --------------------------------------------------------------
+
    aInstall="re-install"; if [ "$1" == "install" ]; then aInstall="$1"; shift; fi                           # .(50105.04.6 RAM Add Install command for help)
    if [ "$1" == "help" ]; then set -- ""; fi
 
@@ -71,11 +71,11 @@ if [ "$1" == "" ]; then
 #  echo -e   "              frt gitr init AI-Tests_/dev03-robin      ->  AI-Tests_/dev03-robin"
 #  echo -e   "      or just     gitr init AI-Tests                   ->  AI-Tests"                          ##.(50105.04.9 End).(50226.03.1 End) 
 
-   aShell='.zshrc  '; if [ "${OSTYPE:0:7}" != "darwin2" ]; then aShell='.bashrc '; fi                       # .(50405.04.2)
+   aShell='.zshrc  '; if [ "${OSTYPE:0:7}" != "darwin2" ]; then aShell='.bashrc '; fi                       # .(50405.04.3 RAM Set aShell for Mac)
    
    echo -e "\n  You can now run any of these install commands from your Repos folder:"                      # .(50226.03.1 Rewrite Help Beg) 
    echo -e "\n     bash ${aInstall} frtools       # first, then login again, or run:"
-   echo -e   "       source ~/${aShell}           # then run, frt, to check it."                            # .(50405.04.3)
+   echo -e   "       source ~/${aShell}           # then run, frt, to check it."                            # .(50405.04.4)
    echo -e   ""
    echo -e   "     bash ${aInstall} anyllm        # then run, anyllm, to check it."
    echo -e   "     bash ${aInstall} aidocs demo1  # then run, aidocs, to check it."                         # .(50402.15.4)

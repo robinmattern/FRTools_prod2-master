@@ -60,7 +60,7 @@
      mv    install.sh    install                                                        # .(50105.04.3 RAM For the new `install` script)
 
      echo -e "  The FormR install scripts have been downloaded into your Repos folder."
-#    echo -e "  You can now run any of these install scripts -- "                       # .(50105.04.4 RAM Add install help).(50405.03.1 RAM Remove)
+#    echo -e "  You can now run any of these install scripts -- "                       ##.(50105.04.4 RAM Add install help).(50405.04.2 RAM Remove)
      bash install                                                                       # .(50105.04.5)
 
      if [ "${bTest}" == "0" ]; then rm set-repos-dir.zip; fi                            # .(50102.05.6 RAM If not testing locally).(41226.04.1 RAM Erase it)
