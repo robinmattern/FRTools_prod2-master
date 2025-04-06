@@ -49,11 +49,14 @@
 
 #    aBinScr="$( which aidocs )"
      aBinScr="$( pwd | awk '{ sub( /Repos|repos/, "" ); print $0 "._0/bin/aidocs" }' )" # .(50402.19.1 RAM Re-create aidocs script Beg)
-#    echo "  aBinScr: '${aBinScr}'"; exit
+     aBinDir="$( pwd | awk '{ sub( /Repos|repos/, "" ); print $0 "._0/bin"        }' )" # .(50402.19b.1 RAM Re-create aidocs script Beg)
+  if [ ! -d "${aBinDir}" ]; then mkdir -p "${aBinDir}"; echo "  Created ${aBinDir}"; fi # .(50402.19b.2 RAM Re-create binDir for this AIDocs and without Sudo??)
+#    echo "  aBinDir: '${aBinDir}'";  # exit
      aPath="$( pwd )/${aRepoDir}/run-aidocs.sh \"\$@\""
      echo "#!/bin/bash"  >"${aBinScr}"
      echo "${aPath}"    >>"${aBinScr}"                                                  # .(50402.19.1 End)
 
+# -----------------------------------------------
   if [ "1" == "2" ]; then
      aBinScr="$( which aidocs )"
 #    aPath="$( cat "${aBinScr}" | awk 'NR == 2 { print }' )"
@@ -68,7 +71,7 @@
      echo "  aRepo:    ${aRepo}"
   if [ "${OS:0:7}"     != "Windows" ]; then echo ""; fi
      exit
-     fi
+     fi  # eif "1" == "2"
 # --------------------------------------------------------------
 
    if [ $? -ne 1 ]; then                                                                # .(50106.04.15 RAM Exit if bDoit=0)
