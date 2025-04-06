@@ -57,9 +57,8 @@
      aPath="$( pwd )/${aRepoDir}/run-aidocs.sh \"\$@\""
      echo "#!/bin/bash"  >"${aBinScr}"
      echo "${aPath}"    >>"${aBinScr}"   
-     if [ "${OS.0.7}" != "Windows" ]; then sudo 777 "${aBinScr}"; fi                   # .(50402.19c.3)
-                                                                                       # .(50402.19.1 End)
-
+     if [ "${OS.0.7}" != "Windows" ]; then sudo 777 "${aBinScr}"; fi                    # .(50402.19d.1 RAM Set permmission for aidocs if not Windows)
+                                                                                        # .(50402.19.1 End)
 # -----------------------------------------------
   if [ "1" == "2" ]; then
      aBinScr="$( which aidocs )"
