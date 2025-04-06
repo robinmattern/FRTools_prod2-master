@@ -86,7 +86,7 @@
 if [ -d "${aRepoDir}/client1" ]; then
 
 if [ -f "${aRepoDir}/._2/package.json" ]; then                                          # .(50402.20.1 RAM Run other npm installs Beg)
-   echo -e "  cd ${aRepoDir}/._2";  # exit                                              ##.(50106.06.6).(50104.01.10)
+   echo -e "  cd ${aRepoDir}/._2";  # exit                                              # .(50106.06.6).(50104.01.10)
      cd "${aRepoDir}/._2"
            npm install >/dev/null
      cd ../../
@@ -94,15 +94,15 @@ if [ -f "${aRepoDir}/._2/package.json" ]; then                                  
 #   --------------------------------------------------
 
 if [ -f "${aRepoDir}/client1/package.json" ]; then
-   echo -e "  cd ${aRepoDir}/client1" # exit                                            ##.(50106.06.6).(50104.01.10)
-     cd "${aRepoDir}/client1"                                                           # .(50106.06.7)
+   echo -e "  cd ${aRepoDir}/client1" # exit                                            # .(50106.06.7).(50104.01.11)
+     cd "${aRepoDir}/client1"                                                           # .(50106.06.8)
            npm install >/dev/null
      cd ../../
      fi # eif ${aRepoDir}/client1/package.json
 #   --------------------------------------------------
 
 if [ -f "${aRepoDir}/server1/package.json" ]; then
-   echo -e "  cd ${aRepoDir}/server1" # exit                                            ##.(50106.06.6).(50104.01.10)
+   echo -e "  cd ${aRepoDir}/server1" # exit                                            # .(50106.06.9).(50104.01.12)
      cd "${aRepoDir}/server1"
    echo "  npm install"
            npm install | awk '{ print "    " $0 }'
@@ -133,14 +133,14 @@ function cpyEnv() {                                                             
  if [ "${bAnyLLM}" == "1" ] && [ "${aStage}" != "dev01" ]; then                         # .(50406.01.1).(50402.15.7 RAM Only set ANYLLM_KEY id it's installed)
 #  echo ""
    echo -e   "  Edit SERVER_HOST and ANYLLM_API_KEY in _env:"                           # .(50406.01e.2 RAM Remove CR)
-   echo -e   "     cd ${aRepoDir}"                                                      # .(50106.06.8
+   echo -e   "     cd ${aRepoDir}"                                                      # .(50106.06.10)
    echo -e   "     nano client1/c16_aidocs-review-app/utils/FRTs/_env"
    echo -e   "     ./run-client.sh\n"
-   echo -e   "  or work on it in VSCode with: code ${aRepoDir/\//}*"                    # .(50105.05c.7).(50106.06.8).(50104.01.13 End)
+   echo -e   "  or work on it in VSCode with: code ${aRepoDir/\//}*"                    # .(50105.05c.7).(50106.06.11).(50104.01.13 End)
  else                                                                                   # .(50406.01b.1 Display msg for AIDocs_dev01 Beg)
    echo -e   "  Run Models tests in ./server1/s##_...-app folders,"                     # .(50406.01e.3 RAM Remove CR)
    echo -e   "   after editing the model paramters in .env file, e.g." 
-   echo -e "\n    cd ${aRepoDir}/server1/s12_*"                                         # .(50106.06.8
+   echo -e "\n     cd ${aRepoDir}/server1/s12_*"                                        # .(50106.06d.1 RAM Add a space) 
    echo -e   "     nano .env"
    echo -e   "     node interactive_search_u2.02.mjs [{Model}] [{CTX_Size}]"
    fi                                                                                   # .(50406.01b.1 End).(50406.01.1 End).(50106.04.16 RAM Exit if bDoit=0)
