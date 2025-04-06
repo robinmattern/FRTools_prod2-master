@@ -56,7 +56,9 @@
 #    echo "  aBinScr: '${aBinScr}'";  # exit
      aPath="$( pwd )/${aRepoDir}/run-aidocs.sh \"\$@\""
      echo "#!/bin/bash"  >"${aBinScr}"
-     echo "${aPath}"    >>"${aBinScr}"                                                  # .(50402.19.1 End)
+     echo "${aPath}"    >>"${aBinScr}"   
+     if [ "${OS.0.7}" != "Windows" ]; then sudo 777 "${aBinScr}"; fi                   # .(50402.19c.3)
+                                                                                       # .(50402.19.1 End)
 
 # -----------------------------------------------
   if [ "1" == "2" ]; then
@@ -124,8 +126,9 @@ function cpyEnv() {                                                             
 #   fi
    echo ""                                                                              # .(50406.01e.1) 
    cpyEnv "./${aRepoDir}/client1/c16_aidocs-review-app/utils/FRTs"  "_env_local-local.txt"  "_env"          # .(50406.03.2 RAM Copy c16 _env) 
+ if [ "$aStage}" == "dev01" ]; then                                                                         # .(50406.03b.1 RAM Only copy dev01's env)
    cpyEnv "./${aRepoDir}/server1/s12_websearch-app" ".env_example"  ".env"                                  # .(50406.03.3 RAM Copy s12 .env)
-
+   fi                                                                                                       # .(50406.03b.2)
 # --------------------------------------------------------------
 
  if [ "${bAnyLLM}" == "1" ] && [ "${aStage}" != "dev01" ]; then                         # .(50406.01.1).(50402.15.7 RAM Only set ANYLLM_KEY id it's installed)
