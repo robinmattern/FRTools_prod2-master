@@ -42,7 +42,8 @@
      fi
 
      if [ "${bTest}" == "0" ]; then                                                     # .(50102.05.4 RAM Test local version)
-  if ! curl -s "${aZIPs_URL}/set-repos-dir.zip"  -o set-repos-dir.zip  2>/dev/null; then
+     echo "  curl -s \"${aZIPs_URL}/set-repos-dir.zip\"  -o set-repos-dir.zip"
+  if ! curl -s "${aZIPs_URL}/set-repos-dir.zip"  -o set-repos-dir.zip 2>/dev/null; then # .(50406.05.1 Seems to fail if not in Repos folder)
      echo -e "\n* Failed to download, set-repos-dir.zip.${aCR}"
      exit;
      fi; fi                                                                             # .(50102.05.5)
