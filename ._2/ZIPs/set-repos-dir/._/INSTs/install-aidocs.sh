@@ -48,10 +48,12 @@
 #    aRepoDir="${aRepo}"; aRepo="${aRepo/\.code.workspace/}"                            ##.(50106.06.5 RAM Create aRepoDir).(50402.18.1)
 
 #    aBinScr="$( which aidocs )"
-     aBinScr="$( pwd | awk '{ sub( /Repos|repos/, "" ); print $0 "._0/bin/aidocs" }' )" # .(50402.19.1 RAM Re-create aidocs script Beg)
-     aBinDir="$( pwd | awk '{ sub( /Repos|repos/, "" ); print $0 "._0/bin"        }' )" # .(50402.19b.1 RAM Re-create aidocs script Beg)
-  if [ ! -d "${aBinDir}" ]; then mkdir -p "${aBinDir}"; echo "  Created ${aBinDir}"; fi # .(50402.19b.2 RAM Re-create binDir for this AIDocs and without Sudo??)
-#    echo "  aBinDir: '${aBinDir}'";  # exit
+#    aBinScr="$( pwd | awk '{ sub( /Repos|repos/, "" ); print $0 "._0/bin/aidocs" }' )" ##.(50402.19.1  RAM Re-create aidocs script Beg).(50402.19b.1)
+#    aBinDir="$( pwd | awk '{ sub( /Repos|repos/, "" ); print $0 "._0/bin"        }' )" ##.(50402.19b.1 RAM Re-create aidocs script Beg).(50402.19c.1)
+# if [ ! -d "${aBinDir}" ]; then mkdir -p "${aBinDir}"; echo "  Created ${aBinDir}"; fi ##.(50402.19b.2 RAM Re-create binDir for this AIDocs and without Sudo??).(50402.19c.1)
+     aBinDir="$( which frt | awk '{ sub( /\/frt/, "" ); print }' )"                     # .(50402.19c.1 RAM Get the binDir from FRT)
+     aBinScr="${aBinDir}/aidocs"                                                        # .(50402.19c.2)
+#    echo "  aBinScr: '${aBinScr}'";  # exit
      aPath="$( pwd )/${aRepoDir}/run-aidocs.sh \"\$@\""
      echo "#!/bin/bash"  >"${aBinScr}"
      echo "${aPath}"    >>"${aBinScr}"                                                  # .(50402.19.1 End)
@@ -131,11 +133,11 @@ function cpyEnv() {                                                             
    echo -e   "  or work on it in VSCode with: code ${aRepoDir/\//}*"                    # .(50105.05c.7).(50106.06.8).(50104.01.13 End)
    fi                                                                                   # .(50106.04.16 RAM Exit if bDoit=0)
 
- else                                                                                  # .(50402.15.8)
-   echo -e "* AIDocs didn't get installed into folder: ${aRepoDir}/client1.";          # .(50402.15.9)
+ else                                                                                   # .(50402.15.8)
+   echo -e "* AIDocs didn't get installed into folder: ${aRepoDir}/client1.";           # .(50402.15.9)
 #  exit
    fi # eif ${aRepoDir}/client1
- fi  # eif $? -ne 1                                                                   # .(50402.15.10)
+ fi  # eif $? -ne 1                                                                     # .(50402.15.10)
 
   if [ "${OS:0:7}"     != "Windows" ]; then echo ""; fi
 
