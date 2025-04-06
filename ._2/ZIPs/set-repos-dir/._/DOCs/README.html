@@ -1,0 +1,139 @@
+<HTML>
+  <HEAD>
+<!-- <script>document.redirect "http://92.112.184.206/set-repos.html"</script> -->
+     <style>
+         code { font-family: courier; font-size:15px; font-weight:bold; text-decoration:italic; background-color: #f0f1f1; color: rgb(28, 28, 29); }
+
+        .collapsible               { list-style: none; margin-top: 8px;}
+        .collapsible       summary { list-style: none; }
+        .collapsible       summary::-webkit-details-marker { display: none; }
+
+        .collapsible       summary::before { content: "+";  display: inline-block; width: 2em; text-align: right; margin-right: 1.0em }
+        .collapsible[open] summary::before { content: "-";  text-align: right; }
+
+/*      .collapsible       summary::marker { content: "+ ";  display: inline-block; width: 1.2em; } */
+/*      .collapsible[open] summary::marker { content: "- ";  display: inline-block; width: 1.2em; } */
+
+         .collapsible ol { margin-left: 20px; }  /* or padding-left: 20px */
+         li.col1 { display: flex;   align-items: baseline; font-size:12px; padding-bottom: 3px; }
+         li.col2 { display: flex;   align-items: baseline; font-size:12px; padding-bottom: 9px; }
+         li.col1::before { content: "•"; position: relative; left: -1.0em; font-size:18px; }
+/*       li.col2::before { content: "•"; position: absolute; left: -1.1em; font-size:15px; } */
+         span.w1 { min-width: 260px; }
+         span.w2 { min-width: 260px; }
+         h3    { margin-top: 25px; }
+         li.h1 { margin-top: 8px; }
+
+     </style>
+  </HEAD>
+  <BODY style="font-family: arial">
+    <br>
+    <h2> Welcome to the formR Repos starter page</h2>
+
+    <h3> A. First, create a Repos folder</h3>
+    <p>
+      <ul>
+        <li class="col1"><span class="w1"><code>mkdir C:\Users\Public\Repos</code></span># in Windows, or &nbsp; <code>D:\\Repos</code></li>
+        <li class="col1"><span class="w1"><code>mkdir /Users/Shared/Repos</code></span># in MacOS</li>
+        <li class="col1"><span class="w1"><code>mkdir /home/Shared/Repos</code></span># in Linux</li>
+      </ul>
+    </p>  
+    <h3>B. From your new Repos folder, you can either</h3>
+    <ul>
+    <li>Option 1:
+      <ul>
+        <li class="h1">Copy this line of code: <code>curl -s http&#58;//aidocs4u.com/set-repos | bash</code></li>
+        <li class="h1">Paste it into the terminal</li> 
+        <li class="h1">Run ENTER to run it</li>        
+      </ul>
+    </li>
+    <br>
+    <li>Option 2 if the link above isn't available:
+      <ul>
+        <li class="h1">Copy this line of code:<br>   
+        <code>curl -s https&#58;//raw.githubusercontent.com/robinmattern/FRTools_prod2-master/master/._2/ZIPs/set-repos | bash</code></li>
+        <li class="h1">Paste and run it in a terminal.</li> 
+      </ul>
+    </li>  
+    <br>
+    <li>Option 3 using a browser if the curl commands above fail:
+      <ul>
+        <li class="h1">Download this file, <a href="https://raw.githubusercontent.com/robinmattern/FRTools_prod2-master/master/._2/ZIPs/set-repos">set-repos</a> (use: save link as...)</li> 
+        <li class="h1">Save it as <code>set-repos</code> in a Repos folder (with no extension)</li>  
+        <li class="h1">Run it with: <code>bash set-repos</code></li>   
+      </ul>
+    </li>
+    </ul>
+
+    <p>After that, you can run any of these install commands from your Repos folder: </p>
+      <ul>
+        <li class="col1"><span class="w2"><code>bash install frtools&nbsp;</code></span># first, then login again, or run</li>
+        <li class="col2"><span class="w2"><code> &nbsp; &nbsp; source ~/.zshrc&nbsp;</code></span>&nbsp; # then run, <code>frt</code>, to check it.</li>   
+        <li class="col1"><span class="w2"><code>bash install anyllm &nbsp;</code></span># then run, <code>anyllm</code>, to check it.</li>
+        <li class="col1"><span class="w2"><code>bash install aidocs demo1</code></span># then run, <code>aidocs</code>, to check it.</li>
+        <li class="col1"><span class="w2"><code>bash install aidocs dev01</code></span># then run, <code>aidocs</code>, to check it.</li>
+<!--    <li class="col1"><span class="w2"><code>bash install aicoder</code></span># then run, aicoder, to check it</li> -->
+      </ul>
+
+    <h3>C. To work on these projects run any of these commands:</h3>
+
+    <details class="collapsible">
+      <summary>For your own project (use -d to doit)</summary>
+      <ol>
+        <li><code>frt new repo MyProject_dev01</code></li>
+        <li><code>cd MyProject_dev01; code MyProject_dev01.*</code></li>
+        <li><code>gitr add remote MyProject_dev01-bruce {GitHub_Account}</code></li>
+        <li><code>gitr mak remote MyProject_dev01-bruce</code></li>
+        <li>Make changes to your code</li>
+        <li>Use VSCode to commit and sync you changes</li>
+      </ol>
+    </details>
+
+    <details class="collapsible">
+      <summary>For your AI Model Test project (use -d to doit)</summary>
+      <ol>
+        <li><code>bash install aicoder</code></li>
+        <li><code>gitr clone AI-Tests_dev01-robin</code></li>
+        <li><code>gitr clone AI-Tests_dev01-robin '' final-bruce</code></li>
+        <li><code>gitr clone AI-Tests_dev01-robin '' dev01-bruce</code></li>
+        <li><code>cd AI-Tests_dev01-bruce; code AI-Tests_dev01-bruce.*</code></li>
+        <li><code>gitr add remote AI-Tests_dev01-bruce {GitHub_Account}</code></li>
+        <li><code>gitr mak remote AI-Tests_dev01-bruce</code></li>
+        <li><code>aic list models</code></li>
+        <li><code>ai2code save markdown {ANo} claude.md [{model}]</code></li>
+        <li><code>aic list scripts {ANo} [{model}]</code></li>
+        <li><code>ai2 save scripts {ANo} [{model}]</code></li>
+        <li>Use VSCode to test, commit and sync your test model results</li>
+      </ol>
+    </details>
+
+    <details class="collapsible">
+      <summary>For your AI Model Final project (use -d to doit)</summary>
+      <ol>
+        <li><code>gitr clone AI-Tests_dev01-robin '' final-bruce</code></li>
+        <li><code>cd AI-Tests_dev01-bruce; code AI-Tests_dev01-bruce.*</code></li>
+        <li><code>gitr add remote AI-Tests_final-bruce {GitHub_Account}</code></li>
+        <li><code>gitr mak remote AI-Tests_final-bruce</code></li>
+        <li>Use BeyondCompare or WinMerge to copy apps to AI-Tests_final-bruce</li>
+        <li>Use VSCode to test, commit and sync your final model results</li>
+      <ol>
+    </details>
+
+<!--
+    <li>
+      For your AI Model Final project (use -d to doit)
+      <ol>
+        <li><code>gitr clone AI-Tests_dev01-robin '' final-bruce</code></li>
+        <li><code>cd AI-Tests_dev01-bruce; code AI-Tests_dev01-bruce.*</code></li>
+        <li><code>gitr add remote AI-Tests_final-bruce {GitHub_Account}</code></li>
+        <li><code>gitr mak remote AI-Tests_final-bruce</code></li>
+        <li>Use BeyondCompare or WinMerge to copy apps to AI-Tests_final-bruce</li>
+        <li>Use VSCode to test, commit and sync your final model results</li>
+      <ol>
+    </li>
+-->
+  </BODY>
+</HTML>
+
+
+
