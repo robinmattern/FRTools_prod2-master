@@ -65,8 +65,9 @@
 #.(50105.07   1/05/25 RAM  4:40p| Cleanup blank lines in set-frtools.sh
 #.(41031.02b  3/02/25 RAM  8:54p| Add -d for arg2
 #.(50405.04   4/05/25 RAM  7:00p| Set shell profile file for ZSH or Bash
-#.(41208.02e  4/06/25 RAM  6:25a| More futzing around with .zshrc profile 
-
+#.(41208.02e  4/06/25 RAM  6:25a| More futzing around with .zshrc profile
+#.(50406.04   4/06/25 RAM  1:30p| Beware of aOS being msys 
+#
 ##PRGM     +====================+===============================================+
 ##ID 69.600. Main0              |
 ##SRCE     +====================+===============================================+
@@ -83,6 +84,7 @@
   aVer="v1.05\`50105.1640"
   aVer="v1.05\`50302.2055"
   aVer="v1.05\`50406.0625"
+  aVer="v1.05\`50406.1330"
 
   echo ""
 
@@ -106,7 +108,6 @@ function setOSvars() {
      aTS=$( date '+%y%m%d.%H%M' ); aTS=${aTS:1}                                                             # .(41225.01.1 RAM Was ${aTS:2})
 #    aBashrc="$HOME/.bashrc"                                                                                ##.(41208.02c.1)
                                             aBashrc=""                                                      # .(41208.02e.1)
-
   if [ "${OS:0:7}" == "Windows"     ]; then
      if [ -f "$HOME/.profile"       ]; then aBashrc="$HOME/.profile";      fi                               # .(41208.02e.2)
      if [ -f "$HOME/.bash_profile"  ]; then aBashrc="$HOME/.bash_profile"; fi                               # .(41208.02e.3)
@@ -122,9 +123,11 @@ function setOSvars() {
      if [ -f "$HOME/.bash_profile " ]; then aBashrc="$HOME/.bash_profile"; fi                               # .(41208.02b.2)
      if [ -f "$HOME/.bashrc"        ]; then aBashrc="$HOME/.bashrc";       fi                               # .(41208.02b.1)
      if [ "${aBashrc}" == ""        ]; then aBashrc="$HOME/.bash_profile"; fi                               # .(41208.02e.8)
+     if [ "${OSTYPE:0:4}" != "msys" ]; then                                                                 # .(50406.04.1 RAM Beware of msys)
 
      aBinDir="/home/._0/bin"                                                                                # .(41211.02.1 RAM Was /Home/._0/bin)
      aOS="linux"
+     fi # eif not msys                                                                                      # .(50406.04.2)
      fi                                                                                                     # .(41208.02e.9)
 
   if [ "${OSTYPE:0:6}" == "darwin"  ]; then
@@ -147,12 +150,12 @@ function setOSvars() {
 # -----------------------------------------------------------
 
 function Sudo() {
-  if [[ "${aOS}" != "windows" ]]; then if [ "${USERNAME}" != "root" ]; then sudo "$@"; fi; fi
+  if [[ "${OS:0:7}" != "Windows" ]]; then if [ "${USERNAME}" != "root" ]; then sudo "$@"; fi; fi            # .(50406.04.3 RAM Don't use ${aOS})
      }
 # -----------------------------------------------------------
 
 function exit_wCR() {
-  if [[ "${aOS}" != "windows" ]]; then echo ""; fi; exit                                                    # .(50105.07.2 RAM Add exit)
+  if [[ "${OS:0:7}" != "Windows" ]]; then echo ""; fi; exit                                                 # .(50406.04.4).(50105.07.2 RAM Add exit)
      }
 # -----------------------------------------------------------
 
@@ -226,13 +229,13 @@ function setBashrc() {
 
   if [ ! -f "${aBashrc}" ]; then                                                        # .(41208.02e.14 RAM Check if aBashrc exists. Beg)
      echo "* No Interactive Shell Profile found. Creating ${aBashrc}"
-     echo "# Created by Install FRTools on ${aTS}" 				 	   >"${aBashrc}";
-     echo ""                                       				      >>"${aBashrc}";
-     echo "  alias ll=\"ls -la\""                   			      >>"${aBashrc}";
-     echo "  alias cd-repos=\"cd /Users/Shared/Repos\""		          >>"${aBashrc}";
-	 echo "  alias cd-anyllm=\"cd /Users/Shared/Repos/AnyLLM\""	      >>"${aBashrc}";
-	 echo "  alias cd-frtools=\"cd /Users/Shared/Repos/FRTools\""	  >>"${aBashrc}";
-	 echo "  alias cd-aidocs=\"cd /Users/Shared/Repos/AIDocs_demo1\"" >>"${aBashrc}";
+     echo "# Created by Install FRTools on ${aTS}"                     >"${aBashrc}";
+     echo ""                                                          >>"${aBashrc}";
+     echo "  alias ll=\"ls -la\""                                     >>"${aBashrc}";
+     echo "  alias cd-repos=\"cd /Users/Shared/Repos\""               >>"${aBashrc}";
+	 echo "  alias cd-anyllm=\"cd /Users/Shared/Repos/AnyLLM\""         >>"${aBashrc}";
+	 echo "  alias cd-frtools=\"cd /Users/Shared/Repos/FRTools\""       >>"${aBashrc}";
+	 echo "  alias cd-aidocs=\"cd /Users/Shared/Repos/AIDocs_demo1\""   >>"${aBashrc}";
      fi                                                                                 # .(41208.02e.14 End)
 
      inRC=$( cat "${aBashrc}" | awk '/\._0/ { print 1 }' );                             # .(41208.05.1 RAM Added /\._0/)
@@ -413,7 +416,7 @@ function cpyToBin() {
 #    echo " aScrDir:    ${aScrDir}";
 #    echo " aJPTs_GitR: ${aJPTs_GitR}";
 #    echo " alias gitr: ${aJPTs_JDir}/gitr.sh";
-#    echo " copying run-anyllm.sh and gitr to: \"${aScrDir}\""; echo ""
+#    echo " copying run-anyllm.sh and gitr to: \"${aScrDir}\""; echo ""; exit
 
  if [   -d "${aScrDir}"   ]; then                                                     echo "  Won't create BinDir. It already exists: \"${aScrDir}\""; fi
  if [ ! -d "${aScrDir}"   ]; then
