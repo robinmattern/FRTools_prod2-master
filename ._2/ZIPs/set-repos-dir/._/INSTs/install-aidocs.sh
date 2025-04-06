@@ -111,7 +111,8 @@ if [ -f "${aRepoDir}/client1/package.json" ]; then
 # --------------------------------------------------------------
 
 function cpyEnv() {                                                                                         # .(50406.03.1 RAM Copy _env Beg)
-      aFrom="$1/$2"; aTo="$1/$3"       
+      aFrom="$1/$2"; aTo="$1/$3"   
+      echo "  Copying .env file into ${aTo}"    
       if [ -f "${aFrom}" ]; then cp -p "${aFrom}" "${aTo}"; fi
       }                                                                                                     # .(50406.03.1 End)
 # --------------------------------------------------------------
@@ -124,14 +125,20 @@ function cpyEnv() {                                                             
 
 # --------------------------------------------------------------
 
-   if [ "${bAnyLLM}" == "1" ] && [ "${aStage}" != "dev01" ]; then                       # .(50406.01.1).(50402.15.7 RAM Only set ANYLLM_KEY id it's installed)
+ if [ "${bAnyLLM}" == "1" ] && [ "${aStage}" != "dev01" ]; then                         # .(50406.01.1).(50402.15.7 RAM Only set ANYLLM_KEY id it's installed)
 #  echo ""
    echo -e "\n  Edit SERVER_HOST and ANYLLM_API_KEY in _env:"
    echo -e   "     cd ${aRepoDir}"                                                      # .(50106.06.8
-   echo -e "      nano client1/c16_aidocs-review-app/utils/FRTs/_env"
-   echo -e "     ./run-client.sh\n"
+   echo -e   "     nano client1/c16_aidocs-review-app/utils/FRTs/_env"
+   echo -e   "     ./run-client.sh\n"
    echo -e   "  or work on it in VSCode with: code ${aRepoDir/\//}*"                    # .(50105.05c.7).(50106.06.8).(50104.01.13 End)
-   fi                                                                                   # .(50106.04.16 RAM Exit if bDoit=0)
+ else                                                                                   # .(50406.01b.1 Display msg for AIDocs_dev01 Beg)
+   echo -e "\n  Run Models tests in ./server1/s##_...-app folders,"  
+   echo -e "\n   after editing the model paramters in .env file, e.g." 
+   echo -e   "     cd ${aRepoDir}/server1/s12_*"                                        # .(50106.06.8
+   echo -e   "     nano .env"
+   echo -e   "     node interactive-search.mjs [{Model}] [{CTX_Size}]"
+   fi                                                                                   # .(50406.01b.1 End).(50106.04.16 RAM Exit if bDoit=0)
 
  else                                                                                   # .(50402.15.8)
    echo -e "* AIDocs didn't get installed into folder: ${aRepoDir}/client1.";           # .(50402.15.9)
