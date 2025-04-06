@@ -115,7 +115,7 @@ function cpyEnv() {                                                             
 #   cp -p "${aRepoDir}/client1/c16_aidocs-review-app/utils/FRTs/_env_local-local.txt"  "${aRepos}/client1/c16_aidocs-review-app/utils/FRTs/_env"
 #   fi
    cpyEnv "${aRepoDir}/client1/c16_aidocs-review-app/utils/FRTs"  "_env_local-local.txt"  "_env"            # .(50406.03.2 RAM Copy c16 _env) 
-   cpyEnv "${aRepoDir}/server1/s12_websearch-app" ".env_example"  ".env"                                    # .(50406.03.2 RAM Copy s12 .env)
+   cpyEnv "${aRepoDir}/server1/s12_websearch-app" ".env_example"  ".env"                                    # .(50406.03.3 RAM Copy s12 .env)
 
 # --------------------------------------------------------------
 
