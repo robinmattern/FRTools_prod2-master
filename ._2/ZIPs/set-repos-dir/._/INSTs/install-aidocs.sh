@@ -125,7 +125,7 @@ function cpyEnv() {                                                             
 #   fi
    echo ""                                                                              # .(50406.01e.1) 
    cpyEnv "./${aRepoDir}/client1/c16_aidocs-review-app/utils/FRTs"  "_env_local-local.txt"  "_env"          # .(50406.03.2 RAM Copy c16 _env) 
- if [ "$aStage}" == "dev01" ]; then                                                                         # .(50406.03b.1 RAM Only copy dev01's env)
+ if [ "${aStage}" == "dev01" ]; then                                                                        # .(50406.03c.1 RAM Try again).(50406.03b.1 RAM Only copy dev01's env)
    cpyEnv "./${aRepoDir}/server1/s12_websearch-app" ".env_example"  ".env"                                  # .(50406.03.3 RAM Copy s12 .env)
    fi                                                                                                       # .(50406.03b.2)
 # --------------------------------------------------------------
