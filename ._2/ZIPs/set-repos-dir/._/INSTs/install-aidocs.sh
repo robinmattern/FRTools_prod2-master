@@ -92,27 +92,28 @@ if [ -f "${aRepoDir}/._2/package.json" ]; then                                  
      fi
 #   --------------------------------------------------
 
-if [ -f "${aRepoDir}/server1/package.json" ]; then
-   echo -e "  cd ${aRepoDir}/server1" # exit                                            ##.(50106.06.6).(50104.01.10)
-     cd "${aRepoDir}/server1"
-           npm install >/dev/null
-     cd ../../
-     fi                                                                                 # .(50402.20.1 End)
-#   --------------------------------------------------
-
 if [ -f "${aRepoDir}/client1/package.json" ]; then
    echo -e "  cd ${aRepoDir}/client1" # exit                                            ##.(50106.06.6).(50104.01.10)
      cd "${aRepoDir}/client1"                                                           # .(50106.06.7)
-   echo "  npm install"
-
-           npm install | awk '{ print "    " $0 }'
+           npm install >/dev/null
+     cd ../../
 
      fi # eif ${aRepoDir}/client1/package.json
+#   --------------------------------------------------
+
+if [ -f "${aRepoDir}/server1/package.json" ]; then
+   echo -e "  cd ${aRepoDir}/server1" # exit                                            ##.(50106.06.6).(50104.01.10)
+     cd "${aRepoDir}/server1"
+   echo "  npm install"
+           npm install | awk '{ print "    " $0 }'
+     fi                                                                                 # .(50402.20.1 End)
 # --------------------------------------------------------------
 
 function cpyEnv() {                                                                                         # .(50406.03.1 RAM Copy _env Beg)
       aFrom="$1/$2"; aTo="$1/$3"   
-      echo "  Copying .env file into ${aTo}"    
+#     echo "    Copying .env file from ${aFrom}"    
+#     echo "                      into ${aTo}"    
+    if [ ! -f "${aFrom}" ]; then echo  "* Unable to copy: '${aFrom}'"; return; fi 
       if [ -f "${aFrom}" ]; then cp -p "${aFrom}" "${aTo}"; fi
       }                                                                                                     # .(50406.03.1 End)
 # --------------------------------------------------------------
@@ -120,8 +121,9 @@ function cpyEnv() {                                                             
 #if [  -f "${aRepoDir}/client1/c16_aidocs-review-app/utils/FRTs/_env_local-local.txt" ]; then   
 #   cp -p "${aRepoDir}/client1/c16_aidocs-review-app/utils/FRTs/_env_local-local.txt"  "${aRepos}/client1/c16_aidocs-review-app/utils/FRTs/_env"
 #   fi
-   cpyEnv "${aRepoDir}/client1/c16_aidocs-review-app/utils/FRTs"  "_env_local-local.txt"  "_env"            # .(50406.03.2 RAM Copy c16 _env) 
-   cpyEnv "${aRepoDir}/server1/s12_websearch-app" ".env_example"  ".env"                                    # .(50406.03.3 RAM Copy s12 .env)
+   echo ""                                                                                                  # .(50406.01b.1) 
+   cpyEnv "./${aRepoDir}/client1/c16_aidocs-review-app/utils/FRTs"  "_env_local-local.txt"  "_env"          # .(50406.03.2 RAM Copy c16 _env) 
+   cpyEnv "./${aRepoDir}/server1/s12_websearch-app" ".env_example"  ".env"                                  # .(50406.03.3 RAM Copy s12 .env)
 
 # --------------------------------------------------------------
 
@@ -134,10 +136,10 @@ function cpyEnv() {                                                             
    echo -e   "  or work on it in VSCode with: code ${aRepoDir/\//}*"                    # .(50105.05c.7).(50106.06.8).(50104.01.13 End)
  else                                                                                   # .(50406.01b.1 Display msg for AIDocs_dev01 Beg)
    echo -e "\n  Run Models tests in ./server1/s##_...-app folders,"  
-   echo -e "\n   after editing the model paramters in .env file, e.g." 
-   echo -e   "     cd ${aRepoDir}/server1/s12_*"                                        # .(50106.06.8
+   echo -e   "   after editing the model paramters in .env file, e.g." 
+   echo -e "\n    cd ${aRepoDir}/server1/s12_*"                                        # .(50106.06.8
    echo -e   "     nano .env"
-   echo -e   "     node interactive-search.mjs [{Model}] [{CTX_Size}]"
+   echo -e   "     node interactive_search_u2.02.mjs [{Model}] [{CTX_Size}]"
    fi                                                                                   # .(50406.01b.1 End).(50106.04.16 RAM Exit if bDoit=0)
 
  else                                                                                   # .(50402.15.8)
