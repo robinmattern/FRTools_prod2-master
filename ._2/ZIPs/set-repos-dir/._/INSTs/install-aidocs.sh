@@ -57,7 +57,7 @@
      aPath="$( pwd )/${aRepoDir}/run-aidocs.sh \"\$@\""
      echo "#!/bin/bash"  >"${aBinScr}"
      echo "${aPath}"    >>"${aBinScr}"   
-     if [ "${OS:0:7}" != "Windows" ]; then sudo 777 "${aBinScr}"; fi                    # .(50402.19e.1 RAM Bad Substitution).(50402.19d.1 RAM Set permmission for aidocs if not Windows)
+     if [ "${OS:0:7}" != "Windows" ]; then sudo chmod 777 "${aBinScr}"; fi              # .(50402.19e.1 RAM Forgot chmod).(50402.19e.1 RAM Bad Substitution).(50402.19d.1 RAM Set permmission for aidocs if not Windows)
                                                                                         # .(50402.19.1 End)
 # -----------------------------------------------
   if [ "1" == "2" ]; then
