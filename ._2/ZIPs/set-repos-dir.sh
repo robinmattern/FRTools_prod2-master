@@ -48,7 +48,9 @@
      exit;
      fi; fi                                                                             # .(50102.05.5)
      echo -e "\n  Unzipping, set-repos-dir.zip, with ${aZIP_Exe} --"
-     ${aZIP_Exe} x -y set-repos-dir.zip 2>&1 | awk '/Extract|Files|Folders/ { print "    " $0 }'  # .(50102.04.10).(50102.04.7 RAM Was 7zip)
+#    ${aZIP_Exe} x      -y set-repos-dir.zip 2>&1 | awk '/Extract|Files|Folders/ { print "    " $0 }'  ##.(50102.04.10).(50102.04.7 RAM Was 7zip).(50102.04b.1)
+     ${aZIP_Exe} x -aoa -y set-repos-dir.zip 2>&1 | awk '/Extract|Files|Folders/ { print "    " $0 }'  # .(50102.04b.1 RAM Override existing files).(50102.04.7 RAM Was 7zip)
+     
 
      if [ ! -f "re-install.sh" ]; then
      echo -e "\n* Failed to unzip, set-repos-dir.zip.${aCR}"
