@@ -17,12 +17,16 @@ function reinstall() {
 
    aAppDir="$( echo $1 | awk '{ print tolower($0) }' )";
    aStage="$(  echo $2 | awk '{ print tolower($0) }' )"; bOk=0
+   aAcct="$(   echo $3 | awk '{ print tolower($0) }' )";                                                    # .(50402.17.3)
 
-   if [ "${aAppDir}" == "frtools" ]; then aAppDir="FRTools"; aStage="${aStage//frtools/FRTools}"; bOk=1; fi
-   if [ "${aAppDir}" == "anyllm"  ]; then aAppDir="AnyLLM";  aStage="${aStage//anyllm/AnyLLM}";   bOk=1; fi
-   if [ "${aAppDir}" == "aidocs"  ]; then aAppDir="AIDocs";  aStage="${aStage//aidocs/AIDocs}";   bOk=1; fi
-   if [ "${aAppDir}" == "AIDocs"  ]; then if [ "${aStage}" == "" ]; then aStage="demo1-master";   fi;    fi # .(50105.05b.9)
-   if [ "${aAppDir}" == "aicoder" ]; then aAppDir="AICodeR"; aStage="${aStage//aicoder/AICodeR}"; bOk=1; fi # .(50104.01.14)
+   if [ "${aAppDir/_}" != "${aAppDir}" ]; then aAcct="${aStage}"; aStage="${aAppDir/*_}"; aAppDir="${aAppDir/_*/}"; fi   # .(50402.17.4).(50402.15.1 RAM Split at _)
+
+   if [ "${aAppDir}" == "frtools" ]; then aAppDir="FRTools";             aStage="${aStage//frtools/FRTools}"; bOk=1; fi
+   if [ "${aAppDir}" == "anyllm"  ]; then aAppDir="AnyLLM";              aStage="${aStage//anyllm/AnyLLM}";   bOk=1; fi
+   if [ "${aAppDir}" == "aidocs"  ]; then aAppDir="AIDocs";              aStage="${aStage//aidocs/AIDocs}";   bOk=1; fi
+#  if [ "${aAppDir}" == "AIDocs"  ]; then if [ "${aStage}" == "" ]; then aStage="demo1-master";   fi; fi                 ##.(50105.05b.9).(50402.15.2)
+#  if [ "${aAppDir}" == "AIDocs"  ]; then if [ "${aStage}" == "" ]; then aStage="";               fi; fi                 # .(50402.15.2).(50105.05b.9)
+   if [ "${aAppDir}" == "aicoder" ]; then aAppDir="AICodeR";             aStage="${aStage//aicoder/AICodeR}"; bOk=1; fi  # .(50104.01.14)
 
    if [ "${bOk}" == "0" ]; then echo -e "\n* Invalid install project, '${aAppDir}'.  See: bash install help\n"; exit; fi # .(50105.05b.10)
 
@@ -33,18 +37,20 @@ function reinstall() {
 
    aRepo="${aAppDir}";
    aRepoDir="${aRepo}"; if [ "${aStage}" != "" ]; then aRepoDir="${aRepo}_${aStage}";
-                 if [ "${aStage}" == "no-stage" ]; then aRepoDir="${aRepo} ${aStage}"; fi; fi        # .(5
+                if [ "${aStage}" == "no-stage" ]; then aRepoDir="${aRepo} ${aStage}"; fi; fi
 
 #  if [ -d "${aRepo}"    ]; then deleteDir "${aRepo}"; fi
 #  if [ -d "${aRepoDir}" ]; then deleteDir "${aRepoDir}"; echo ""; fi
-   if [ -d "${aRepoDir}" ]; then deleteDir "${aRepoDir}"; fi               # .(41208.01.1)
+   if [ -d "${aRepoDir}" ]; then deleteDir "${aRepoDir}"; fi                                                # .(41208.01.1)
 
    aRepo="$( echo "${aRepo}" | awk '{ print tolower($0) }' )"
 
+#  echo ""
 #  echo "  ./install-${aRepo}.sh ${aRepoDir}"
 #          ./install-${aRepo}.sh ${aRepoDir} "$2" "$3"                                                      # .(50105.04.7)
 #          ./install-${aRepo}.sh ${aRepoDir}                                                                ##.(50105.04.7)..(50327.01.2)
-           ./._/INSTs/install-${aRepo}.sh ${aRepoDir}                                                       # .(50327.01.2 RAM Move install scripts to INSTs)
+#  echo "./._/INSTs/install-${aRepo}.sh ${aRepoDir}  ${aAcct}"; # exit                                      # .(50402.17.5).(50327.01.2 RAM Move install scripts to INSTs)
+         ./._/INSTs/install-${aRepo}.sh ${aRepoDir} "${aAcct}"                                              # .(50402.17.6).(50402.15.3).(50327.01.2 RAM Move install scripts to INSTs)
    }
 #  --------------------------------------------------------------
 
@@ -66,14 +72,17 @@ if [ "$1" == "" ]; then
 #  echo -e   "      or just     gitr init AI-Tests                   ->  AI-Tests"                          ##.(50105.04.9 End).(50226.03.1 End) 
 
    echo -e "\n  You can now run any of these install commands from your Repos folder:"                      # .(50226.03.1 Rewrite Help Beg) 
-   echo -e "\n     bash ${aInstall} frtools     # first, then"
-   echo -e   "     source ~/.zshrc,         # then run, frt, to check it."
-   echo -e   "     bash ${aInstall} anyllm      # then run, anyllm, to check it."
-   echo -e   "     bash ${aInstall} aidocs      # then run, aidocs, to check it."
+   echo -e "\n     bash ${aInstall} frtools       # first, then"
+   echo -e   "       source ~/.zshrc              # then run, frt, to check it."
+   echo -e   ""
+   echo -e   "     bash ${aInstall} anyllm        # then run, anyllm, to check it."
+   echo -e   "     bash ${aInstall} aidocs demo1  # then run, aidocs, to check it."                         # .(50402.15.4)
+   echo -e   "     bash ${aInstall} aidocs dev01  # then run, aidocs, to check it."                         # .(50402.15.5)
+
    echo -e "\n* Note: You must install FRTools before any other projects.  After that,"                     # .(50105.04.9 RAM Add more options Beg)
    echo -e   "  you can clone or create your own projects folder with:"
-#  echo -e "\n     bash frt clone {GitHub-Account} {Repo-Name}"                                             # .(50226.03.1 End).(50327.02.9)  
-   echo -e "\n     bash frt clone {RepoName} '' {CloneDir} {branch} {Account}"                              # .(50327.02.9) 
+#  echo -e "\n     bash frt clone {GitHub-Account} {Repo-Name}"                                             # .(50226.03.1 End).(50327.02.9) 
+   echo -e "\n     bash frt clone {RepoName} '' {CloneDir} {Branch} {Account}"                              # .(50327.02.9) 
 
    if [ "${OS:0:7}" != "Windows" ]; then echo ""; fi; exit
    fi
@@ -82,6 +91,7 @@ if [ "$1" == "" ]; then
   if [ "$1" == "aidocs"   ]; then bCheck="1"; fi;
   if [ "$1" == "aicoder"  ]; then bCheck="1"; fi;                                                           # .(50104.01.16)
   if [ "$1" == "anyllm"   ]; then bCheck="1"; fi;
+
   if [ "${bCheck}" == "1" ] && [ "$( which npm )" == "" ]; then
      echo -e "\n* You need to install NVS, Node and NPM, first.\n"
      exit
@@ -97,7 +107,7 @@ if [ "$1" == "" ]; then
      reinstall aidocs
      reinstall aicoder                                                                                      # .(50104.01.17)
    else
-     reinstall $1 $2
+     reinstall $1 $2 $3                                                                                     # .(50402.15.6 RAM Add 3rd arg)
      fi
 #  --------------------------------------------------------------
 
