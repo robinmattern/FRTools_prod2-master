@@ -2,63 +2,80 @@
   <HEAD>
 <!-- <script>document.redirect "http://92.112.184.206/set-repos.html"</script> -->
      <style>
-         code { font-weight:bold; text-decoration:italic; background-color: #d8e7ec; color: blue; }
+         code { font-family: courier; font-size:15px; font-weight:bold; text-decoration:italic; background-color: #f0f1f1; color: rgb(28, 28, 29); }
 
-        .collapsible               { list-style: none; }
+        .collapsible               { list-style: none; margin-top: 8px;}
         .collapsible       summary { list-style: none; }
         .collapsible       summary::-webkit-details-marker { display: none; }
 
-        .collapsible       summary::before { content: "+ ";  display: inline-block; width: 2em; text-align: right; margin-right: .5em }
-        .collapsible[open] summary::before { content: "- ";  text-align: right; }
+        .collapsible       summary::before { content: "+";  display: inline-block; width: 2em; text-align: right; margin-right: 1.0em }
+        .collapsible[open] summary::before { content: "-";  text-align: right; }
 
 /*      .collapsible       summary::marker { content: "+ ";  display: inline-block; width: 1.2em; } */
 /*      .collapsible[open] summary::marker { content: "- ";  display: inline-block; width: 1.2em; } */
 
          .collapsible ol { margin-left: 20px; }  /* or padding-left: 20px */
+         li.col1 { display: flex;   align-items: baseline; font-size:12px; padding-bottom: 3px; }
+         li.col2 { display: flex;   align-items: baseline; font-size:12px; padding-bottom: 9px; }
+         li.col1::before { content: "•"; position: relative; left: -1.0em; font-size:18px; }
+/*       li.col2::before { content: "•"; position: absolute; left: -1.1em; font-size:15px; } */
+         span.w1 { min-width: 260px; }
+         span.w2 { min-width: 260px; }
+         h3    { margin-top: 25px; }
+         li.h1 { margin-top: 8px; }
 
      </style>
   </HEAD>
   <BODY style="font-family: arial">
     <br>
-    <h1> Welcome to the formR Repos starter page</h1>
+    <h2> Welcome to the formR Repos starter page</h2>
 
-    <p>From your new Repos folder, you can either</p>
+    <h3> A. First, create a Repos folder</h3>
+    <p>
+      <ul>
+        <li class="col1"><span class="w1"><code>mkdir C:\Users\Public\Repos</code></span># in Windows, or &nbsp; <code>D:\\Repos</code></li>
+        <li class="col1"><span class="w1"><code>mkdir /Users/Shared/Repos</code></span># in MacOS</li>
+        <li class="col1"><span class="w1"><code>mkdir /home/Shared/Repos</code></span># in Linux</li>
+      </ul>
+    </p>  
+    <h3>B. From your new Repos folder, you can either</h3>
     <ul>
-    <li>Option 1 in a browser:
+    <li>Option 1:
       <ul>
-        <li>Download this file, <a href="https://raw.githubusercontent.com/robinmattern/FRTools_prod2-master/master/._2/ZIPs/set-repos">set-repos</a> (use: save link as...)</li> 
-        <li>Save it as <code>set-repos</code> in a Repos folder (with no extension)</li>  
-        <li>Run it with: <code>bash set-repos</code></li>   
+        <li class="h1">Copy this line of code: <code>curl -s http&#58;//aidocs4u.com/set-repos | bash</code></li>
+        <li class="h1">Paste it into the terminal</li> 
+        <li class="h1">Run ENTER to run it</li>        
       </ul>
     </li>
     <br>
-    <li>Option 2 in a bash terminal:
+    <li>Option 2 if the link above isn't available:
       <ul>
-        <li>Copy this line of code: <code>curl -s http&#58;//aidocs4u.com/set-repos | bash</code></li>
-        <li>Paste it into the terminal</li> 
-        <li>Run it with ENTER</li>        
-      </ul>
-    </li>
-    <br>
-    <li>Option 3 if the above link isn't available:
-      <ul>
-        <li>Copy this line of code:<br>   
+        <li class="h1">Copy this line of code:<br>   
         <code>curl -s https&#58;//raw.githubusercontent.com/robinmattern/FRTools_prod2-master/master/._2/ZIPs/set-repos | bash</code></li>
-        <li>Paste and run it in a terminal.</li> 
+        <li class="h1">Paste and run it in a terminal.</li> 
       </ul>
     </li>  
+    <br>
+    <li>Option 3 using a browser if the curl commands above fail:
+      <ul>
+        <li class="h1">Download this file, <a href="https://raw.githubusercontent.com/robinmattern/FRTools_prod2-master/master/._2/ZIPs/set-repos">set-repos</a> (use: save link as...)</li> 
+        <li class="h1">Save it as <code>set-repos</code> in a Repos folder (with no extension)</li>  
+        <li class="h1">Run it with: <code>bash set-repos</code></li>   
+      </ul>
+    </li>
     </ul>
 
     <p>After that, you can run any of these install commands from your Repos folder: </p>
       <ul>
-        <li><code>bash install frtools # first, then </code>
-        <li><code>source ~/.zshrc, &nbsp; &nbsp; &nbsp;# then run, frt, to check it.</code>   
-        <li><code>bash install anyllm # then run, anyllm, to check it.</code>
-        <li><code>bash install aidocs # then run, aidocs, to check it.</code>
-<!--    <li><code>bash install aicoder # then run, aicoder, to check it</code> -->
+        <li class="col1"><span class="w2"><code>bash install frtools&nbsp;</code></span># first, then login again, or run</li>
+        <li class="col2"><span class="w2"><code> &nbsp; &nbsp; source ~/.zshrc&nbsp;</code></span>&nbsp; # then run, <code>frt</code>, to check it.</li>   
+        <li class="col1"><span class="w2"><code>bash install anyllm &nbsp;</code></span># then run, <code>anyllm</code>, to check it.</li>
+        <li class="col1"><span class="w2"><code>bash install aidocs demo1</code></span># then run, <code>aidocs</code>, to check it.</li>
+        <li class="col1"><span class="w2"><code>bash install aidocs dev01</code></span># then run, <code>aidocs</code>, to check it.</li>
+<!--    <li class="col1"><span class="w2"><code>bash install aicoder</code></span># then run, aicoder, to check it</li> -->
       </ul>
 
-    <p>To work on these projects run any of these commands:</p>
+    <h3>C. To work on these projects run any of these commands:</h3>
 
     <details class="collapsible">
       <summary>For your own project (use -d to doit)</summary>
