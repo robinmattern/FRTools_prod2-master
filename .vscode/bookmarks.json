@@ -1156,16 +1156,16 @@
 			]
 		},
 		{
-			"path": "._2/ZIPs/set-repos-dir/re-install.sh",
+			"path": "._2/ZIPs/set-repos-dir/install.sh",
 			"bookmarks": [
 				{
 					"label": "deleteDir",
-					"line": 7,
+					"line": 40,
 					"column": 0
 				},
 				{
 					"label": "reinstall",
-					"line": 16,
+					"line": 49,
 					"column": 0
 				}
 			]
