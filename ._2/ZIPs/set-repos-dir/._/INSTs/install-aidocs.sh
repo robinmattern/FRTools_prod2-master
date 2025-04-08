@@ -26,7 +26,7 @@
 
 #  ----------------------------------------------------------------------------
 
-cleanup() {                                                                             # .(50408.01.3 RAM Write cleanup Beg)
+cleanup() {                                                                             # .(50408.03.3 RAM Write cleanup Beg)
 #   echo
 #   echo "Ctrl+C detected! Performing cleanup..."
 
@@ -39,13 +39,13 @@ cleanup() {                                                                     
 #   echo "Exiting gracefully."
 #   exit 1
     exit_wCR 1
-    }                                                                                   # .(50408.01.3 End)
+    }                                                                                   # .(50408.03.3 End)
 # -----------------------------------------------
 
-exit_wCR() {                                                                            # .(50408.01.4 RAM Write exit_wCR Beg)
+exit_wCR() {                                                                            # .(50408.03.4 RAM Write exit_wCR Beg)
    if [ "${OS:0:7}"     != "Windows" ]; then echo ""; fi;
    if [ "$1" == "" ]; then exit 0; else exit $1; fi
-   }                                                                                    # .(50408.01.4 End)
+   }                                                                                    # .(50408.03.4 End)
 #  ----------------------------------------------------------------------------
 
    export aQuiet=q                                                                      # .(50105.05b.7 RAM Add aQuiet)
@@ -61,13 +61,13 @@ exit_wCR() {                                                                    
 #          frt clone    ${aRepo}  ''  ${aAppDir}  ''  ${aAccount}    ;   # exit
 #          frt clone    ${aRepo}  ''  ${aAppDir}  ''  ${aAccount}  -b;     exit
 
-   trap    cleanup SIGINT SIGTERM SIGHUP  # Set trap to catch SIGINT                    # .(50408.01.5)
+   trap    cleanup SIGINT SIGTERM SIGHUP  # Set trap to catch SIGINT                    # .(50408.03.5)
 
            frt clone    ${aRepo}  ''  ${aAppDir}  ''  ${aAccount}  -d;   # exit
 
-   if [ $? !=  0  ]; then exit 1; fi                                                    # .(50408.01.6)
+   if [ $? !=  0  ]; then exit 1; fi                                                    # .(50408.03.6)
 
-#          nErr=$?; # echo " --- nErr: '${nErr}'"; # exit;                              ##.(50408.01.7 RAM Other possibilities Beg)
+#          nErr=$?; # echo " --- nErr: '${nErr}'"; # exit;                              ##.(50408.03.7 RAM Other possibilities Beg)
 #  if [ "${nErr}" != "0" ]; then echo "----failure 1: '${nErr}'; exiting"; exit_wCR; fi
 #   case ${nErr} in
 #     0) echo "Success" ;;
@@ -75,7 +75,7 @@ exit_wCR() {                                                                    
 #     2) echo "Specific error condition"; exit ;;
 #     *) echo "Unknown error: ${nErr}"; exit ;;
 #        esac
-#                                                                                       ##.(50408.01.7 End)
+#                                                                                       ##.(50408.03.7 End)
 # -----------------------------------------------------------------------------
 
            aAppDir2="${aRepo/_*/}"                                                      # .(50402.18.1 RAM Gotta reassign aRepoDir Beg)
