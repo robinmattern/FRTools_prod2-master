@@ -197,6 +197,7 @@
 #.(50318.01b  3/18/25 RAM  5:30p| Make list working files work on a mac
 #.(50318.01c  3/21/25 RAM  3:05p| Add row nos. to working files
 #.(50406.02   4/06/25 RAM  7:15a| Fix aidocs project_stage clone
+#.(50408.02   4/08/25 RAM  9:30a| Add Msg re git clone taking a while 
 #
 ##PRGM     +====================+===============================================+
 ##ID 69.600. Main0              |
@@ -269,7 +270,8 @@ function exit_wCR() {
 # if [ "${OSTYPE:0:6}" == "darwin"  ]; then echo ""; fi                                 ##.(41120.01.1)
   if [ "${OS:0:7}"     != "Windows" ]; then echo ""; fi                                 # .(41120.01.1 RAM Fix exit_wCR)
 # [[ -z $(tail -c1) ]] || echo                                                          ##.(41202.04.1 RAM An incorrect suggestion from claude. He thought that tail checks the last char of the current output)
-     exit ${1:-0}                                                                                           # .(50106.04.1 RAM Exit with 0 or $1)
+# if [ "$1" != "" ]; then exit $1; else exit; fi                                                            ##.(50408.01.2 RAM Not necessary)                         
+     exit ${1:-0}                                                                                           # .(50106.04.1 RAM Exit with 0 or $1).(50408.01.2)
      }
 # ---------------------------------------------------------------------------
 
@@ -1165,7 +1167,7 @@ function getRemoteName() {                                                      
 #       echo "    git ls-remote \"${aRemoteURL}\""; GIT_TERMINAL_PROMPT=0 git ls-remote "${aRemoteURL}"
         bOK="$( GIT_TERMINAL_PROMPT=0 git ls-remote "${aRemoteURL}" 2>&1 | awk '/HEAD/ { print 1 }' )"      # .(50106.04.2)
         if [ "${bOK}" != "1" ]; then echo -e "\n* Invalid Remote URL: '${aRemoteURL}'."                     # .(50106.04.3)
-        exit_wCR 1                                                                                          # .(50106.04.4)
+        exit_wCR 2                                                                                          # .(50408.02.1 RAM Change error code).(50106.04.4)
         fi                                                                                                  # .(50106.04.5)
 
         }  # eof getRemoteName                                                                              # .(41104.01.2 End)
@@ -1278,6 +1280,8 @@ function getRemoteName() {                                                      
       else # bDoit == 1
 
         echo -e "\n  ${aGIT1}"
+        echo -e    "- This could take a while."                                                             # .(50408.02.2 RAM Add msg per BTG)
+
 #       eval        "${aGIT1}" 2>&1 | awk '{ print "    " $0 }'
 #                   "${aGIT0}" "{aDir}" 2>&1 | awk '{ printf "    %s\n", $0 }' RS='\r?\n'                   ##.(50104.02.1)
 #       eval        "${aGIT1}" 2>&1 | awk '{ printf "    %s\n", $0 }' RS='\r?\n'                            ##.(50104.02.2)

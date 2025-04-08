@@ -20,10 +20,34 @@
    if [ "${aStage}" == ""      ]; then aRepo="AIDocs_demo1-master"; aAppDir="no-stage"; fi
    if [ "${aStage}" == "demo1" ]; then aRepo="AIDocs_demo1-master"; aAppDir="demo1"; fi
    if [ "${aStage}" == "dev01" ]; then aRepo="AIDocs_dev01-robin";  aAppDir="dev01"; fi
+   if [ "${aStage}" == "dev02" ]; then aRepo="AIDocs_dev02-robin";  aAppDir="dev02"; fi # .(50408.02.3 RAM Add dev02)
+   if [ "${aStage}" == "test1" ]; then aRepo="AIDocs_test1-robin";  aAppDir="test1"; fi # .(50408.02.4 RAM Add test1)
    if [ "${aRepo/\//}" != "${aAppDir}" ]; then aRepo="${aRepo/\//}"; fi
 
-
 #  ----------------------------------------------------------------------------
+
+cleanup() {                                                                             # .(50408.01.3 RAM Write cleanup Beg)
+#   echo
+#   echo "Ctrl+C detected! Performing cleanup..."
+
+#   echo "* Aborting: frt clone '${aRepo}' '' '${aAppDir}' ${aAccount} -d"
+    echo "* Aborting: install ${aRepo}"
+
+    # Add your cleanup code here
+    # For example: remove temporary files, reset configurations, etc.
+
+#   echo "Exiting gracefully."
+#   exit 1
+    exit_wCR 1
+    }                                                                                   # .(50408.01.3 End)
+# -----------------------------------------------
+
+exit_wCR() {                                                                            # .(50408.01.4 RAM Write exit_wCR Beg)
+   if [ "${OS:0:7}"     != "Windows" ]; then echo ""; fi;
+   if [ "$1" == "" ]; then exit 0; else exit $1; fi
+   }                                                                                    # .(50408.01.4 End)
+#  ----------------------------------------------------------------------------
+
    export aQuiet=q                                                                      # .(50105.05b.7 RAM Add aQuiet)
 
 #  echo -e "\n  aRepo: ${aRepo}', \$2: '$2'"; # exit
@@ -33,11 +57,26 @@
 #          frt install  ${aRepo}  $ {aAppDir}  ''   $3;                                 # .(50105.05b.8 RAM Remove -q)
 
 #          frt clone  {RepoName}  ''  {CloneDir} {Branch} {Account}
-   echo "  frt clone   '${aRepo}' '' '${aAppDir}'    '${aAccount}' -d;"; # exit
+#  echo "  frt clone   '${aRepo}' '' '${aAppDir}'    '${aAccount}' -d;"; # exit
 #          frt clone    ${aRepo}  ''  ${aAppDir}  ''  ${aAccount}    ;   # exit
 #          frt clone    ${aRepo}  ''  ${aAppDir}  ''  ${aAccount}  -b;     exit
 
+   trap    cleanup SIGINT SIGTERM SIGHUP  # Set trap to catch SIGINT                    # .(50408.01.5)
+
            frt clone    ${aRepo}  ''  ${aAppDir}  ''  ${aAccount}  -d;   # exit
+
+   if [ $? !=  0  ]; then exit 1; fi                                                    # .(50408.01.6)
+
+#          nErr=$?; # echo " --- nErr: '${nErr}'"; # exit;                              ##.(50408.01.7 RAM Other possibilities Beg)
+#  if [ "${nErr}" != "0" ]; then echo "----failure 1: '${nErr}'; exiting"; exit_wCR; fi
+#   case ${nErr} in
+#     0) echo "Success" ;;
+#     1) echo "General error"; exit ;;
+#     2) echo "Specific error condition"; exit ;;
+#     *) echo "Unknown error: ${nErr}"; exit ;;
+#        esac
+#                                                                                       ##.(50408.01.7 End)
+# -----------------------------------------------------------------------------
 
            aAppDir2="${aRepo/_*/}"                                                      # .(50402.18.1 RAM Gotta reassign aRepoDir Beg)
    if [ "${aAppDir/-}" == "${aAppDir}" ]; then aRepoDir="${aAppDir2}_${aAppDir}"; fi
@@ -56,10 +95,11 @@
 #    echo "  aBinScr: '${aBinScr}'";  # exit
      aPath="$( pwd )/${aRepoDir}/run-aidocs.sh \"\$@\""
      echo "#!/bin/bash"  >"${aBinScr}"
-     echo "${aPath}"    >>"${aBinScr}"   
+     echo "${aPath}"    >>"${aBinScr}"
      if [ "${OS:0:7}" != "Windows" ]; then sudo chmod 777 "${aBinScr}"; fi              # .(50402.19e.1 RAM Forgot chmod).(50402.19e.1 RAM Bad Substitution).(50402.19d.1 RAM Set permmission for aidocs if not Windows)
                                                                                         # .(50402.19.1 End)
 # -----------------------------------------------
+
   if [ "1" == "2" ]; then
      aBinScr="$( which aidocs )"
 #    aPath="$( cat "${aBinScr}" | awk 'NR == 2 { print }' )"
@@ -106,41 +146,44 @@ if [ -f "${aRepoDir}/server1/package.json" ]; then
      cd "${aRepoDir}/server1"
    echo "  npm install"
            npm install | awk '{ print "    " $0 }'
-     cd ../../                                                                          # .(50406.01c.1 RAM Return back to root dir) 
+     cd ../../                                                                          # .(50406.01c.1 RAM Return back to root dir)
      fi                                                                                 # .(50402.20.1 End)
 # --------------------------------------------------------------
 
 function cpyEnv() {                                                                                         # .(50406.03.1 RAM Copy _env Beg)
-      aFrom="$1/$2"; aTo="$1/$3"   
-#     echo "    Copying .env file from ${aFrom}"    
-#     echo "                      into ${aTo}"    
-      if [ ! -f "${aFrom}" ]; then echo  "* Unable to copy: '${aFrom}'";  return; fi                        # .(50406.01d.1) 
+      aFrom="$1/$2"; aTo="$1/$3"
+#     echo "    Copying .env file from ${aFrom}"
+#     echo "                      into ${aTo}"
+      if [ ! -f "${aFrom}" ]; then echo  "* Unable to copy: '${aFrom}'";  return; fi                        # .(50406.01d.1)
       if [   -f "${aFrom}" ]; then cp -p "${aFrom}" "${aTo}"; fi
       if [ ! -f "${aTo}"   ]; then echo  "* Unable to copy to: '${aTo}'"; return; fi                        # .(50406.01d.2)
       }                                                                                                     # .(50406.03.1 End)
 # --------------------------------------------------------------
 
-#if [  -f "${aRepoDir}/client1/c16_aidocs-review-app/utils/FRTs/_env_local-local.txt" ]; then   
+#if [  -f "${aRepoDir}/client1/c16_aidocs-review-app/utils/FRTs/_env_local-local.txt" ]; then
 #   cp -p "${aRepoDir}/client1/c16_aidocs-review-app/utils/FRTs/_env_local-local.txt"  "${aRepos}/client1/c16_aidocs-review-app/utils/FRTs/_env"
 #   fi
-   echo ""                                                                              # .(50406.01e.1) 
-   cpyEnv "./${aRepoDir}/client1/c16_aidocs-review-app/utils/FRTs"  "_env_local-local.txt"  "_env"          # .(50406.03.2 RAM Copy c16 _env) 
+   echo ""                                                                              # .(50406.01e.1)
+   cpyEnv "./${aRepoDir}/client1/c16_aidocs-review-app/utils/FRTs"  "_env_local-local.txt"  "_env"          # .(50406.03.2 RAM Copy c16 _env)
  if [ "${aStage}" == "dev01" ]; then                                                                        # .(50406.03c.1 RAM Try again).(50406.03b.1 RAM Only copy dev01's env)
    cpyEnv "./${aRepoDir}/server1/s12_websearch-app" ".env_example"  ".env"                                  # .(50406.03.3 RAM Copy s12 .env)
    fi                                                                                                       # .(50406.03b.2)
 # --------------------------------------------------------------
 
- if [ "${bAnyLLM}" == "1" ] && [ "${aStage}" != "dev01" ]; then                         # .(50406.01.1).(50402.15.7 RAM Only set ANYLLM_KEY id it's installed)
+#if [ "${bAnyLLM}" == "1" ] && [ "${aStage}" != "dev01" ]; then                         ##.(50406.01.1).(50402.15.7 RAM Only set ANYLLM_KEY id it's installed).(50406.01c.1)
+ if [ "${aRepo}" == "AnyLLM" ]; then                                                    # .(50406.01c.1).(50402.15.7 RAM Only set ANYLLM_KEY id it's installed)
 #  echo ""
    echo -e   "  Edit SERVER_HOST and ANYLLM_API_KEY in _env:"                           # .(50406.01e.2 RAM Remove CR)
    echo -e   "     cd ${aRepoDir}"                                                      # .(50106.06.10)
    echo -e   "     nano client1/c16_aidocs-review-app/utils/FRTs/_env"
    echo -e   "     ./run-client.sh\n"
    echo -e   "  or work on it in VSCode with: code ${aRepoDir/\//}*"                    # .(50105.05c.7).(50106.06.11).(50104.01.13 End)
- else                                                                                   # .(50406.01b.1 Display msg for AIDocs_dev01 Beg)
+   fi
+#else                                                                                   ##.(50406.01b.1 Display msg for AIDocs_dev01 Beg).(50406.01c.2)
+ if [ "${aRepo}" == "AIDocs" ]; then                                                    # .(50406.01c.2).(50408.01.x).(50402.15.7 RAM Only set ANYLLM_KEY id it's installed)
    echo -e   "  Run Models tests in ./server1/s##_...-app folders,"                     # .(50406.01e.3 RAM Remove CR)
-   echo -e   "   after editing the model paramters in .env file, e.g." 
-   echo -e "\n     cd ${aRepoDir}/server1/s12_*"                                        # .(50106.06d.1 RAM Add a space) 
+   echo -e   "   after editing the model paramters in .env file, e.g."
+   echo -e "\n     cd ${aRepoDir}/server1/s12_*"                                        # .(50106.06d.1 RAM Add a space)
    echo -e   "     nano .env"
    echo -e   "     node interactive_search_u2.02.mjs [{Model}] [{CTX_Size}]"
    fi                                                                                   # .(50406.01b.1 End).(50406.01.1 End).(50106.04.16 RAM Exit if bDoit=0)
