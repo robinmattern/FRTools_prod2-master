@@ -454,97 +454,102 @@
 					"label": "shoLast"
 				},
 				{
-					"line": 1571,
+					"line": 1562,
+					"column": 0,
+					"label": ""
+				},
+				{
+					"line": 1572,
 					"column": 0,
 					"label": "shoCommit"
 				},
 				{
-					"line": 1593,
+					"line": 1594,
 					"column": 0,
 					"label": "pullRemote"
 				},
 				{
-					"line": 1637,
+					"line": 1638,
 					"column": 0,
 					"label": "pushRemote"
 				},
 				{
-					"line": 1658,
+					"line": 1659,
 					"column": 0,
 					"label": "listBranches"
 				},
 				{
-					"line": 1673,
+					"line": 1674,
 					"column": 0,
 					"label": "deleteBranch"
 				},
 				{
-					"line": 1701,
+					"line": 1702,
 					"column": 0,
 					"label": "checkoutBranch"
 				},
 				{
-					"line": 1748,
+					"line": 1749,
 					"column": 0,
 					"label": "makRemote"
 				},
 				{
-					"line": 1804,
+					"line": 1805,
 					"column": 0,
 					"label": "trackBranch"
 				},
 				{
-					"line": 1831,
+					"line": 1832,
 					"column": 0,
 					"label": "replaceLocal"
 				},
 				{
-					"line": 1849,
+					"line": 1850,
 					"column": 0,
 					"label": "mergeRemote"
 				},
 				{
-					"line": 1896,
+					"line": 1897,
 					"column": 0,
 					"label": "addRemote"
 				},
 				{
-					"line": 1897,
+					"line": 1898,
 					"column": 0,
 					"label": "setRemote"
 				},
 				{
 					"label": "setRemote1",
-					"line": 2053,
+					"line": 2054,
 					"column": 0
 				},
 				{
 					"label": "setRemote",
-					"line": 2075,
+					"line": 2076,
 					"column": 0
 				},
 				{
-					"line": 2227,
+					"line": 2228,
 					"column": 0,
 					"label": "deleteRemote"
 				},
 				{
-					"line": 2242,
+					"line": 2243,
 					"column": 0,
 					"label": "shoRemote"
 				},
 				{
-					"line": 2255,
+					"line": 2256,
 					"column": 0,
 					"label": "installGH"
 				},
 				{
-					"line": 2334,
+					"line": 2335,
 					"column": 0,
 					"label": "backupLocal"
 				},
 				{
-					"line": 2361,
+					"line": 2362,
 					"column": 0,
 					"label": "listWorkingFiles"
 				}

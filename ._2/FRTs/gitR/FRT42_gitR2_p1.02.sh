@@ -41,7 +41,6 @@
 ##FD   FRT42_GitR2.sh           | 184797|  3/18/25 17:30|  2391| p1.02`50318.1730
 ##FD   FRT42_GitR2.sh           | 185037|  3/21/25 15:05|  2394| p1.02`50321.1505
 ##FD   FRT42_GitR2.sh           | 186712|  4/06/25  7:15|  2410| p1.02`50406.0715
-
 #
 ##DESC     .--------------------+-------+---------------+------+-----------------+
 #            This script has usefull GIT functions.
@@ -152,7 +151,7 @@
 #.(41204.01  12/04/24 RAM  9:47a| Fix working files count var ${s}
 #.(41103.06b 12/05/24 RAM  8:40a| Add -doit to pullRemote
 #.(41103.03b 12/06/24 RAM 11:40a| Write and use getReposDir for gitR Init
-#.(41209.01  12/09/24 RAM  6:40a| Update gitR[] numbers
+#.(41209.01  12/09/24 RAM  6:40a| Update gitR2[] numbers
 #.(41209.02  12/09/24 RAM  9:40a| Add Delete Branch
 #.(41102.03b 12/09/24 RAM  3:00p| Update Add Remote for AIDocs
 #.(41210.01  12/10/24 RAM 10:30p| Revise gitr clone
@@ -198,6 +197,7 @@
 #.(50318.01c  3/21/25 RAM  3:05p| Add row nos. to working files
 #.(50406.02   4/06/25 RAM  7:15a| Fix aidocs project_stage clone
 #.(50408.02   4/08/25 RAM  9:30a| Add Msg re git clone taking a while 
+#.(50409.01   4/09/25 RAM  5:31a| Only show local(?) commits, not all ** Not implemented ** 
 #
 ##PRGM     +====================+===============================================+
 ##ID 69.600. Main0              |
@@ -500,7 +500,6 @@ function shoCommitMsg() {                                                       
      n=$(($1-1)); if [ "${#n}" == "1" ]; then m="  ${n}"; elif [ "${#n}" == "2" ]; then m=" ${n}"; else m="${n}"; fi # .(41031.05.1 RAM Move to here)
   if [ ${#2} -lt  4 ]; then                                                                                 # .(50101.07.1 RAM Arg can be a commit hash)
 #    aCommitHash="$( git rev-parse HEAD~$n 2>/dev/null )"; # echo "  aCommitHash: '${aCommitHash}'"         # Get commit hash at current position
-#    echo "  aCommitHash: ${aCommitHash}"; return
 #    if [ "${#n}" == "1" ]; then m=" ${n}"; else m="${n}"; fi
 #    if [ "$?" -ne "0" ]; then echo -e "* ${m}.  There are no more commits (HEAD~$n)!"; exit_wCR; fi        ##.(41031.05.2 RAM Was ${1}).(41110.01.1
 #    if [ git rev-parse --verify HEAD~${n} >/dev/null 2>&1; then                                            ##.(41110.01.1 RAM No workie)
@@ -512,6 +511,7 @@ function shoCommitMsg() {                                                       
      aComHash="${2}"
      fi                                                                                                     # .(50101.07.3)
      if [ "${aComHash}" == "" ]; then echo -e "* ${m}.  There are no more commits (HEAD~$n)!"; exit_wCR; fi # .(41110.01.4 RAM Move to here).(41031.05.2 RAM Was ${1})
+#    echo "  aCommitHash: ${aComHash}"; return
 
 #    aAWK1='/^commit / { c = substr($0,8,8)        };                     /^Author:/ { a = substr($0,8) }; /^Date:/ { d = substr($0,6,27) }; NR == 5 {                                   m = sprintf( "\"%-50s", ($0 != "") ? substr( $0, 5                      )   "\"" : "n/a\"" ); print " " c d"   "m"  "a }' ##.(41031.06.1)
 #    aAWK1='/^commit / { c = substr($0,8,8)        };                     /^Author:/ { a = substr($0,8) }; /^Date:/ { d = substr($0,6,27) }; NR == 5 { p = length($0) > 63 ? "..." : ""; m = sprintf( "\"%-61s", ($0 != "") ? substr( $0, 5, 60-(p > "" ? 3 : 0) ) p "\"" : "n/a\"" ); print " " c d"   "m" "a  }' ##.(41031.06.1).(41103.01.1)
@@ -1549,7 +1549,7 @@ function getRemoteName() {                                                      
                       if [ "${aArg4}" == "remote" ]; then bRemote="1"; aArg4="${aArg5}"; fi                 # .(50226.01.1 End)
        nCnt=${aArg3}; if [ "${nCnt}" == "" ]; then  nCnt=9; fi # echo "  nCnt: ${nCnt}"                     # .(41109.05.4 RAM Was: nCnt=1)
        if [ "${aArg4}" != "" ]; then nCnt=${aArg4}; nBeg=${aArg3}; else nBeg=0; fi                          # .(41123.07.6 RAM Add nBeg)
-     sayMsg  "gitR[1497]  aArg3: '${aArg3}', aArg4: '${aArg4}', nBeg: '${nBeg}', nCnt: '${nCnt}', bRemote: ${bRemote}, aBranch: ${aBranch}" -1
+     sayMsg  "gitR2[1497]  aArg3: '${aArg3}', aArg4: '${aArg4}', nBeg: '${nBeg}', nCnt: '${nCnt}', bRemote: ${bRemote}, aBranch: ${aBranch}" -1
 #    aAWK='/^commit / { c = substr($0,8,8) }; /^Author:/ { a = substr($0,8) }; /^Date:/ { d = substr($0,6,27) }; NR == 5 { print "\n  " c $0 d"  "a }'
 #    aAWK='/^commit / { c = substr($0,8,8) }; /^Author:/ { a = substr($0,8) }; /^Date:/ { d = substr($0,6,27) }; NR == 5 { m = sprintf( "\"%-50s", ($0 != "") ? substr($0,5)"\"" : "n/a\"" ); print " " c d"   "m"  "a }'
 #    git show $(git rev-parse HEAD) | awk '/^commit / { c = substr($0,8,8) }; /^Author:/ { a = substr($0,8) }; /^Date:/ { print "\n" c substr($0,7,26) a }'
@@ -1560,6 +1560,7 @@ function getRemoteName() {                                                      
      aRemote="--all"; if [ "${bRemote}" == "1" ]; then aRemote="$( getTrackingRemote \"${aBranch}\" )"      # .(50308.03.3 RAM Use getTrackingBranch).(50226.01b.1 RAM--all includes all local branches)
         echo -e "  Retreiving commits from remote repo, aka: ${aRemote}."                                   # .(50226.01c.1 RAN cover git msgs)
      git fetch origin; echo ""; fi                                                                          # .(50226.01b.2 RAM git fetch origin updates all remote branches)
+                      if [ "${bRemote}" != "1" ]; then aRemote=""; fi                                       # .(50409.01.1 RAM Only show local(?) commits, not all) 
      git log ${aRemote} --format=%H | head -n ${nCnt} | while read hash; do                                 # .(50226.01b.3 RAM Remove --all).(50226.02.1 RAM Was nBeg)
 #      git show --format="%h %s" --name-status $hash
        shoCommitMsg $((i+1)) "${hash:0:8}"
@@ -1569,7 +1570,7 @@ function getRemoteName() {                                                      
 #       echo -e "\n  These commits are from Remote: ${aRemote}."                                            # .(50226.01c.3).(50226.01.4)
 #       fi                                                                                                  # .(50226.01c.4).(50226.01.5)
    # while [[ $i -lt $nEnd ]]; do                                                                           # .(41123.07.8)
-#  #   sayMsg  "gitR[959]  i: $i, nEnd: $nEnd; nCnt: '${nCnt}'" 1
+#  #   sayMsg  "gitR2[ 959]  i: $i, nEnd: $nEnd; nCnt: '${nCnt}'" 1
    #   i=$((i+1)); shoCommitMsg $i                                                                          # .(41030.04.1).(41030.05.3 RAM Use showCommitMsg)
 #  #   aCommitHash=$(git rev-parse HEAD~$i 2>/dev/null); # echo "  aCommitHash: '${aCommitHash}'"  # Get commit hash at current position
 #  #   if [ "$?" -ne "0" ]; then echo -e "* $i.  There are no more commits (HEAD~$i)!"; exit_wCR; fi
@@ -1585,12 +1586,12 @@ function getRemoteName() {                                                      
 #      nCnt=${aArg3}; if [ "${nCnt}" == "" ]; then nCnt=0; fi # echo "  nCnt: ${nCnt}"                      ##.(41123.08.4)
        nBeg=${aArg3}; if [ "${nBeg}" == "" ]; then nBeg=0; fi;                                              # .(41123.08.4)
        if [ "${aArg4}" != "" ]; then nCnt=${aArg4}; else nCnt=1; fi                                         # .(41123.08.5)
-     sayMsg  "gitR[1022]  aArg3: '${aArg3}', aArg4: '${aArg4}', nBeg: '${nBeg}', nCnt: '${nCnt}', " -1
+     sayMsg  "gitR2[1022]  aArg3: '${aArg3}', aArg4: '${aArg4}', nBeg: '${nBeg}', nCnt: '${nCnt}', " -1
 
      i=${nBeg}; nEnd=$(( nBeg + nCnt ))                                                                     # .(41123.08.6)
      while [[ $i -lt $nEnd ]]; do                                                                           # .(41123.08.7)
 #      echo ""; nCnt=$((nCnt+1)); shoCommitMsg ${nCnt}; nCnt=$((nCnt-1))  # echo "  shoCommitMsg ${nCnt}"
-#      sayMsg  "gitR[980]  i: $i, nEnd: $nEnd; nCnt: '${nCnt}'" 1
+#      sayMsg  "gitR2[ 980]  i: $i, nEnd: $nEnd; nCnt: '${nCnt}'" 1
        echo ""; i=$(( i+1 )); shoCommitMsg $i  # echo "  shoCommitMsg ${nCnt}"                              # .(41123.08.8 RAM Was: nCnt)
 #      aFilter="AMDR"; aAWK='/^['${aFilter}']/ {                                        printf "      %-2s %s\n", substr($1,1,1), substr( $0, 6) }'; # echo "  aAWK: '${aAWK}'"  ##.(41109.05.5)
 #      aFilter="AMDR"; aAWK='/^['${aFilter}']/ { a = substr($2,1); sub( /^ +/, "", a ); printf   "     %1s %s\n", substr($1,1,1),          a     }'; # echo "  aAWK: '${aAWK}'"  # .(41109.05.5 RAM Was: 6)
@@ -2212,7 +2213,7 @@ function getRemoteName() {                                                      
 #====== =================================================================================================== #  ===========
 #>      GITR2 ADD REMMOTE
 #====== =================================================================================================== #
-#    sayMsg  "gitR2[2170] aCmd: '${aCmd}'" 1                                            # .(41209.01.1 RAM Was gitR[750])
+#    sayMsg  "gitR2[2170] aCmd: '${aCmd}'" 1                                            # .(41209.01.1 RAM Was gitR2[750])
 
   if [ "${aCmd}" == "addRemote" ]; then                                                 # .(41029.05.3)
         echo -e "\n  Adding a Remote, '${aProject}', for Account, '${aAcct}', and stage, '${aStage}'"       # .(41129.05.5)
