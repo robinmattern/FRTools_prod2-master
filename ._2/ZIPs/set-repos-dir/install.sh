@@ -149,6 +149,6 @@ function  help() {
      fi
 #  --------------------------------------------------------------
      
-     echo -e "  Run, install, again to see other repos to install"                      # .(50407.01.6 RAM)
+     echo -e "  Run, bash install, again to see other repos to install"                 # .(50407.01.6 RAM)
      if [ "${OS:0:7}" != "Windows" ]; then echo ""; fi; exit                            # .(50407.01.7 RAM)
 

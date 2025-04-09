@@ -67,7 +67,7 @@
      bash install                                                                       # .(50105.04.5)
 
      if [ "${bTest}" == "0" ]; then                                                     # .(50408.04.4) 
-       if [ -f "set-repos-dir.sh"  ]; then rm "set-repos-dir.sh"; fi                    # .(50408.04.5 RAM Erase this too) 
-       if [ -f "set-repos-dir.zip" ]; then rm set-repos-dir.zip;  fi                    # .(50102.05.6 RAM If not testing locally).(41226.04.1 RAM Erase it)
+       if [ -f "set-repos-dir.sh"  ]; then rm "set-repos-dir.sh";  fi                   # .(50408.04.5 RAM Erase this too) 
+       if [ -f "set-repos-dir.zip" ]; then rm "set-repos-dir.zip"; fi                   # .(50102.05.6 RAM If not testing locally).(41226.04.1 RAM Erase it)
        fi                                                                               # .(50408.04.6) 
 #    if [ "${aCR}" != "" ]; then echo ""; fi                                            # .(50105.04.6)
