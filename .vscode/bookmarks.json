@@ -394,162 +394,162 @@
 			"path": "._2/FRTs/gitR/FRT42_gitR2_p1.02.sh",
 			"bookmarks": [
 				{
-					"line": 525,
+					"line": 526,
 					"column": 0,
 					"label": "shoWorkingFiles"
 				},
 				{
 					"label": "getReposDir",
-					"line": 606,
+					"line": 607,
 					"column": 0
 				},
 				{
 					"label": "initGit",
-					"line": 705,
+					"line": 706,
 					"column": 0
 				},
 				{
 					"label": "getProjectStage_fromURL",
-					"line": 1054,
+					"line": 1055,
 					"column": 0
 				},
 				{
 					"label": "getRemoteName",
-					"line": 1067,
+					"line": 1068,
 					"column": 0
 				},
 				{
-					"line": 1164,
+					"line": 1165,
 					"column": 0,
 					"label": "cloneRemote"
 				},
 				{
-					"line": 1319,
+					"line": 1320,
 					"column": 0,
 					"label": "setGlobals"
 				},
 				{
-					"line": 1336,
+					"line": 1337,
 					"column": 0,
 					"label": "help"
 				},
 				{
-					"line": 1345,
+					"line": 1346,
 					"column": 0,
 					"label": "gitStatus"
 				},
 				{
-					"line": 1366,
+					"line": 1367,
 					"column": 0,
 					"label": "addCommit"
 				},
 				{
-					"line": 1427,
+					"line": 1428,
 					"column": 0,
 					"label": "updateRepo"
 				},
 				{
-					"line": 1533,
+					"line": 1534,
 					"column": 0,
 					"label": "shoLast"
 				},
 				{
-					"line": 1562,
+					"line": 1563,
 					"column": 0,
 					"label": ""
 				},
 				{
-					"line": 1572,
+					"line": 1573,
 					"column": 0,
 					"label": "shoCommit"
 				},
 				{
-					"line": 1594,
+					"line": 1595,
 					"column": 0,
 					"label": "pullRemote"
 				},
 				{
-					"line": 1638,
+					"line": 1639,
 					"column": 0,
 					"label": "pushRemote"
 				},
 				{
-					"line": 1659,
+					"line": 1660,
 					"column": 0,
 					"label": "listBranches"
 				},
 				{
-					"line": 1674,
+					"line": 1675,
 					"column": 0,
 					"label": "deleteBranch"
 				},
 				{
-					"line": 1702,
+					"line": 1703,
 					"column": 0,
 					"label": "checkoutBranch"
 				},
 				{
-					"line": 1749,
+					"line": 1750,
 					"column": 0,
 					"label": "makRemote"
 				},
 				{
-					"line": 1805,
+					"line": 1806,
 					"column": 0,
 					"label": "trackBranch"
 				},
 				{
-					"line": 1832,
+					"line": 1833,
 					"column": 0,
 					"label": "replaceLocal"
 				},
 				{
-					"line": 1850,
+					"line": 1851,
 					"column": 0,
 					"label": "mergeRemote"
 				},
 				{
-					"line": 1897,
+					"line": 1898,
 					"column": 0,
 					"label": "addRemote"
 				},
 				{
-					"line": 1898,
+					"line": 1899,
 					"column": 0,
 					"label": "setRemote"
 				},
 				{
 					"label": "setRemote1",
-					"line": 2054,
+					"line": 2055,
 					"column": 0
 				},
 				{
 					"label": "setRemote",
-					"line": 2076,
+					"line": 2077,
 					"column": 0
 				},
 				{
-					"line": 2228,
+					"line": 2229,
 					"column": 0,
 					"label": "deleteRemote"
 				},
 				{
-					"line": 2243,
+					"line": 2244,
 					"column": 0,
 					"label": "shoRemote"
 				},
 				{
-					"line": 2256,
+					"line": 2257,
 					"column": 0,
 					"label": "installGH"
 				},
 				{
-					"line": 2335,
+					"line": 2336,
 					"column": 0,
 					"label": "backupLocal"
 				},
 				{
-					"line": 2362,
+					"line": 2363,
 					"column": 0,
 					"label": "listWorkingFiles"
 				}

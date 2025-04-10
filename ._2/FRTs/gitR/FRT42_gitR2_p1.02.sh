@@ -198,6 +198,7 @@
 #.(50406.02   4/06/25 RAM  7:15a| Fix aidocs project_stage clone
 #.(50408.02   4/08/25 RAM  9:30a| Add Msg re git clone taking a while 
 #.(50409.01   4/09/25 RAM  5:31a| Only show local(?) commits, not all ** Not implemented ** 
+#.(50408.02b  4/10/25 RAM  9:50a| Add \n after msg "This could take awhile."
 #
 ##PRGM     +====================+===============================================+
 ##ID 69.600. Main0              |
@@ -1280,7 +1281,7 @@ function getRemoteName() {                                                      
       else # bDoit == 1
 
         echo -e "\n  ${aGIT1}"
-        echo -e    "- This could take a while."                                                             # .(50408.02.2 RAM Add msg per BTG)
+        echo -e "- This could take a while. You may have to enter your password to set .sh permissions.\n"  # .(50408.02b.1).(50408.02.2 RAM Add msg per BTG)
 
 #       eval        "${aGIT1}" 2>&1 | awk '{ print "    " $0 }'
 #                   "${aGIT0}" "{aDir}" 2>&1 | awk '{ printf "    %s\n", $0 }' RS='\r?\n'                   ##.(50104.02.1)

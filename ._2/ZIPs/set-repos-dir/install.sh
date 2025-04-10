@@ -28,12 +28,12 @@
 
   aVer="v1.01\`50407.1230"
 
-  echo ""
+# echo ""                                                                               ##.(50410.01.6 RAM I think)
 
 # ---------------------------------------------------------------------------
 
 #  aInstall="re-install"; if [ "$1" == "install" ]; then aInstall="$1"; shift; fi       ##.(50105.04.6 RAM Add Install command for help)(50407.01.1)
-   aInstall="install"                                                                   # .(50407.01.2 RAM Remove re-install) 
+   aInstall="install"                                                                   # .(50407.01.2 RAM Remove re-install)
 
    if [ "$1" == "help" ]; then set -- ""; fi
 
@@ -46,7 +46,7 @@ function  deleteDir() {
    }
 #  --------------------------------------------------------------
 
-function  installRepo() {                                                               # .(50407.01.3)   
+function  installRepo() {                                                               # .(50407.01.3)
 
    aAppDir="$( echo $1 | awk '{ print tolower($0) }' )";
    aStage="$(  echo $2 | awk '{ print tolower($0) }' )"; bOk=0
@@ -87,8 +87,8 @@ function  installRepo() {                                                       
    }
 #  --------------------------------------------------------------
 
-function  help() {   
-#  echo -e "\n  You can do: bash ${aInstall} FRTools, AICoder, AnyLLM or AIDocs"                            ##.(50105.04.8 RAM Add dynamic ${aInstall} Beg).(50226.03.1 Beg) 
+function  help() {
+#  echo -e "\n  You can do: bash ${aInstall} FRTools, AICoder, AnyLLM or AIDocs"                            ##.(50105.04.8 RAM Add dynamic ${aInstall} Beg).(50226.03.1 Beg)
 #  echo -e   "          or: bash ${aInstall} all"
 #  echo -e "\n  Other possible ways to install formR projects into their own repository folders:"
 #  echo -e   "              bash ${aInstall} frtools                     ->  FRTools"
@@ -102,11 +102,11 @@ function  help() {
 #  echo -e   "        you can clone or create your own projects folder with:"
 #  echo -e "\n              frt clone {GitHub-Account} {Repo-Name}   -> {Repo-Name}"
 #  echo -e   "              frt gitr init AI-Tests_/dev03-robin      ->  AI-Tests_/dev03-robin"
-#  echo -e   "      or just     gitr init AI-Tests                   ->  AI-Tests"                          ##.(50105.04.9 End).(50226.03.1 End) 
+#  echo -e   "      or just     gitr init AI-Tests                   ->  AI-Tests"                          ##.(50105.04.9 End).(50226.03.1 End)
 
    aShell='.zshrc  '; if [ "${OSTYPE:0:7}" != "darwin2" ]; then aShell='.bashrc '; fi                       # .(50405.04.3 RAM Set aShell for Mac)
-   
-   echo -e "\n  You can now run any of these install commands from your Repos folder:"                      # .(50226.03.1 Rewrite Help Beg) 
+
+   echo -e "\n  You can now run any of these install commands from your Repos folder:"                      # .(50226.03.1 Rewrite Help Beg)
    echo -e "\n     bash ${aInstall} frtools       # first, then login again, or run:"
    echo -e   "       source ~/${aShell}           # then run, frt, to check it."                            # .(50405.04.4)
    echo -e   ""
@@ -117,14 +117,14 @@ function  help() {
 
    echo -e "\n* Note: You must install FRTools before any other projects.  After that,"                     # .(50105.04.9 RAM Add more options Beg)
    echo -e   "  you can clone or create your own projects folder with:"
-#  echo -e "\n     bash frt clone {GitHub-Account} {Repo-Name}"                                             # .(50226.03.1 End).(50327.02.9) 
-   echo -e "\n     bash frt clone {RepoName} '' {CloneDir} {Branch} {Account}"                              # .(50327.02.9) 
+#  echo -e "\n     bash frt clone {GitHub-Account} {Repo-Name}"                                             # .(50226.03.1 End).(50327.02.9)
+   echo -e "\n     bash frt clone {RepoName} '' {CloneDir} {Branch} {Account}"                              # .(50327.02.9)
 
    if [ "${OS:0:7}" != "Windows" ]; then echo ""; fi; exit
-   } # eof help 
+   } # eof help
 #  --------------------------------------------------------------
 
-  if [ "$1" == "" ]; then help; fi 
+  if [ "$1" == "" ]; then help; fi
 
   if [ "$1" == "aidocs"   ]; then bCheck="1"; fi;
   if [ "$1" == "aicoder"  ]; then bCheck="1"; fi;                                                           # .(50104.01.16)
@@ -148,7 +148,7 @@ function  help() {
      installRepo $1 $2 $3                                                               # .(50407.01.5 End) # .(50402.15.6 RAM Add 3rd arg)
      fi
 #  --------------------------------------------------------------
-     
+
      echo -e "  Run, bash install, again to see other repos to install"                 # .(50407.01.6 RAM)
      if [ "${OS:0:7}" != "Windows" ]; then echo ""; fi; exit                            # .(50407.01.7 RAM)
 

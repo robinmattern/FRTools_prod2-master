@@ -20,8 +20,8 @@
    if [ "${aStage}" == ""      ]; then aRepo="AIDocs_demo1-master"; aAppDir="no-stage"; fi
    if [ "${aStage}" == "demo1" ]; then aRepo="AIDocs_demo1-master"; aAppDir="demo1"; fi
    if [ "${aStage}" == "dev01" ]; then aRepo="AIDocs_dev01-robin";  aAppDir="dev01"; fi
-   if [ "${aStage}" == "dev02" ]; then aRepo="AIDocs_dev02-robin";  aAppDir="dev02"; fi # .(50408.02.3 RAM Add dev02)
-   if [ "${aStage}" == "test1" ]; then aRepo="AIDocs_test1-robin";  aAppDir="test1"; fi # .(50408.02.4 RAM Add test1)
+   if [ "${aStage}" == "dev02" ]; then aRepo="AIDocs_dev02-robin";  aAppDir="dev02"; fi # .(50408.05.1 RAM Add dev02)
+   if [ "${aStage}" == "test1" ]; then aRepo="AIDocs_test1-robin";  aAppDir="test1"; fi # .(50408.05.2 RAM Add test1)
    if [ "${aRepo/\//}" != "${aAppDir}" ]; then aRepo="${aRepo/\//}"; fi
 
 #  ----------------------------------------------------------------------------
@@ -154,38 +154,53 @@ function cpyEnv() {                                                             
       aFrom="$1/$2"; aTo="$1/$3"
 #     echo "    Copying .env file from ${aFrom}"
 #     echo "                      into ${aTo}"
-      if [ ! -f "${aFrom}" ]; then echo  "* Unable to copy: '${aFrom}'";  return; fi                        # .(50406.01d.1)
-      if [   -f "${aFrom}" ]; then cp -p "${aFrom}" "${aTo}"; fi
-      if [ ! -f "${aTo}"   ]; then echo  "* Unable to copy to: '${aTo}'"; return; fi                        # .(50406.01d.2)
+      if [ ! -f "${aFrom}" ]; then echo     "  * Can't copy .env file: '${aFrom}'";  return; fi                   # .(50406.01d.1)
+      echo "    Copying .env file from ${aFrom}  to  .env"                                                  # .(50410.01.1)
+      if [   -f "${aFrom}" ]; then            cp -p "${aFrom}" "${aTo}";               fi
+      if [ ! -f "${aTo}"   ]; then echo  "  * Copy to: '${aTo}' failed";       return; fi                   # .(50406.01d.2)
       }                                                                                                     # .(50406.03.1 End)
 # --------------------------------------------------------------
+
+ if [ "${aStage}" == "" ] || [ "${aStage}" == "demo1" ]; then bModelTester=0; fi        # .(50406.01d.1)
 
 #if [  -f "${aRepoDir}/client1/c16_aidocs-review-app/utils/FRTs/_env_local-local.txt" ]; then
 #   cp -p "${aRepoDir}/client1/c16_aidocs-review-app/utils/FRTs/_env_local-local.txt"  "${aRepos}/client1/c16_aidocs-review-app/utils/FRTs/_env"
 #   fi
    echo ""                                                                              # .(50406.01e.1)
    cpyEnv "./${aRepoDir}/client1/c16_aidocs-review-app/utils/FRTs"  "_env_local-local.txt"  "_env"          # .(50406.03.2 RAM Copy c16 _env)
- if [ "${aStage}" == "dev01" ]; then                                                                        # .(50406.03c.1 RAM Try again).(50406.03b.1 RAM Only copy dev01's env)
-   cpyEnv "./${aRepoDir}/server1/s12_websearch-app" ".env_example"  ".env"                                  # .(50406.03.3 RAM Copy s12 .env)
+#if [ "${aStage}" == "dev01" ] || [ "${aStage}" == "test1" ]; then                                          # .(50406.03c.1 RAM Try again).(50406.03b.1 RAM Only copy dev01's env)
+ if [ "${bModelTester}" != "0" ]; then                                                                      # .(50406.03c.1 RAM Try again).(50406.03b.1 RAM Only copy dev01's env)
+   cpyEnv "./${aRepoDir}/server1/s11_search-app"     ".env_example"  ".env"                                 # .(50410.01.2)
+   cpyEnv "./${aRepoDir}/server1/s12_search-web-app" ".env_example"  ".env"                                 # .(50410.01.3).(50406.03.3 RAM Copy s12 .env)
+   cpyEnv "./${aRepoDir}/server1/s13_search-rag-app" ".env_example"  ".env"                                 # .(50410.01.4)
    fi                                                                                                       # .(50406.03b.2)
 # --------------------------------------------------------------
 
-#if [ "${bAnyLLM}" == "1" ] && [ "${aStage}" != "dev01" ]; then                         ##.(50406.01.1).(50402.15.7 RAM Only set ANYLLM_KEY id it's installed).(50406.01c.1)
- if [ "${aRepo}" == "AnyLLM" ]; then                                                    # .(50406.01c.1).(50402.15.7 RAM Only set ANYLLM_KEY id it's installed)
+#if [ "${aRepo}" == "AnyLLM" ]; then                                                    ##.(50406.01c.1).(50402.15.7 RAM Only set ANYLLM_KEY id it's installed).(50406.01d.2)
+#if [ "${bAnyLLM}" == "1" ] && [ "${aStage}" == "demo1" ]; then                         ##.(50406.01.1).(50402.15.7 RAM Only set ANYLLM_KEY id it's installed).(50406.01c.1)
+ if [ "${bAnyLLM}" == "1" ] && [ "${bModelTester}" == "0" ]; then                       # .(50406.01d.2).(50406.01.1).(50402.15.7 RAM Only set ANYLLM_KEY id it's installed).(50406.01c.1)
 #  echo ""
    echo -e   "  Edit SERVER_HOST and ANYLLM_API_KEY in _env:"                           # .(50406.01e.2 RAM Remove CR)
    echo -e   "     cd ${aRepoDir}"                                                      # .(50106.06.10)
    echo -e   "     nano client1/c16_aidocs-review-app/utils/FRTs/_env"
    echo -e   "     ./run-client.sh\n"
    echo -e   "  or work on it in VSCode with: code ${aRepoDir/\//}*"                    # .(50105.05c.7).(50106.06.11).(50104.01.13 End)
+   if [ "${OS:0:7}"     != "Windows" ]; then echo ""; fi                                #
+   exit
    fi
 #else                                                                                   ##.(50406.01b.1 Display msg for AIDocs_dev01 Beg).(50406.01c.2)
- if [ "${aRepo}" == "AIDocs" ]; then                                                    # .(50406.01c.2).(50408.01.x).(50402.15.7 RAM Only set ANYLLM_KEY id it's installed)
-   echo -e   "  Run Models tests in ./server1/s##_...-app folders,"                     # .(50406.01e.3 RAM Remove CR)
-   echo -e   "   after editing the model paramters in .env file, e.g."
-   echo -e "\n     cd ${aRepoDir}/server1/s12_*"                                        # .(50106.06d.1 RAM Add a space)
+#  echo "--- aRepo: '${aRepo}', aStage: '${aStage}', bModelTester: '${bModelTester}'"
+#if [ "${aRepo}" == "AIDocs"   ]; then                                                  # .(50406.01c.2).(50408.01.x).(50402.15.7 RAM Only set ANYLLM_KEY id it's installed).(50406.01d.3)
+ if [ "${bModelTester}" != "0" ]; then                                                  # .(50406.01d.2).(50406.01c.2).(50408.01.x).(50402.15.7 RAM Only set ANYLLM_KEY id it's installed)
+   echo -e "\n  Run Model tests in ./server1/s11_...-app folder,"                       # .(50406.01e.3 RAM Remove CR)
+   echo -e   "   after editing the model paramters in .env file(s), e.g."
+   echo -e "\n     cd ${aRepoDir}/server1/s11_*"                                        # .(50106.06d.1 RAM Add a space)
    echo -e   "     nano .env"
-   echo -e   "     node interactive_search_u2.02.mjs [{Model}] [{CTX_Size}]"
+   echo -e   "     node search_u2.03.mjs [{Model}] [{CTX_Size}]"
+   echo -e   "     nano .env_t001_Run1-qwen2.txt"                                       # ,(50410.01.5)
+   echo -e   "     bash run-tests.sh t001"                                              # ,(50410.01.6)
+   if [ "${OS:0:7}"     != "Windows" ]; then echo ""; fi                                #
+   exit
    fi                                                                                   # .(50406.01b.1 End).(50406.01.1 End).(50106.04.16 RAM Exit if bDoit=0)
 
  else                                                                                   # .(50402.15.8)
