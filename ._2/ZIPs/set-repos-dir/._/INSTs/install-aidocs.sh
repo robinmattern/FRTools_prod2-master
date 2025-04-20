@@ -201,7 +201,6 @@ function cpyEnv() {                                                             
    echo -e   "     bash run-tests.sh help"                                              # .(50420.05.6).(50410.01.6)
    echo -e   "     bash run-tests.sh t041"                                              # .(50410.01.7)
    echo -e   "     bash run-tests2.sh"                                                  # .(50410.01.8)
-   echo -e   "
    if [ "${OS:0:7}"     != "Windows" ]; then echo ""; fi                                #
    exit
    fi                                                                                   # .(50406.01b.1 End).(50406.01.1 End).(50106.04.16 RAM Exit if bDoit=0)
