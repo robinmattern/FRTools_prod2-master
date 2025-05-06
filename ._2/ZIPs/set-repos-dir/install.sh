@@ -113,7 +113,7 @@ function  help() {
    echo -e   "     bash ${aInstall} anyllm        # then run, anyllm, to check it."
    echo -e   "     bash ${aInstall} aidocs demo1  # then run, aidocs, to check it."                         # .(50402.15.4)
 #  echo -e   "     bash ${aInstall} aidocs dev01  # then run, aidocs, to check it."                         ##.(50402.15.5).(50408.03.9)
-   echo -e   "     bash ${aInstall} aidocs test1  # then run, aidocs, to check it."                         # .(50408.03.9).(50402.15.5)
+   echo -e   "     bash ${aInstall} aidocs test1  # then run, aitestr, to check it."                        # .(50408.03.9).(50402.15.5)
 
    echo -e "\n* Note: You must install FRTools before any other projects.  After that,"                     # .(50105.04.9 RAM Add more options Beg)
    echo -e   "  you can clone or create your own projects folder with:"

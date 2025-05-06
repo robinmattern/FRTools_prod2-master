@@ -168,11 +168,15 @@ function cpyEnv() {                                                             
 #   fi
    echo ""                                                                              # .(50406.01e.1)
    cpyEnv "./${aRepoDir}/client1/c16_aidocs-review-app/utils/FRTs"  "_env_local-local.txt"  "_env"          # .(50406.03.2 RAM Copy c16 _env)
+
 #if [ "${aStage}" == "dev01" ] || [ "${aStage}" == "test1" ]; then                                          # .(50406.03c.1 RAM Try again).(50406.03b.1 RAM Only copy dev01's env)
+
  if [ "${bModelTester}" != "0" ]; then                                                                      # .(50406.03c.1 RAM Try again).(50406.03b.1 RAM Only copy dev01's env)
    cpyEnv "./${aRepoDir}/server1/s11_search-app"     ".env_example"  ".env"                                 # .(50410.01.2)
    cpyEnv "./${aRepoDir}/server1/s12_search-web-app" ".env_example"  ".env"                                 # .(50410.01.3).(50406.03.3 RAM Copy s12 .env)
    cpyEnv "./${aRepoDir}/server1/s13_search-rag-app" ".env_example"  ".env"                                 # .(50410.01.4)
+   cd ${aRepoDir}                                                                                           # .(50505.10.1)
+   bash set-aidocs.sh doit                                                                                  # .(50505.10.2)
    fi                                                                                                       # .(50406.03b.2)
 # --------------------------------------------------------------
 
@@ -191,16 +195,26 @@ function cpyEnv() {                                                             
 #else                                                                                   ##.(50406.01b.1 Display msg for AIDocs_dev01 Beg).(50406.01c.2)
 #  echo "--- aRepo: '${aRepo}', aStage: '${aStage}', bModelTester: '${bModelTester}'"
 #if [ "${aRepo}" == "AIDocs"   ]; then                                                  # .(50406.01c.2).(50408.01.x).(50402.15.7 RAM Only set ANYLLM_KEY id it's installed).(50406.01d.3)
+
  if [ "${bModelTester}" != "0" ]; then                                                  # .(50406.01d.2).(50406.01c.2).(50408.01.x).(50402.15.7 RAM Only set ANYLLM_KEY id it's installed)
-   echo -e "\n  Run AI model tests in ./server1/s11_*-app folder,"                      # .(50406.01e.3 RAM Remove CR)
+   echo -e "\n  Run the AI model testr in any of the server1 apps folder, for example"      # .(50406.01e.3 RAM Remove CR)
 #  echo -e   "   after editing the model paramters in .env file(s), e.g."               ##.(50420.05.1 RAM New Instructions)
    echo -e "\n     cd ${aRepoDir}/server1/s11_*"                                        ##.(50106.06d.1 RAM Add a space).(50420.05.2)
 #  echo -e   "     nano .env"                                                           ##.(50420.05.3)
 #  echo -e   "     node search_u2.03.mjs [{Model}] [{CTX_Size}]"                        ##.(50420.05.4)
 #  echo -e   "     nano .env_t001_Run1-qwen2.txt"                                       ##.(50410.01.5).(50420.05.5)
-   echo -e   "     bash run-tests.sh help"                                              # .(50420.05.6).(50410.01.6)
-   echo -e   "     bash run-tests.sh t041"                                              # .(50410.01.7)
-   echo -e   "     bash run-tests2.sh"                                                  # .(50410.01.8)
+
+   echo -e   "     ai.testr.4u help"                                                    # .(50420.05.6).(50410.01.6)
+   echo -e   "     aitestr s11 t041"                                                    # .(50420.05.6).(50410.01.6)
+   echo -e   "     ait chroma start"                                                    # .(50410.01.7)
+   echo -e   "     ait import s13 "                                                     # .(50410.01.8)
+   echo -e   "     ait s13 t041"                                                        # .(50410.01.8)
+
+#  echo -e   "     bash run-tests.sh help"                                              # .(50420.05.6).(50410.01.6)
+#  echo -e   "     bash run-tests.sh t041"                                              # .(50410.01.7)
+#  echo -e   "     bash run-tests2.sh"                                                  # .(50410.01.8)
+#  echo -e   "     bash run-tests2.sh"                                                  # .(50410.01.8)
+
    if [ "${OS:0:7}"     != "Windows" ]; then echo ""; fi                                #
    exit
    fi                                                                                   # .(50406.01b.1 End).(50406.01.1 End).(50106.04.16 RAM Exit if bDoit=0)
@@ -211,7 +225,7 @@ function cpyEnv() {                                                             
    fi # eif ${aRepoDir}/client1
  fi  # eif $? -ne 1                                                                     # .(50402.15.10)
 
-  if [ "${OS:0:7}"     != "Windows" ]; then echo ""; fi
+  if [ "${OS:0:7}" != "Windows" ]; then echo ""; fi
 
 # frt clone AIDocs_demo1-master ''  ''            -->   AIDocs_demo1-master.git  AIDocs                x   AIDocs_demo1-master
 # frt clone AIDocs_demo1-master ''  demo1         -->   AIDocs_demo1-master.git  AIDocs_demo1
