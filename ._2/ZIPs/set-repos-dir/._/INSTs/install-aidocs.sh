@@ -175,6 +175,7 @@ function cpyEnv() {                                                             
    cpyEnv "./${aRepoDir}/server1/s11_search-app"     ".env_example"  ".env"                                 # .(50410.01.2)
    cpyEnv "./${aRepoDir}/server1/s12_search-web-app" ".env_example"  ".env"                                 # .(50410.01.3).(50406.03.3 RAM Copy s12 .env)
    cpyEnv "./${aRepoDir}/server1/s13_search-rag-app" ".env_example"  ".env"                                 # .(50410.01.4)
+   cpyEnv "./${aRepoDir}/server1/s14_grading-app"    ".env_example"  ".env"                                 # .(50510.05.1)
    cd ${aRepoDir}                                                                                           # .(50505.10.1)
    bash set-aidocs.sh doit                                                                                  # .(50505.10.2)
    fi                                                                                                       # .(50406.03b.2)
