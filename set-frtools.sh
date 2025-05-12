@@ -442,6 +442,8 @@ function cpyToBin() {
 #   cpyScript "killport" "${aRepo_Dir}/._2/JPTs/JPT34_killPort_p1.01.sh"
 
     cpyScript "frt     " "${aRepo_Dir}/._2/FRTs/FRT40_Main0.sh"
+    cpyScript "frtools " "${aRepo_Dir}/._2/FRTs/FRT40_Main0.sh"                         # .(50512.01.1 RAM Add frtools)
+
     cpyScript "keys    " "${aRepo_Dir}/._2/FRTs/keyS/FRT41_keyS1.sh"
     cpyScript "gitr    " "${aRepo_Dir}/._2/FRTs/gitR/FRT42_gitR2.sh"                    #.(41103.02.1 RAM Was: gitR1)
     cpyScript "gitr1   " "${aRepo_Dir}/._2/FRTs/gitR/FRT42_gitR1.sh"
