@@ -205,7 +205,7 @@ function cpyEnv() {                                                             
 #  echo -e   "   after editing the model paramters in .env file(s), e.g."               ##.(50420.05.1 RAM New Instructions)
 #  echo -e "\n     cd ${aRepoDir}/server1/s11_*"                                        ##.(50106.06d.1 RAM Add a space).(50420.05.2).(50516.02.2)
 #  echo -e "\n     cd ${aRepoDir}"                                                      ##.(50106.06d.1 RAM Add a space).(50420.05.2).(50516.02.8)
-   echo -e   "  After changing into the project folder: cd ${aRepoDir}"                 # .(50516.02.9)
+   echo -e "\n  After changing into the project folder: cd ${aRepoDir}"                 # .(50516.02.9)
    echo -e   "    and setting your PC_CODE in the script, run-tests.sh,"                # .(50516.02.10)
    echo -e   "    you can run any of these AI model testr commands, for example:"       # .(50516.02.11)
 
