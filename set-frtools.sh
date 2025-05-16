@@ -528,10 +528,12 @@ function  makScript() {
 
 # if [ -z "$(command -v frt 2>/dev/null)" ]; then
 # if [ -z "$(which frt)" ]; then                                                        # .(41225.03.1 RAM)
-     echo -e "* You may need to run, source ${aBashrc}, or login again."
+#    echo -e "* You may need to run, source ${aBashrc}, or login again."
 #  else
      if [ "${bDoScripts}" == "1" ]; then                                                # .(50105.07.9)
      echo -e "\n  FRTools are installed.";
+     echo -e "//  ------  End of Install  ----------------------------------------------------------------------------- \\"       # .(50516.01.4)
+     echo -e "\n* You may need to run, source ${aBashrc}, or login again."
      fi                                                                                 # .(50105.07.10)
 #    fi                                                                                 # .(41225.03.3)
 
