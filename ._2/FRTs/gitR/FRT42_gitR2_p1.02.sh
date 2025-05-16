@@ -1047,8 +1047,8 @@ yarn.lock
 
 #       if [ "${aNewRepoDir}" != "${PWD##*/}" ]; then                                                       ##.(50102.03a.13)
         if [ "${bCD}" == "1" ]; then                                                                        # .(50102.03a.18)
-           echo -e "\n  Please change into the project folder: cd ${aNewRepoDir}"                           # .(50105.05c.1).(50102.03a.14 RAM Was: aFolder)
-           echo -e   "  You can now work on it in VSCode with: code ${aProject}*"                           # .(50105.05c.2).(50102.03a.15)
+           echo -e   "  After changing into the project folder: cd ${aNewRepoDir},"                         # .(50105.05c.1).(50102.03a.14 RAM Was: aFolder)
+           echo -e   "    you can now work on it in VSCode with: code ${aProject}*"                         # .(50105.05c.2).(50102.03a.15)
            fi
            exit_wCR                                                                                         # .(50102.03a.16)
 #          echo -e "\n * Didn't know what folder to put .git into"                                          ##.(50102.03a.14).(41109.01.2 RAM If all else fails)

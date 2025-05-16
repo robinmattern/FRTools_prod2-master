@@ -531,8 +531,8 @@ function  makScript() {
 #    echo -e "* You may need to run, source ${aBashrc}, or login again."
 #  else
      if [ "${bDoScripts}" == "1" ]; then                                                # .(50105.07.9)
-     echo -e "\n  FRTools are installed.";
-     echo -e "//  ------  End of Install  ----------------------------------------------------------------------------- \\"       # .(50516.01.4)
+     echo -e "  FRTools are installed.";
+     echo -e "\n//  ------  End of Install  ----------------------------------------------------------------------------- \\"     # .(50516.01.4)
      echo -e "\n* You may need to run, source ${aBashrc}, or login again."
      fi                                                                                 # .(50105.07.10)
 #    fi                                                                                 # .(41225.03.3)

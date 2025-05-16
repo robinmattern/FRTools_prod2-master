@@ -59,17 +59,16 @@
      fi
      if [ "${OS:0:7}" != "Windows" ]; then echo ""; sudo chmod 755 *.sh; fi             # .(50101.04.1 RAM Opps Windows check)
      if [ "${OS:0:7}" != "Windows" ]; then echo ""; sudo chmod 755 ._/INSTs/*.sh; fi    # .(50327.01.1 RAM Set chmod on moved INSTs scripts)
+     if [ "$?" != "0" ]; then exit; fi                                                  # .(50516.01.2)
     
 #    mv re-install.sh re-install                                                        ##.(50407.01.1 RAM Remove re-install).(50408.04.2)
      mv    install.sh    install                                                        # .(50408.04.3).(50105.04.3 RAM For the new `install` script)
 
      echo -e "  The FormR install scripts have been downloaded into your Repos folder."
+     echo -e "\n//  ------  End of Install  ----------------------------------------------------------------------------- \\"   # .(50516.01.3 RAM Add End of Install msg)
 
 #    echo -e "  You can now run any of these install scripts -- "                       ##.(50105.04.4 RAM Add install help).(50405.04.2 RAM Remove)
      bash install                                                                       # .(50105.04.5)
-
-     if [ "$?" != "0" ]; then exit; fi                                                  # .(50516.01.2)
-     echo -e "//  ------  End of Install  ----------------------------------------------------------------------------- \\"     # .(50516.01.3 RAM Add End of Install msg)
 
      if [ "${bTest}" == "0" ]; then                                                     # .(50408.04.4) 
        if [ -f "set-repos-dir.sh"  ]; then rm "set-repos-dir.sh";  fi                   # .(50408.04.5 RAM Erase this too) 
