@@ -25,8 +25,8 @@ if [ $? -ne 1 ]; then                                                           
 #  echo -e   "     ./run-client.sh"
 #  echo -e   "  or open VSCode with: code ${aRepo/\//}*"                                ##.(50106.06.4).(50104.01.13 End)
  
-   echo -e   "  Please change into the project folder: cd ${aRepoDir}"                  # .(50105.05c.5).(50106.06.4)
-   echo -e   "  You can now work on it in VSCode with: code ${aRepo/\//}*"              # .(50105.05c.6)
+   echo -e   "  After changing into the project folder: cd ${aRepoDir}"                 # .(50516.02.5).(50105.05c.5).(50106.06.4)
+   echo -e   "    you can now work on it in VSCode with: code ${aRepo/\//}*"            # .(50516.02.6).(50105.05c.6)
    fi                                                                                   # .(50106.04.14)
 
    if [ "${OS:0:7}"     != "Windows" ]; then echo ""; fi

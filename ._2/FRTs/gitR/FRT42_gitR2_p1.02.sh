@@ -199,6 +199,7 @@
 #.(50408.02   4/08/25 RAM  9:30a| Add Msg re git clone taking a while 
 #.(50409.01   4/09/25 RAM  5:31a| Only show local(?) commits, not all ** Not implemented ** 
 #.(50408.02b  4/10/25 RAM  9:50a| Add \n after msg "This could take awhile."
+#.(50516.02   5/16/25 RAM  9:25a| Change prompt to change into installed dir
 #
 ##PRGM     +====================+===============================================+
 ##ID 69.600. Main0              |
@@ -1047,8 +1048,8 @@ yarn.lock
 
 #       if [ "${aNewRepoDir}" != "${PWD##*/}" ]; then                                                       ##.(50102.03a.13)
         if [ "${bCD}" == "1" ]; then                                                                        # .(50102.03a.18)
-           echo -e   "  After changing into the project folder: cd ${aNewRepoDir},"                         # .(50105.05c.1).(50102.03a.14 RAM Was: aFolder)
-           echo -e   "    you can now work on it in VSCode with: code ${aProject}*"                         # .(50105.05c.2).(50102.03a.15)
+           echo -e   "  After changing into the project folder: cd ${aNewRepoDir},"                         # .(50516.02.1 RAM Change prompt).(50105.05c.1).(50102.03a.14 RAM Was: aFolder)
+           echo -e   "    you can now work on it in VSCode with: code ${aProject}*"                         # .(50516.02.2).(50105.05c.2).(50102.03a.15)
            fi
            exit_wCR                                                                                         # .(50102.03a.16)
 #          echo -e "\n * Didn't know what folder to put .git into"                                          ##.(50102.03a.14).(41109.01.2 RAM If all else fails)
@@ -1312,8 +1313,8 @@ function getRemoteName() {                                                      
         fi # // eif add code-workspace                                                                      # .(41110.03.4)
 
      if [ "${bQuiet}" != "1" ]; then                                                    # .(50104.03.2 RAM Add bQuiet)
-           echo -e "\n  Please change into the project folder: cd ${aDir}"              # .(50105.05c.3)    # .(41210.01.x)
-           echo -e   "  You can now work on it in VSCode with: code ${aRepo1}*"         # .(50105.05c.4)
+           echo -e   "  After changing into the project folder: cd ${aDir},"                                # .(50516.02.3 RAM Change prompt).(50105.05c.3).(41210.01.x)
+           echo -e   "    you can now work on it in VSCode with: code ${aRepo1}*"                           # .(50516.02.4).(50105.05c.4 RAM Add *?) 
            exit_wCR                                                                     # .(50104.03.3 Beg)
       else
            exit 0                                                                                            # .(50106.04.8 RAM It was 1)
