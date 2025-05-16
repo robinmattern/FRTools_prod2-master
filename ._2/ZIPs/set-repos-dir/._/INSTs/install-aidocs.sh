@@ -198,7 +198,7 @@ function cpyEnv() {                                                             
 #if [ "${aRepo}" == "AIDocs"   ]; then                                                  # .(50406.01c.2).(50408.01.x).(50402.15.7 RAM Only set ANYLLM_KEY id it's installed).(50406.01d.3)
 
  if [ "${bModelTester}" != "0" ]; then                                                  # .(50406.01d.2).(50406.01c.2).(50408.01.x).(50402.15.7 RAM Only set ANYLLM_KEY id it's installed)
-   echo -e "//  ------  End of Install  ----------------------------------------------------------------------------- \\"       # .(50516.01.1 RAM Add End of Install msg)
+   echo -e "//  ------  End of Install  ----------------------------------------------------------------------------- \\\n"       # .(50516.01.1 RAM Add End of Install msg)
 
 #  echo -e "\n  Run the AI model testr in any of the server1 app folders, for example"  ##.(50406.01e.3 RAM Remove CR).(50516.02.7)
 #  echo -e "\n  Run the AI model testr commands in the repository, for example:"        ##.(50406.01e.3 RAM Remove CR).(50516.02.7)
