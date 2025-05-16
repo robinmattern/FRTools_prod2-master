@@ -1,5 +1,7 @@
 #!/bin/bash
 
+#*   -- --- ---------------  =  -----------------------------------------------------   #   ------------ *###
+
 #    aVer=".(41208.05_Latest set-repos and set-repos-dir.sh"
 
      aCR=""; if [ "${OS:0:7}" != "Windows" ]; then aCR="\n"; fi                         # .(41120.01.6)
@@ -51,7 +53,6 @@
 #    ${aZIP_Exe} x      -y set-repos-dir.zip 2>&1 | awk '/Extract|Files|Folders/ { print "    " $0 }'  ##.(50102.04.10).(50102.04.7 RAM Was 7zip).(50102.04b.1)
      ${aZIP_Exe} x -aoa -y set-repos-dir.zip 2>&1 | awk '/Extract|Files|Folders/ { print "    " $0 }'  # .(50102.04b.1 RAM Override existing files).(50102.04.7 RAM Was 7zip)
      
-
      if [ ! -f "install.sh" ]; then                                                     # .(50408.04.1 RAM Change from re-install) 
      echo -e "\n* Failed to unzip, set-repos-dir.zip.${aCR}"
      exit
@@ -63,11 +64,37 @@
      mv    install.sh    install                                                        # .(50408.04.3).(50105.04.3 RAM For the new `install` script)
 
      echo -e "  The FormR install scripts have been downloaded into your Repos folder."
+
 #    echo -e "  You can now run any of these install scripts -- "                       ##.(50105.04.4 RAM Add install help).(50405.04.2 RAM Remove)
      bash install                                                                       # .(50105.04.5)
+
+     if [ "$?" != "0" ]; then exit; fi                                                  # .(50516.01.2)
+     echo -e "//  ------  End of Install  ----------------------------------------------------------------------------- \\"     # .(50516.01.3 RAM Add End of Install msg)
 
      if [ "${bTest}" == "0" ]; then                                                     # .(50408.04.4) 
        if [ -f "set-repos-dir.sh"  ]; then rm "set-repos-dir.sh";  fi                   # .(50408.04.5 RAM Erase this too) 
        if [ -f "set-repos-dir.zip" ]; then rm "set-repos-dir.zip"; fi                   # .(50102.05.6 RAM If not testing locally).(41226.04.1 RAM Erase it)
        fi                                                                               # .(50408.04.6) 
 #    if [ "${aCR}" != "" ]; then echo ""; fi                                            # .(50105.04.6)
+
+#*   -- --  --------------  =  ------------------------------------------------------   #   ------------ *#
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
