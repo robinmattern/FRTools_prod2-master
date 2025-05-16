@@ -170,6 +170,7 @@
 #.(50106.04   1/06/25 RAM  9:00p| Add exit 1 for invalid clone and bDoit=0
 #.(50324.01   3/24/25 RAM  8:50a| Commit update on the hour
 #.(50408.01   4/08/25 RAM  9:20a| Pass error code up to the calling function
+#.(50516.03   5/16/25 RAM 10:00a| Bump FRTools Version date 
 #
 ##PRGM     +====================+===============================================+
 ##ID 69.600. Main0              |
@@ -177,7 +178,7 @@
 #*/
 #========================================================================================================== #  ===============================  #
 
-     aVdt="Apr 8, 2025 9:20a"; aVtitle="formR Tools"                                                        # .(21113.05.8 RAM Add aVtitle for Version in Begin)
+     aVdt="May 16, 2025 9:50a"; aVtitle="formR Tools"                                                       # .(50516.03.1).(21113.05.8 RAM Add aVtitle for Version in Begin)
      aVer="$( echo $0 | awk '{  match( $0, /_[dpstuv][0-9]+\.[0-9]+/ ); print substr( $0, RSTART+1, RLENGTH-1) }' )"  # .(21031.01.1 RAM Add [d...).(20416.03.8 "_p2.02", or _d1.09)
 
      LIB="FRT"; LIB_LOG=${LIB}_LOG; LIB_USER=${LIB}_USER; Lib=${LIB}; aDir=$( dirname "${BASH_SOURCE}" );   # .(41027.01.1 RAM).(80923.01.1)
