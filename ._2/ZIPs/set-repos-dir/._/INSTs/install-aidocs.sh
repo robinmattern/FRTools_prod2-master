@@ -198,18 +198,22 @@ function cpyEnv() {                                                             
 #if [ "${aRepo}" == "AIDocs"   ]; then                                                  # .(50406.01c.2).(50408.01.x).(50402.15.7 RAM Only set ANYLLM_KEY id it's installed).(50406.01d.3)
 
  if [ "${bModelTester}" != "0" ]; then                                                  # .(50406.01d.2).(50406.01c.2).(50408.01.x).(50402.15.7 RAM Only set ANYLLM_KEY id it's installed)
-   echo -e "\n  Run the AI model testr in any of the server1 apps folder, for example"      # .(50406.01e.3 RAM Remove CR)
+   echo -e "//  ------  End of Install  ----------------------------------------------------------------------------- \\"       # .(50516.01.1 RAM Add End of Install msg)
+
+#  echo -e "\n  Run the AI model testr in any of the server1 app folders, for example"  ##.(50406.01e.3 RAM Remove CR).(50516.02.1)
+   echo -e "\n  Run the AI model testr commands in the repository, for example:"        # .(50516.02.1).(50406.01e.3 RAM Remove CR)
 #  echo -e   "   after editing the model paramters in .env file(s), e.g."               ##.(50420.05.1 RAM New Instructions)
-   echo -e "\n     cd ${aRepoDir}/server1/s11_*"                                        ##.(50106.06d.1 RAM Add a space).(50420.05.2)
+#  echo -e "\n     cd ${aRepoDir}/server1/s11_*"                                        ##.(50106.06d.1 RAM Add a space).(50420.05.2).(50516.02.2)
+   echo -e "\n     cd ${aRepoDir}"                                                      # .(50516.02.2).(50106.06d.1 RAM Add a space).(50420.05.2)
 #  echo -e   "     nano .env"                                                           ##.(50420.05.3)
 #  echo -e   "     node search_u2.03.mjs [{Model}] [{CTX_Size}]"                        ##.(50420.05.4)
 #  echo -e   "     nano .env_t001_Run1-qwen2.txt"                                       ##.(50410.01.5).(50420.05.5)
 
    echo -e   "     ai.testr.4u help"                                                    # .(50420.05.6).(50410.01.6)
-   echo -e   "     aitestr s11 t041"                                                    # .(50420.05.6).(50410.01.6)
+   echo -e   "     aitestr s11 t011"                                                    # .(50420.05.6).(50410.01.6)
    echo -e   "     ait chroma start"                                                    # .(50410.01.7)
    echo -e   "     ait import s13 "                                                     # .(50410.01.8)
-   echo -e   "     ait s13 t041"                                                        # .(50410.01.8)
+   echo -e   "     ait s13 t011"                                                        # .(50410.01.8)
 
 #  echo -e   "     bash run-tests.sh help"                                              # .(50420.05.6).(50410.01.6)
 #  echo -e   "     bash run-tests.sh t041"                                              # .(50410.01.7)
