@@ -57,6 +57,8 @@
 # .(40520.01 11/17/24 RAM  2:05p| Accomodate MacOS again
 # .(10707.09 11/17/24 RAM  4:45p| Add Seconds
 # .(41226.03 12/25/24 RAM  3:15p| Remove fractional seconds
+# .(50516.10  5/16/25 RAM  6:35p| Add more fields to awk fmt
+# .(50516.11  5/16/25 RAM  8:00p| Add search for "aStr1|aStr2"
 
 ##PRGM     +====================+===============================================+
 ##ID 69.600. Main               |
@@ -97,7 +99,7 @@ function exit_wCR() {                                                           
 
 #  if [ "${1:0:1}" != "-" ]; then mArgs[i++]="$1"; fi
 
-# a="."; b='*'; opt="-maxdepth 1"
+#       a="."; b='*'; opt="-maxdepth 1"
 # echo "mArgs: '${mArgs[*]}', len=${#mArgs[*]}"
 
 #  if [ ${#mArgs[*]} = 1 ];   then if [ ! -d  ${mArgs[0]}  ]; then   ##.(60910.01.1 if 1st arg is a folder, use it)
@@ -106,8 +108,24 @@ function exit_wCR() {                                                           
 
        opt="-maxdepth ${nMaxDepth}"; aNum=""
   if [   -z "${mArgs[0]}" ]; then aDir="."; else aDir="${mArgs[0]}";     fi
+
 # if [   -z "${mArgs[1]}" ]; then aStr='*'; else aStr="*${mArgs[1]}*";   fi; aSearch="-iname \"${aStr}\""
-  if [   -z "${mArgs[1]}" ]; then aStr='*'; else aStr="*${mArgs[1]}*";   fi; aSearch="-iname \"${aStr/\`/\\\`}\""               # .(40404.01.1 RAM Was: "-iname \"${aStr}\"")
+  if [   -z "${mArgs[1]}" ]; then aStr='*'; else aStr="*${mArgs[1]}*";   fi;
+
+       aStr="${aStr/\`/\\\`}"                                                           # .(40404.01b.1 RAM Remove tics `)
+
+  if [ "${aStr/|/}" != "${aStr}" ]; then                                                # .(50516.11.1 RAM Add | for "-or" Beg)
+#      echo "--------------------we found it"
+#      aSearch=                                                         "\( -iname \"${aStr1}*\" -o -iname \"*${aStr2}\" \)"
+#      aSearch="$( echo "${aStr}" | awk '{ split( '|', m, $0 ); print   "\( -iname \"" m[1] "*\" -o -iname \"*" m[2] "\" \)"    }' )"
+       aSearch="$( echo "${aStr}" | awk '{ split( $0, m, "|" ); print  "\\( -iname \"" m[1] "*\" -o -iname \"*" m[2] "\" \\)"   }' )"
+#      aSearch="$( echo "${aStr}" | awk '{ split( '|', m, $0 ); printf "\\( -iname \"%s*\" -o -iname \"*%s\" \\)\n", m[1], m[2] }' )"
+#      echo "aSearch: '${aSearch}'"
+     else                                                                               # .(50516.11.1 Mid)
+#      aSearch="-iname \"${aStr/\`/\\\`}\""                                             ##.(40404.01.1 RAM Was: "-iname \"${aStr}\"").(40404.01b.2)
+       aSearch="-iname \"${aStr}\""                                                     # .(40404.01b.2).(40404.01.1 RAM Was: "-iname \"${aStr}\"")
+       fi                                                                               # .(50516.11.1 End)
+
   if [ ! -z "${nDays}"    ]; then aSearch="-mtime -${nDays} ${aSearch}"; fi
 
   if [ ! -z "${nSort}"    ]; then if [ "${nSort:0:1}" == "1" ]; then aNum="n";  fi;
@@ -140,7 +158,7 @@ function exit_wCR() {                                                           
     echo "          -s [n]      Sort output 1)Size, 2)Date & Time, 3)[path]/Filename"
     echo "          -s [n[r]]   Reverse sort order, defaults to 2r"
     echo "          -x [str]    Exclude RegEx pattern from result, defaults to 'node_mod|bower_comp'"
-#   echo "          -i [str]    Include RegEx pattern from result, defaults to 'node_mod|bower_comp'"                           # .(11010.01.3)
+#   echo "          -i [str]    Include RegEx pattern in result, defaults to 'node_mod|bower_comp'"                           # .(11010.01.3)
     echo "          -f          Separate folder names and file names to the left"                                               # .()
 #   echo ""
     exit_wCR                                                                                                                    # .40520.02.2)
@@ -201,7 +219,8 @@ if [ "${aIncl}" == "" ]; then                                                   
 
    else                                                                                                                                     # .(40520.01.14)
 #    aCmd="${aCmd} -iname \"*\" ! -name \"node_modules\"   -exec stat -f \"%z %Sm %N\"   -t \"%Y-%m-%d %H:%M:%S\" {} \; | awk '${aAwk}'"    ##.(40520.01.15)
-     aCmd="${aCmd} -iname \"*\" ! -name \"node_modules\"   -exec stat -f \"%z %Sm %N\"   -t \"%Y-%m-%d %H:%M:%S\" {} \; | awk '{ printf \"%12d  %15s  %s\n\", \$1, \$2\" \"\$3, \$4 }'"  # .(40520.01.15)
+#    aCmd="${aCmd} -iname \"*\" ! -name \"node_modules\"   -exec stat -f \"%z %Sm %N\"   -t \"%Y-%m-%d %H:%M:%S\" {} \; | awk '{ printf \"%12d  %15s  %s\n\", \$1, \$2\" \"\$3, \$4 }'"  # .(40520.01.15)
+     aCmd="${aCmd} -iname \"*\" ! -name \"node_modules\"   -exec stat -f \"%z %Sm %N\"   -t \"%Y-%m-%d %H:%M:%S\" {} \; | awk '{ printf \"%12d  %15s  %s\n\", \$1, \$2\" \"\$3, \$4\" \"\$5\" \"\$6\" \"\$7\" \"\$8\" \"\$9 }'"   # .(50516.10.1 RAM Add more fields).(40520.01.15)
      fi                                                                                                                                     # .(40520.01.16)
 
  else # eif "${aIncl}" == ""                                                                                                                # .(11010.01.7 Beg)
@@ -212,7 +231,8 @@ if [ "${aIncl}" == "" ]; then                                                   
      aCmd="${aCmd}";                             aCmd+=" | xargs -0 stat                 -t \"%Y-%m-%d %H:%M:%S\"       | awk '${aAwk}'"    # .(40520.01.19)
    else                                                                                                                                     # .(40520.01.20)
 #    aCmd="${aCmd}";                             aCmd+="   -exec stat -f \"%z %Sm %N\"   -t \"%Y-%m-%d %H:%M:%S\" {} \; | awk '${aAwk}'"    ##.(40520.01.21)
-     aCmd="${aCmd}";                             aCmd+="   -exec stat -f \"%z %Sm %N\"   -t \"%Y-%m-%d %H:%M:%S\" {} \; | awk '{ printf \"%12d  %15s  %s\n\", \$1, \$2\" \"\$3, \$4 }'"  # .(40520.01.15)"    # .(40520.01.21)
+#    aCmd="${aCmd}";                             aCmd+="   -exec stat -f \"%z %Sm %N\"   -t \"%Y-%m-%d %H:%M:%S\" {} \; | awk '{ printf \"%12d  %15s  %s\n\", \$1, \$2\" \"\$3, \$4 }'"  # .(40520.01.15)"    # .(40520.01.21)
+     aCmd="${aCmd}";                             aCmd+="   -exec stat -f \"%z %Sm %N\"   -t \"%Y-%m-%d %H:%M:%S\" {} \; | awk '{ printf \"%12d  %15s  %s\n\", \$1, \$2\" \"\$3, \$4\" \"\$5\" \"\$6\" \"\$7\" \"\$8\" \"\$9 }'"   # .(50516.10.2).(40520.01.15)"    # .(40520.01.21)
      fi                                                                                                                                     # .(40520.01.22)
 
   fi  # eif "${aIncl}" != ""                                                                                                                # .(11010.01.7 End)
@@ -257,9 +277,3 @@ if [ "$?" != "0" ]; then                                                        
 ##SRCE     +====================+===============================================+
 ##RFILE    +====================+=======+===================+======+=============+
 #*/
-
-
-
-
-
-
