@@ -33,33 +33,34 @@
 ##FNCS     .--------------------+-------+-------------------+------+-----------+
 #
 ##CHGS     .--------------------+-------+-------------------+------+-----------+
-# .(80916.01  9/16/18 RAM  3:26p| Add source command
-# .(80916.02  9/16/18 RAM  8:15a| Add version
-# .(80916.03  9/17/18 RAM  2:08p| Add Header
-# .(80920.03  9/20/18 RAM  3:00p| Change heading; Add LogIt for old heading
-# .(80923.03  9/23/18 RAM  6:50a| Change JPT to RSS
-# .(80925.04  9/25/18 RAM  6:25a| Replace % with *
-# .(81005.01 10/05/18 RAM 10:00p| Fix sort sequence
-# .(81005.02 10/05/18 RAM 11:30p| Make -s 3 the default
-# .(81008.01 10/08/18 RAM  1:45a| Always sort by Date-Time 2nd
-# .(90401.01  4/01/19 RAM  1:45p| Add Help
-# .(90401.02  4/01/19 RAM  1:45p| Add Find Tip
-# .(10707.09  7/07/21 RAM  2:00p| Add Seconds
-# .(10826.01  8/26/21 RAM  3:25p| Add -not node-modules
-# .(10923.01  9/23/21 RAM  4:16a| Add commented out awk statement
-# .(11010.01 10/10/21 RAM  8:05p| Add -i option, defaults to /node-modules$/
-# .(21114.07 11/13/22 RAM  8:05p| Change Headings
-# .(21117.02 11/17/22 RAM  9:45p| Get rid of ".40.3971848000  ."
-# .(21203.01 12/03/22 RAM 11:30a| Exclude only ".git"
-# .(40404.01  4/04/24 RAM  6:42p| Allow search of "\`"
-# .(40520.01  5/20/24 RAM  7:30a| Accomodate MacOS
-# .(40520.02 11/17/24 RAM 10:45a| Use exit_wCR
-# .(40520.01 11/17/24 RAM  2:05p| Accomodate MacOS again
-# .(10707.09 11/17/24 RAM  4:45p| Add Seconds
-# .(41226.03 12/25/24 RAM  3:15p| Remove fractional seconds
-# .(50516.10  5/16/25 RAM  6:35p| Add more fields to awk fmt
-# .(50516.11  5/16/25 RAM  8:00p| Add search for "aStr1|aStr2"  
-
+#.(80916.01   9/16/18 RAM  3:26p| Add source command
+#.(80916.02   9/16/18 RAM  8:15a| Add version
+#.(80916.03   9/17/18 RAM  2:08p| Add Header
+#.(80920.03   9/20/18 RAM  3:00p| Change heading; Add LogIt for old heading
+#.(80923.03   9/23/18 RAM  6:50a| Change JPT to RSS
+#.(80925.04   9/25/18 RAM  6:25a| Replace % with *
+#.(81005.01  10/05/18 RAM 10:00p| Fix sort sequence
+#.(81005.02  10/05/18 RAM 11:30p| Make -s 3 the default
+#.(81008.01  10/08/18 RAM  1:45a| Always sort by Date-Time 2nd
+#.(90401.01   4/01/19 RAM  1:45p| Add Help
+#.(90401.02   4/01/19 RAM  1:45p| Add Find Tip
+#.(10707.09   7/07/21 RAM  2:00p| Add Seconds
+#.(10826.01   8/26/21 RAM  3:25p| Add -not node-modules
+#.(10923.01   9/23/21 RAM  4:16a| Add commented out awk statement
+#.(11010.01  10/10/21 RAM  8:05p| Add -i option, defaults to /node-modules$/
+#.(21114.07  11/13/22 RAM  8:05p| Change Headings
+#.(21117.02  11/17/22 RAM  9:45p| Get rid of ".40.3971848000  ."
+#.(21203.01  12/03/22 RAM 11:30a| Exclude only ".git"
+#.(40404.01   4/04/24 RAM  6:42p| Allow search of "\`"
+#.(40520.01   5/20/24 RAM  7:30a| Accomodate MacOS
+#.(40520.02  11/17/24 RAM 10:45a| Use exit_wCR
+#.(40520.01  11/17/24 RAM  2:05p| Accomodate MacOS again
+#.(10707.09  11/17/24 RAM  4:45p| Add Seconds
+#.(41226.03  12/25/24 RAM  3:15p| Remove fractional seconds
+#.(50516.10   5/16/25 RAM  6:35p| Add more fields to awk fmt
+#.(50516.11   5/16/25 RAM  8:00p| Add search for "aStr1|aStr2"  
+#.(50516.11a  5/17/25 CAI 12:00p| Do multiple 'or' search strings
+#
 ##PRGM     +====================+===============================================+
 ##ID 69.600. Main               |
 ##SRCE     +====================+===============================================+
@@ -118,9 +119,18 @@ function exit_wCR() {                                                           
 #      echo "--------------------we found it"
 #      aSearch=                                                         "\( -iname \"${aStr1}*\" -o -iname \"*${aStr2}\" \)"
 #      aSearch="$( echo "${aStr}" | awk '{ split( '|', m, $0 ); print   "\( -iname \"" m[1] "*\" -o -iname \"*" m[2] "\" \)"    }' )"
-       aSearch="$( echo "${aStr}" | awk '{ split( $0, m, "|" ); print  "\\( -iname \"" m[1] "*\" -o -iname \"*" m[2] "\" \\)"   }' )"
+#      aSearch="$( echo "${aStr}" | awk '{ split( $0, m, "|" ); print  "\\( -iname \"" m[1] "*\" -o -iname \"*" m[2] "\" \\)"   }' )"  ##.(50516.11a.1)
 #      aSearch="$( echo "${aStr}" | awk '{ split( '|', m, $0 ); printf "\\( -iname \"%s*\" -o -iname \"*%s\" \\)\n", m[1], m[2] }' )"
 #      echo "aSearch: '${aSearch}'"
+       aSearch="$( echo "${aStr}" | awk '{ split( $0, terms, "|" );                     # .(50516.11a.1 CAI Handle multiple terms for "or" Beg)
+                                                    result = "\\(";
+                                      for (i = 1; i <= length(terms); i++) {
+                                       if (i > 1) { result = result " -o"; }
+                                                    result = result " -iname \"*" terms[i] "*\"";
+                                                    }
+                                                    result = result " \\)";
+                                              print result;
+                                           }' )"                                        # .(50516.11a.1 End)
      else                                                                               # .(50516.11.1 Mid)
 #      aSearch="-iname \"${aStr/\`/\\\`}\""                                             ##.(40404.01.1 RAM Was: "-iname \"${aStr}\"").(40404.01b.2)
        aSearch="-iname \"${aStr}\""                                                     # .(40404.01b.2).(40404.01.1 RAM Was: "-iname \"${aStr}\"")
