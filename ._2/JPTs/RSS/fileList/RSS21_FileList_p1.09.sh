@@ -58,7 +58,7 @@
 # .(10707.09 11/17/24 RAM  4:45p| Add Seconds
 # .(41226.03 12/25/24 RAM  3:15p| Remove fractional seconds
 # .(50516.10  5/16/25 RAM  6:35p| Add more fields to awk fmt
-# .(50516.11  5/16/25 RAM  8:00p| Add search for "aStr1|aStr2"
+# .(50516.11  5/16/25 RAM  8:00p| Add search for "aStr1|aStr2"  
 
 ##PRGM     +====================+===============================================+
 ##ID 69.600. Main               |
