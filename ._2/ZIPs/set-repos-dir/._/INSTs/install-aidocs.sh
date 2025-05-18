@@ -174,8 +174,8 @@ function cpyEnv() {                                                             
 #if [ "${aStage}" == "dev01" ] || [ "${aStage}" == "test1" ]; then                                          # .(50406.03c.1 RAM Try again).(50406.03b.1 RAM Only copy dev01's env)
 
  if [ "${bModelTester}" != "0" ]; then                                                                      # .(50406.03c.1 RAM Try again).(50406.03b.1 RAM Only copy dev01's env)
-   cpyEnv "./${aRepoDir}/server/s01_search-mod-app"  ".env_example"  ".env"                                 # .(50518.01.x)
-   cpyEnv "./${aRepoDir}/server1/s11_search-mod-app" ".env_example"  ".env"                                 # .(50518.01.x RAM Rename).(50410.01.2)
+   cpyEnv "./${aRepoDir}/server/s01_search-app"      ".env_example"  ".env"                                 # .(50518.01.7)
+   cpyEnv "./${aRepoDir}/server1/s11_search-mod-app" ".env_example"  ".env"                                 # .(50518.01.8 RAM Rename).(50410.01.2)
    cpyEnv "./${aRepoDir}/server1/s12_search-web-app" ".env_example"  ".env"                                 # .(50410.01.3).(50406.03.3 RAM Copy s12 .env)
    cpyEnv "./${aRepoDir}/server1/s13_search-rag-app" ".env_example"  ".env"                                 # .(50410.01.4)
    cpyEnv "./${aRepoDir}/server1/s14_grading-app"    ".env_example"  ".env"                                 # .(50510.05.1)
