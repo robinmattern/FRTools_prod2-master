@@ -58,7 +58,8 @@ function  installRepo() {                                                       
 
    if [ "${aAppDir}" == "frtools" ]; then aAppDir="FRTools";             aStage="${aStage//frtools/FRTools}"; bOk=1; fi
    if [ "${aAppDir}" == "anyllm"  ]; then aAppDir="AnyLLM";              aStage="${aStage//anyllm/AnyLLM}";   bOk=1; fi
-   if [ "${aAppDir}" == "aidocs"  ]; then aAppDir="AIDocs";              aStage="${aStage//aidocs/AIDocs}";   bOk=1; fi
+   if [ "${aAppDir}" == "aidocs"  ]; then aAppDir="AIDocs";              aStage="${aStage//aidocs/AIDocs}";   bOk=1; 
+      if [ "${aStage}" == "testr" ]; then                                aStage="testR"; fi; fi             # .(50518.04.1)
 #  if [ "${aAppDir}" == "AIDocs"  ]; then if [ "${aStage}" == "" ]; then aStage="demo1-master";   fi; fi                 ##.(50105.05b.9).(50402.15.2)
 #  if [ "${aAppDir}" == "AIDocs"  ]; then if [ "${aStage}" == "" ]; then aStage="";               fi; fi                 # .(50402.15.2).(50105.05b.9)
    if [ "${aAppDir}" == "aicoder" ]; then aAppDir="AICodeR";             aStage="${aStage//aicoder/AICodeR}"; bOk=1; fi  # .(50104.01.14)
@@ -73,7 +74,7 @@ function  installRepo() {                                                       
    aRepo="${aAppDir}";
    aRepoDir="${aRepo}"; if [ "${aStage}" != "" ]; then aRepoDir="${aRepo}_${aStage}";
                 if [ "${aStage}" == "no-stage" ]; then aRepoDir="${aRepo} ${aStage}"; fi; fi
-
+ 
 #  if [ -d "${aRepo}"    ]; then deleteDir "${aRepo}"; fi
 #  if [ -d "${aRepoDir}" ]; then deleteDir "${aRepoDir}"; echo ""; fi
    if [ -d "${aRepoDir}" ]; then deleteDir "${aRepoDir}"; fi                                                # .(41208.01.1)
@@ -116,7 +117,7 @@ function  help() {
    echo -e   "     bash ${aInstall} aidocs demo1  # then run, aidocs, to check it."                         # .(50402.15.4)
 #  echo -e   "     bash ${aInstall} aidocs dev01  # then run, aidocs, to check it."                         ##.(50402.15.5).(50408.03.9)
 #  echo -e   "     bash ${aInstall} aidocs test1  # then run, aitestr, to check it."                        # .(50408.03.9).(50402.15.5)
-   echo -e   "     bash ${aInstall} aidocs testr  # then run, aitestr, to check it."                        # .(50518.04.1).(50408.03.9).(50402.15.5)
+   echo -e   "     bash ${aInstall} aidocs testr  # then run, aitestr, to check it."                        # .(50518.04.2).(50408.03.9).(50402.15.5)
 
    echo -e "\n* Note: You must install FRTools before any other projects.  After that,"                     # .(50105.04.9 RAM Add more options Beg)
    echo -e   "  you can clone or create your own projects folder with:"
