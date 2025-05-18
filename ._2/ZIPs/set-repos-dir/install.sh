@@ -19,6 +19,7 @@
 #                               |
 ##CHGS     .--------------------+-------+-------------------+------+-----------+
 #.(50407.01   4/07/25 RAM 12:30p| Remove re-install
+#.(50518.04   5/18/25 RAM  1:20p| Add install aidocs testr
 #
 ##PRGM     +====================+===============================================+
 ##ID FRT01.600. Main            |
@@ -26,7 +27,8 @@
 #*/
 #========================================================================================================== #  ===============================  #
 
-  aVer="v1.01\`50407.1230"
+# aVer="v1.01\`50407.1230"
+  aVer="v1.02\`50518.1330"
 
 # echo ""                                                                               ##.(50410.01.6 RAM I think)
 
@@ -113,7 +115,8 @@ function  help() {
    echo -e   "     bash ${aInstall} anyllm        # then run, anyllm, to check it."
    echo -e   "     bash ${aInstall} aidocs demo1  # then run, aidocs, to check it."                         # .(50402.15.4)
 #  echo -e   "     bash ${aInstall} aidocs dev01  # then run, aidocs, to check it."                         ##.(50402.15.5).(50408.03.9)
-   echo -e   "     bash ${aInstall} aidocs test1  # then run, aitestr, to check it."                        # .(50408.03.9).(50402.15.5)
+#  echo -e   "     bash ${aInstall} aidocs test1  # then run, aitestr, to check it."                        # .(50408.03.9).(50402.15.5)
+   echo -e   "     bash ${aInstall} aidocs testr  # then run, aitestr, to check it."                        # .(50518.04.1).(50408.03.9).(50402.15.5)
 
    echo -e "\n* Note: You must install FRTools before any other projects.  After that,"                     # .(50105.04.9 RAM Add more options Beg)
    echo -e   "  you can clone or create your own projects folder with:"

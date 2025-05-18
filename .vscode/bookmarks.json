@@ -1165,12 +1165,12 @@
 			"bookmarks": [
 				{
 					"label": "deleteDir",
-					"line": 40,
+					"line": 42,
 					"column": 0
 				},
 				{
 					"label": "reinstall",
-					"line": 49,
+					"line": 51,
 					"column": 0
 				}
 			]

@@ -22,6 +22,7 @@
    if [ "${aStage}" == "dev01" ]; then aRepo="AIDocs_dev01-robin";  aAppDir="dev01"; fi
    if [ "${aStage}" == "dev02" ]; then aRepo="AIDocs_dev02-robin";  aAppDir="dev02"; fi # .(50408.05.1 RAM Add dev02)
    if [ "${aStage}" == "test1" ]; then aRepo="AIDocs_test1-robin";  aAppDir="test1"; fi # .(50408.05.2 RAM Add test1)
+   if [ "${aStage}" == "testr" ]; then aRepo="AIDocs_testR-master"; aAppDir="testR"; fi # .(50518.04.2 RAM Add testR)
    if [ "${aRepo/\//}" != "${aAppDir}" ]; then aRepo="${aRepo/\//}"; fi
 
 #  ----------------------------------------------------------------------------
