@@ -60,6 +60,7 @@
 #.(50516.10   5/16/25 RAM  6:35p| Add more fields to awk fmt
 #.(50516.11   5/16/25 RAM  8:00p| Add search for "aStr1|aStr2"  
 #.(50516.11a  5/17/25 CAI 12:00p| Do multiple 'or' search strings
+#.(50610.03   6/10/25 RAM  8:30a| Use mmin for fractional nDays
 #
 ##PRGM     +====================+===============================================+
 ##ID 69.600. Main               |
@@ -136,7 +137,10 @@ function exit_wCR() {                                                           
        aSearch="-iname \"${aStr}\""                                                     # .(40404.01b.2).(40404.01.1 RAM Was: "-iname \"${aStr}\"")
        fi                                                                               # .(50516.11.1 End)
 
-  if [ ! -z "${nDays}"    ]; then aSearch="-mtime -${nDays} ${aSearch}"; fi
+  if [ ! -z "${nDays}"      ]; then aTime="mtime"                                       # .(50610.03.1 RAM Use mmin for fractional nDays Beg)
+  if [ "${OS:0:3}" != "Win" ]; then                                                     # .(50610.03.2 RAM mmin not in git bash)  
+  if [[ ${nDays} == *"."*  ]]; then aTime="mmin"; nDays=$( echo "${nDays} * 24 * 60 / 1" | bc ); fi; fi  
+                                    aSearch="-${aTime} -${nDays} ${aSearch}"; fi;       # .(50610.03.1 End)
 
   if [ ! -z "${nSort}"    ]; then if [ "${nSort:0:1}" == "1" ]; then aNum="n";  fi;
                                   if [ "${nSort:0:1}" == "2" ]; then aNum=",3"; fi
