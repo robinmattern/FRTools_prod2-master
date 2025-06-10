@@ -1,3 +1,4 @@
+
 #!/bin/bash
 
 #  frt install AIDocs               -d; aRepo="AIDocs"              ; aAppDir="AIDocs"          gitr clone aidocs_ -d
@@ -121,6 +122,13 @@ exit_wCR() {                                                                    
 
    if [ $? -ne 1 ]; then                                                                # .(50106.04.15 RAM Exit if bDoit=0)
 
+   if [ "${aAppDir}" == "testR" ] || [ "${aAppDir}" == "test1" ]; then                  # .(50610.04.1 RAM Use install-aitestr.sh Beg)
+      echo "   aRepo: ${aRepo}"
+      echo "     cwd: $( pwd )"
+      exit 
+      fi                                                                                # .(50610.04.2)
+# --------------------------------------------------------------                         
+
    if [ ! -d "AnyLLM" ]; then bAnyLLM=1; fi                                             # .(50402.15.6)
 
 # --------------------------------------------------------------
@@ -178,7 +186,8 @@ function cpyEnv() {                                                             
    cpyEnv "./${aRepoDir}/server1/s11_search-mod-app" ".env_example"  ".env"                                 # .(50518.01.8 RAM Rename).(50410.01.2)
    cpyEnv "./${aRepoDir}/server1/s12_search-web-app" ".env_example"  ".env"                                 # .(50410.01.3).(50406.03.3 RAM Copy s12 .env)
    cpyEnv "./${aRepoDir}/server1/s13_search-rag-app" ".env_example"  ".env"                                 # .(50410.01.4)
-   cpyEnv "./${aRepoDir}/server1/s14_grading-app"    ".env_example"  ".env"                                 # .(50510.05.1)
+#  cpyEnv "./${aRepoDir}/server1/s14_grading-app"    ".env_example"  ".env"                                 ##.(50510.05.1).(50602.02b.1)
+   cpyEnv "./${aRepoDir}/server1/s14_scoring-app"    ".env_example"  ".env"                                 # .(50602.02b.1 RAM Rename s14_grading to s14_scoring).(50510.05.1)
    cd ${aRepoDir}                                                                                           # .(50505.10.1)
    bash set-aidocs.sh doit                                                                                  # .(50505.10.2)
    fi                                                                                                       # .(50406.03b.2)
