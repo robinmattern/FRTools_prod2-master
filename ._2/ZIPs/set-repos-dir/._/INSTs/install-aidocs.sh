@@ -123,9 +123,16 @@ exit_wCR() {                                                                    
    if [ $? -ne 1 ]; then                                                                # .(50106.04.15 RAM Exit if bDoit=0)
 
    if [ "${aAppDir}" == "testR" ] || [ "${aAppDir}" == "test1" ]; then                  # .(50610.04.1 RAM Use install-aitestr.sh Beg)
-      echo "   aRepo: ${aRepo}"
-      echo "     cwd: $( pwd )"
-      exit 
+#     echo "   aRepo: ${aRepo:0:12}"
+#     echo "     cwd: $( pwd )"
+      cd "${aRepo:0:12}"
+  if [ -f "install-aitestr.sh" ]; then
+      bash install-aitestr.sh
+      cd ..
+      exit
+   else
+      echo -e "* install-aitestr not found, using '._/INSTs/install-aidocs'\n"
+      fi
       fi                                                                                # .(50610.04.2)
 # --------------------------------------------------------------                         
 
