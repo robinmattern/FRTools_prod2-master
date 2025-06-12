@@ -171,6 +171,7 @@
 #.(50324.01   3/24/25 RAM  8:50a| Commit update on the hour
 #.(50408.01   4/08/25 RAM  9:20a| Pass error code up to the calling function
 #.(50516.03   5/16/25 RAM 10:00a| Bump FRTools Version date 
+#.(50611.06   6/11/25 RAM  5:55a| Call jpt, not JPT for ports command
 #
 ##PRGM     +====================+===============================================+
 ##ID 69.600. Main0              |
@@ -178,7 +179,9 @@
 #*/
 #========================================================================================================== #  ===============================  #
 
-     aVdt="May 16, 2025 9:50a"; aVtitle="formR Tools"                                                       # .(50516.03.1).(21113.05.8 RAM Add aVtitle for Version in Begin)
+#    aVdt="Apr 8, 2025 9:20a"; aVtitle="formR Tools"  
+#    aVdt="May 16, 2025 9:50a"; aVtitle="formR Tools" 
+     aVdt="Jun 12, 2025 5:40p"; aVtitle="formR Tools"                                                       # .(21113.05.8 RAM Add aVtitle for Version in Begin)
      aVer="$( echo $0 | awk '{  match( $0, /_[dpstuv][0-9]+\.[0-9]+/ ); print substr( $0, RSTART+1, RLENGTH-1) }' )"  # .(21031.01.1 RAM Add [d...).(20416.03.8 "_p2.02", or _d1.09)
 
      LIB="FRT"; LIB_LOG=${LIB}_LOG; LIB_USER=${LIB}_USER; Lib=${LIB}; aDir=$( dirname "${BASH_SOURCE}" );   # .(41027.01.1 RAM).(80923.01.1)
@@ -631,8 +634,9 @@ function Help( ) {
         if [ "${aArg1:0:3}" == "por" ]; then if [ "${aArg2:0:3}" == "kil" ]; then aCmd="kill port ${aArg3}"; else aCmd="show ports ${aArg3}"; fi; fi
         if [ "${aArg1:0:3}" == "kil" ]; then if [ "${aArg2:0:3}" == "por" ]; then aArg2="${aArg3}"; fi
                                              aCmd="kill port ${aArg2}"; fi
-#       echo "    ${aCmd}"
-        eval "JPT ${aCmd}"
+#       echo "jpt ${aCmd}"
+#       eval "JPT ${aCmd}"
+        eval "jpt ${aCmd}"                                                                                 # .(50611.06.1 RAM Call frt not FRT
 #       echo -e "\n* Not implemented yet\n"; exit
 
 #       ${aLstSp}
@@ -853,7 +857,7 @@ function copyFile() {                                                           
         echo "  git checkout \"${aFromBranch}\" -- \"${aFile}\""
         echo "  sudo chmod 775 \"${aFile}\"";
         echo "  git add \"${aFile}\""
-        echo "  git commit -m \".(${aTS}.${aHR}_Add file, ${aFile}, from ${aFromBranch} branch\""           # .(50324.01.2) 
+        echo "  git commit -m \".(${aTS}.${aHR}_Add file, ${aFile}, from ${aFromBranch} branch\""           # .(50324.01.2)
         echo "  git checkout \"${aFromBranch}\""
         exit_wCR
         fi                                                                              # .(41111.04b.3 End)
@@ -1157,7 +1161,7 @@ function copyFile() {                                                           
      ${aLstSp}
      fi # eoc Next Command                                                                                  # .(20102.01.2 End)
 #    -- --- ---------------  =  ------------------------------------------------------  #  ---------------- #
-                
+
 #====== =================================================================================================== #  ===========
 
 # ------------------------------------------------------------------------------------
