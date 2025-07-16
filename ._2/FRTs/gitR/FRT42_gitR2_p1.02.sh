@@ -880,7 +880,7 @@ yarn.lock
          echo "" >"${aDirS}/.gitkeep";        git add "${aDirS}/.gitkeep"
          echo "" >"${aDirC:0:27}/index.html"; git add "${aDirC:0:27}/index.html"        # .(50716.06.1)
          echo "" >"${aDirC:0:27}/index.js";   git add "${aDirC:0:27}/index.js"
-         echo "" >"${aDirS:0:27}/server.js";  git add "${aDirS:0:27}/server.mjs"        # .(50716.06.2 RAM Was server.js)
+         echo "" >"${aDirS:0:27}/server.mjs"; git add "${aDirS:0:27}/server.mjs"        # .(50716.06.2 RAM Was server.js)
 
          mkdir "docs"
          mkdir "docs/a00_AI-Context"                                                    # .(50716.06.3 RAM Add 'em Beg)
