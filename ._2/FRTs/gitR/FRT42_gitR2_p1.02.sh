@@ -204,6 +204,7 @@
 #.(50516.02   5/16/25 RAM  9:25a| Change prompt to change into installed dir
 #.(50716.01   7/16/25 RAM  7:20a| Minor cosmetic changes
 #.(50716.02   7/16/25 RAM  7:45a| Make App No. 01 vs No. 1
+#.(50716.06   7/16/25 RAM 10:22a| Modify git make for AI_Context folder 
 #
 ##PRGM     +====================+===============================================+
 ##ID 69.600. Main0              |
@@ -866,27 +867,35 @@ yarn.lock
          mkdir "${aDir}"
          mkdir -p "${aDirC}"
          mkdir -p "${aDirS}"
+
          mkdir ".vscode"
-         mkdir "docs"
-
-         echo "" >"docs/index.html";         git add "docs/index.html"
-         echo "" >"${aDir}/.gitkeep";        git add "${aDir}/.gitkeep"
-         echo "" >"${aDirC}/.gitkeep";       git add "${aDirC}/.gitkeep"
-         echo "" >"${aDirS}/.gitkeep";       git add "${aDirS}/.gitkeep"
-         echo "" >"${aDirC:0:27}/index.js";  git add "${aDirC:0:27}/index.js"
-         echo "" >"${aDirS:0:27}/server.js"; git add "${aDirS:0:27}/server.js"
-
          echo "${aLaunch_json}"    >".vscode/launch.json"
          echo "${aGitignore}"      >".gitignore"
          echo "${aWorkspace_code}" >"${aProject_}${aStage}.code-workspace"              # .(41109.03.2 End)
+         echo "${aREADME_md}"      >"README.md"                                         # .(41109.03.3)
+         git add README.md .gitignore .vscode/launch.json "${aProject_}${aStage}.code-workspace"
+
+         echo "" >"${aDir}/.gitkeep";         git add "${aDir}/.gitkeep"
+         echo "" >"${aDirC}/.gitkeep";        git add "${aDirC}/.gitkeep"
+         echo "" >"${aDirS}/.gitkeep";        git add "${aDirS}/.gitkeep"
+         echo "" >"${aDirC:0:27}/index.html"; git add "${aDirC:0:27}/index.html"        # .(50716.06.1)
+         echo "" >"${aDirC:0:27}/index.js";   git add "${aDirC:0:27}/index.js"
+         echo "" >"${aDirS:0:27}/server.js";  git add "${aDirS:0:27}/server.mjs"        # .(50716.06.2 RAM Was server.js)
+
+         mkdir "docs"
+         mkdir "docs/a00_AI-Context"                                                    # .(50716.06.3 RAM Add 'em Beg)
+         echo "" >"docs/a00_AI-Context/a00-01_System-Prompt.md"
+         echo "" >"docs/a00_AI-Context/a00-10_Development-Plan.md"
+         echo "" >"docs/a00_AI-Context/a00-20_Technical-Specs.md"                       # .(50716.06.3 End)
+
+#        echo "" >"docs/index.html";          git add "docs/index.html"
          echo "${aDocsify_Index}"  >"docs/index.html"                                   # .(41109.04.2)
          echo "${aRun_Docsify}"    >"docs/run-docsify.sh"                               # .(41109.04.3)
          echo "${aREADME_md}"      >"docs/README.md"                                    # .(41109.04.4)
-         echo "${aREADME_md}"      >"README.md"                                         # .(41109.03.3)
+
+         git add docs/                                                                  # .(50716.06.4 RAM Remove file list).(41104.04.5)
 
          aTS="$(date +%y%m%d)"; aTS="${aTS:1}"
-         git add docs/index.html docs/run-docsify.sh docs/README.md                     # .(41104.04.5)
-         git add README.md .gitignore .vscode/launch.json "${aProject_}${aStage}.code-workspace"
          git commit -m ".(${aTS}.01_Initial commit for ${aProject_}${aStage}" | awk '{ print "  " $0 }'
 
 #        git branch --set-upstream-to=origin/${aMainBranch} ${aMainBranch}
