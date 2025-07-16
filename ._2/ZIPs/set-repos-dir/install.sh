@@ -20,6 +20,7 @@
 ##CHGS     .--------------------+-------+-------------------+------+-----------+
 #.(50407.01   4/07/25 RAM 12:30p| Remove re-install
 #.(50518.04   5/18/25 RAM  1:20p| Add install aidocs testr
+#.(50716.03   7/16/25 RAM  8:20p| Don't show FRTools instructions if installed
 #
 ##PRGM     +====================+===============================================+
 ##ID FRT01.600. Main            |
@@ -28,7 +29,7 @@
 #========================================================================================================== #  ===============================  #
 
 # aVer="v1.01\`50407.1230"
-  aVer="v1.02\`50518.1330"
+  aVer="v1.02\`50716.0840"
 
 # echo ""                                                                               ##.(50410.01.6 RAM I think)
 
@@ -58,7 +59,7 @@ function  installRepo() {                                                       
 
    if [ "${aAppDir}" == "frtools" ]; then aAppDir="FRTools";             aStage="${aStage//frtools/FRTools}"; bOk=1; fi
    if [ "${aAppDir}" == "anyllm"  ]; then aAppDir="AnyLLM";              aStage="${aStage//anyllm/AnyLLM}";   bOk=1; fi
-   if [ "${aAppDir}" == "aidocs"  ]; then aAppDir="AIDocs";              aStage="${aStage//aidocs/AIDocs}";   bOk=1; 
+   if [ "${aAppDir}" == "aidocs"  ]; then aAppDir="AIDocs";              aStage="${aStage//aidocs/AIDocs}";   bOk=1;
       if [ "${aStage}" == "testr" ]; then                                aStage="testR"; fi; fi             # .(50518.04.1)
 #  if [ "${aAppDir}" == "AIDocs"  ]; then if [ "${aStage}" == "" ]; then aStage="demo1-master";   fi; fi                 ##.(50105.05b.9).(50402.15.2)
 #  if [ "${aAppDir}" == "AIDocs"  ]; then if [ "${aStage}" == "" ]; then aStage="";               fi; fi                 # .(50402.15.2).(50105.05b.9)
@@ -74,7 +75,7 @@ function  installRepo() {                                                       
    aRepo="${aAppDir}";
    aRepoDir="${aRepo}"; if [ "${aStage}" != "" ]; then aRepoDir="${aRepo}_${aStage}";
                 if [ "${aStage}" == "no-stage" ]; then aRepoDir="${aRepo} ${aStage}"; fi; fi
- 
+
 #  if [ -d "${aRepo}"    ]; then deleteDir "${aRepo}"; fi
 #  if [ -d "${aRepoDir}" ]; then deleteDir "${aRepoDir}"; echo ""; fi
    if [ -d "${aRepoDir}" ]; then deleteDir "${aRepoDir}"; fi                                                # .(41208.01.1)
@@ -108,21 +109,29 @@ function  help() {
 #  echo -e   "      or just     gitr init AI-Tests                   ->  AI-Tests"                          ##.(50105.04.9 End).(50226.03.1 End)
 
    aShell='.zshrc  '; if [ "${OSTYPE:0:7}" != "darwin2" ]; then aShell='.bashrc '; fi                       # .(50405.04.3 RAM Set aShell for Mac)
+   if command -v frt >/dev/null 2>&1; then bHasFRTools="1"; else bHasFRTools="0";  fi                       # .(50716.03.x)
 
    echo -e "\n  You can now run any of these install commands from your Repos folder:"                      # .(50226.03.1 Rewrite Help Beg)
+if [ "${bHasFRTools}" != "1" ]; then                                                                        # .(50716.03.x)
    echo -e "\n     bash ${aInstall} frtools       # first, then login again, or run:"
    echo -e   "       source ~/${aShell}           # then run, frt, to check it."                            # .(50405.04.4)
+   fi                                                                                                       # .(50716.03.x)
    echo -e   ""
-   echo -e   "     bash ${aInstall} anyllm        # then run, anyllm, to check it."
-   echo -e   "     bash ${aInstall} aidocs demo1  # then run, aidocs, to check it."                         # .(50402.15.4)
 #  echo -e   "     bash ${aInstall} aidocs dev01  # then run, aidocs, to check it."                         ##.(50402.15.5).(50408.03.9)
 #  echo -e   "     bash ${aInstall} aidocs test1  # then run, aitestr, to check it."                        # .(50408.03.9).(50402.15.5)
    echo -e   "     bash ${aInstall} aidocs testr  # then run, aitestr, to check it."                        # .(50518.04.2).(50408.03.9).(50402.15.5)
+   echo -e   "     bash ${aInstall} aidocs demo1  # then run, aidocs, to check it."                         # .(50402.15.4)
+   echo -e   "     bash ${aInstall} anyllm        # then run, anyllm, to check it."
 
+if [ "${bHasFRTools}" != "1" ]; then                                                                        # .(50716.03.x)
    echo -e "\n* Note: You must install FRTools before any other projects.  After that,"                     # .(50105.04.9 RAM Add more options Beg)
-   echo -e   "  you can clone or create your own projects folder with:"
+   echo -e   "        you can clone or create your own projects folder with:"
+ else                                                                                                       # .(50716.03.x)
+   echo -e "\n  You can also clone or create your own projects folder with:"                                # .(50716.03.x)
+   fi                                                                                                       # .(50716.03.x)
 #  echo -e "\n     bash frt clone {GitHub-Account} {Repo-Name}"                                             # .(50226.03.1 End).(50327.02.9)
    echo -e "\n     bash frt clone {RepoName} '' {CloneDir} {Branch} {Account}"                              # .(50327.02.9)
+   echo -e   "     bash frt new repo MyProject_/test1-master -d"                                            # .(50716.03.x)
 
    if [ "${OS:0:7}" != "Windows" ]; then echo ""; fi; exit
    } # eof help
