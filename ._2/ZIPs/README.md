@@ -3,9 +3,9 @@
 ## Welcome to the formR Repos starter page
  
 ### A. First create a Repos folder: 
-- <code>mkdir C:\\Users\Public\Repos &nbsp; </code> # in Windows, or <code>D:\\Repos</code>
-- <code>mkdir /Users\Shared\Repos &nbsp; &nbsp; </code> # in MacOS
-- <code>mkdir /home/Shared/Repos &nbsp;&nbsp; &nbsp; </code> # in Linux
+- <code>mkdir           C:\Home\Shared\Repos &nbsp; </code> # in Windows, or <code>D:\Repos</code>
+- <code>mkdir &nbsp;&nbsp;/home/shared/repos &nbsp; </code> # in Linux
+- <code>mkdir      &nbsp;/Users/Shared/Repos &nbsp; </code> # in MacOS
 
 ### B. Open your new Repos folder using a bash or zsh terminal, then either:
 
@@ -46,10 +46,10 @@
 
    - Your own project  (use -d to doit)  
 
-      1. <code>frt new repo MyProject_dev01 -d</code>   
-      2. <code>cd MyProject_dev01; code MyProject_dev01.*</code>   
-      3. <code>gitr add remote MyProject_dev01-bruce {GitHub_Account}</code>   
-      4. <code>gitr mak remote MyProject_dev01-bruce</code>   
+      1. <code>frt new repo MyProject_/test1-master -d</code>   
+      2. <code>cd MyProject_/test1-master; code *code*</code>   
+      3. <code>gitr add remote MyProject_test1-master {GitHub_Account}</code>   
+      4. <code>gitr mak remote MyProject_test1-master</code>   
       5. Make changes to your code   
       6. Use VSCode to commit and sync your changes   
  

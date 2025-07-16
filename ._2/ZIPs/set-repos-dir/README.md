@@ -3,7 +3,7 @@
 ## Welcome to the formR Repos starter page
  
 ### A. First create a Repos folder: 
-- <code>mkdir          C:\\Home\Shared\Repos &nbsp; </code> # in Windows, or <code>D:\\Repos</code>
+- <code>mkdir           C:\Home\Shared\Repos &nbsp; </code> # in Windows, or <code>D:\Repos</code>
 - <code>mkdir &nbsp;&nbsp;/home/shared/repos &nbsp; </code> # in Linux
 - <code>mkdir      &nbsp;/Users/Shared/Repos &nbsp; </code> # in MacOS
 
