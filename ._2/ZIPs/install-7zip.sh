@@ -37,7 +37,7 @@ if [ "${OS:0:7}" == "Windows" ]; then
     download "https://7-zip.org/a/7zr.exe"            7zr.exe
     download "https://7-zip.org/a/7z2409-extra.7z"    7zip.7z
 
-	./7zr.exe x 7zip.7z; ./check7z 7za.exe                                             # .(50716.07.1 RAM Add ./)
+	./7zr.exe x 7zip.7z; check7z 7za.exe                                             # .(50716.07.1 RAM Add ./)
 
 	echo -e "@echo off\n${winBIN}\\7za.exe %*"      >${a7zip}.cmd
 	echo -e "#\!/bin/bash\n${aBIN}/7za.exe \"\$@\"" >${a7zip}
