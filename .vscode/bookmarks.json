@@ -394,21 +394,6 @@
 			"path": "._2/FRTs/gitR/FRT42_gitR2_p1.02.sh",
 			"bookmarks": [
 				{
-					"line": 527,
-					"column": 0,
-					"label": "shoWorkingFiles"
-				},
-				{
-					"label": "getReposDir",
-					"line": 608,
-					"column": 0
-				},
-				{
-					"label": "initGit",
-					"line": 707,
-					"column": 0
-				},
-				{
 					"label": "getProjectStage_fromURL",
 					"line": 1056,
 					"column": 0

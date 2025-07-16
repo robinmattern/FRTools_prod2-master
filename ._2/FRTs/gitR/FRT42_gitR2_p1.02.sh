@@ -41,6 +41,8 @@
 ##FD   FRT42_GitR2.sh           | 184797|  3/18/25 17:30|  2391| p1.02`50318.1730
 ##FD   FRT42_GitR2.sh           | 185037|  3/21/25 15:05|  2394| p1.02`50321.1505
 ##FD   FRT42_GitR2.sh           | 186712|  4/06/25  7:15|  2410| p1.02`50406.0715
+##FD   FRT42_GitR2.sh           | 187707|  5/16/25  8:00|  2417| p1.02`50516.0800
+##FD   FRT42_GitR2.sh           | 188673|  7/16/25  7:45|  2424| p1.02`50716.0765
 #
 ##DESC     .--------------------+-------+---------------+------+-----------------+
 #            This script has usefull GIT functions.
@@ -196,10 +198,12 @@
 #.(50318.01b  3/18/25 RAM  5:30p| Make list working files work on a mac
 #.(50318.01c  3/21/25 RAM  3:05p| Add row nos. to working files
 #.(50406.02   4/06/25 RAM  7:15a| Fix aidocs project_stage clone
-#.(50408.02   4/08/25 RAM  9:30a| Add Msg re git clone taking a while 
-#.(50409.01   4/09/25 RAM  5:31a| Only show local(?) commits, not all ** Not implemented ** 
+#.(50408.02   4/08/25 RAM  9:30a| Add Msg re git clone taking a while
+#.(50409.01   4/09/25 RAM  5:31a| Only show local(?) commits, not all ** Not implemented **
 #.(50408.02b  4/10/25 RAM  9:50a| Add \n after msg "This could take awhile."
 #.(50516.02   5/16/25 RAM  9:25a| Change prompt to change into installed dir
+#.(50716.01   7/16/25 RAM  7:20a| Minor cosmetic changes
+#.(50716.02   7/16/25 RAM  7:45a| Make App No. 01 vs No. 1
 #
 ##PRGM     +====================+===============================================+
 ##ID 69.600. Main0              |
@@ -272,7 +276,7 @@ function exit_wCR() {
 # if [ "${OSTYPE:0:6}" == "darwin"  ]; then echo ""; fi                                 ##.(41120.01.1)
   if [ "${OS:0:7}"     != "Windows" ]; then echo ""; fi                                 # .(41120.01.1 RAM Fix exit_wCR)
 # [[ -z $(tail -c1) ]] || echo                                                          ##.(41202.04.1 RAM An incorrect suggestion from claude. He thought that tail checks the last char of the current output)
-# if [ "$1" != "" ]; then exit $1; else exit; fi                                                            ##.(50408.01.2 RAM Not necessary)                         
+# if [ "$1" != "" ]; then exit $1; else exit; fi                                                            ##.(50408.01.2 RAM Not necessary)
      exit ${1:-0}                                                                                           # .(50106.04.1 RAM Exit with 0 or $1).(50408.01.2)
      }
 # ---------------------------------------------------------------------------
@@ -739,11 +743,12 @@ function initGit() { # assumes we're in folder to be initialized                
                  fi
 
 #        aNewRepoDir="${aProject_Name/*_\//}"                                                               ##.(50102.03.5)
-         aNewRepoDir="${aProject_Name}"                                                                     # .(50102.03.5)
 #        if [ "${aProject_Name/\/}" != "${aProject_Name}" ]; then aNewRepoDir="${aProject_Name}"; fi        # .(50102.03e.1 RAM Put it back)
+         aNewRepoDir="${aProject_Name}"                                                                     # .(50102.03.5)
          aNewRepoName="${aProject_}${aStage/\//}"
          if [ "$1" == "" ]  && [ "$2" != "" ]; then aProject_=""; aProject_Name="$2"; aNewRepoDir="$2"; fi  # .(50102.03.6)
-         echo "  * gitR2[ 646]--Creating a repository, '${aNewRepoName}', in folder: '${aProject_Name}' (${aNewRepoDir}).";       # .(50102.03.7).(41109.02.3 RAM Was: '${aProject}_/${aStage}')
+#        echo "       * gitR2[ 646]--Creating a repository, '${aNewRepoName}', in folder: '${aProject_Name}' (${aNewRepoDir}).";  # .(50102.03.7).(41109.02.3 RAM Was: '${aProject}_/${aStage}')
+#        echo -e "\n  * gitR2[ 646]--Creating a repository, '${aNewRepoName}', in folder: '${aNewRepoDir}'.";                     ##.(50716.01.1 RAM aProject_Name == aNewRepoDir).(41109.02.3 RAM Was: '${aProject}_/${aStage}')
 
 #     if [ ! -z "$( ls -A "." )" ]; then echo "* But the folder is not empty or isn't created. Unable to create repository.";
 #          echo "if [ -d \"${aNewRepoDir}\" ]; then echo \"it exists\"; fi"
@@ -758,7 +763,7 @@ function initGit() { # assumes we're in folder to be initialized                
          sayMsg "gitR2[ 654]  The new repo ${aMT} folder being created is: '${aNewRepoDir}'" -1
 
       if [ "${bDoit}" != "1" ]; then                                                                        # .(50102.03.9)
-         sayMsg  "gitR2[ 657]  Creating a new folder, '${aProject_}${aStage}', in '${PWD##*/}': (${aNewRepoDir})." -1
+         sayMsg "gitR2[ 657]  Creating a new folder, '${aProject_}${aStage}', in '${PWD##*/}': (${aNewRepoDir})." -1
          echo -e "\n  About to create a new repository, '${aNewRepoName}', in an ${aMT} folder: '${aProject_Name}'."
 #        echo -e   "  The current folder, '${aProject_Name}', is empty.";                                   ##.(50102.03.10 Beg)
 #        if [ ! -d "${aNewRepoDir}" ]; then
@@ -768,7 +773,7 @@ function initGit() { # assumes we're in folder to be initialized                
          if [ ! -d "${aNewRepoDir}" ]; then
          echo -e   "    mkdir -p ${aNewRepoDir}"; fi
          echo -e   "    cd ${aNewRepoDir}"; fi
-         echo -e   "    git init                  # Add -d to doit"
+         echo -e   "    git init                         # Add -d to doit"
          echo -e   "    git checkout -b ${aMainBranch}"
          echo -e   "    - a formR project structure will be created."
          exit_wCR                                                                                           # .(50102.03.10 End)
@@ -781,9 +786,9 @@ function initGit() { # assumes we're in folder to be initialized                
          echo ""
                         git checkout -b "${aMainBranch}"  2>&1 | awk '{ print "  " $0 }'
          fi                                                                                                 # .(50102.03.11 End)
-#        touch README.md  # or any file                                                 # .(41109.03.1 RAM Create initGit vars Beg)
+#        touch README.md  # or any file                                                                     # .(41109.03.1 RAM Create initGit vars Beg)
          aREADME_md="
-# formR Project folder: ${aProject_}${aStage}                                                               # .(50103.01.9 RAM Was: Repository: )
+# formR Project: ${aProject_}${aStage}                                                                      # .(50716.01.2 RAM Remove Folder:).(50103.01.9 RAM Was: Repository: )
 Created on $( date +'%a %b %d %Y at %T' )
 Created by ${aOwner}
 
@@ -845,17 +850,19 @@ yarn.lock
 "
                                                                                         # .(41109.04.1 End)
          aWorkspace_code="{ \"folders\": [ { \"path\": \".\" } ] }"
-                                                                                        # .(41109.03.2 RAM Add initGit dirs & files Beg)
+         aDate=$( date +'%Y%m%d' ); aDate="${aDate:2}"                                                      # .(50716.01.3)
+                                                                                                            # .(41109.03.2 RAM Add initGit dirs & files Beg)
 #        sayMsg  "gitR2[ 648]  Adding files to repo, ${aProject}_${aStage}, in folder: ${aProject_Name}'" -1
          sayMsg  "gitR2[ 766]  Current folder is: '$( pwd )'" -1
 
-#        !2_formR Tools for 8020's FRTools Apps in rm228d on Stage Prod2-Master
-#        aDir="!2_\${Title} for ${aOwner}'s ${aProject} Apps in ${aSvr} on Stage ${aStage2}"
+#        !2_formR Tools for 8020's FRTools Project in rm228d on Stage Prod2-Master
+#        aDir="!2_\${Title} for ${aOwner}'s ${aProject} Project in ${aSvr} on Stage ${aStage2}"
          aStages="on Stage ${aStage}"; if [ "${aStage2}" == "all" ]; then aStages="for All Stages"; fi      # .(50103.01.1 RAM Create aStages)
-         aDir="!2_${aOwner}s ${aProject} Apps in ${aSvr} ${aStages}"                                        # .(50103.01.2 RAM Was: on Stage ${aStage2})
+#        aDir="!2_${aOwner}s ${aProject} Apps in ${aSvr} ${aStages}"                                        ##.(50103.01.2 RAM Was: on Stage ${aStage2}).(50716.01.4)
+         aDir="!2_${aOwner}'s ${aProject} Project in ${aSvr} ${aStages}_u${aDate}"                          # .(50716.01.4 RAM Add aDate, change App to Project).(50103.01.2 RAM Was: on Stage ${aStage2})
 
-         aDirC="client/c01_client-first-app/!3_${aProject} Client No. 1 App in ${aSvr} ${aStages}"          # .(50103.01.3)
-         aDirS="server/s01_server-first-app/!3_${aProject} Server No. 1 App in ${aSvr} ${aStages}"          # .(50103.01.4)
+         aDirC="client/c01_client-first-app/!3_${aProject} Client No. 01 App in ${aSvr} ${aStages}"         # .(50716.02.1 RAM Was just 1).(50103.01.3)
+         aDirS="server/s01_server-first-app/!3_${aProject} Server No. 01 App in ${aSvr} ${aStages}"         # .(50716.02.1).(50103.01.4)
          mkdir "${aDir}"
          mkdir -p "${aDirC}"
          mkdir -p "${aDirS}"
@@ -1048,8 +1055,8 @@ yarn.lock
 
 #       if [ "${aNewRepoDir}" != "${PWD##*/}" ]; then                                                       ##.(50102.03a.13)
         if [ "${bCD}" == "1" ]; then                                                                        # .(50102.03a.18)
-           echo -e   "  After changing into the project folder: cd ${aNewRepoDir},"                         # .(50516.02.1 RAM Change prompt).(50105.05c.1).(50102.03a.14 RAM Was: aFolder)
-           echo -e   "    you can now work on it in VSCode with: code ${aProject}*"                         # .(50516.02.2).(50105.05c.2).(50102.03a.15)
+           echo -e "\n  After changing into the project folder: cd ${aNewRepoDir},"                         # .(50716.01.5 RAM Add \n).(50516.02.1 RAM Change prompt).(50105.05c.1).(50102.03a.14 RAM Was: aFolder)
+           echo -e    "    you can now work on it in VSCode with: code *code*"                              # .(50516.02.2).(50105.05c.2).(50102.03a.15)
            fi
            exit_wCR                                                                                         # .(50102.03a.16)
 #          echo -e "\n * Didn't know what folder to put .git into"                                          ##.(50102.03a.14).(41109.01.2 RAM If all else fails)
@@ -1314,7 +1321,7 @@ function getRemoteName() {                                                      
 
      if [ "${bQuiet}" != "1" ]; then                                                    # .(50104.03.2 RAM Add bQuiet)
            echo -e   "  After changing into the project folder: cd ${aDir},"                                # .(50516.02.3 RAM Change prompt).(50105.05c.3).(41210.01.x)
-           echo -e   "    you can now work on it in VSCode with: code ${aRepo1}*"                           # .(50516.02.4).(50105.05c.4 RAM Add *?) 
+           echo -e   "    you can now work on it in VSCode with: code ${aRepo1}*"                           # .(50516.02.4).(50105.05c.4 RAM Add *?)
            exit_wCR                                                                     # .(50104.03.3 Beg)
       else
            exit 0                                                                                            # .(50106.04.8 RAM It was 1)
@@ -1562,7 +1569,7 @@ function getRemoteName() {                                                      
      aRemote="--all"; if [ "${bRemote}" == "1" ]; then aRemote="$( getTrackingRemote \"${aBranch}\" )"      # .(50308.03.3 RAM Use getTrackingBranch).(50226.01b.1 RAM--all includes all local branches)
         echo -e "  Retreiving commits from remote repo, aka: ${aRemote}."                                   # .(50226.01c.1 RAN cover git msgs)
      git fetch origin; echo ""; fi                                                                          # .(50226.01b.2 RAM git fetch origin updates all remote branches)
-                      if [ "${bRemote}" != "1" ]; then aRemote=""; fi                                       # .(50409.01.1 RAM Only show local(?) commits, not all) 
+                      if [ "${bRemote}" != "1" ]; then aRemote=""; fi                                       # .(50409.01.1 RAM Only show local(?) commits, not all)
      git log ${aRemote} --format=%H | head -n ${nCnt} | while read hash; do                                 # .(50226.01b.3 RAM Remove --all).(50226.02.1 RAM Was nBeg)
 #      git show --format="%h %s" --name-status $hash
        shoCommitMsg $((i+1)) "${hash:0:8}"
