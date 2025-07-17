@@ -31,7 +31,7 @@
   if [ "${aZIP_Ver}" != "7-Zip v24.09" ]; then  # or if ! type zip >/dev/null 2>&1; then
      echo -e "\n  Executing: install-7zip.sh";
      if [ "${bTest}" == "1" ]; then ./install-7zip.sh 2>/dev/null; else                 # .(50102.05.2 RAM Test local version)
-     if ! curl -s "${aZIPs_URL}/install-7zip.sh" 2>/dev/null | bash 2>/dev/null; then
+     if ! curl -s --ssl-no-revoke "${aZIPs_URL}/install-7zip.sh"   2>/dev/null | bash 2>/dev/null; then # .(50716.10.3)
 #    if ! curl    "${aZIPs_URL}/install-7zip.sh" -o install-7zip.sh 2>/dev/null; then
      echo -e   "* Failed to execute the script, install-7zip.sh, at ${aZIPs_URL}."      # .(50717.02.1)
      echo      "  We tried to use ${aZIP_Exe} version ${aZIP_Ver}.${aCR}"               # .(50717.02.2 RAM Add message)
@@ -46,7 +46,7 @@
 
      if [ "${bTest}" == "0" ]; then                                                     # .(50102.05.4 RAM Test local version)
      echo "  curl -s \"${aZIPs_URL}/set-repos-dir.zip\"  -o set-repos-dir.zip"
-  if ! curl -s "${aZIPs_URL}/set-repos-dir.zip"  -o set-repos-dir.zip 2>/dev/null; then # .(50406.05.1 Seems to fail if not in Repos folder)
+  if ! curl -s --ssl-no-revoke "${aZIPs_URL}/set-repos-dir.zip"  -o set-repos-dir.zip 2>/dev/null; then # .(50716.10.4).(50406.05.1 Seems to fail if not in Repos folder)
      echo -e "\n* Failed to download, set-repos-dir.zip, at ${aZIPs_URL}."              # .(50717.02.3) 
      echo      "  We tried to use ${aZIPs_URL} version ${aZIP_Ver}.${aCR}"              # .(50717.02.4 RAM Add message)
      exit;
