@@ -48,7 +48,8 @@
   if ! curl -s "${aZIPs_URL}/set-repos-dir.zip"  -o set-repos-dir.zip 2>/dev/null; then # .(50406.05.1 Seems to fail if not in Repos folder)
      echo -e "\n* Failed to download, set-repos-dir.zip.${aCR}"
      exit;
-     fi; fi                                                                             # .(50102.05.5)
+     fi; fi
+                                                                                  # .(50102.05.5)
      echo -e "\n  Unzipping, set-repos-dir.zip, with ${aZIP_Exe} --"
 #    ${aZIP_Exe} x      -y set-repos-dir.zip 2>&1 | awk '/Extract|Files|Folders/ { print "    " $0 }'  ##.(50102.04.10).(50102.04.7 RAM Was 7zip).(50102.04b.1)
      ${aZIP_Exe} x -aoa -y set-repos-dir.zip 2>&1 | awk '/Extract|Files|Folders/ { print "    " $0 }'  # .(50102.04b.1 RAM Override existing files).(50102.04.7 RAM Was 7zip)
@@ -57,6 +58,8 @@
      echo -e "\n* Failed to unzip, set-repos-dir.zip.${aCR}"
      exit
      fi
+# -----------------------------------------------------------------------------------
+
      if [ "${OS:0:7}" != "Windows" ]; then echo ""; sudo chmod 755 *.sh; fi             # .(50101.04.1 RAM Opps Windows check)
      if [ "${OS:0:7}" != "Windows" ]; then echo ""; sudo chmod 755 ._/INSTs/*.sh; fi    # .(50327.01.1 RAM Set chmod on moved INSTs scripts)
      if [ "$?" != "0" ]; then exit; fi                                                  # .(50516.01.2)
