@@ -33,7 +33,8 @@
      if [ "${bTest}" == "1" ]; then ./install-7zip.sh 2>/dev/null; else                 # .(50102.05.2 RAM Test local version)
      if ! curl -s "${aZIPs_URL}/install-7zip.sh" 2>/dev/null | bash 2>/dev/null; then
 #    if ! curl    "${aZIPs_URL}/install-7zip.sh" -o install-7zip.sh 2>/dev/null; then
-     echo -e   "* Failed to execute the script, install-7zip.sh.${aCR}"
+     echo -e   "* Failed to execute the script, install-7zip.sh, at ${aZIPs_URL}."      # .(50717.02.1)
+     echo      "  We tried to use ${aZIP_Exe} version ${aZIP_Ver}.${aCR}"               # .(50717.02.2 RAM Add message)
      exit; fi; fi                                                                       # .(50102.05.3)
 
      aZIP_Exe="$( cat "$HOME/bin/7z/@ZIP_Exe" )"; # rm "$HOME/bin/7z/@ZIP_Exe"          # .(50102.04.6 RAM Retrieve 7Zip name)
@@ -46,16 +47,18 @@
      if [ "${bTest}" == "0" ]; then                                                     # .(50102.05.4 RAM Test local version)
      echo "  curl -s \"${aZIPs_URL}/set-repos-dir.zip\"  -o set-repos-dir.zip"
   if ! curl -s "${aZIPs_URL}/set-repos-dir.zip"  -o set-repos-dir.zip 2>/dev/null; then # .(50406.05.1 Seems to fail if not in Repos folder)
-     echo -e "\n* Failed to download, set-repos-dir.zip.${aCR}"
+     echo -e "\n* Failed to download, set-repos-dir.zip, at ${aZIPs_URL}."              # .(50717.02.3) 
+     echo      "  We tried to use ${aZIPs_URL} version ${aZIP_Ver}.${aCR}"              # .(50717.02.4 RAM Add message)
      exit;
      fi; fi
-                                                                                  # .(50102.05.5)
-     echo -e "\n  Unzipping, set-repos-dir.zip, with ${aZIP_Exe} --"
+                                                                                        # .(50102.05.5)
+     echo -e "\n  Unzipping, set-repos-dir.zip, with ${aZIP_Exe} version ${aZIP_Ver}."  # .(50717.02.5
 #    ${aZIP_Exe} x      -y set-repos-dir.zip 2>&1 | awk '/Extract|Files|Folders/ { print "    " $0 }'  ##.(50102.04.10).(50102.04.7 RAM Was 7zip).(50102.04b.1)
      ${aZIP_Exe} x -aoa -y set-repos-dir.zip 2>&1 | awk '/Extract|Files|Folders/ { print "    " $0 }'  # .(50102.04b.1 RAM Override existing files).(50102.04.7 RAM Was 7zip)
      
      if [ ! -f "install.sh" ]; then                                                     # .(50408.04.1 RAM Change from re-install) 
-     echo -e "\n* Failed to unzip, set-repos-dir.zip.${aCR}"
+     echo -e "\n* Failed to unzip, set-repos-dir.zip."                                  # .(50717.02.6 )
+     echo      "  We tried to use ${aZIP_Exe} version ${aZIP_Ver}.${aCR}"               # .(50717.07.2 RAM Add message)
      exit
      fi
 # -----------------------------------------------------------------------------------
@@ -67,7 +70,9 @@
 #    mv re-install.sh re-install                                                        ##.(50407.01.1 RAM Remove re-install).(50408.04.2)
      mv    install.sh    install                                                        # .(50408.04.3).(50105.04.3 RAM For the new `install` script)
 
-     echo -e "  The FormR install scripts have been downloaded into your Repos folder."
+     echo -e "\n  The FormR install scripts have been downloaded into your Repos folder."
+     echo      "  We used ${aZIP_Exe} version ${aZIP_Ver} to unzip them."}              # .(50717.02.7 RAM Add message)
+
      echo -e "\n//  ------  End of Install  ----------------------------------------------------------------------------- \\"   # .(50516.01.3 RAM Add End of Install msg)
 
 #    echo -e "  You can now run any of these install scripts -- "                       ##.(50105.04.4 RAM Add install help).(50405.04.2 RAM Remove)
