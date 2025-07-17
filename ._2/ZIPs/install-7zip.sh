@@ -96,5 +96,5 @@ if [ "${OSTYPE:0:5}" == "linux" ]; then
 	fi
 #   -----------------------------------------------------------------------
 
-	echo "  Your command for 7-Zip is: ${a7zip}"
+	echo -e "\n  Your command for 7-Zip is: ${a7zip} in /home/._0/bin/"
 	exit_wCR
