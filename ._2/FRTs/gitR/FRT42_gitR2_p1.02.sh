@@ -205,6 +205,7 @@
 #.(50716.01   7/16/25 RAM  7:20a| Minor cosmetic changes
 #.(50716.02   7/16/25 RAM  7:45a| Make App No. 01 vs No. 1
 #.(50716.06   7/16/25 RAM 10:22a| Modify git make for AI_Context folder 
+#.(50716.09   7/16/25 RAM 14:32p| Add data and sources folders
 #
 ##PRGM     +====================+===============================================+
 ##ID 69.600. Main0              |
@@ -863,10 +864,13 @@ yarn.lock
          aDir="!2_${aOwner}'s ${aProject} Project in ${aSvr} ${aStages}_u${aDate}"                          # .(50716.01.4 RAM Add aDate, change App to Project).(50103.01.2 RAM Was: on Stage ${aStage2})
 
          aDirC="client/c01_client-first-app/!3_${aProject} Client No. 01 App in ${aSvr} ${aStages}"         # .(50716.02.1 RAM Was just 1).(50103.01.3)
-         aDirS="server/s01_server-first-app/!3_${aProject} Server No. 01 App in ${aSvr} ${aStages}"         # .(50716.02.1).(50103.01.4)
-         mkdir "${aDir}"
+         aDirS="server/s01_server-first-api/!3_${aProject} Server No. 01 App in ${aSvr} ${aStages}"         # .(50716.08.1 RAM Was app).(50716.02.1).(50103.01.4)
+         mkdir    "${aDir}"
          mkdir -p "${aDirC}"
          mkdir -p "${aDirS}"
+         mkdir      "data"                                                              # .(50716.08.2 BTG Add for system data)
+         mkdir      "sources"                                                           # .(50716.08.3 RAM Add for user documents)
+
 
          mkdir ".vscode"
          echo "${aLaunch_json}"    >".vscode/launch.json"
@@ -882,11 +886,12 @@ yarn.lock
          echo "" >"${aDirC:0:27}/index.js";   git add "${aDirC:0:27}/index.js"
          echo "" >"${aDirS:0:27}/server.mjs"; git add "${aDirS:0:27}/server.mjs"        # .(50716.06.2 RAM Was server.js)
 
-         mkdir "docs"
-         mkdir "docs/a00_AI-Context"                                                    # .(50716.06.3 RAM Add 'em Beg)
-         echo "" >"docs/a00_AI-Context/a00-01_System-Prompt.md"
-         echo "" >"docs/a00_AI-Context/a00-10_Development-Plan.md"
-         echo "" >"docs/a00_AI-Context/a00-20_Technical-Specs.md"                       # .(50716.06.3 End)
+         mkdir    "docs"
+         mkdir    "docs/a00_AI-Context"                                                 # .(50716.06.3 RAM Add 'em Beg)
+#        echo "" >"docs/a00_AI-Context/a00-01_System-Prompt.md"
+#        echo "" >"docs/a00_AI-Context/a00-10_Development-Plan.md"
+#        echo "" >"docs/a00_AI-Context/a00-20_Technical-Specs.md"                       ##.(50716.06.3 End)
+         cp       "../../../docs/a00_AI-Context/*" "docs/a00_AI-Context/*"              # .(50716.06.3 End) 
 
 #        echo "" >"docs/index.html";          git add "docs/index.html"
          echo "${aDocsify_Index}"  >"docs/index.html"                                   # .(41109.04.2)
