@@ -34,20 +34,29 @@ if [ "${OS:0:7}" == "Windows" ]; then
 
 #   curl -L  "https://7-zip.org/a/7zr.exe"         -o 7zr.exe 2>/dev/null
 #	curl -L  "https://7-zip.org/a/7z2409-extra.7z" -o 7zip.7z 2>/dev/null
-    download "https://7-zip.org/a/7zr.exe"            7zr.exe
-    download "https://7-zip.org/a/7z2409-extra.7z"    7zip.7z
+#   download "https://7-zip.org/a/7zr.exe"            7zr.exe
+#   download "https://7-zip.org/a/7z2409-extra.7z"    7zip.7z
 
-	./7zr.exe x 7zip.7z; check7z 7za.exe                                             # .(50716.07.1 RAM Add ./)
+#  ./7zr.exe x 7zip.7z; check7z 7za.exe                                             # .(50716.07.1 RAM Add ./)
+    winget install 7zip 
 
-	echo -e "@echo off\n${winBIN}\\7za.exe %*"      >${a7zip}.cmd
-	echo -e "#\!/bin/bash\n${aBIN}/7za.exe \"\$@\"" >${a7zip}
-	echo -e "if [ \"\$1\" == \"\" ]; then ${aBIN}/${a7z} | awk '/<Switches>/ { exit }; { print }'; exit; fi" >>${a7zip}
+#   echo -e "#\!/bin/bash \n${aBIN}/7za.exe \"\$@\"" >${a7zip}
+#   echo -e "@echo off  \n${winBIN}\\7za.exe %*"     >${a7zip}.cmd
 
-    if [ ! -d  /c/Home/._0/bin  ]; then mkdir -p /c/Home/._0/bin; fi
+    a7zip_exe="/C/Program Files/7-Zip/7z.exe"
+    w7zip_exe="C:\\Program Files\\7-Zip/7z.exe"
+
+    echo -e "#\!/bin/bash" >${a7zip}
+    echo -e "if [ \"\$1\" == \"\" ]; then \"${a7zip_exe}\" | awk '/<Switches>/ { exit }; { print }'" >>${a7zip}
+    echo -e  "                   else \"${a7zip_exe}\" \"\$@\"; fi" >>${a7zip}
+
+    echo -e "@echo off              \n \"${w7zip_exe}\"  %*"         >${a7zip}.cmd
+
+    if [ ! -d  /c/Home/._0/bin  ]; then mkdir -p /c/Home/._0/bin;  fi
     if [ ! -d  /c/Home/._0/Cmds ]; then mkdir -p /c/Home/._0/Cmds; fi
-	cp ${a7zip}     /c/Home/._0/bin/${a7zip}
-	cp ${a7zip}.cmd /c/Home/._0/Cmds/${a7zip}.cmd
-	echo "${a7zip}" >"$HOME/bin/7z/@ZIP_Exe"                    # .(50102.04.9 RAM Save 7Zip name)
+	  cp "${a7zip}"     /c/Home/._0/bin/${a7zip}
+	  cp "${a7zip}.cmd" /c/Home/._0/Cmds/${a7zip}.cmd
+	echo "${a7zip}"     >"$HOME/bin/7z/@ZIP_Exe"                                        # .(50102.04.9 RAM Save 7Zip name)
 	fi
 #   -----------------------------------------------------------------------
 
