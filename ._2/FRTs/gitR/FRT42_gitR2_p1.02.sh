@@ -43,6 +43,7 @@
 ##FD   FRT42_GitR2.sh           | 186712|  4/06/25  7:15|  2410| p1.02`50406.0715
 ##FD   FRT42_GitR2.sh           | 187707|  5/16/25  8:00|  2417| p1.02`50516.0800
 ##FD   FRT42_GitR2.sh           | 188673|  7/16/25  7:45|  2424| p1.02`50716.0765
+##FD   FRT42_GitR2.sh           | 191289|  8/24/25  2:25|  2470| p1.02`50824.0225
 #
 ##DESC     .--------------------+-------+---------------+------+-----------------+
 #            This script has usefull GIT functions.
@@ -204,9 +205,10 @@
 #.(50516.02   5/16/25 RAM  9:25a| Change prompt to change into installed dir
 #.(50716.01   7/16/25 RAM  7:20a| Minor cosmetic changes
 #.(50716.02   7/16/25 RAM  7:45a| Make App No. 01 vs No. 1
-#.(50716.06   7/16/25 RAM 10:22a| Modify git make for AI_Context folder 
+#.(50716.06   7/16/25 RAM 10:22a| Modify git make for AI_Context folder
 #.(50716.09   7/16/25 RAM 14:32p| Add data and sources folders
-#.(50722.03   7/22/25 RAM  2:00p| Update Readme for new formR repo)
+#.(50722.03   7/22/25 RAM  2:00p| Update Readme for new formR repo
+#.(50722.03a  8/24/25 RAM  2:25p| Fix Readme for new formR repo
 #
 ##PRGM     +====================+===============================================+
 ##ID 69.600. Main0              |
@@ -214,7 +216,7 @@
 #*/
 #========================================================================================================== #  ===============================  #
 
-        aVDt="Apr 6, 2025  7:15a"; aVer="p1.02"; aVTitle="Useful gitR2 Tools by formR";                                    # .(41103.02.2 RAM Was: gitR1)
+        aVDt="Aug 24, 2025  2:25p"; aVer="p1.02"; aVTitle="Useful gitR2 Tools by formR";                                    # .(41103.02.2 RAM Was: gitR1)
         aVer="$( echo "$0" | awk '{ match( $0, /_[dpstuv][0-9]+\.[0-9]+/ ); print substr( $0, RSTART+1, RLENGTH-1) }' )"  # .(21031.01.1 RAM Add [d...).(20416.03.8 "_p2.02", or _d1.09)
 
         LIB="gitR2"; LIB_LOG=${LIB}_LOG; LIB_USER=${LIB}_USER; Lib=${LIB}; aDir=$(dirname "${BASH_SOURCE}");              # .(41103.02.3).(41102.01.1 RAM Add JPT12_Main2Fns_p1.07.sh Beg).(80923.01.1)
@@ -797,9 +799,9 @@ Created by ${aOwner}
 Version 1.02
 
 ## Description
-This starter app uses the formR folder structure.  It is opinionated with 
-a clear seperation of client versus server code.  
-- If you start with a single \`index.html\` file, put it in a client folder. 
+This starter app uses the formR folder structure.  It is opinionated with
+a clear seperation of client versus server code.
+- If you start with a single \`index.html\` file, put it in a client folder.
 - If you start with a single \`indexjs\` express app, put it in a server folder.
 
 ## Folder Structure
@@ -819,13 +821,13 @@ a clear seperation of client versus server code.
               0       0      0  ./sources/
 \`\`\`
 # Folder Descriptions
-- `client/`  - Frontend application(s)
-- `server/`  - Backend API(s) and services
-- `data/`    - Structureed data files (JSON or DB)
-- `docs/`    - Project documentation
-- `sources/` - Unstructured files to processed
-- `.vscode/` - Editor settings
-- `.git/`    - Git repository data
+- client/  - Frontend application(s)
+- server/  - Backend API(s) and services
+- data/    - Structureed data files (JSON or DB)
+- docs/    - Project documentation
+- sources/ - Unstructured files to process
+- .vscode/ - Editor settings
+- .git/    - Git repository data
 "
          aGitignore='
 .env
@@ -921,7 +923,7 @@ yarn.lock
 #        echo "" >"docs/a00_AI-Context/a00-01_System-Prompt.md"
 #        echo "" >"docs/a00_AI-Context/a00-10_Development-Plan.md"
 #        echo "" >"docs/a00_AI-Context/a00-20_Technical-Specs.md"                       ##.(50716.06.3 End)
-         cp       "../../../docs/a00_AI-Context/*" "docs/a00_AI-Context/*"              # .(50716.06.3 End) 
+         cp       "../../../docs/a00_AI-Context/*" "docs/a00_AI-Context/*"              # .(50716.06.3 End)
 
 #        echo "" >"docs/index.html";          git add "docs/index.html"
          echo "${aDocsify_Index}"  >"docs/index.html"                                   # .(41109.04.2)
