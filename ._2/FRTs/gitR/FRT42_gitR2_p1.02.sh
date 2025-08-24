@@ -792,8 +792,9 @@ function initGit() { # assumes we're in folder to be initialized                
                         git checkout -b "${aMainBranch}"  2>&1 | awk '{ print "  " $0 }'
          fi                                                                                                 # .(50102.03.11 End)
 #        touch README.md  # or any file                                                                     # .(41109.03.1 RAM Create initGit vars Beg)
+                                                                                                            # .(50716.01.2 RAM Remove Folder:).(50103.01.9 RAM Was: Repository: )
          aREADME_md="
-# formR Project: ${aProject_}${aStage}                                                                      # .(50716.01.2 RAM Remove Folder:).(50103.01.9 RAM Was: Repository: )
+# formR Project: ${aProject_}${aStage}                                                                      
 Created on $( date +'%a %b %d %Y at %T' )
 Created by ${aOwner}
 Version 1.02
@@ -820,14 +821,14 @@ a clear seperation of client versus server code.
               2       1      1  ./server/s01_server-first-api/
               0       0      0  ./sources/
 \`\`\`
-# Folder Descriptions
-- client/  - Frontend application(s)
-- server/  - Backend API(s) and services
-- data/    - Structureed data files (JSON or DB)
-- docs/    - Project documentation
-- sources/ - Unstructured files to process
-- .vscode/ - Editor settings
-- .git/    - Git repository data
+## Folder Descriptions
+- **client**  - Frontend application(s)
+- **server**  - Backend API(s) and services
+- **data**    - Structureed data files (JSON or DB)
+- **docs**    - Project documentation
+- **sources** - Unstructured files to process
+- .vscode - Editor settings
+- .git    - Git repository data
 "
          aGitignore='
 .env
