@@ -17,6 +17,8 @@
 ##FD         set-frtools.sh     |  29196|  1/05/25 16:40|   480| v1.05`50105.1640
 ##FD         set-frtools.sh     |  29854|  3/02/25 16:40|   488| v1.05`50302.2055
 ##FD         set-frtools.sh     |  33251|  4/06/25  6:25|   532| v1.05`50406.0625
+##FD         set-frtools.sh     |  33251|  7/22/25 12:50|   532| v1.05`50722.1250
+##FD         set-frtools.sh     |  35901|  8/10/25 13:12|   563| v1.05`50810.1312
 #
 ##DESC     .--------------------+-------+-----------------+------+---------------+
 #            Create ._0/bin folder and copy all command scripts there as well as
@@ -66,7 +68,10 @@
 #.(41031.02b  3/02/25 RAM  8:54p| Add -d for arg2
 #.(50405.04   4/05/25 RAM  7:00p| Set shell profile file for ZSH or Bash
 #.(41208.02e  4/06/25 RAM  6:25a| More futzing around with .zshrc profile
-#.(50406.04   4/06/25 RAM  1:30p| Beware of aOS being msys 
+#.(50406.04   4/06/25 RAM  1:30p| Beware of aOS being msys
+#.(50722.02   7/22/25 RAM 12:15p| Don't set .zsh unless in MacOS
+#.(50722.03   7/22/25 RAM 12:50p| Set cd aliases to correct repos folder
+#.(50810.02   8/10/25 RAM  1:12p| Set bZSHver to '0' if MT
 #
 ##PRGM     +====================+===============================================+
 ##ID 69.600. Main0              |
@@ -85,6 +90,8 @@
   aVer="v1.05\`50302.2055"
   aVer="v1.05\`50406.0625"
   aVer="v1.05\`50406.1330"
+  aVer="v1.05\`50722.1245"
+  aVer="v1.05\`50810.1312"
 
   echo ""
 
@@ -144,7 +151,7 @@ function setOSvars() {
 
      aBinDir="/Users/Shared/._0/bin"
      aOS="darwin"
-     fi
+     fi # eif darwin
 
      }
 # -----------------------------------------------------------
@@ -229,16 +236,28 @@ function setBashrc() {
 
   if [ ! -f "${aBashrc}" ]; then                                                        # .(41208.02e.14 RAM Check if aBashrc exists. Beg)
      echo "* No Interactive Shell Profile found. Creating ${aBashrc}"
-     echo "# Created by Install FRTools on ${aTS}"                     >"${aBashrc}";
-     echo ""                                                          >>"${aBashrc}";
-     echo "  alias ll=\"ls -la\""                                     >>"${aBashrc}";
-     echo "  alias cd-repos=\"cd /Users/Shared/Repos\""               >>"${aBashrc}";
-	 echo "  alias cd-anyllm=\"cd /Users/Shared/Repos/AnyLLM\""         >>"${aBashrc}";
-	 echo "  alias cd-frtools=\"cd /Users/Shared/Repos/FRTools\""       >>"${aBashrc}";
-	 echo "  alias cd-aidocs=\"cd /Users/Shared/Repos/AIDocs_demo1\""   >>"${aBashrc}";
+     echo "# Created by Install FRTools on ${aTS}"                      >"${aBashrc}";
+
+#    echo "  -- aRepos_Dir: ${aRepos_Dir}"; exit
+     echo ""                                                           >>"${aBashrc}";
+     echo "  alias ll=\"ls -la\""                                      >>"${aBashrc}";
+
+#    echo "  alias cd-repos=\"cd /Users/Shared/Repos\""                >>"${aBashrc}";  ##.(50722.03.1 RAM Note: hard-coded for mac Beg)
+#	 echo "  alias cd-anyllm=\"cd /Users/Shared/Repos/AnyLLM\""        >>"${aBashrc}";
+#	 echo "  alias cd-frtools=\"cd /Users/Shared/Repos/FRTools\""      >>"${aBashrc}";
+#	 echo "  alias cd-aidocs=\"cd /Users/Shared/Repos/AIDocs_demo1\""  >>"${aBashrc}";  ##.(50722.03.1 End)
+
+   echo "  alias cd-repos=\"cd ${aRepos_Dir}\""                       >>"${aBashrc}"; # .(50722.03.1 Use aRepos_Dir Beg
+	 echo "  alias cd-anyllm=\"cd ${aRepos_Dir}/AnyLLM\""               >>"${aBashrc}";
+	 echo "  alias cd-frtools=\"cd ${aRepos_Dir}/FRTools\""             >>"${aBashrc}";
+	 echo "  alias cd-aidocs=\"cd ${aRepos_Dir}/AIDocs_demo1\""         >>"${aBashrc}";
+	 echo "  alias cd-aitestr=\"cd ${aRepos_Dir}/AIDocs_testR\""        >>"${aBashrc}"; # .(50722.03.3 RAM Add testR).(50722.03.1 End)
      fi                                                                                 # .(41208.02e.14 End)
 
+     if [ "${bZSHver}" == "" ]; then bZSHver="0"; fi                                    # .(50810.02.1 RAM Was: MT)
      inRC=$( cat "${aBashrc}" | awk '/\._0/ { print 1 }' );                             # .(41208.05.1 RAM Added /\._0/)
+#    echo "-- bZSHver '${bZSHver}', aBashrc: '${aBashrc}', inRC '${inRC}'"; exit
+
   if [[ "${inRC}" == "1" ]]; then
 
      echo "* The path, '${aBinDir}', is already in the User's ${aBashrc/$HOME/~} file." # .(41203.08.1 RAM Shorten ${aBashrc})
@@ -248,13 +267,16 @@ function setBashrc() {
   if [[ "${inRC}" == "" ]] || [[ "${bShoProfile}" == "1" ]]; then # Recreate "${aBashrc}"                   # .(41208.02b.6)
 #  else  # Recreate "${aBashrc}"                                                                            # .(41208.02b.7)
 
+  if [ "$aOS}" == "darwin" ]; then                                                      # .(50722.02.1 RAM Mac only)
   if [ "${bZSHver}" == "0" ]; then
      aBASH_VERSION=$( bash --version | awk '{ print $4 }' )
      aZSH_VERSION=""
   else
      aBASH_VERSION=""
      aZSH_VERSION="$( zsh --version | awk '{ print $2 }' )"
-     fi
+     fi;
+     echo "  BASH_VERSION: '${aBASH_VERSION}', ZSH_VERSION: '${aZSH_VERSION}', bZSHver: '${bZSHver}'"; # exit_wCR
+     fi;                                                                                # .(50722.02.2)
 
      if [ "${bDoProfile}" == "0" ]; then cat     "${aBashrc}" | awk '/._0/ { exit }; NF > 0 { print }' >"${aBashrc}_@tmp"
                                          aBashrc="${aBashrc}_@tmp"; fi
@@ -263,7 +285,7 @@ function setBashrc() {
 
      echo -e "  ${aWill_add} path, '${aBinDir}', to User's PATH in '${aBashrc/_@tmp/}'.\n"; # exit          # .(50105.07.6 RAM Add \n)
 
-     echo "  BASH_VERSION: '${aBASH_VERSION}', ZSH_VERSION: '${aZSH_VERSION}', bZSHver: '${bZSHver}'"; # exit_wCR
+ #   echo "  BASH_VERSION: '${aBASH_VERSION}', ZSH_VERSION: '${aZSH_VERSION}', bZSHver: '${bZSHver}'"; # exit_wCR
 
      echo ""                                                >>"${aBashrc}"
 #    echo "  export PATH=\"/Users/Shared/._0/bin:\$PATH\""  >>"${aBashrc}"
@@ -508,7 +530,7 @@ function  makScript() {
 
   aRepo_Dir="$(pwd)"
   cd ..
-  aProj_Dir="$(pwd)"
+  aRepos_Dir="$(pwd)"                                                                   # .(50722.03.2 RAM Repos is plural. Was aProj_Dir)
 
   setOSvars;          # echo "  OS: '${aOS}', aBashrc: '${aBashrc}'"; exit_wCR
 
