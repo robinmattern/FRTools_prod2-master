@@ -206,6 +206,7 @@
 #.(50716.02   7/16/25 RAM  7:45a| Make App No. 01 vs No. 1
 #.(50716.06   7/16/25 RAM 10:22a| Modify git make for AI_Context folder 
 #.(50716.09   7/16/25 RAM 14:32p| Add data and sources folders
+#.(50722.03   7/22/25 RAM  2:00p| Update Readme for new formR repo)
 #
 ##PRGM     +====================+===============================================+
 ##ID 69.600. Main0              |
@@ -793,9 +794,38 @@ function initGit() { # assumes we're in folder to be initialized                
 # formR Project: ${aProject_}${aStage}                                                                      # .(50716.01.2 RAM Remove Folder:).(50103.01.9 RAM Was: Repository: )
 Created on $( date +'%a %b %d %Y at %T' )
 Created by ${aOwner}
+Version 1.02
 
 ## Description
+This starter app uses the formR folder structure.  It is opinionated with 
+a clear seperation of client versus server code.  
+- If you start with a single \`index.html\` file, put it in a client folder. 
+- If you start with a single \`indexjs\` express app, put it in a server folder.
 
+## Folder Structure
+\`\`\`
+  Folder Size     Files   Dirs  /C/Home/Shared/Repos/Project_/stage-author/. (3 levels)
++-------------- +------ +----- +----------------------------+-------------------+---------- +-------------+
+         32,714       9     11  ./
+         30,862      39     27  ./.git/
+            594       1      0  ./.vscode/
+              3       2      2  ./client/
+              3       2      1  ./client/c01_client-first-app/
+              0       0      0  ./data/
+            688       3      1  ./docs/
+              0       0      0  ./docs/a00_AI-Context/
+              2       1      2  ./server/
+              2       1      1  ./server/s01_server-first-api/
+              0       0      0  ./sources/
+\`\`\`
+# Folder Descriptions
+- `client/`  - Frontend application(s)
+- `server/`  - Backend API(s) and services
+- `data/`    - Structureed data files (JSON or DB)
+- `docs/`    - Project documentation
+- `sources/` - Unstructured files to processed
+- `.vscode/` - Editor settings
+- `.git/`    - Git repository data
 "
          aGitignore='
 .env
