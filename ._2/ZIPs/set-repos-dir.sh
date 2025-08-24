@@ -71,7 +71,7 @@
      mv    install.sh    install                                                        # .(50408.04.3).(50105.04.3 RAM For the new `install` script)
 
      echo -e "\n  The FormR install scripts have been downloaded into your Repos folder."
-     echo      "  We used ${aZIP_Exe} version ${aZIP_Ver} to unzip them."}              # .(50717.02.7 RAM Add message)
+     echo      "  We used ${aZIP_Exe} version ${aZIP_Ver} to unzip them."               # .(50717.02.7 RAM Add message)
 
      echo -e "\n//  ------  End of Install  ----------------------------------------------------------------------------- \\"   # .(50516.01.3 RAM Add End of Install msg)
 
