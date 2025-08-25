@@ -205,10 +205,11 @@
 #.(50516.02   5/16/25 RAM  9:25a| Change prompt to change into installed dir
 #.(50716.01   7/16/25 RAM  7:20a| Minor cosmetic changes
 #.(50716.02   7/16/25 RAM  7:45a| Make App No. 01 vs No. 1
-#.(50716.06   7/16/25 RAM 10:22a| Modify git make for AI_Context folder
+#.(50716.06   7/16/25 RAM 10:22a| Modify git make for AI-Context folder
 #.(50716.09   7/16/25 RAM 14:32p| Add data and sources folders
 #.(50722.03   7/22/25 RAM  2:00p| Update Readme for new formR repo
-#.(50722.03a  8/24/25 RAM  2:25p| Fix Readme for new formR repo
+#.(50722.01a  8/24/25 RAM  2:25p| Fix Readme for new formR repo
+#.(50722.01b  8/25/25 RAM  9:50a| Change / fix AI App Specs folder 
 #
 ##PRGM     +====================+===============================================+
 ##ID 69.600. Main0              |
@@ -216,7 +217,7 @@
 #*/
 #========================================================================================================== #  ===============================  #
 
-        aVDt="Aug 24, 2025  2:25p"; aVer="p1.02"; aVTitle="Useful gitR2 Tools by formR";                                    # .(41103.02.2 RAM Was: gitR1)
+        aVDt="Aug 25, 2025  9:50p"; aVer="p1.02"; aVTitle="Useful gitR2 Tools by formR";                                    # .(41103.02.2 RAM Was: gitR1)
         aVer="$( echo "$0" | awk '{ match( $0, /_[dpstuv][0-9]+\.[0-9]+/ ); print substr( $0, RSTART+1, RLENGTH-1) }' )"  # .(21031.01.1 RAM Add [d...).(20416.03.8 "_p2.02", or _d1.09)
 
         LIB="gitR2"; LIB_LOG=${LIB}_LOG; LIB_USER=${LIB}_USER; Lib=${LIB}; aDir=$(dirname "${BASH_SOURCE}");              # .(41103.02.3).(41102.01.1 RAM Add JPT12_Main2Fns_p1.07.sh Beg).(80923.01.1)
@@ -824,7 +825,7 @@ a clear seperation of client versus server code.
 ## Folder Descriptions
 - **client**  - Frontend application(s)
 - **server**  - Backend API(s) and services
-- **data**    - Structureed data files (JSON or DB)
+- **data**    - Structured data files (JSON or DB)
 - **docs**    - Project documentation
 - **sources** - Unstructured files to process
 - .vscode - Editor settings
@@ -924,7 +925,9 @@ yarn.lock
 #        echo "" >"docs/a00_AI-Context/a00-01_System-Prompt.md"
 #        echo "" >"docs/a00_AI-Context/a00-10_Development-Plan.md"
 #        echo "" >"docs/a00_AI-Context/a00-20_Technical-Specs.md"                       ##.(50716.06.3 End)
-         cp       "../../../docs/a00_AI-Context/*" "docs/a00_AI-Context/*"              # .(50716.06.3 End)
+#        cp       "../../../docs/a00_AI-Context/*" "docs/a00_AI-Context/*"              ##.(50716.06.3 End).(50716.06a.3) 
+#        cp -rp "${aReposDir}/FRTools/docs/a00_AI-Context/" "docs/a00_AI-Context/*"     # .(50716.06a.1)
+         cp -rp "${aReposDir}/FRTools/docs/a00_AI-App-Specs/" "docs/"                   # .(50716.06b.1)
 
 #        echo "" >"docs/index.html";          git add "docs/index.html"
          echo "${aDocsify_Index}"  >"docs/index.html"                                   # .(41109.04.2)
