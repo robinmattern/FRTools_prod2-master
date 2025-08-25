@@ -208,8 +208,9 @@
 #.(50716.06   7/16/25 RAM 10:22a| Modify git make for AI-Context folder
 #.(50716.09   7/16/25 RAM 14:32p| Add data and sources folders
 #.(50722.03   7/22/25 RAM  2:00p| Update Readme for new formR repo
-#.(50722.01a  8/24/25 RAM  2:25p| Fix Readme for new formR repo
-#.(50722.01b  8/25/25 RAM  9:50a| Change / fix AI App Specs folder 
+#.(50716.01a  8/24/25 RAM  2:25p| Fix Readme for new formR repo
+#.(50716.01b  8/25/25 RAM  9:50a| Change / fix AI App Specs folder 
+#.(50716.01c  8/25/25 RAM 10:00a| Change Mkdir AI App Specs folder 
 #
 ##PRGM     +====================+===============================================+
 ##ID 69.600. Main0              |
@@ -817,7 +818,7 @@ a clear seperation of client versus server code.
               3       2      1  ./client/c01_client-first-app/
               0       0      0  ./data/
             688       3      1  ./docs/
-              0       0      0  ./docs/a00_AI-Context/
+              0       0      0  ./docs/a00_AI-App-Specs/
               2       1      2  ./server/
               2       1      1  ./server/s01_server-first-api/
               0       0      0  ./sources/
@@ -921,13 +922,13 @@ yarn.lock
          echo "" >"${aDirS:0:27}/server.mjs"; git add "${aDirS:0:27}/server.mjs"        # .(50716.06.2 RAM Was server.js)
 
          mkdir    "docs"
-         mkdir    "docs/a00_AI-Context"                                                 # .(50716.06.3 RAM Add 'em Beg)
+         mkdir    "docs/a00_AI-App-Specs"                                               # .(50716.01c.1).(50716.06.3 RAM Add 'em Beg)
 #        echo "" >"docs/a00_AI-Context/a00-01_System-Prompt.md"
 #        echo "" >"docs/a00_AI-Context/a00-10_Development-Plan.md"
 #        echo "" >"docs/a00_AI-Context/a00-20_Technical-Specs.md"                       ##.(50716.06.3 End)
 #        cp       "../../../docs/a00_AI-Context/*" "docs/a00_AI-Context/*"              ##.(50716.06.3 End).(50716.06a.3) 
-#        cp -rp "${aReposDir}/FRTools/docs/a00_AI-Context/" "docs/a00_AI-Context/*"     # .(50716.06a.1)
-         cp -rp "${aReposDir}/FRTools/docs/a00_AI-App-Specs/" "docs/"                   # .(50716.06b.1)
+#        cp -rp "${aReposDir}/FRTools/docs/a00_AI-Context/" "docs/a00_AI-Context/*"     # .(50716.01a.1)
+         cp -rp "${aReposDir}/FRTools/docs/a00_AI-App-Specs/" "docs/"                   # .(50716.01b.1)
 
 #        echo "" >"docs/index.html";          git add "docs/index.html"
          echo "${aDocsify_Index}"  >"docs/index.html"                                   # .(41109.04.2)
