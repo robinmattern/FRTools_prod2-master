@@ -131,7 +131,7 @@ if [ "${bHasFRTools}" != "1" ]; then                                            
    fi                                                                                                       # .(50716.03.x)
 #  echo -e "\n     bash frt clone {GitHub-Account} {Repo-Name}"                                             # .(50226.03.1 End).(50327.02.9)
    echo -e "\n     bash frt clone {RepoName} '' {CloneDir} {Branch} {Account}"                              # .(50327.02.9)
-   echo -e   "     bash frt new repo MyProject_/test1-master -d"                                            # .(50716.03.x)
+   echo -e   "     bash frt new repo formR_/dev01-{User} -d"                                            # .(50716.03.x)
 
    if [ "${OS:0:7}" != "Windows" ]; then echo ""; fi; exit
    } # eof help

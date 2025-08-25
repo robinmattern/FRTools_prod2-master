@@ -46,10 +46,10 @@
 
    - Your own project  (use -d to doit)  
 
-      1. <code>frt new repo MyProject_/test1-master -d</code>   
-      2. <code>cd MyProject_/test1-master; code *code*</code>   
-      3. <code>gitr add remote MyProject_test1-master {GitHub_Account}</code>   
-      4. <code>gitr mak remote MyProject_test1-master</code>   
+      1. <code>frt new repo formR_/dev01-{User} -d</code>   
+      2. <code>cd formR_/dev01-{User}; code *code*</code>   
+      3. <code>gitr add remote formR_/dev01-{User} {GitHub_Account}</code>   
+      4. <code>gitr mak remote formR_/dev01-{User}</code>   
       5. Make changes to your code   
       6. Use VSCode to commit and sync your changes   
  
