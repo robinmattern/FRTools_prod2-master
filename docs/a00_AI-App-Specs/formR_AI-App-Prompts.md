@@ -22,12 +22,13 @@ Please implement these specs: docs/a01_Docs-Viewer-App/a01-20_Docs-Viewer-App_Sp
 ---
 
 ## Prompt 4: Create a02_docs-viewer-app 
-Please implement these specs: docs/a02_Docs-Viewer-App/a01-20_Docs-Viewer-App_Specs.md
+Please implement these specs: docs/a02_Docs-Viewer-App/a02-20_Docs-Viewer-App_Specs.md
 
 **Is this prompt ready to submit? (y/n)**
 
 ---
 
 **Usage Instructions:**
-To execute these prompts sequentially, tell me to "run prompt-submission.md"
+To execute these prompts sequentially, tell me to "run formR_AI-App-Prompts.md"
 I will process each prompt one at a time, waiting for confirmation between each.
+If I don't get a confirmation, i.e. yes, then sjip to the next prompt.  

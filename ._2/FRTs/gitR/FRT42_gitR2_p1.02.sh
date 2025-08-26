@@ -214,6 +214,7 @@
 #.(50716.01c  8/25/25 RAM 10:00a| Change Mkdir AI App Specs folder
 #.(50826.01   8/26/25 RAM  7:55a| Add Sample AI-App files
 #.(50826.01a  8/26/25 RAM  8:30a| Add AI-App files message
+#.(50826.01b  8/26/25 RAM  5:30p| Add run-app.sh
 #
 ##PRGM     +====================+===============================================+
 ##ID 69.600. Main0              |
@@ -221,7 +222,7 @@
 #*/
 #========================================================================================================== #  ===============================  #
 
-        aVDt="Aug 26, 2025  8:30a"; aVer="p1.02"; aVTitle="Useful gitR2 Tools by formR";                                    # .(41103.02.2 RAM Was: gitR1)
+        aVDt="Aug 26, 2025  5:30p"; aVer="p1.02"; aVTitle="Useful gitR2 Tools by formR";                                    # .(41103.02.2 RAM Was: gitR1)
         aVer="$( echo "$0" | awk '{ match( $0, /_[dpstuv][0-9]+\.[0-9]+/ ); print substr( $0, RSTART+1, RLENGTH-1) }' )"  # .(21031.01.1 RAM Add [d...).(20416.03.8 "_p2.02", or _d1.09)
 
         LIB="gitR2"; LIB_LOG=${LIB}_LOG; LIB_USER=${LIB}_USER; Lib=${LIB}; aDir=$(dirname "${BASH_SOURCE}");              # .(41103.02.3).(41102.01.1 RAM Add JPT12_Main2Fns_p1.07.sh Beg).(80923.01.1)
@@ -945,10 +946,12 @@ yarn.lock
 #        echo "" >"docs/a00_AI-Context/a00-20_Technical-Specs.md"                       ##.(50716.06.3 End)
 #        cp       "../../../docs/a00_AI-Context/*" "docs/a00_AI-Context/*"              ##.(50716.06.3 End).(50716.06a.3)
 #        cp -rp "${aReposDir}/FRTools/docs/a00_AI-Context/" "docs/a00_AI-Context/*"     # .(50716.01a.1)
-         cp -rp "${aReposDir}/FRTools/docs/a00_AI-App-Specs/" "docs/"                   # .(50716.01b.1)
+         cp -rp "${aReposDir}/FRTools/docs/a00_AI-App-Specs/"    "docs/"                # .(50716.01b.1)
          cp -rp "${aReposDir}/FRTools/docs/a01_Docs-Viewer-App/" "docs/"                # .(50826.01.2)
          cp -rp "${aReposDir}/FRTools/docs/a02_Docs-Viewer-App/" "docs/"                # .(50826.01.3)
          cp -p  "${aReposDir}/FRTools/docs/a00_AI-App-Specs/formR_AI-App-Prompts.md" .  # .(50826.01a.2 RAM Opps).(50826.01.4)
+         cp -p  "${aReposDir}/FRTools/docs/a00_AI-App-Specs/run-app.sh" .               # .(50826.01b.1 RAM Add)
+                 if [ "${OS:0:3}" != "Win" ]; then chmod 777 run-app.sh; fi             # .(50826.01b.2
 
          git add docs/                                                                  # .(50826.01.5)
          git add formR_AI-App-Prompts.md                                                # .(50826.01.6)

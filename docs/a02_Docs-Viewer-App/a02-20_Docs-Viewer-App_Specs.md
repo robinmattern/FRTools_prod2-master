@@ -155,37 +155,40 @@ Location: `./client/c02_docs-viewer-app/viewer.js`
 Handles rendering of different document types in the viewer area using client-side libraries.
 
 ### Supported File Types
-1. **Text (.txt)** - Plain text display with line numbers
-2. **JSON (.json)** - Formatted JSON with syntax highlighting
+1. **Text (.txt)**    - Plain text display with line numbers
+2. **JSON (.json)**   - Formatted JSON with syntax highlighting
 3. **Markdown (.md)** - Rendered HTML using Marked.js from CDN
-4. **HTML (.html)** - Iframe rendering with sandbox
-5. **PDF (.pdf)** - PDF.js viewer from CDN
-6. **Word (.docx)** - Mammoth.js converter from CDN
-7. **Excel (.xlsx)** - SheetJS viewer from CDN
+4. **HTML (.html)**   - Iframe rendering with sandbox
+5. **PDF (.pdf)**     - PDF.js viewer from CDN
+6. **Word (.docx)**   - Mammoth.js converter from CDN
+7. **Excel (.xlsx)**  - SheetJS viewer from CDN
 
 ### CDN Dependencies (loaded in index.html)
 ```html
-<!-- Markdown rendering -->
-<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-<!-- PDF rendering -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
-<!-- Word document rendering -->
-<script src="https://cdn.jsdelivr.net/npm/mammoth@1.6.0/mammoth.browser.min.js"></script>
-<!-- Excel rendering -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"                  ></script> <!-- Markdown rendering -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"  ></script> <!-- PDF rendering -->
+<script src="https://cdn.jsdelivr.net/npm/mammoth@1.6.0/mammoth.browser.min.js"  ></script> <!-- Word document rendering -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script> <!-- Excel rendering -->
 ```
 
 ### Renderer Functions
 - `renderDocument(fileType, fileUrl, containerId)` - Main rendering function
-- `renderText(content, container)` - Plain text with line numbers
-- `renderJSON(content, container)` - Formatted JSON display
+- `renderText(    content, container)` - Plain text with line numbers
+- `renderJSON(    content, container)` - Formatted JSON display
 - `renderMarkdown(content, container)` - Convert MD to HTML
-- `renderHTML(fileUrl, container)` - Iframe with sandbox
-- `renderPDF(fileUrl, container)` - PDF.js canvas rendering
-- `renderWord(fileUrl, container)` - Mammoth.js conversion
-- `renderExcel(fileUrl, container)` - SheetJS table display
+- `renderHTML(    fileUrl, container)` - Iframe with sandbox
+- `renderPDF(     fileUrl, container)` - PDF.js canvas rendering
+- `renderWord(    fileUrl, container)` - Mammoth.js conversion
+- `renderExcel(   fileUrl, container)` - SheetJS table display
 
 ### Error Handling
 - Fallback to download link if rendering fails
 - Display error messages in viewer area
 - Timeout handling for large files
+
+## D. Running app client and server:
+Location: `./{Project Root Folder}`
+Runs the server first, then the client 
+```bash
+   bash run-app.sh a02
+```

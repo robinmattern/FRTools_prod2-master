@@ -128,3 +128,10 @@ API_BASE: `http://localhost:3051/api/docs`
 4. Action Buttons
    - Download button to retrieve file (Green)
    - Delete button with confirmation dialog (Red)
+
+## D. Running app client and server:
+Location: `./{Project Root Folder}`
+Runs the server first, then the client 
+```bash
+   bash run-app.sh a01
+```

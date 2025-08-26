@@ -60,6 +60,6 @@ API_BASE: `http://localhost:3050/api`
 Location: `./{Project Root Folder}`
 Runs the server first, then the client 
 ```bash
-   bash a00_run-sample-app.sh 
+   bash run-app.sh a00
 ```
 
