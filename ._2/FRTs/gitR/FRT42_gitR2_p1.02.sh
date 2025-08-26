@@ -212,7 +212,8 @@
 #.(50716.01a  8/24/25 RAM  2:25p| Fix Readme for new formR repo
 #.(50716.01b  8/25/25 RAM  9:50a| Change / fix AI App Specs folder
 #.(50716.01c  8/25/25 RAM 10:00a| Change Mkdir AI App Specs folder
-#.(50826.01   8/26/25 RAM  8:30a| Add Sample AI-App files
+#.(50826.01   8/26/25 RAM  7:55a| Add Sample AI-App files
+#.(50826.01a  8/26/25 RAM  8:30a| Add AI-App files message
 #
 ##PRGM     +====================+===============================================+
 ##ID 69.600. Main0              |
@@ -937,6 +938,7 @@ yarn.lock
 
 #        -----------------------------------------------------                          # .(50826.01.1 RAM Add AI-App files Beg)
 
+         echo -e "\n  Adding docs/a00_AI-App files'."                                   # .(50826.01a.1)          
          mkdir    "docs/a00_AI-App-Specs"                                               # .(50716.01c.1).(50716.06.3 RAM Add 'em Beg)
 #        echo "" >"docs/a00_AI-Context/a00-01_System-Prompt.md"
 #        echo "" >"docs/a00_AI-Context/a00-10_Development-Plan.md"
@@ -946,7 +948,7 @@ yarn.lock
          cp -rp "${aReposDir}/FRTools/docs/a00_AI-App-Specs/" "docs/"                   # .(50716.01b.1)
          cp -rp "${aReposDir}/FRTools/docs/a01_Docs-Viewer-App/" "docs/"                # .(50826.01.2)
          cp -rp "${aReposDir}/FRTools/docs/a02_Docs-Viewer-App/" "docs/"                # .(50826.01.3)
-         cp -p  "${aReposDir}/FRTools/docs/formR_AI-App-Prompts.md" "."                 # .(50826.01.4)
+         cp -p  "${aReposDir}/FRTools/docs/a00_AI-App-Specs/formR_AI-App-Prompts.md" .  # .(50826.01a.2 RAM Opps).(50826.01.4)
 
          git add docs/                                                                  # .(50826.01.5)
          git add formR_AI-App-Prompts.md                                                # .(50826.01.6)
