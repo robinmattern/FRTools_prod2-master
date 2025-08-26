@@ -20,16 +20,16 @@ Note: Run the `npm install` command in the server folder, not in each app folder
    node server.mjs
    ```
 3. Testing endpoints:
-   - Base URL: http://localhost:3050/api
+   - Base URL: http://localhost:3250/api
 
 ### 1. server.mjs
 - Initialize Express application
-- Send static HTML: "<h3>from the formR Server at localhost:3050/api</h3>"  
+- Send static HTML: "<h3>from the formR Server at localhost:3250/api</h3>"  
 - Set server port and start listener
 
 ## C. Client Interface
 Location: `./client/c00_sample-client-app/`
-API_BASE: `http://localhost:3050/api`
+API_BASE: `http://localhost:3250/api`
 
 ### Files
 1. `index.html` - Main HTML interface
@@ -47,9 +47,9 @@ API_BASE: `http://localhost:3050/api`
    ```bash
    cd client/c00_sample-client-app
    npm install -g http-server
-   http-server -p 3000 -s > /dev/null 2>&1
+   http-server -p 3200 -s > /dev/null 2>&1
    ```
-   Then visit: http://localhost:3000
+   Then visit: http://localhost:3200
 
 2. Using VS Code Live Server:
    - Right-click on index.html

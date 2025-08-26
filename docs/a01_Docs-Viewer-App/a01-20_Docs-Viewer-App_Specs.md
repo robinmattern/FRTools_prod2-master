@@ -35,8 +35,8 @@ Note: Run the `npm install` command in the server folder, not in each app folder
 
 3. Testing endpoints:
    - Use curl or Postman
-   - Base URL: http://localhost:3051/api/docs
-   - Example: GET http://localhost:3051/api/docs (lists all documents)
+   - Base URL: http://localhost:3251/api/docs
+   - Example: GET http://localhost:3251/api/docs (lists all documents)
 
 ### 1. server.mjs
 - Initialize Express application
@@ -65,7 +65,7 @@ File Storage:
 
 ## C. Client Interface
 Location: `./client/c01_docs-viewer-app/`
-API_BASE: `http://localhost:3051/api/docs`
+API_BASE: `http://localhost:3251/api/docs`
 
 ### Files
 1. `index.html` - Main HTML interface
@@ -76,9 +76,9 @@ API_BASE: `http://localhost:3051/api/docs`
    ```bash
    cd client/c01_docs-viewer-app
    npm install -g http-server
-   http-server -p 3001
+   http-server -p 3201
    ```
-   Then visit: http://localhost:3001
+   Then visit: http://localhost:3201
 
 2. Using VS Code Live Server:
    - Right-click on index.html

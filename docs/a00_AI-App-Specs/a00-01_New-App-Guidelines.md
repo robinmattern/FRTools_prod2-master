@@ -47,6 +47,7 @@ Here are some coding quidelines
 - Use common JavaScript with an extension of `.js` for all client-side code.
 - Use NodeJS ES6 modules with an extension of `.mjs` for all server-side code. 
 - If a server application needs some `node_modules`, add them to a `package.json` file in the `./server` folder.
+- If a client application needs some `node_modules`, add them to a `package.json` file in the `./client` folder.
 - Put the `npm run` commands in a `package.json` file in the application folder with a name for the project-app. 
 - For example, the command to start an app, would be: `cd ./server/s01_* && npm start`. 
 - Any documents that are needed by any app should be stored in the `./sources` folder.
