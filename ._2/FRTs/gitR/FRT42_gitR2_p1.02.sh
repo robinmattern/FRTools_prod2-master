@@ -44,6 +44,7 @@
 ##FD   FRT42_GitR2.sh           | 187707|  5/16/25  8:00|  2417| p1.02`50516.0800
 ##FD   FRT42_GitR2.sh           | 188673|  7/16/25  7:45|  2424| p1.02`50716.0765
 ##FD   FRT42_GitR2.sh           | 191289|  8/24/25  2:25|  2470| p1.02`50824.0225
+##FD   FRT42_GitR2.sh           | 192766|  8/26/25  8:30|  2490| p1.02`50826.0830
 #
 ##DESC     .--------------------+-------+---------------+------+-----------------+
 #            This script has usefull GIT functions.
@@ -209,8 +210,9 @@
 #.(50716.09   7/16/25 RAM 14:32p| Add data and sources folders
 #.(50722.03   7/22/25 RAM  2:00p| Update Readme for new formR repo
 #.(50716.01a  8/24/25 RAM  2:25p| Fix Readme for new formR repo
-#.(50716.01b  8/25/25 RAM  9:50a| Change / fix AI App Specs folder 
-#.(50716.01c  8/25/25 RAM 10:00a| Change Mkdir AI App Specs folder 
+#.(50716.01b  8/25/25 RAM  9:50a| Change / fix AI App Specs folder
+#.(50716.01c  8/25/25 RAM 10:00a| Change Mkdir AI App Specs folder
+#.(50826.01   8/26/25 RAM  8:30a| Add Sample AI-App files
 #
 ##PRGM     +====================+===============================================+
 ##ID 69.600. Main0              |
@@ -218,7 +220,7 @@
 #*/
 #========================================================================================================== #  ===============================  #
 
-        aVDt="Aug 25, 2025  9:50p"; aVer="p1.02"; aVTitle="Useful gitR2 Tools by formR";                                    # .(41103.02.2 RAM Was: gitR1)
+        aVDt="Aug 26, 2025  8:30a"; aVer="p1.02"; aVTitle="Useful gitR2 Tools by formR";                                    # .(41103.02.2 RAM Was: gitR1)
         aVer="$( echo "$0" | awk '{ match( $0, /_[dpstuv][0-9]+\.[0-9]+/ ); print substr( $0, RSTART+1, RLENGTH-1) }' )"  # .(21031.01.1 RAM Add [d...).(20416.03.8 "_p2.02", or _d1.09)
 
         LIB="gitR2"; LIB_LOG=${LIB}_LOG; LIB_USER=${LIB}_USER; Lib=${LIB}; aDir=$(dirname "${BASH_SOURCE}");              # .(41103.02.3).(41102.01.1 RAM Add JPT12_Main2Fns_p1.07.sh Beg).(80923.01.1)
@@ -796,7 +798,7 @@ function initGit() { # assumes we're in folder to be initialized                
 #        touch README.md  # or any file                                                                     # .(41109.03.1 RAM Create initGit vars Beg)
                                                                                                             # .(50716.01.2 RAM Remove Folder:).(50103.01.9 RAM Was: Repository: )
          aREADME_md="
-# formR Project: ${aProject_}${aStage}                                                                      
+# formR Project: ${aProject_}${aStage}
 Created on $( date +'%a %b %d %Y at %T' )
 Created by ${aOwner}
 Version 1.02
@@ -906,7 +908,6 @@ yarn.lock
          mkdir      "data"                                                              # .(50716.08.2 BTG Add for system data)
          mkdir      "sources"                                                           # .(50716.08.3 RAM Add for user documents)
 
-
          mkdir ".vscode"
          echo "${aLaunch_json}"    >".vscode/launch.json"
          echo "${aGitignore}"      >".gitignore"
@@ -917,18 +918,12 @@ yarn.lock
          echo "" >"${aDir}/.gitkeep";         git add "${aDir}/.gitkeep"
          echo "" >"${aDirC}/.gitkeep";        git add "${aDirC}/.gitkeep"
          echo "" >"${aDirS}/.gitkeep";        git add "${aDirS}/.gitkeep"
+
          echo "" >"${aDirC:0:27}/index.html"; git add "${aDirC:0:27}/index.html"        # .(50716.06.1)
          echo "" >"${aDirC:0:27}/index.js";   git add "${aDirC:0:27}/index.js"
          echo "" >"${aDirS:0:27}/server.mjs"; git add "${aDirS:0:27}/server.mjs"        # .(50716.06.2 RAM Was server.js)
 
          mkdir    "docs"
-         mkdir    "docs/a00_AI-App-Specs"                                               # .(50716.01c.1).(50716.06.3 RAM Add 'em Beg)
-#        echo "" >"docs/a00_AI-Context/a00-01_System-Prompt.md"
-#        echo "" >"docs/a00_AI-Context/a00-10_Development-Plan.md"
-#        echo "" >"docs/a00_AI-Context/a00-20_Technical-Specs.md"                       ##.(50716.06.3 End)
-#        cp       "../../../docs/a00_AI-Context/*" "docs/a00_AI-Context/*"              ##.(50716.06.3 End).(50716.06a.3) 
-#        cp -rp "${aReposDir}/FRTools/docs/a00_AI-Context/" "docs/a00_AI-Context/*"     # .(50716.01a.1)
-         cp -rp "${aReposDir}/FRTools/docs/a00_AI-App-Specs/" "docs/"                   # .(50716.01b.1)
 
 #        echo "" >"docs/index.html";          git add "docs/index.html"
          echo "${aDocsify_Index}"  >"docs/index.html"                                   # .(41109.04.2)
@@ -940,6 +935,26 @@ yarn.lock
          aTS="$(date +%y%m%d)"; aTS="${aTS:1}"
          git commit -m ".(${aTS}.01_Initial commit for ${aProject_}${aStage}" | awk '{ print "  " $0 }'
 
+#        -----------------------------------------------------                          # .(50826.01.1 RAM Add AI-App files Beg)
+
+         mkdir    "docs/a00_AI-App-Specs"                                               # .(50716.01c.1).(50716.06.3 RAM Add 'em Beg)
+#        echo "" >"docs/a00_AI-Context/a00-01_System-Prompt.md"
+#        echo "" >"docs/a00_AI-Context/a00-10_Development-Plan.md"
+#        echo "" >"docs/a00_AI-Context/a00-20_Technical-Specs.md"                       ##.(50716.06.3 End)
+#        cp       "../../../docs/a00_AI-Context/*" "docs/a00_AI-Context/*"              ##.(50716.06.3 End).(50716.06a.3)
+#        cp -rp "${aReposDir}/FRTools/docs/a00_AI-Context/" "docs/a00_AI-Context/*"     # .(50716.01a.1)
+         cp -rp "${aReposDir}/FRTools/docs/a00_AI-App-Specs/" "docs/"                   # .(50716.01b.1)
+         cp -rp "${aReposDir}/FRTools/docs/a01_Docs-Viewer-App/" "docs/"                # .(50826.01.2)
+         cp -rp "${aReposDir}/FRTools/docs/a02_Docs-Viewer-App/" "docs/"                # .(50826.01.3)
+         cp -p  "${aReposDir}/FRTools/docs/formR_AI-App-Prompts.md" "."                 # .(50826.01.4)
+
+         git add docs/                                                                  # .(50826.01.5)
+         git add formR_AI-App-Prompts.md                                                # .(50826.01.6)
+
+         aTS="$(date +%y%m%d)"; aTS="${aTS:1}"
+         git commit -m ".(${aTS}.02_Add sample AI-App files" | awk '{ print "  " $0 }'  # .(50826.01.7)
+
+#        -----------------------------------------------------                          # .(50826.01.1 End)
 #        git branch --set-upstream-to=origin/${aMainBranch} ${aMainBranch}
 
 #        gitr1 add remote origin $1
