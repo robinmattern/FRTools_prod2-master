@@ -45,6 +45,7 @@
 ##FD   FRT42_GitR2.sh           | 188673|  7/16/25  7:45|  2424| p1.02`50716.0765
 ##FD   FRT42_GitR2.sh           | 191289|  8/24/25  2:25|  2470| p1.02`50824.0225
 ##FD   FRT42_GitR2.sh           | 192766|  8/26/25  8:30|  2490| p1.02`50826.0830
+##FD   FRT42_GitR2.sh           | 194205|  8/27/25  9:40|  2504| p1.02`50827.0940
 #
 ##DESC     .--------------------+-------+---------------+------+-----------------+
 #            This script has usefull GIT functions.
@@ -214,9 +215,10 @@
 #.(50716.01c  8/25/25 RAM 10:00a| Change Mkdir AI App Specs folder
 #.(50826.01   8/26/25 RAM  7:55a| Add Sample AI-App files
 #.(50826.01a  8/26/25 RAM  8:30a| Add AI-App files message
-#.(50826.03   8/26/25 RAM  8:45a| Chg first-app to sample-app   
+#.(50826.03   8/26/25 RAM  8:45a| Chg first-app to sample-app
 #.(50826.01b  8/26/25 RAM  5:30p| Add run-app.sh
-#.(50826.01c  8/27/25 RAM  8:45a| Move run-app.sh to root 
+#.(50826.01c  8/27/25 RAM  8:45a| Move run-app.sh to root
+#.(50826.03a  8/27/25 RAM  9:40a| Fix chg of first-app to sample-app
 #
 ##PRGM     +====================+===============================================+
 ##ID 69.600. Main0              |
@@ -224,7 +226,7 @@
 #*/
 #========================================================================================================== #  ===============================  #
 
-        aVDt="Aug 27, 2025  8:45p"; aVer="p1.02"; aVTitle="Useful gitR2 Tools by formR";                                  # .(41103.02.2 RAM Was: gitR1)
+        aVDt="Aug 27, 2025  9:40a"; aVer="p1.02"; aVTitle="Useful gitR2 Tools by formR";                                  # .(41103.02.2 RAM Was: gitR1)
         aVer="$( echo "$0" | awk '{ match( $0, /_[dpstuv][0-9]+\.[0-9]+/ ); print substr( $0, RSTART+1, RLENGTH-1) }' )"  # .(21031.01.1 RAM Add [d...).(20416.03.8 "_p2.02", or _d1.09)
 
         LIB="gitR2"; LIB_LOG=${LIB}_LOG; LIB_USER=${LIB}_USER; Lib=${LIB}; aDir=$(dirname "${BASH_SOURCE}");              # .(41103.02.3).(41102.01.1 RAM Add JPT12_Main2Fns_p1.07.sh Beg).(80923.01.1)
@@ -904,6 +906,7 @@ yarn.lock
 #        aDir="!2_${aOwner}s ${aProject} Apps in ${aSvr} ${aStages}"                                        ##.(50103.01.2 RAM Was: on Stage ${aStage2}).(50716.01.4)
          aDir="!2_${aOwner}'s ${aProject} Project in ${aSvr} ${aStages}_u${aDate}"                          # .(50716.01.4 RAM Add aDate, change App to Project).(50103.01.2 RAM Was: on Stage ${aStage2})
 
+         aDirC="client/c01_client-first-app/!3_${aProject} Client No. 01 App in ${aSvr} ${aStages}"         ##.(50716.02.1 RAM Was just 1).(50103.01.3).(50826.03.1)
          aDirC="client/c00_sample-client-app/!3_${aProject} Client No. 01 App in ${aSvr} ${aStages}"        # .(50826.03.1 RAM Was c01_client-first-app).(50716.02.1 RAM Was just 1).(50103.01.3)
          aDirS="server/s00_sample-server-api/!3_${aProject} Server No. 01 App in ${aSvr} ${aStages}"        # .(50826.03.2).(50716.08.1 RAM Was s01_server-first-api).(50716.02.1).(50103.01.4)
          mkdir    "${aDir}"
@@ -923,9 +926,9 @@ yarn.lock
          echo "" >"${aDirC}/.gitkeep";        git add "${aDirC}/.gitkeep"
          echo "" >"${aDirS}/.gitkeep";        git add "${aDirS}/.gitkeep"
 
-         echo "" >"${aDirC:0:27}/index.html"; git add "${aDirC:0:27}/index.html"        # .(50716.06.1)
-         echo "" >"${aDirC:0:27}/index.js";   git add "${aDirC:0:27}/index.js"
-         echo "" >"${aDirS:0:27}/server.mjs"; git add "${aDirS:0:27}/server.mjs"        # .(50716.06.2 RAM Was server.js)
+         echo "" >"${aDirC:0:28}/index.html"; git add "${aDirC:0:27}/index.html"        # .(50826.03a.1 RAM was 27).(50716.06.1)
+         echo "" >"${aDirC:0:28}/index.js";   git add "${aDirC:0:27}/index.js"          # .(50826.03a.2)
+         echo "" >"${aDirS:0:28}/server.mjs"; git add "${aDirS:0:27}/server.mjs"        # .(50826.03a.3).(50716.06.2 RAM Was server.js)
 
          mkdir    "docs"
 
@@ -941,7 +944,7 @@ yarn.lock
 
 #        -----------------------------------------------------                          # .(50826.01.1 RAM Add AI-App files Beg)
 
-         echo -e "\n  Adding docs/a00_AI-App files'."                                   # .(50826.01a.1)          
+         echo -e "\n  Adding docs/a00_AI-App files'."                                   # .(50826.01a.1)
          mkdir    "docs/a00_AI-App-Specs"                                               # .(50716.01c.1).(50716.06.3 RAM Add 'em Beg)
 #        echo "" >"docs/a00_AI-Context/a00-01_System-Prompt.md"
 #        echo "" >"docs/a00_AI-Context/a00-10_Development-Plan.md"
