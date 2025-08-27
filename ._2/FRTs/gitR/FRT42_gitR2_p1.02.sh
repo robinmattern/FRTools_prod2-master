@@ -214,7 +214,7 @@
 #.(50716.01c  8/25/25 RAM 10:00a| Change Mkdir AI App Specs folder
 #.(50826.01   8/26/25 RAM  7:55a| Add Sample AI-App files
 #.(50826.01a  8/26/25 RAM  8:30a| Add AI-App files message
-#.(50826.03   8/26/25 RAM  8:45a| Chg first-app to sample-app 
+#.(50826.03   8/26/25 RAM  8:45a| Chg first-app to sample-app   
 #.(50826.01b  8/26/25 RAM  5:30p| Add run-app.sh
 #.(50826.01c  8/27/25 RAM  8:45a| Move run-app.sh to root 
 #
