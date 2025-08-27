@@ -26,11 +26,24 @@ if [ "${OSTYPE:0:6}" == "darwin" ]; then
 # -----------------------------------------
 
 #  echo "    nPort: '${nPort}'"; # exit
-   nWID=$( netstat -ano | awk '/TCP.+:'${nPort}'$/ { print $5; exit }' );
+   nWID=$(   netstat -ano | awk '/TCP.+:'${nPort}'$/ { print $5; exit }' );
+
+
+
 #  echo "    netstat -ano | awk '/TCP.+:'${nPort}'$/"; echo "    ps -W | awk '/ '${nWID}' /' ";
    if [ "${aShow}" == "show" ]; then echo "";
    echo "    netstat -ano | awk '/TCP.+:'${nPort}'$/"; echo "    ps -W | awk '/ '${nWID}' /' ";
    fi
+
+   nPID=$(netstat -ano | findstr ":${nPort}" | awk '{print $5}' | head -1)
+   if [ ! -z "${nPID}" ]; then
+      echo -e "\n  Killing windows process ${nPID} for port ${nPort}"
+      MSYS2_ARG_CONV_EXCL="/PID;/F" /c/Windows/System32/taskkill.exe /PID ${nPID} /F | awk '{ print "  " $0 }'
+    else 
+      echo -e "\n* Port ${nPort} is not running.";
+      fi
+      exit 
+# --------------------------------------------------------------
 
    if [ "${nWID}" == "" ]; then echo -e "\n  * Port ${nPort} is not running."; exit; fi
 #  if [ "${nWID}" != "" ]; then echo -e "\n    Port ${nPort} is running as PID ${nWID}."; fi
