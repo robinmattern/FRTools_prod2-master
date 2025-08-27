@@ -7,20 +7,21 @@
 # Function to kill process on a specific port
 function chkPort() {
     local port=$1
-#   echo "  Checking port $port..."
+    echo -e "\n  Checking port $port..."
     
     if [[ "$OSTYPE" == "msys" || "$OSTYPE" == "win32" ]]; then
         # Windows (Git Bash)
         local pid=$(netstat -ano | findstr ":$port" | awk '{print $5}' | head -1)
         if [ ! -z "$pid" ]; then
-            echo "Killing windows process $pid for port $port"
-            taskkill /PID $pid /F > /dev/null 2>&1
+            echo "  Killing windows process $pid for port $port"
+#           taskkill /PID $pid /F > /dev/null 2>&1
+            MSYS2_ARG_CONV_EXCL="/PID;/F" /c/Windows/System32/taskkill.exe /PID $pid /F | awk '{ print "  " $0 }'
         fi
     else
         # Linux/macOS
         local pid=$(lsof -ti:$port)
         if [ ! -z "$pid" ]; then
-            echo "Killing linux process $pid for port $port"
+            echo "  Killing linux process $pid for port $port"
             kill -9 $pid > /dev/null 2>&1
         fi
     fi
@@ -94,7 +95,7 @@ if [ ! -d "${aClient}/node_modules" ] && [ -f "${aClient}/package.json" ]; then
     echo "  Starting client, ${aAppName}, on port ${nPort} ..."
 #   cd ${aClient}/${aApp}_*
     cd ${aClient}/${aAppName}
-    npx http-server -p 3002 -s &
+    npx http-server -p ${nPort} -s &
     CLIENT_PID=$!
     echo "  Client is running at: http://localhost:${nPort}"
     cd ../..
