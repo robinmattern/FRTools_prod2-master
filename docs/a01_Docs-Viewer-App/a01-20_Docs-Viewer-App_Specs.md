@@ -19,38 +19,40 @@ Document Record Schema:
 Location: `./server/s01_docs-viewer-api/`
 
 ### Setup and Running
+
 1. Installation:
 Note: Run the `npm install` command in the server folder, not in each app folder  
    ```bash
+   if [ ! -d server/s01_docs-viewer-api ]; then mkdir -p server/s01_docs-viewer-api; fi 
    cd server
    npm init -y
    npm install express cors multer@2 uuid
    ```
-
 2. Running the server:
    ```bash
    cd server/s01_docs-viewer-api
    node server.mjs
    ```
-
 3. Testing endpoints:
    - Use curl or Postman
    - Base URL: http://localhost:3251/api/docs
    - Example: GET http://localhost:3251/api/docs (lists all documents)
 
-### 1. server.mjs
+### Server Files
+
+1. **File: server.mjs**
 - Initialize Express application
 - Configure middleware (cors, json parser, multer)
 - Import and use document routes
 - Set server port and start listener
 - Basic error handling
 
-### 2. routes.mjs
+2. **File: routes.mjs**
 API Endpoints:
-- GET /api/docs - List all documents
-- GET /api/docs/:id - Get specific document
-- POST /api/docs - Upload new document
-- PUT /api/docs/:id - Update document
+- GET  /api/docs       - List all documents
+- GET  /api/docs/:id   - Get specific document
+- POST /api/docs       - Upload new document
+- PUT  /api/docs/:id   - Update document
 - DELETE /api/docs/:id - Delete document
 
 Error Handling:
@@ -63,33 +65,50 @@ File Storage:
 - Filenames preserved with UUID prefix to prevent conflicts
 - File paths stored in documents.json relative to sources folder
 
+
+
+
+
+
+
+
 ## C. Client Interface
 Location: `./client/c01_docs-viewer-app/`
 API_BASE: `http://localhost:3251/api/docs`
 
-### Files
-1. `index.html` - Main HTML interface
-2. `index.js` - Client-side JavaScript logic
+### Setup and Running
 
-### Loading the Client
-1. Using Node HTTP Server:
+1. Installation:
+Note: Run the `npm install` command in the server folder, not in each app folder  
    ```bash
-   cd client/c01_docs-viewer-app
+   if [ ! -d client/c01_docs-viewer-api ]; then mkdir -p client/c01_docs-viewer-api; fi 
+
+   ```
+2. Running the client:
+- Using Node HTTP Server:
+   ```bash
+   cd client/c02_docs-viewer-app
    npm install -g http-server
-   http-server -p 3201
+   http-server -p 3201   
    ```
    Then visit: http://localhost:3201
 
-2. Using VS Code Live Server:
+- Using VS Code Live Server:
    - Right-click on index.html
    - Select "Open with Live Server"
    - Browser will open automatically
+
+### Files
+
+1. **File: index.html** - Main HTML interface
+2. **File: index.js**   - Client-side JavaScript logic
+
 
 ### Wire Diagram
 
 ```ascii
 +----------------------------------------+
-|           Document Manager             |
+|          Document Manager 1            |
 +----------------------------------------+
 | Upload Document:                       |
 | [Choose File]  [Upload Button]         |
@@ -97,15 +116,16 @@ API_BASE: `http://localhost:3251/api/docs`
 | Select Document:                       |
 | [Dropdown Menu▼]                       |
 +----------------------------------------+
-| Document Information:                  |
+| Document Info:                         |
 | +-----------------------------------+  |
 | |  Title: sample.pdf                |  |
 | |  Path: ./sources/4f5cab72d0s45... |  |
 | |  Updated: 2024-01-15 08:20p       |  |
 | |  Type: pdf                        |  |
+| |  <br>                             |  |
 | +-----------------------------------+  |
 +----------------------------------------+
-| [Download] [Delete]                    |
+|    [Download] [Delete]                 |
 +----------------------------------------+
 ```
 

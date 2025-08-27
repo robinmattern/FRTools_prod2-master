@@ -31,8 +31,9 @@ Begin each response with the markdown sub-heading: ### {{modelName}}.
 Please replace the variable {{modelName}} with your name, i.e. Assistant. 
 
 #### Rule No. 4 VSCode Git-Bash IDE
-Use Linux forward slashes for all file paths. My VSCode terminal shell in Windows or MacOS is Git Bash.  
-Use the corresponding Git Bash command for all OS file operations. 
+Use Linux forward slashes for all file paths. The VSCode terminal shell is Git Bash in both Windows and MacOS.  
+Use the corresponding Git Bash command for all OS file operations. Specifically mkdir, mv and cp commands
+are the same in both envirnments, but don't use back-slashes.
 
 #### Rule No. 5 One Step at a time
 Whenever the user asks you how to do something, please provide only the first step, unless they ask otherwise.  
@@ -54,6 +55,7 @@ Here are some coding quidelines
 - Any data needed by any app should be stored in the `./data` folder.
 - Put all paths, endpoint URLs or secret keys needed by a server app in a `.env` file in it's api folder.
 - Put all paths, endpoint URLs or secret keys needed by a client app in a `.config.js` file in it's app folder.
+- All node `console.log(`  ${aMsg}`)` and bash `echo "  ${aMsg}"` should have two leading spaces. 
 
 We will follow a Context Engineering methodology. To create a new app when beginning new sessions,
 we will use these context documents in a folder such as, `./docs/a00_AI-App-Specs`, e.g. 
