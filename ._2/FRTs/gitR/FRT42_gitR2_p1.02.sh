@@ -221,6 +221,7 @@
 #.(50826.03a  8/27/25 RAM  9:40a| Fix chg of first-app to sample-app
 #.(50826.03b  8/27/25 RAM  9:45a| Fix chg of first-app to sample-app again
 #.(50827.02   8/27/25 RAM  9:00p| Add client and server a00_sample-app scripts
+#.(50827.02b  8/27/25 RAM 10:00p| Add package.json to server
 #
 ##PRGM     +====================+===============================================+
 ##ID 69.600. Main0              |
@@ -936,8 +937,10 @@ yarn.lock
          mkdir -p "${aSrcS:29}"                                                         # .(50827.02.4)
 #        echo "" >"${aDirC:0:28}/index.html"; git add "${aDirC:0:28}/index.html"        ##.(50826.03a.1 RAM was 27).(50716.06.1).(50827.02.5)
 #        echo "" >"${aDirS:0:28}/server.mjs"; git add "${aDirS:0:28}/server.mjs"        ##.(50826.03a.3).(50716.06.2 RAM Was server.js).(50827.02.6)
-         cp -p  "${aSrcC}/index.html" "${aSrcC:29}/"; git add "${aSrcC:29}/index.html"  # .(50827.02.5).(50826.03a.1 RAM was 27).(50716.06.1)
-         cp -p  "${aSrcS}/server.mjs" "${aSrcS:29}/"; git add "${aSrcS:29}/server.mjs"  # .(50827.02.6).(50826.03a.3).(50716.06.2 RAM Was server.js)
+         cp -p  "${aSrcC}/index.html"   "${aSrcC:29}/"; git add "${aSrcC:29}/index.html"    # .(50827.02.5).(50826.03a.1 RAM was 27).(50716.06.1)
+         cp -p  "${aSrcS}/server.mjs"   "${aSrcS:29}/"; git add "${aSrcS:29}/server.mjs"    # .(50827.02.6).(50826.03a.3).(50716.06.2 RAM Was server.js)
+         cp -p  "${aSrcS}/package.json" "${aSrcS:29}/"; git add "${aSrcS:29}/package.json"  # .(50827.02b.1 RAM Add package.json to s00 app)
+         cp -p  "${aSrcS}/../package.json" "${aSrcS:29}/../"; git add "${aSrcS:29}/../package.json"  # .(50827.02b.2 RAM Add package,json to server)
 
          mkdir  "docs"
 
