@@ -222,7 +222,8 @@
 #.(50826.03b  8/27/25 RAM  9:45a| Fix chg of first-app to sample-app again
 #.(50827.02   8/27/25 RAM  9:00p| Add client and server a00_sample-app scripts
 #.(50827.02b  8/27/25 RAM 10:00p| Add package.json to server
-#.(50827.02c  8/28/25 RAM  8:00p| Create a01 and a02 folders first for BSD cp
+#.(50826.01d  8/28/25 RAM  8:00a| Create a01 and a02 folders first for BSD cp
+#.(50826.01e  8/28/25 RAM  8:15a| Add asterisk for GNU cp
 #
 ##PRGM     +====================+===============================================+
 ##ID 69.600. Main0              |
@@ -230,7 +231,7 @@
 #*/
 #========================================================================================================== #  ===============================  #
 
-        aVDt="Aug 28, 2025  8:00a"; aVer="p1.02"; aVTitle="Useful gitR2 Tools by formR";                                  # .(41103.02.2 RAM Was: gitR1)
+        aVDt="Aug 28, 2025  8:15a"; aVer="p1.02"; aVTitle="Useful gitR2 Tools by formR";                                  # .(41103.02.2 RAM Was: gitR1)
         aVer="$( echo "$0" | awk '{ match( $0, /_[dpstuv][0-9]+\.[0-9]+/ ); print substr( $0, RSTART+1, RLENGTH-1) }' )"  # .(21031.01.1 RAM Add [d...).(20416.03.8 "_p2.02", or _d1.09)
 
         LIB="gitR2"; LIB_LOG=${LIB}_LOG; LIB_USER=${LIB}_USER; Lib=${LIB}; aDir=$(dirname "${BASH_SOURCE}");              # .(41103.02.3).(41102.01.1 RAM Add JPT12_Main2Fns_p1.07.sh Beg).(80923.01.1)
@@ -938,9 +939,9 @@ yarn.lock
          mkdir -p "${aSrcS:29}"                                                         # .(50827.02.4)
 #        echo "" >"${aDirC:0:28}/index.html"; git add "${aDirC:0:28}/index.html"        ##.(50826.03a.1 RAM was 27).(50716.06.1).(50827.02.5)
 #        echo "" >"${aDirS:0:28}/server.mjs"; git add "${aDirS:0:28}/server.mjs"        ##.(50826.03a.3).(50716.06.2 RAM Was server.js).(50827.02.6)
-         cp -p  "${aSrcC}/index.html"   "${aSrcC:29}/"; git add "${aSrcC:29}/index.html"                    # .(50827.02.5).(50826.03a.1 RAM was 27).(50716.06.1)
-         cp -p  "${aSrcS}/server.mjs"   "${aSrcS:29}/"; git add "${aSrcS:29}/server.mjs"                    # .(50827.02.6).(50826.03a.3).(50716.06.2 RAM Was server.js)
-         cp -p  "${aSrcS}/package.json" "${aSrcS:29}/"; git add "${aSrcS:29}/package.json"                  # .(50827.02b.1 RAM Add package.json to s00 app)
+         cp -p  "${aSrcC}/index.html"      "${aSrcC:29}/";    git add "${aSrcC:29}/index.html"              # .(50827.02.5).(50826.03a.1 RAM was 27).(50716.06.1)
+         cp -p  "${aSrcS}/server.mjs"      "${aSrcS:29}/";    git add "${aSrcS:29}/server.mjs"              # .(50827.02.6).(50826.03a.3).(50716.06.2 RAM Was server.js)
+         cp -p  "${aSrcS}/package.json"    "${aSrcS:29}/";    git add "${aSrcS:29}/package.json"            # .(50827.02b.1 RAM Add package.json to s00 app)
          cp -p  "${aSrcS}/../package.json" "${aSrcS:29}/../"; git add "${aSrcS:29}/../package.json"         # .(50827.02b.2 RAM Add package,json to server)
 
          mkdir  "docs"
@@ -959,17 +960,17 @@ yarn.lock
 
          echo -e "\n  Adding docs/a00_AI-App files'."                                   # .(50826.01a.1)
          mkdir    "docs/a00_AI-App-Specs"                                               # .(50716.01c.1).(50716.06.3 RAM Add 'em Beg)
-         mkdir    "docs/a01_Docs-Viewer-App"                                            # .(50726.01c.1 RAM Need to create the folder first for MacOS's BSD cp).(50716.06.3 RAM Add 'em Beg)
-         mkdir    "docs/a02_Docs-Viewer-App"                                            # .(50726.01c.2).(50716.06.3 RAM Add 'em Beg)
+         mkdir    "docs/a01_Docs-Viewer-App"                                            # .(50826.01d.1 RAM Need to create the folder first for MacOS's BSD cp).(50716.06.3 RAM Add 'em Beg)
+         mkdir    "docs/a02_Docs-Viewer-App"                                            # .(50826.01d.2).(50716.06.3 RAM Add 'em Beg)
 
 #        echo "" >"docs/a00_AI-Context/a00-01_System-Prompt.md"
 #        echo "" >"docs/a00_AI-Context/a00-10_Development-Plan.md"
 #        echo "" >"docs/a00_AI-Context/a00-20_Technical-Specs.md"                       ##.(50716.06.3 End)
 #        cp       "../../../docs/a00_AI-Context/*" "docs/a00_AI-Context/*"              ##.(50716.06.3 End).(50716.06a.3)
 #        cp -rp "${aReposDir}/FRTools/docs/a00_AI-Context/" "docs/a00_AI-Context/*"     # .(50716.01a.1)
-         cp -rp "${aReposDir}/FRTools/docs/a00_AI-App-Specs/"    "docs/a00_AI-App-Specs/"                   # .(50726.01c.3).(50716.01b.1)
-         cp -rp "${aReposDir}/FRTools/docs/a01_Docs-Viewer-App/" "docs/a01_Docs-Viewer-App/"                # .(50726.01c.4).(50826.01.2)
-         cp -rp "${aReposDir}/FRTools/docs/a02_Docs-Viewer-App/" "docs/a02_Docs-Viewer-App/"                # .(50726.01c.5).(50826.01.3)
+         cp -rp "${aReposDir}/FRTools/docs/a00_AI-App-Specs/"*    "docs/a00_AI-App-Specs/"                  # .(50826.01e.1).(50826.01d.3).(50716.01b.1)
+         cp -rp "${aReposDir}/FRTools/docs/a01_Docs-Viewer-App/"* "docs/a01_Docs-Viewer-App/"               # .(50826.01e.2).(50826.01d.4).(50826.01.2)
+         cp -rp "${aReposDir}/FRTools/docs/a02_Docs-Viewer-App/"* "docs/a02_Docs-Viewer-App/"               # .(50826.01e.3).(50826.01d.5).(50826.01.3)
 
 #        cp -p  "${aReposDir}/FRTools/docs/a00_AI-App-Specs/formR_AI-App-Prompts.md" .  ##.(50826.01a.2 RAM Opps).(50826.01.4).(50826.01c.1)
 #        cp -p  "${aReposDir}/FRTools/docs/a00_AI-App-Specs/run-app.sh" .               ##.(50826.01b.1 RAM Add).(50826.01c.2)
