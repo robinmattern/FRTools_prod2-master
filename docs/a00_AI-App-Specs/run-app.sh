@@ -61,13 +61,14 @@ function runServer() {
     echo ""
 
 # Install dependencies if needed
-if [ ! -d "${aServer}/node_modules" ] && [ -f "${aServer}/package.json" ]; then
+    bDoit="0"; if [ "${3:0:2}" == "-d" ]; then  
+if [ ! -d "${aClient}/node_modules" ] && [ -f "${aClient}/package.json" ]; then bDoit="1"; fi; fi     
+if [ "${bDoit}" == "1" ]; then
     echo "  Installing ${aServer} dependencies..."
     cd ${aServer}
     npm install
     cd ..
-fi
-
+    fi
     echo -e "  Starting server, ${aAppName}, on port ${nPort} ..."
 #   cd ${aServer}/${aApp}_*
     cd ${aServer}/${aAppName}
@@ -85,13 +86,14 @@ function runClient() {
     echo ""
 
 # Install dependencies if needed
-if [ ! -d "${aClient}/node_modules" ] && [ -f "${aClient}/package.json" ]; then
+    bDoit="0"; if [ "${3:0:2}" == "-d" ]; then  
+if [ ! -d "${aClient}/node_modules" ] && [ -f "${aClient}/package.json" ]; then bDoit="1"; fi; fi     
+if [ "${bDoit}" == "1" ]; then
     echo "  Installing ${aClient} dependencies..."
     cd ${aClient}
     npm install
     cd ..
     fi
-
     echo "  Starting client, ${aAppName}, on port ${nPort} ..."
 #   cd ${aClient}/${aApp}_*
     cd ${aClient}/${aAppName}
@@ -106,11 +108,11 @@ if [ ! -d "${aClient}/node_modules" ] && [ -f "${aClient}/package.json" ]; then
 #  echo "  Starting ${aAppName}"; # exit 
 
 if [ "${1:0:1}" == "s" ] || [ "${1:0:1}" == "a" ]; then
-   runServer "s${1:1:2}" ${nPort}
+   runServer "s${1:1:2}" ${nPort} $2
    sleep 2  # Wait for server to start
    fi 
 if [ "${1:0:1}" == "c" ] || [ "${1:0:1}" == "a" ]; then
-   runClient "c${1:1:2}" ${nPort}
+   runClient "c${1:1:2}" ${nPort} $2
    fi 
 # ---------------------------------------------------
 
