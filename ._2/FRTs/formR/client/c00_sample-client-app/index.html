@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>formR Sample Client</title>
+</head>
+<body>
+    <div>
+        <h2>Welcome to the formR Client App</h2>
+        <div id="server-message">Loading...</div>
+    </div>
+    
+    <script>
+        fetch('http://localhost:3250/api')
+            .then(response => response.text())
+            .then(html => {
+                document.getElementById('server-message').innerHTML = html;
+            })
+            .catch(error => {
+                document.getElementById('server-message').innerHTML = 'Server not available';
+            });
+    </script>
+</body>
+</html>

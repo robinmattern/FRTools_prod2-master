@@ -45,7 +45,7 @@
 ##FD   FRT42_GitR2.sh           | 188673|  7/16/25  7:45|  2424| p1.02`50716.0765
 ##FD   FRT42_GitR2.sh           | 191289|  8/24/25  2:25|  2470| p1.02`50824.0225
 ##FD   FRT42_GitR2.sh           | 192766|  8/26/25  8:30|  2490| p1.02`50826.0830
-##FD   FRT42_GitR2.sh           | 194205|  8/27/25  9:45|  2504| p1.02`50827.0945
+##FD   FRT42_GitR2.sh           | 195015|  8/27/25 21:00|  2513| p1.02`50827.2100
 #
 ##DESC     .--------------------+-------+---------------+------+-----------------+
 #            This script has usefull GIT functions.
@@ -220,6 +220,7 @@
 #.(50826.01c  8/27/25 RAM  8:45a| Move run-app.sh to root
 #.(50826.03a  8/27/25 RAM  9:40a| Fix chg of first-app to sample-app
 #.(50826.03b  8/27/25 RAM  9:45a| Fix chg of first-app to sample-app again
+#.(50827.02   8/27/25 RAM  9:00p| Add client and server a00_sample-app scripts
 #
 ##PRGM     +====================+===============================================+
 ##ID 69.600. Main0              |
@@ -227,7 +228,7 @@
 #*/
 #========================================================================================================== #  ===============================  #
 
-        aVDt="Aug 27, 2025  9:45a"; aVer="p1.02"; aVTitle="Useful gitR2 Tools by formR";                                  # .(41103.02.2 RAM Was: gitR1)
+        aVDt="Aug 27, 2025  9:00p"; aVer="p1.02"; aVTitle="Useful gitR2 Tools by formR";                                  # .(41103.02.2 RAM Was: gitR1)
         aVer="$( echo "$0" | awk '{ match( $0, /_[dpstuv][0-9]+\.[0-9]+/ ); print substr( $0, RSTART+1, RLENGTH-1) }' )"  # .(21031.01.1 RAM Add [d...).(20416.03.8 "_p2.02", or _d1.09)
 
         LIB="gitR2"; LIB_LOG=${LIB}_LOG; LIB_USER=${LIB}_USER; Lib=${LIB}; aDir=$(dirname "${BASH_SOURCE}");              # .(41103.02.3).(41102.01.1 RAM Add JPT12_Main2Fns_p1.07.sh Beg).(80923.01.1)
@@ -910,11 +911,12 @@ yarn.lock
 #        aDirC="client/c01_client-first-app/!3_${aProject} Client No. 01 App in ${aSvr} ${aStages}"         ##.(50716.02.1 RAM Was just 1).(50103.01.3).(50826.03.1)
          aDirC="client/c00_sample-client-app/!3_${aProject} Client No. 00 App in ${aSvr} ${aStages}"        # .(50826.03.1 RAM Was c01_client-first-app).(50716.02.1 RAM Was just 1).(50103.01.3)
          aDirS="server/s00_sample-server-api/!3_${aProject} Server No. 00 App in ${aSvr} ${aStages}"        # .(50826.03.2).(50716.08.1 RAM Was s01_server-first-api).(50716.02.1).(50103.01.4)
-         mkdir    "${aDir}"
-         mkdir -p "${aDirC}"
-         mkdir -p "${aDirS}"
-         mkdir      "data"                                                              # .(50716.08.2 BTG Add for system data)
-         mkdir      "sources"                                                           # .(50716.08.3 RAM Add for user documents)
+
+         mkdir     "${aDir}"
+         mkdir  -p "${aDirC}"
+         mkdir  -p "${aDirS}"
+         mkdir  "data"                                                                  # .(50716.08.2 BTG Add for system data)
+         mkdir  "sources"                                                               # .(50716.08.3 RAM Add for user documents)
 
          mkdir ".vscode"
          echo "${aLaunch_json}"    >".vscode/launch.json"
@@ -927,11 +929,17 @@ yarn.lock
          echo "" >"${aDirC}/.gitkeep";        git add "${aDirC}/.gitkeep"
          echo "" >"${aDirS}/.gitkeep";        git add "${aDirS}/.gitkeep"
 
-         echo "" >"${aDirC:0:28}/index.html"; git add "${aDirC:0:28}/index.html"        # .(50826.03a.1 RAM was 27).(50716.06.1)
-         echo "" >"${aDirC:0:28}/index.js";   git add "${aDirC:0:28}/index.js"          # .(50826.03a.2)
-         echo "" >"${aDirS:0:28}/server.mjs"; git add "${aDirS:0:28}/server.mjs"        # .(50826.03a.3).(50716.06.2 RAM Was server.js)
+         aSrcC="../../FRTools/._2/FRTs/formR/client/c00_sample-client-app"              # .(50827.02.1 RAM Src dir for a00 apps)
+         aSrcS="../../FRTools/._2/FRTs/formR/server/s00_sample-server-api"              # .(50827.02.2)
 
-         mkdir    "docs"
+         mkdir -p "${aSrcC:29}"                                                         # .(50827.02.3)
+         mkdir -p "${aSrcS:29}"                                                         # .(50827.02.4)
+#        echo "" >"${aDirC:0:28}/index.html"; git add "${aDirC:0:28}/index.html"        ##.(50826.03a.1 RAM was 27).(50716.06.1).(50827.02.5)
+#        echo "" >"${aDirS:0:28}/server.mjs"; git add "${aDirS:0:28}/server.mjs"        ##.(50826.03a.3).(50716.06.2 RAM Was server.js).(50827.02.6)
+         cp -p  "${aSrcC}/index.html" "${aSrcC:29}/"; git add "${aSrcC:29}/index.html"  # .(50827.02.5).(50826.03a.1 RAM was 27).(50716.06.1)
+         cp -p  "${aSrcS}/server.mjs" "${aSrcS:29}/"; git add "${aSrcS:29}/server.mjs"  # .(50827.02.6).(50826.03a.3).(50716.06.2 RAM Was server.js)
+
+         mkdir  "docs"
 
 #        echo "" >"docs/index.html";          git add "docs/index.html"
          echo "${aDocsify_Index}"  >"docs/index.html"                                   # .(41109.04.2)
