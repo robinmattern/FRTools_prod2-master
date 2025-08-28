@@ -40,7 +40,6 @@
   you can clone or create your own projects folder with:
      
    - <code>bash frt clone {RepoName} '' {CloneDir} {Branch} {Account}</code>   
-<br>
  
 ### C. To work on these projects, run any of these commands from your Repos folder:       
 

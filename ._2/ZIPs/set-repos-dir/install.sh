@@ -125,6 +125,7 @@ function  help() {
    echo -e   "  you can clone or create your own projects folder with:"
 #  echo -e "\n     bash frt clone {GitHub-Account} {Repo-Name}"                                             # .(50226.03.1 End).(50327.02.9)
    echo -e "\n     bash frt clone {RepoName} '' {CloneDir} {Branch} {Account}"                              # .(50327.02.9)
+   echo -e   "     bash frt new repo formR_/dev01-{User} -d"                                                # .(50827.03.4)                                 
 
    if [ "${OS:0:7}" != "Windows" ]; then echo ""; fi; exit
    } # eof help
