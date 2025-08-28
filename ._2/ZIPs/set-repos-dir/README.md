@@ -18,7 +18,7 @@
    - Option 2 if the link above isn't available:
 
       - Copy this line of code:   
-        <code>curl -s https&#58;//raw.githubusercontent.com/robinmattern/FRTools_prod2-master/master/._2/ZIPs/set-repos | bash</code>
+        <code>curl -s https://raw.githubusercontent.com/robinmattern/FRTools_prod2-master/master/._2/ZIPs/set-repos | bash</code>
       - Paste and run it in the terminal.  
               
    - Option 3 using a browser if the curl commands above fail:  
@@ -75,3 +75,8 @@
       4. <code>gitr mak remote AI-Tests_final-bruce</code>
       5. Use WinMerge, BeyondCompare or Meld to copy apps to AI-Tests_final-bruce
       6. Use VSCode to test, commit and sync your final model results
+
+### D. Again to refresh the formR starter program, execute this line of code: 
+
+ - curl -s https://raw.githubusercontent.com/robinmattern/FRTools_prod2-master/master/._2/ZIPs/set-repos | bash
+
