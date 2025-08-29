@@ -3,6 +3,8 @@
   nPrj=3
   nStg=2
   nPort="${nPrj}${nStg}##"
+  aQuiet=""; if [ "$2" == "-q" ]; then aQuiet="--quiet"; set -- "$1" "${@:3}"; fi
+             if [ "$3" == "-q" ]; then aQuiet="--quiet"; fi
 
 # Function to kill process on a specific port
 function chkPort() {
@@ -57,24 +59,30 @@ if [ -d "${aFldr}" ]; then
 function runServer() {
     setPort "$1" "$2"  # Sets aServer, aApp and nPort
     chkPort ${nPort}   # Kill any existing processes on our ports
-    getAppName $1 $2;  # echo "--nPort: ${nPort} for ${aAppName}"
+    getAppName $1 $2;  # echo "--nPort: ${nPort} for ${aAppName}"; exit
 
-# Install dependencies if needed
+#   Install dependencies if needed
     bDoit="0"; if [ "${3:0:2}" == "-d" ]; then bDoit="1"; fi
-if [ ! -d "${aServer}/node_modules"    ]; then bDoit="1"; fi
-if [ "${bDoit}" == "1" ] && [ -f "${aServer}/package.json" ]; then
+ if [ ! -d "${aServer}/node_modules"    ]; then bDoit="1"; fi
+ if [ "${bDoit}" == "1" ] && [ -f "${aServer}/package.json" ]; then
 
     echo -e "\n  Installing ${aServer} dependencies..."
     cd ${aServer}
     npm install
     cd ..
     fi
+ if [ "$(command -v nodemon)" == "" ]; then npm install -g nodemon >/dev/null 2>&1; fi
+
     echo -e "\n  Starting server, ${aAppName}, on port ${nPort} ..."
 #   cd ${aServer}/${aApp}_*
     cd ${aServer}/${aAppName}
-    node server.mjs &
+#   node server.mjs &
+
+    nodemon ${aQuiet} server.mjs &
+
     SERVER_PID=$!
     echo "  Server is running at: http://localhost:${nPort}/api"
+    if [ "${aQuiet}" == "" ]; then echo ""; fi
     cd ../..
     }
 # ---------------------------------------------------
@@ -82,42 +90,50 @@ if [ "${bDoit}" == "1" ] && [ -f "${aServer}/package.json" ]; then
 function runClient() {
     setPort "$1" "$2"  # Sets aClient, aApp and nPort
     chkPort ${nPort}   # Kill any existing processes on our ports
-    getAppName $1 $2;  # echo "--nPort: ${nPort} for ${aAppName}"
+    getAppName $1 $2;  # echo "--nPort: ${nPort} for ${aAppName}"; exit
 
-# Install dependencies if needed
+#   Install dependencies if needed
     bDoit="0"; if [ "${3:0:2}" == "-d" ]; then bDoit="1"; fi
-if [ ! -d "${aClient}/node_modules"    ]; then bDoit="1"; fi
-if [ "${bDoit}" == "1" ] && [ -f "${aClient}/package.json" ]; then
+ if [ ! -d "${aClient}/node_modules"    ]; then bDoit="1"; fi
+ if [ "${bDoit}" == "1" ] && [ -f "${aClient}/package.json" ]; then
 
     echo -e "\n  Installing ${aClient} dependencies..."
     cd ${aClient}
     npm install
     cd ..
     fi
+
+ if [ "$(command -v live-server)" == "" ]; then npm install -g live-server >/dev/null 2>&1; fi
+
     echo -e "\n  Starting client, ${aAppName}, on port ${nPort} ..."
 #   cd ${aClient}/${aApp}_*
     cd ${aClient}/${aAppName}
-    npx http-server -p ${nPort} -s &
+#   npx http-server@latest -p ${nPort} -s &
+#   python -m SimpleHTTPServer
+#   npx -q serve -p ${nPort} -s &
+
+    live-server ${aQuiet} --port=${nPort} --watch=.,../../${aServer}/${aServerName} &
+
     CLIENT_PID=$!
     echo "  Client is running at: http://localhost:${nPort}"
     cd ../..
     }
 # -------------------------------------------------
 
-#  getAppName $1
-#  echo "  Starting ${aAppName}"; # exit
+    getAppName "s${1:1:2}" ${nPort}; aServerName=${aAppName}
+#   echo "  Starting ${aAppName}"; # exit
 
-if [ "${1:0:1}" == "s" ] || [ "${1:0:1}" == "a" ]; then
-   runServer "s${1:1:2}" ${nPort} $2
-   sleep 4  # Wait for server to start
-   fi
-if [ "${1:0:1}" == "c" ] || [ "${1:0:1}" == "a" ]; then
-   runClient "c${1:1:2}" ${nPort} $2
-   fi
+ if [ "${1:0:1}" == "s" ] || [ "${1:0:1}" == "a" ]; then
+    runServer "s${1:1:2}" ${nPort} $2
+    sleep 6  # Wait for server to start
+    fi
+ if [ "${1:0:1}" == "c" ] || [ "${1:0:1}" == "a" ]; then
+    runClient "c${1:1:2}" ${nPort} $2
+    fi
 # ---------------------------------------------------
 
-echo -e "\n  Press Ctrl+C to stop one or both services"
+    echo -e "\n  Press Ctrl+C to stop one or both services\n"
 
-# Wait for user interrupt
-trap "echo \"\"; kill $SERVER_PID $CLIENT_PID; exit" INT
-wait
+#   Wait for user interrupt
+    trap "kill $SERVER_PID $CLIENT_PID; exit" INT
+    wait
