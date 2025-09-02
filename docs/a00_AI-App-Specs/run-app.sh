@@ -78,7 +78,7 @@ function runServer() {
     cd ${aServer}/${aAppName}
 #   node server.mjs &
 
-    nodemon ${aQuiet} server.mjs &
+    node --trace-deprecation ${aQuiet} server.mjs &
 
     SERVER_PID=$!
     echo "  Server is running at: http://localhost:${nPort}/api"
