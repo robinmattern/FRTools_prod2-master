@@ -224,6 +224,7 @@
 #.(50827.02b  8/27/25 RAM 10:00p| Add package.json to server
 #.(50826.01d  8/28/25 RAM  8:00a| Create a01 and a02 folders first for BSD cp
 #.(50826.01e  8/28/25 RAM  8:15a| Add asterisk for GNU cp
+#.(50831.03.  8/31/25 RAM 11:59p| Add full name to .code.workspace
 #
 ##PRGM     +====================+===============================================+
 ##ID 69.600. Main0              |
@@ -899,7 +900,7 @@ yarn.lock
 </html>
 "
                                                                                         # .(41109.04.1 End)
-         aWorkspace_code="{ \"folders\": [ { \"path\": \".\" } ] }"
+         aWorkspace_code="{ \"folders\": [ { \"path\": \".\", \"name\": \"${aProject_}${aStage}\" } ] }"    # .(50831.03.1 RAM Add full name to .code.workspace)
          aDate=$( date +'%Y%m%d' ); aDate="${aDate:2}"                                                      # .(50716.01.3)
                                                                                                             # .(41109.03.2 RAM Add initGit dirs & files Beg)
 #        sayMsg  "gitR2[ 648]  Adding files to repo, ${aProject}_${aStage}, in folder: ${aProject_Name}'" -1
