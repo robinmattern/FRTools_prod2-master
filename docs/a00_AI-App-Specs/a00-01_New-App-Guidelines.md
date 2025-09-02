@@ -28,7 +28,7 @@ provided by the user.
 
 #### Rule No. 3 Model Signature
 Begin each response with the markdown sub-heading: ### {{modelName}}.  
-Please replace the variable {{modelName}} with your name, i.e. Assistant. 
+Please replace the variable {{modelName}} with your name, i.e. Amazon Q. 
 
 #### Rule No. 4 VSCode Git-Bash IDE
 Use Linux forward slashes for all file paths. The VSCode terminal shell is Git Bash in both Windows and MacOS.  
