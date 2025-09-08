@@ -75,6 +75,7 @@
 #.(50810.02   8/10/25 RAM  1:12p| Set bZSHver to '0' if MT
 #.(50907.03   9/08/25 RAM  8:13a| Update .zshrc and .bash_profile
 #.(50908.01   9/08/25 RAM  8:15a| Add commit
+#.(50908.05   9/08/25 RAM  6:15p| Fix cd-list alias code 
 #
 ##PRGM     +====================+===============================================+
 ##ID 69.600. Main0              |
@@ -257,9 +258,10 @@ function setBashrc() {
 	 echo "  alias cd-frtools=\"cd ${aRepos_Dir}/FRTools\""             >>"${aBashrc}";
 	 echo "  alias cd-aidocs=\"cd ${aRepos_Dir}/AIDocs_demo1\""         >>"${aBashrc}";
 	 echo "  alias cd-aitestr=\"cd ${aRepos_Dir}/AIDocs_testR\""        >>"${aBashrc}";   # .(50722.03.3 RAM Add testR).(50722.03.1 End)
-   echo "  alias cd-list=\"echo ''; alias | awk '{ sub( /alias /, \\\"\\\"); print }' | awk -F= '/cd-/ && !/list/ { printf \\\"  %-15s %s\n\\\", \$1, \$2 }'; echo ''\""  # .(50907.03.2 RAM Add cd-list)
+#  echo "  alias cd-list=\"echo ''; alias | awk '{ sub( /alias /, \\\"\\\"); print }' | awk -F= '/cd-/ && !/list/ { printf \\\"  %-15s %s\n\\\", \$1, \$2 }'; echo ''\""                        ##.(50907.03.2 RAM Add cd-list)
+   echo "  alias cd-list=\"echo ''; alias | awk '{ sub( /alias /, \\\"\\\"); print }' | awk -F= '/cd-/ && "\!"/list/ { printf \\\"  %-15s %s\n\\\", \\\$1, \\\$2 }'; echo ''\""  >>"${aBashrc}" # .(50907.03.2 RAM Add cd-list)
 
-     fi                                                                                 # .(41208.02e.14 End)
+     fi  # eif no "${aBashrc}"                                                          # .(41208.02e.14 End)
 
      if [ "${bZSHver}" == "" ]; then bZSHver="0"; fi                                    # .(50810.02.1 RAM Was: MT)
      inRC=$( cat "${aBashrc}" | awk '/\._0/ { print 1 }' );                             # .(41208.05.1 RAM Added /\._0/)
@@ -371,7 +373,7 @@ function setBashrc() {
 #    echo ""                                                >>"${aBashrc}"
 #    echo "alias history=\"fc -il 1\""                      >>"${aBashrc}"
 #    fi
-     echo "  echo \" in Server: $THE_SERVER [$HOME/.bash_profile v${aTS}]\"" >>"${aBashrc}" # .(50907.03.7 RAM Say what we are)
+     echo "  echo \" in Server: \$THE_SERVER [$HOME/.bash_profile v${aTS}]\"" >>"${aBashrc}" # .(50907.03.7 RAM Say what we are)
 
 #    echo -e "  Executing: source \"${aBashrc}\"\n"
 # if [ "${bDoProfile}" == "1" ]; then     source "${aBashrc}" "" 2>/dev/null;  fi       # .(41030.06.2 RAM setopt gets an error in MacOS when run here, but not during login)
