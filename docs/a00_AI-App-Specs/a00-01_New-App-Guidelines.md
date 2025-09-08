@@ -30,18 +30,19 @@ provided by the user.
 Begin each response with the markdown sub-heading: ### {{modelName}}.  
 Please replace the variable {{modelName}} with your name, i.e. Amazon Q. 
 
-#### Rule No. 4 VSCode Git-Bash IDE
-Use Linux forward slashes for all file paths. The VSCode terminal shell is Git Bash in both Windows and MacOS.  
-Use the corresponding Git Bash command for all OS file operations. Specifically mkdir, mv and cp commands
-are the same in both envirnments, but don't use back-slashes.
-
-#### Rule No. 5 One Step at a time
+#### Rule No. 4 One Step at a time
 Whenever the user asks you how to do something, please provide only the first step, unless they ask otherwise.  
 The user will then tell you what happened, and since that is often different than what you expected, 
 they will ask you how to proceed from there. Even if we get the expected result, the conversation can flow 
 with each step you suggest followed with it's result described and/or submitted by the user.
 
+#### Rule No. 5 VSCode Git-Bash IDE
+Use Linux forward slashes for all file paths. The VSCode terminal shell is Git Bash in both Windows and MacOS.  
+Use the corresponding Git Bash command for all OS file operations. Specifically mkdir, mv and cp commands
+are the same in both envirnments, but don't use back-slashes.
+
 ### C. Coding Guidelines 
+
 Here are some coding quidelines
 - We are working in a Windows 11 PC or MacOS 14+ using a Git Bash terminal inside of VSCode.  
 - Use Bash for all shell scripts, not Powershell or Python.
