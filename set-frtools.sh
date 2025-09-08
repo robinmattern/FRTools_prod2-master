@@ -19,6 +19,7 @@
 ##FD         set-frtools.sh     |  33251|  4/06/25  6:25|   532| v1.05`50406.0625
 ##FD         set-frtools.sh     |  33251|  7/22/25 12:50|   532| v1.05`50722.1250
 ##FD         set-frtools.sh     |  35901|  8/10/25 13:12|   563| v1.05`50810.1312
+##FD         set-frtools.sh     |  37419|  9/08/25  8:15|   579| v1.05`50908.0815
 #
 ##DESC     .--------------------+-------+-----------------+------+---------------+
 #            Create ._0/bin folder and copy all command scripts there as well as
@@ -72,6 +73,8 @@
 #.(50722.02   7/22/25 RAM 12:15p| Don't set .zsh unless in MacOS
 #.(50722.03   7/22/25 RAM 12:50p| Set cd aliases to correct repos folder
 #.(50810.02   8/10/25 RAM  1:12p| Set bZSHver to '0' if MT
+#.(50907.03   9/08/25 RAM  8:13a| Update .zshrc and .bash_profile
+#.(50908.01   9/08/25 RAM  7:09a| Add commit
 #
 ##PRGM     +====================+===============================================+
 ##ID 69.600. Main0              |
@@ -242,16 +245,19 @@ function setBashrc() {
      echo ""                                                           >>"${aBashrc}";
      echo "  alias ll=\"ls -la\""                                      >>"${aBashrc}";
 
-#    echo "  alias cd-repos=\"cd /Users/Shared/Repos\""                >>"${aBashrc}";  ##.(50722.03.1 RAM Note: hard-coded for mac Beg)
+#  echo "  alias cd-repos=\"cd /Users/Shared/Repos\""                >>"${aBashrc}";  ##.(50722.03.1 RAM Note: hard-coded for mac Beg)
 #	 echo "  alias cd-anyllm=\"cd /Users/Shared/Repos/AnyLLM\""        >>"${aBashrc}";
 #	 echo "  alias cd-frtools=\"cd /Users/Shared/Repos/FRTools\""      >>"${aBashrc}";
-#	 echo "  alias cd-aidocs=\"cd /Users/Shared/Repos/AIDocs_demo1\""  >>"${aBashrc}";  ##.(50722.03.1 End)
+#	 echo "  alias cd-aidocs=\"cd /Users/Shared/Repos/AIDocs_demo1\""  >>"${aBashrc}";    ##.(50722.03.1 End)
 
-   echo "  alias cd-repos=\"cd ${aRepos_Dir}\""                       >>"${aBashrc}"; # .(50722.03.1 Use aRepos_Dir Beg
+   echo "  alias cd-repos=\"cd ${aRepos_Dir}\""                       >>"${aBashrc}";   # .(50722.03.1 Use aRepos_Dir Beg
+   echo "  alias cd-formr=\"cd /C/Home/Repos/formR_\""                >>"${aBashrc}";   # .(50907.03.1 RAM Add formR_)
 	 echo "  alias cd-anyllm=\"cd ${aRepos_Dir}/AnyLLM\""               >>"${aBashrc}";
 	 echo "  alias cd-frtools=\"cd ${aRepos_Dir}/FRTools\""             >>"${aBashrc}";
 	 echo "  alias cd-aidocs=\"cd ${aRepos_Dir}/AIDocs_demo1\""         >>"${aBashrc}";
-	 echo "  alias cd-aitestr=\"cd ${aRepos_Dir}/AIDocs_testR\""        >>"${aBashrc}"; # .(50722.03.3 RAM Add testR).(50722.03.1 End)
+	 echo "  alias cd-aitestr=\"cd ${aRepos_Dir}/AIDocs_testR\""        >>"${aBashrc}";   # .(50722.03.3 RAM Add testR).(50722.03.1 End)
+   echo "  alias cd-list=\"echo ''; alias | awk '{ sub( /alias /, \\\"\\\"); print }' | awk -F= '/cd-/ && !/list/ { printf \\\"  %-15s %s\n\\\", \$1, \$2 }'; echo ''\""  # .(50907.03.2 RAM Add cd-list)
+
      fi                                                                                 # .(41208.02e.14 End)
 
      if [ "${bZSHver}" == "" ]; then bZSHver="0"; fi                                    # .(50810.02.1 RAM Was: MT)
@@ -295,15 +301,19 @@ function setBashrc() {
 
   if [ "${aOS}" != "windows" ]; then
 
-     echo "function git_branch_name() {"                                                               >>"${aBashrc}"
-     echo "  branch=\$( git symbolic-ref HEAD 2>/dev/null | awk 'BEGIN{ FS=\"/\" } { print \$NF }' )"  >>"${aBashrc}"
-     echo "  if [[ \$branch == \"\" ]]; then"                                                          >>"${aBashrc}"
-     echo "    echo '#'"                                    >>"${aBashrc}"
-     echo "  else"                                          >>"${aBashrc}"
-     echo "    echo ' ('\$branch')#'"                       >>"${aBashrc}"
-     echo "  fi"                                            >>"${aBashrc}"
-     echo "  }"                                             >>"${aBashrc}"
-     echo ""                                                >>"${aBashrc}"
+#    echo "function git_branch_name() {"                                                                 >>"${aBashrc}"  ##.(50907.03.3 Beg)
+#    echo "  branch=\$( git symbolic-ref HEAD 2>/dev/null | awk 'BEGIN{ FS=\"/\" } { print \$NF }' )"    >>"${aBashrc}"
+#    echo "  if [[ \$branch == \"\" ]]; then"                                                            >>"${aBashrc}"
+#    echo "    echo '#'"                                    >>"${aBashrc}"
+#    echo "  else"                                          >>"${aBashrc}"
+#    echo "    echo ' ('\$branch')#'"                       >>"${aBashrc}"
+#    echo "  fi"                                            >>"${aBashrc}"
+#    echo "  }"                                             >>"${aBashrc}"
+#    echo ""                                                >>"${aBashrc}"                                               ##.(50907.03.3 End)
+
+     echo " precmd() {"                                                                                  >>"${aBashrc}"  ##.(50907.03.3 RAM A new way Beg)
+     echo "   BRANCH_NAME=$(git symbolic-ref HEAD 2>/dev/null | awk 'BEGIN{ FS=\"/\" } { print $NF }' )" >>"${aBashrc}"
+     echo "   }                    ##.(50907.03.3 RAM A new way)"                                        >>"${aBashrc}"  # .(50907.03.3 End)
 
 #    echo -e "\n  BASH_VERSION: '${aBASH_VERSION}', ZSH_VERSION: '${aZSH_VERSION}', bZSHver: '${bZSHver}'"; exit_wCR
 
@@ -325,8 +335,11 @@ function setBashrc() {
      echo "# set -o PROMPT_SUBST # another bash style"      >>"${aBashrc}"              # .(41123.01b.3).(41123.01 RAM Change setopt for MacOS)
      fi                                                                                 # .(41030.06.1 End)
 
-     echo "  PROMPT='%n@%m %1~\$(git_branch_name) '"        >>"${aBashrc}"
+#    echo "  PROMPT='%n@%m %1~\$(git_branch_name) '"        >>"${aBashrc}"              ##.(50907.03.4)
+     echo "  PROMPT=$'%n@%m %~ ${BRANCH_NAME}\n# '"         >>"${aBashrc}"              ##.(50907.03.5)
+     echo "# PROMPT=$'%1~/ ${BRANCH_NAME}# '"               >>"${aBashrc}"              ##.(50907.03.6)
      echo ""                                                >>"${aBashrc}"
+
      fi # eif windows prompt handled by git bash
 
      echo "# Add timestamps and user to history"            >>"${aBashrc}"
@@ -357,6 +370,7 @@ function setBashrc() {
 #    echo ""                                                >>"${aBashrc}"
 #    echo "alias history=\"fc -il 1\""                      >>"${aBashrc}"
 #    fi
+     echo "  echo \" in Server: $THE_SERVER [$HOME/.bash_profile v${aTS}]\"" >>"${aBashrc}" # .(50907.03.7 RAM Say what we are)
 
 #    echo -e "  Executing: source \"${aBashrc}\"\n"
 # if [ "${bDoProfile}" == "1" ]; then     source "${aBashrc}" "" 2>/dev/null;  fi       # .(41030.06.2 RAM setopt gets an error in MacOS when run here, but not during login)
@@ -465,6 +479,7 @@ function cpyToBin() {
 
     cpyScript "frt     " "${aRepo_Dir}/._2/FRTs/FRT40_Main0.sh"
     cpyScript "frtools " "${aRepo_Dir}/._2/FRTs/FRT40_Main0.sh"                         # .(50512.01.1 RAM Add frtools)
+    cpyScript "commit  " "${aRepo_Dir}/._2/FRTs/gitR/FRT48_gitR2.sh"                    # .(50908.01.1 RAM Add commit)
 
     cpyScript "keys    " "${aRepo_Dir}/._2/FRTs/keyS/FRT41_keyS1.sh"
     cpyScript "gitr    " "${aRepo_Dir}/._2/FRTs/gitR/FRT42_gitR2.sh"                    #.(41103.02.1 RAM Was: gitR1)

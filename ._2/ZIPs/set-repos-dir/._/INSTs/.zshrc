@@ -1,13 +1,14 @@
-# Created by Install FRTools on 50406.1631
+# Created by Install FRTools on 50907.0936
 
   alias ll="ls -la"
 
   alias cd-repos="cd /Users/Shared/Repos"
   alias cd-formr="cd /Users/Shared/Repos/formR_"
   alias cd-frtools="cd /Users/Shared/Repos/FRTools"
-  alias cd-aidocs="cd  /Users/Shared/Repos/AIDocs"
+  alias cd-aidocs="cd  /Users/Shared/Repos/AIDocs_demo1"
   alias cd-aitestr="cd /Users/Shared/Repos/AIDocs_testR"
   alias cd-anyllm="cd  /Users/Shared/Repos/AnyLLM"
+  alias cd-list="echo ''; alias | awk '{ sub( /alias /, \"\"); print }' | awk -F= '/cd-/ && !/list/ { printf \"  %-15s %s\n\", \$1, \$2 }'; echo ''"
 
   export NVS_HOME="$HOME/.nvs"
 [ -s "$NVS_HOME/nvs.sh" ] && . "$NVS_HOME/nvs.sh"
@@ -20,6 +21,7 @@ precmd() {
   BRANCH_NAME=$(git symbolic-ref HEAD 2>/dev/null | awk 'BEGIN{ FS="/" } { print $NF }' )
   }
 # PROMPT_SUBST=true   # bash style
+# set -o PROMPT_SUBST # another bash style
   setopt prompt_subst # zsh style
   PROMPT=$'%n@%m %~ ${BRANCH_NAME}\n# '
 # PROMPT=$'%1~/ ${BRANCH_NAME}# '
@@ -27,5 +29,9 @@ precmd() {
 # Add timestamps and user to history
   setopt EXTENDED_HISTORY   # Save timestamps
   setopt INC_APPEND_HISTORY # Append immediately
-  alias history='fc -l -t "%F %T" 100'  #_ Format lines with timestamps
+# export PROMPT_COMMAND='history -a'
 
+  alias history='fc -l -t "%F %T" 100'  #_ Format lines with timestamps
+# export HISTTIMEFORMAT='%F %T '
+
+  echo " in Server: $THE_SERVER [$HOME/.bash_profile v50907.0936]"
