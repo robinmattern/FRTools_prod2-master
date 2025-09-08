@@ -5,9 +5,9 @@
   alias cd-repos="cd /Users/Shared/Repos"
   alias cd-formr="cd /Users/Shared/Repos/formR_"
   alias cd-frtools="cd /Users/Shared/Repos/FRTools"
-  alias cd-aidocs="cd  /Users/Shared/Repos/AIDocs_demo1"
+  alias cd-aidocs="cd /Users/Shared/Repos/AIDocs_demo1"
   alias cd-aitestr="cd /Users/Shared/Repos/AIDocs_testR"
-  alias cd-anyllm="cd  /Users/Shared/Repos/AnyLLM"
+  alias cd-anyllm="cd /Users/Shared/Repos/AnyLLM"
   alias cd-list="echo ''; alias | awk '{ sub( /alias /, \"\"); print }' | awk -F= '/cd-/ && !/list/ { printf \"  %-15s %s\n\", \$1, \$2 }'; echo ''"
 
   export NVS_HOME="$HOME/.nvs"

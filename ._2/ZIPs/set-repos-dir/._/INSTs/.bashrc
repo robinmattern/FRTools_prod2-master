@@ -2,12 +2,12 @@
 
   alias ll="ls -la"
   
-  alias cd-repos="cd /C/Home/Repos"
-  alias cd-formr="cd /C/Home/Repos/formR_"
-  alias cd-frtools="cd /C/Home/Repos/FRTools"
-  alias cd-aidocs="cd /C/Home/Repos/AIDocs_demo1"
-  alias cd-aitestr="cd /C/Home/Repos/AIDocs_testR"
-  alias cd-anyllm="cd /C/Home/Repos/AnyLLM"
+  alias cd-repos="cd /home/shared/repos"
+  alias cd-formr="cd /home/shared/repos/formR_"
+  alias cd-frtools="cd /home/shared/repos/FRTools"
+  alias cd-aidocs="cd /home/shared/repos/AIDocs_demo1"
+  alias cd-aitestr="cd /home/shared/repos/AIDocs_testR"
+  alias cd-anyllm="cd /home/shared/repos/AnyLLM"
   alias cd-list="echo ''; alias | awk '{ sub( /alias /, \"\"); print }' | awk -F= '/cd-/ && !/list/ { printf \"  %-15s %s\n\", \$1, \$2 }'; echo ''"
 
   export NVS_HOME="$HOME/.nvs"
