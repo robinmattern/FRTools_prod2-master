@@ -74,7 +74,7 @@
 #.(50722.03   7/22/25 RAM 12:50p| Set cd aliases to correct repos folder
 #.(50810.02   8/10/25 RAM  1:12p| Set bZSHver to '0' if MT
 #.(50907.03   9/08/25 RAM  8:13a| Update .zshrc and .bash_profile
-#.(50908.01   9/08/25 RAM  7:09a| Add commit
+#.(50908.01   9/08/25 RAM  8:15a| Add commit
 #
 ##PRGM     +====================+===============================================+
 ##ID 69.600. Main0              |
@@ -95,6 +95,7 @@
   aVer="v1.05\`50406.1330"
   aVer="v1.05\`50722.1245"
   aVer="v1.05\`50810.1312"
+  aVer="v1.05\`50908.0815"
 
   echo ""
 
@@ -479,7 +480,7 @@ function cpyToBin() {
 
     cpyScript "frt     " "${aRepo_Dir}/._2/FRTs/FRT40_Main0.sh"
     cpyScript "frtools " "${aRepo_Dir}/._2/FRTs/FRT40_Main0.sh"                         # .(50512.01.1 RAM Add frtools)
-    cpyScript "commit  " "${aRepo_Dir}/._2/FRTs/gitR/FRT48_gitR2.sh"                    # .(50908.01.1 RAM Add commit)
+    cpyScript "commit  " "${aRepo_Dir}/._2/FRTs/gitR/FRT48_gitR2.sh"                    # .(50908.01.1 RAM Add commit)  
 
     cpyScript "keys    " "${aRepo_Dir}/._2/FRTs/keyS/FRT41_keyS1.sh"
     cpyScript "gitr    " "${aRepo_Dir}/._2/FRTs/gitR/FRT42_gitR2.sh"                    #.(41103.02.1 RAM Was: gitR1)

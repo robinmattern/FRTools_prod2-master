@@ -854,6 +854,7 @@ yarn.lock
 *.bak
 *_v[0-9]*
 *_t[0-9]*
+commit.no
 '
          aLaunch_json='
 { // Use IntelliSense to learn about possible attributes.
