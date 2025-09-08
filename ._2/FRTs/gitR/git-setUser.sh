@@ -26,7 +26,7 @@ if [ "${bDoit}" == "1" ]; then
     echo "  git config user.name  ${aName}"
     echo "  git config user.email ${aEmail}"
     
-    git config user.name  "${aName}"
-    git config user.email "${aEmail}"
+    git config --global user.name  "${aName}"
+    git config --global user.email "${aEmail}"
     if [ "${OS:0:3}" != "Win"   ]; then echo ""; fi
     fi 

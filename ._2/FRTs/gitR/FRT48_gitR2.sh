@@ -3,6 +3,10 @@
 # aCommitFile="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )/commit.no"
   aCommitFile="$( pwd )/docs/commit.no"; # echo "  aCommitFile: ${aCommitFile}"
 
+  if [ "$1" == "show" ]; then echo -e "\n  Current commit.no: '.($( cat "${aCommitFile}" )'"; 
+     if [ "${OS:0:3}" != "Win" ]; then echo ""; fi
+     exit
+     fi
   aTS=$( date '+%y%m%d' ); aTS="${aTS:1}"
 
   if [ ! -f "${aCommitFile}" ]; then echo "${aTS}.00" >"${aCommitFile}" ; fi
