@@ -11,8 +11,11 @@
 
   if [ ! -f "${aCommitFile}" ]; then echo "${aTS}.00" >"${aCommitFile}" ; fi
   aCommitNo=$( cat "${aCommitFile}" )
+  
+  bKeeper=0; if [ "${1:0:2}" == "-k" ]; then bKeeper=1; shift; fi                                                     # .(50908.01.1 RAM Add -keep)
+  if [ "${bKeeper}" == "1" ] && [ "${aCommitNo}" != "" ]; then aTS="${aCommitNo:0:5}"; fi; # echo "${aTS}             # .(50908.01.2 RAM Add bKeeper)
+  aDay="${aCommitNo:0:5}";    if [ "${aDay}" != "${aTS}" ] && [ "${bKeeper}" != "1" ]; then aCommitNo="${aTS}.00"; fi # .(50908.01.3)
 
-  aDay="${aCommitNo:0:5}";    if [ "${aDay}" != "${aTS}" ]; then aCommitNo="${aTS}.00"; fi
   if [ "$1" == "set" ]; then n=$(( "0${2}" - 2 )); if [ "$n" == "-2" ]; then n=-1; fi; aCommitNo="${aTS}.$( printf "%02d" ${n} )"; fi
   nCommitNo=${aCommitNo:6:2}; if [ "${nCommitNo:0:1}" == "0" ]; then nCommitNo=${nCommitNo:1}; fi
   nCommitNo=$(printf "%02d" $(( nCommitNo + 1 )))
