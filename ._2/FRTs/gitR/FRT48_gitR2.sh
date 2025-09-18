@@ -14,10 +14,10 @@
      if [ "${OS:0:3}" != "Win" ]; then echo ""; fi
      exit
      fi                                                                                                               # .(50909.01.1 End)
-
-  if [ ! -d "./.git" ]; then                                                                                          # .(50917.01b.1 RAM Check for ./.git not ./docs).(50917.01.1 RAM Add check Beg)
+     
+  if [ ! -d ".git" ] || [ ! -d "docs" ]; then                                                                         # .(50917.01b.1 RAM Also check for .git).(50917.01.1 RAM Add check Beg)
      echo -e "\n* You must be in the repo's root dir to use commit."
-     if [ "${OS:0:3}" != "Win" ]; then echo ""; fi
+     if [ "${OS:0:3}" != "Win" ]; then echo ""; fi  
      exit; fi                                                                                                         # .(50917.01.1 End)
 
 #    aCommitFile="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )/commit.no"
