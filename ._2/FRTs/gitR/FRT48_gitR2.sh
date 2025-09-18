@@ -14,7 +14,7 @@
      if [ "${OS:0:3}" != "Win" ]; then echo ""; fi
      exit
      fi                                                                                                               # .(50909.01.1 End)
-     
+        
   if [ ! -d ".git" ] || [ ! -d "docs" ]; then                                                                         # .(50917.01b.1 RAM Also check for .git).(50917.01.1 RAM Add check Beg)
      echo -e "\n* You must be in the repo's root dir to use commit."
      if [ "${OS:0:3}" != "Win" ]; then echo ""; fi  
