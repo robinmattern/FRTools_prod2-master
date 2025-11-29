@@ -1,5 +1,5 @@
 {
-  "name": "s00-sample-server-api",
+  "name": "s01-docs-loader-api",
   "version": "2.03.0",
   "type": "module",
   "scripts": {

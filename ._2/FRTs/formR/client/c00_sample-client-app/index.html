@@ -5,12 +5,12 @@
 </head>
 <body>
     <div>
-        <h2>Welcome to the formR c00_Sample-Client-App.</h2>
+        <h2>Welcome to the formR c00_Sample-Client-App</h2>
         <div id="server-message">Loading...</div>
     </div>
-
+    <script src="_config.js"></script> 
     <script>
-        fetch('http://localhost:3250/api')
+        fetch( `${window.FVARS.SERVER_API_URL}` )
             .then( pResponse => pResponse.text() )
             .then( aHTML => {
                 document.getElementById('server-message').innerHTML = aHTML;
