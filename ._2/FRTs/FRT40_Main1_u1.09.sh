@@ -257,8 +257,9 @@ function Help( ) {
      echo "         netR List"                                                          # .(41124.05.2)
      echo "         netR Clone"                                                         # .(41124.05.1 End)
      echo ""
-     echo "     FRT porTs show                      Manage Ports"                       # .(41203.06.1 RAM Add Ports Command)
+     echo "     FRT poRts                           Manage Ports"                       # .(41203.06.1 RAM Add Ports Command)
      echo "         show ports"                                                         # .(41203.06.2)
+     echo "         show ports1                     All ports (slow)"                   # .(51114.02.1)
      echo "         porT kill {Port}"                                                   # .(41203.06.3)
      echo "         kill port {Port}"                                                   # .(41203.06.4)
      echo ""
@@ -624,19 +625,23 @@ function Help( ) {
 #
 #====== =================================================================================================== #
 
-#       sayMsg    "FRT40[ 580]  ${aCmd} Command" sp 1;
+#       sayMsg    "FRT40[ 629]  ${aCmd} Command" nosp -1;  # Only if -bug
+        sayMsg    "FRT40[ 629]  ${aCmd} Command" -1;       # Only if -bug, no trailing space 
 
      if [ "${aCmd}" == "porT" ]; then                                                                       # .(41203.06.9 RAM Write ports command Beg)
 
-#       sayMsg    "FRT40[ 584]  proX: aArg1: '${aArg1}', aArg2: '${aArg2}', aArg3: '${aArg3}', aArg4: '${aArg4}', bDoit: '${bDoit}', bDebug: '${bDebug}', bQuiet: '${bQuiet}'" sp 1
+        sayMsg    "FRT40[ 632]  proT: aArg1: '${aArg1}', aArg2: '${aArg2}', aArg3: '${aArg3}', aArg4: '${aArg4}', bDoit: '${bDoit}', bDebug: '${bDebug}', bQuiet: '${bQuiet}'" sp -1
 
         if [ "${aArg1:0:3}" == "sho" ]; then aCmd="show ports ${aArg2}"; fi
         if [ "${aArg1:0:3}" == "por" ]; then if [ "${aArg2:0:3}" == "kil" ]; then aCmd="kill port ${aArg3}"; else aCmd="show ports ${aArg3}"; fi; fi
         if [ "${aArg1:0:3}" == "kil" ]; then if [ "${aArg2:0:3}" == "por" ]; then aArg2="${aArg3}"; fi
                                              aCmd="kill port ${aArg2}"; fi
+#       if [ "${aArg1}"  == "ports1" ]; then aCmd="ports 1 ${aArg2} ${aArg3} ${aArg4} -b"; fi               ##.(51114.02.2)
+        if [ "${aArg1}"  == "ports1" ]; then aCmd="ports 1 ${aArg2} ${aArg3} ${aArg4}";    fi               # .(51114.02.2)
+
 #       echo "jpt ${aCmd}"
 #       eval "JPT ${aCmd}"
-        eval "jpt ${aCmd}"                                                                                 # .(50611.06.1 RAM Call frt not FRT
+        eval "jpt ${aCmd}"                                                                                  # .(50611.06.1 RAM Call frt not FRT
 #       echo -e "\n* Not implemented yet\n"; exit
 
 #       ${aLstSp}

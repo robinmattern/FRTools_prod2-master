@@ -149,22 +149,27 @@ function Help( ) {
      getOpts "bdqgln"
      setCmds
 
-     sayMsg sp "JPT10[147]  \$1: '$1', \$2: '$2', \$3: '$3', \$4: '$4', \$5: '$5', \$6: '$6', \$7: '$8'" -1
+     sayMsg sp "JPT10[152]  \$1: '$1', \$2: '$2', \$3: '$3', \$4: '$4', \$5: '$5', \$6: '$6', \$7: '$8'" -1
 #    sayMsg    "JPT10[148]  aCmd:  '${aCmd}', aCmd1: '${aCmd1}', aCmd2: '${aCmd2}', aCmd3: '${aCmd3}', aCmd0: '${aCmd0}', bDoit: '$bDoit', bDebug: '$bDebug', bQuiet: '$c', bNoisy: '$bNoisy' " 1
 #    sayMsg    "JPT10[149]  aCmd:  '$aCmd',  aCmd1: '$aCmd1', aCmd2: '$aCmd2', aCmd3: '$aCmd3', aCmd0: '$aCmd0' " 1
 
 #    -- --- ---------------  =  ------------------------------------------------------  #  ---------------- #
 
 #    Help
+     sayMsg  "JPT10[159]  aArg1: '${aArg1}', aArg2:'${aArg2}', aArg3:'$aArg3', aArg4:'$aArg4', aArg5:'$aArg5', aArg6:'$aArg6', aArg7:'$aArg7' " -1
 
 #    getCmd  "he"              "Help"
 #    getCmd  "cmd1"            "{Command1}"                                                                 # .(20416.01.2)
 #    getCmd  "cmd2"            "{Command2}"                                                                 # .(20416.02.2)
      getCmd  "ma" "pr" "di"    "Make Project Dirs"
      getCmd  "fo" "sc"         "Format Script"                                                              # .(20504.01.2)
+
      getCmd  "po"      "*"     "Show Ports"                                                                 # .(30917.01.13 RAM Was Show Port).(30917.01.3)
+#    getCmd  "po"      "1"     "Show Ports"                                                                 ##.(51114.02.3 RAM Add ports 1 [{aArg1}])
+     getCmd  "po"              "Show Ports"                                                                 # .(51114.02.3 RAM Add ports "")
      getCmd  "sh" "po"         "Show Ports"                                                                 # .(30917.01.14)
      getCmd  "ki" "po"         "Kill Port"                                                                  # .(30917.01.4)
+
 #    getCmd  "rss"             "RSS"   1                                                                    # .(21103.03.3)
      getCmd  "rss"     "*"     "RSS"                                                                        # .(21103.03.3)
 #    getCmd  "rss"     "rdir"  "RSS"                                                                        # .(21119.05.2)
@@ -249,7 +254,17 @@ function Help( ) {
 #
 #====== =================================================================================================== #
 
-#       sayMsg "JPT10[248]  Show Ports (${aArg1})" 1    # 1) Always say, -1) Only if debug, 2) abort
+#       sayMsg "JPT10[255]  Show Ports ($2)" 1    # 1) Always say, -1) Only if debug, 2) abort
+  if [ "${aCmd}" == "Show Ports" ] && [ "$2" == "1" ]; then                                                 # .(51114.02.4 Beg)
+#       sayMsg "JPT10[257]  ${aCmd}$2 ${aArg1} ${aArg2} ${aArg3}" -1 
+#       sayMsg "JPT10[258]  show ports 1 Port Not implemented yet" -1
+#       sayMsg "JPT10[259]  node ._2/FRTs/portR/list-ports_u1.12.js  ${aArg1} ${aArg2} ${aArg3}" -1 
+        node "$( dirname $0 )/../FRTs/portR/list-ports_u1.12.js" "${aArg1}" "${aArg2}" "${aArg3}"
+        exit_wCR
+  fi                                                                                                        # .(51114.02.4 End)
+#    -- --- ---------------  =  ------------------------------------------------------  #  ---------------- #
+
+        sayMsg "JPT10[248]  Show Ports (${aArg1})" -1    # 1) Always say, -1) Only if debug, 2) abort
   if [ "${aCmd}" == "Show Ports" ] && [ "${aArg1}" == "" ]; then
 
 #       sayMsg "JPT10[251]  Show Ports Not implemented yet" 2
@@ -264,8 +279,10 @@ function Help( ) {
 #   lsof -i -P -n | grep LISTEN | awk '{ printf "  %-6s %6d %-16s %s\n", $9, $2, $1 }'                      # .(41109.09.4).(41202.04.3)
     lsof -i -P -n | grep LISTEN | awk '{ i = index($9, "]:" ); i = i ? i+1 : index( $9, ":"); printf " %6d %15s:%-7s %s\n", $2, substr($9,0,i-1), substr($9,i+1), $1 }' # .(41202.04.3 RAM Rework)
   else                                                                                                      # .(41109.09.5 RAM Write show ports for Windows Beg)
-    echo -e "\n  PID    IPAddr:Port      Program          "
-    echo      "  -----  ---------------  -----------------"
+#   echo -e "\n  PID           IPAddr:Port     Program          "
+#   echo      "  -----  ------------------     -----------------"
+    echo -e "\n   No. PID             IPAddr:Port  Program"                                                 # .(51114.03.1)
+    echo      "  ---- ----- ---------------------  ---------------------------------------------------"     # .(51114.03.2)
 #   netstat -ano | grep LISTEN | grep node | \
 
 # First, get your arrays (but modified to actually capture the output)
@@ -279,7 +296,10 @@ function Help( ) {
 
     for i in "${!array2[@]}"; do array3[$i]="${array2[$i]} $( netstat -ano | grep "${array2[$i]}" | awk '{ a = $2; exit }; END{ print a ? a : "n/a" }' ) ${array1[$i]}"; done # combine them
 #   for i in "${!array3[@]}"; do     echo "  ${array3[$i]}" | awk '{ a=$1; b=$2; c=$3; if (c == "") { a = "."; b=$1; c=$2 }; printf "  %-6s %-16s %s\n", a, b, c }'; done                     # Print the combined array
-    for i in "${!array3[@]}"; do     echo "  ${array3[$i]}" | awk '$3 != "..." { a=$1; b=$2; c=$3; printf "  %-6s %-16s %s\n", a, b, c }'; done                     # Print the combined array
+#   for i in "${!array3[@]}"; do     echo "  ${array3[$i]}" | awk '$3 != "..." { a=$1; b=$2; c=$3; printf "  %-6s %-16s %s\n", a, b, c }'; done                   ##.(51114.03.3)   # Print the combined array
+#   for i in "${!array3[@]}"; do     echo "  $i ${array3[$i]}" | awk '$3 != "n/a" { n=$1; a=$2; b=$3; c=$4; printf "%5d. %6s %21s  %s\n", n+1, a, b, c }'; done   # .(51114.03.3)   # Print the combined array
+    readarray -t array3 < <(printf '%s\n' "${array3[@]}" | sort -t: -k2 -n)
+    for i in "${!array3[@]}"; do     echo "  $i ${array3[$i]}" | awk '$4 != "..." { n=$1; a=$2; b=$3; c=$4; printf "%5d. %6s %20s  %s\n", n,   a, b, c }'; done   # .(51114.03.3)   # Print the combined array
 
 #   ps -W | grep node | \
 #   while read line; do
@@ -297,7 +317,7 @@ function Help( ) {
 #      ${aLstSp}
      fi # eoc Show Ports                                                                                    # .(30917.01.15 End)
 #    -- --- ---------------  =  ------------------------------------------------------  #  ---------------- #
-
+# 
 #====== =================================================================================================== #  ===========
 
 # ------------------------------------------------------------------------------------

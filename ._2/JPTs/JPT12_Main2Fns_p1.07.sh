@@ -96,6 +96,7 @@
 # .(41114.06 11/14/24 RAM  6:25p| Write new function askRequired, rename askDefault
 # .(41115.01 11/15/24 RAM 11:50a| Add THE_SERVER to .bashrc
 # .(41120.01 11/20/24 RAM  9:00a| Add exit_CR
+# .(51114.01 11/14/25 RAM 11:30a| Don't look for 'no', i.e. 'node' as an option)
 
 ##PRGM     +====================+===============================================+
 ##ID 69.600. Main               |
@@ -445,7 +446,8 @@ function getOpts() { dBug=$2
     if [ "${1/b/}" != "$1" ]; then if [ "${bDebug}"  != "1" ]; then getOpt "-b" "-de";  export bDebug=${nOpt};  fi; sayMsg "JPFns[406]  bDebug:  '${bDebug}'"  ; fi   # .(20501.01.3)
     if [ "${1/d/}" != "$1" ]; then if [ "${bDoit}"   != "1" ]; then getOpt "-d" "doit"; export bDoit=${nOpt};   fi; sayMsg "JPFns[407]  bDoit:   '${bDoit}'"   ; fi   # .(20501.01.5)
     if [ "${1/q/}" != "$1" ]; then if [ "${bQuiet}"  != "1" ]; then getOpt "-q" "qu";   export bQuiet=${nOpt};  fi; sayMsg "JPFns[408]  bQuiet:  '${bQuiet}'"  ; fi   # .(20501.01.4)
-    if [ "${1/n/}" != "$1" ]; then if [ "${bNoisy}"  != "1" ]; then getOpt "-n" "no";   export bNoisy=${nOpt};  fi; sayMsg "JPFns[409]  bNoisy:  '${bNoisy}'"  ; fi   # .(40407.01.1 RAM Noisy).(20501.01.4)
+#   if [ "${1/n/}" != "$1" ]; then if [ "${bNoisy}"  != "1" ]; then getOpt "-n" "no";   export bNoisy=${nOpt};  fi; sayMsg "JPFns[409]  bNoisy:  '${bNoisy}'"  ; fi   # .(40407.01.1 RAM Noisy).(20501.01.4).(51114.01.4)
+    if [ "${1/n/}" != "$1" ]; then if [ "${bNoisy}"  != "1" ]; then getOpt "-n" "-no";  export bNoisy=${nOpt};  fi; sayMsg "JPFns[409]  bNoisy:  '${bNoisy}'"  ; fi   # .(51114.01.4 RAM Don't look for node).(40407.01.1 RAM Noisy).(20501.01.4)
     if [ "${1/g/}" != "$1" ]; then if [ "${bGlobal}" != "1" ]; then getOpt "-g" "glo";  export bGlobal=${nOpt}; fi; sayMsg "JPFns[410]  bGlobal: '${bGlobal}'" ; fi   #
 #   if [ "${1/l/}" != "$1" ]; then if [ "${bLocal}"  != "1" ]; then getOpt "-l" "loc";  export bLocal=${nOpt};  fi; sayMsg "JPFns[411]  bLocal:  '${bLocal}'"  ; fi
 
