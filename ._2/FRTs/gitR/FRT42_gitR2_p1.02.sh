@@ -228,6 +228,7 @@
 #.(50916.01   9/16/25 RAM  8:00a| Add -n YMMDD.NN option to commit
 #.(50919.01   9/19/25 RAM 11:12a| Remove node-fetch & node_modules from api
 #.(51030.01  10/20/25 RAM  7:30a| Add List last {cnt} commits from {beg}
+#.(51129.03  11/29/25 RAM  2:50p| Update gitR to Nov 29, 2025
 #
 ##PRGM     +====================+===============================================+
 ##ID 69.600. Main0              |
@@ -235,7 +236,7 @@
 #*/
 #========================================================================================================== #  ===============================  #
 
-        aVDt="Aug 28, 2025  8:15a"; aVer="p1.02"; aVTitle="Useful gitR2 Tools by formR";                                  # .(41103.02.2 RAM Was: gitR1)
+        aVDt="Nov 29, 2025  2:50p"; aVer="p1.02"; aVTitle="Useful gitR2 Tools by formR";                                  # .(41103.02.2 RAM Was: gitR1)
         aVer="$( echo "$0" | awk '{ match( $0, /_[dpstuv][0-9]+\.[0-9]+/ ); print substr( $0, RSTART+1, RLENGTH-1) }' )"  # .(21031.01.1 RAM Add [d...).(20416.03.8 "_p2.02", or _d1.09)
 
         LIB="gitR2"; LIB_LOG=${LIB}_LOG; LIB_USER=${LIB}_USER; Lib=${LIB}; aDir=$(dirname "${BASH_SOURCE}");              # .(41103.02.3).(41102.01.1 RAM Add JPT12_Main2Fns_p1.07.sh Beg).(80923.01.1)

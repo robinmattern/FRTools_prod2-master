@@ -172,6 +172,7 @@
 #.(50408.01   4/08/25 RAM  9:20a| Pass error code up to the calling function
 #.(50516.03   5/16/25 RAM 10:00a| Bump FRTools Version date 
 #.(50611.06   6/11/25 RAM  5:55a| Call jpt, not JPT for ports command
+#.(51129.03  11/29/25 RAM  2:50p| Update FRTools to Nov 29, 2025
 #
 ##PRGM     +====================+===============================================+
 ##ID 69.600. Main0              |
@@ -181,7 +182,8 @@
 
 #    aVdt="Apr 8, 2025 9:20a"; aVtitle="formR Tools"  
 #    aVdt="May 16, 2025 9:50a"; aVtitle="formR Tools" 
-     aVdt="Jun 12, 2025 5:40p"; aVtitle="formR Tools"                                                       # .(21113.05.8 RAM Add aVtitle for Version in Begin)
+#    aVdt="Jun 12, 2025 5:40p"; aVtitle="formR Tools"                                                       # .(21113.05.8 RAM Add aVtitle for Version in Begin)
+     aVdt="Nov 29, 2025 2:50p"; aVtitle="formR Tools" 
      aVer="$( echo $0 | awk '{  match( $0, /_[dpstuv][0-9]+\.[0-9]+/ ); print substr( $0, RSTART+1, RLENGTH-1) }' )"  # .(21031.01.1 RAM Add [d...).(20416.03.8 "_p2.02", or _d1.09)
 
      LIB="FRT"; LIB_LOG=${LIB}_LOG; LIB_USER=${LIB}_USER; Lib=${LIB}; aDir=$( dirname "${BASH_SOURCE}" );   # .(41027.01.1 RAM).(80923.01.1)
