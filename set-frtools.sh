@@ -75,7 +75,8 @@
 #.(50810.02   8/10/25 RAM  1:12p| Set bZSHver to '0' if MT
 #.(50907.03   9/08/25 RAM  8:13a| Update .zshrc and .bash_profile
 #.(50908.01   9/08/25 RAM  8:15a| Add commit
-#.(50908.05   9/08/25 RAM  6:15p| Fix cd-list alias code 
+#.(50908.05   9/08/25 RAM  6:15p| Fix cd-list alias code
+#.(51108.01  11/08/25 RAM  8:30a| Add run.app
 #
 ##PRGM     +====================+===============================================+
 ##ID 69.600. Main0              |
@@ -482,7 +483,8 @@ function cpyToBin() {
 
     cpyScript "frt     " "${aRepo_Dir}/._2/FRTs/FRT40_Main0.sh"
     cpyScript "frtools " "${aRepo_Dir}/._2/FRTs/FRT40_Main0.sh"                         # .(50512.01.1 RAM Add frtools)
-    cpyScript "commit  " "${aRepo_Dir}/._2/FRTs/gitR/FRT48_gitR2.sh"                    # .(50908.01.1 RAM Add commit)  
+    cpyScript "commit  " "${aRepo_Dir}/._2/FRTs/gitR/FRT48_commit1.sh"                  # .(50908.01.1 RAM Add commit)
+    cpyScript "run-app " "${aRepo_Dir}/._2/FRTs/FRT43_run-app1.sh"                      # .(51108.01.1 RAM Add run.app)
 
     cpyScript "keys    " "${aRepo_Dir}/._2/FRTs/keyS/FRT41_keyS1.sh"
     cpyScript "gitr    " "${aRepo_Dir}/._2/FRTs/gitR/FRT42_gitR2.sh"                    #.(41103.02.1 RAM Was: gitR1)
