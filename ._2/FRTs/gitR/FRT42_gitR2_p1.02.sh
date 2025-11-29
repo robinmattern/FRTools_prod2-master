@@ -224,7 +224,10 @@
 #.(50827.02b  8/27/25 RAM 10:00p| Add package.json to server
 #.(50826.01d  8/28/25 RAM  8:00a| Create a01 and a02 folders first for BSD cp
 #.(50826.01e  8/28/25 RAM  8:15a| Add asterisk for GNU cp
-#.(50831.03.  8/31/25 RAM 11:59p| Add full name to .code.workspace
+#.(50831.03   8/31/25 RAM 11:59p| Add full name to .code.workspace
+#.(50916.01   9/16/25 RAM  8:00a| Add -n YMMDD.NN option to commit
+#.(50919.01   9/19/25 RAM 11:12a| Remove node-fetch & node_modules from api
+#.(51030.01  10/20/25 RAM  7:30a| Add List last {cnt} commits from {beg}
 #
 ##PRGM     +====================+===============================================+
 ##ID 69.600. Main0              |
@@ -378,7 +381,7 @@ while [[ $# -gt 0 ]]; do  # Loop through all arguments
   if [ "$1" == "rem" ] && [ "$2" == "pus" ]; then aCmd="pushRemote";   fi                                   # .(41129.06.3)
 
   if [ "$1" == "com" ];                      then aCmd="shoLast"; aArg3=$2; aArg4=$3; fi                    # .(41123.07.2).(41103.05.1 RAM Was: 9)
-  if [ "$1" == "com" ] && [ "$2" == "las" ]; then aCmd="shoLast";      fi               # .(51030.05.3)
+  if [ "$1" == "com" ] && [ "$2" == "las" ]; then aCmd="shoLast";      fi                                   # .(51030.05.3)
   if [ "$1" == "lis" ] && [ "$2" == "las" ]; then aCmd="shoLast";      fi               # .(41031.03.4)
   if [ "$1" == "las" ];                      then aCmd="shoLast"; if [ "$2" == "" ]; then aArg3=1; else aArg3=$2; aArg4=$3; fi; fi  # .(41123.07.3).(41109.05.1 RAM Last with no 2nd arg)
   if [ "$1" == "las" ] && [ "$2" == "sho" ]; then aCmd="shoLast"; if [ "$3" == "" ]; then aArg3=1; else aArg3=$3; aArg4=$4; fi; fi  # .(41123.07.4).(41109.05.2 RAM Show 1 for last if not given)
@@ -615,7 +618,7 @@ function getDate( aFile ) {
 #      git status    --short                                                                                ##.(41124.06.4)
 #      git status    --short | awk "${aAWK1}"   | awk "${GetDate}"                                          ##.(41124.06.4)
 #      git status -u --short | awk "${GetDate}" | awk '{ printf "%20s  %-16s  %s\n",$3,$1" "$2, s.($0,21)}' ##.(41129.02.3).(41124.06.4).(41124.06b.5)
-#      git status -u --short | awk "${aAWK1}"   | awk "${GetDate}" | awk "${aAWK2}"                        ##.(50318.01b.4 RAM Sort it).(41124.06e.3).(41129.02.3).(41124.06.4)
+#      git status -u --short | awk "${aAWK1}"   | awk "${GetDate}" | awk "${aAWK2}"                         ##.(50318.01b.4 RAM Sort it).(41124.06e.3).(41129.02.3).(41124.06.4)
        git status -u --short | awk "${aAWK1}"   | awk "${GetDate}" | awk "${aAWK2}" | sort -k4 | awk "${aAWK3}" # .(50318.01c.2).(50318.01b.4 RAM Sort it).(41124.06e.3).(41129.02.3).(41124.06.4)
        fi # eif working files                                                                               # .(41124.06.12)
 
@@ -900,7 +903,7 @@ commit.no
 </body>
 </html>
 "
-                                                                                        # .(41109.04.1 End)
+         aGitRDir=$(dirname "${BASH_SOURCE}");                                                                   # .(51129.01.1)
          aWorkspace_code="{ \"folders\": [ { \"path\": \".\", \"name\": \"${aProject_}${aStage}\" } ] }"    # .(50831.03.1 RAM Add full name to .code.workspace)
          aDate=$( date +'%Y%m%d' ); aDate="${aDate:2}"                                                      # .(50716.01.3)
                                                                                                             # .(41109.03.2 RAM Add initGit dirs & files Beg)
@@ -920,8 +923,13 @@ commit.no
          mkdir     "${aDir}"
          mkdir  -p "${aDirC}"
          mkdir  -p "${aDirS}"
+
+         echo "" >"${aDir}/.gitkeep";         git add "${aDir}/.gitkeep"
+         echo "" >"${aDirC}/.gitkeep";        git add "${aDirC}/.gitkeep"
+         echo "" >"${aDirS}/.gitkeep";        git add "${aDirS}/.gitkeep"
+
          mkdir  "data"                                                                  # .(50716.08.2 BTG Add for system data)
-         mkdir  "sources"                                                               # .(50716.08.3 RAM Add for user documents)
+         mkdir  "data/sources"                                                          # .(50716.08.3 RAM Add for user documents)
 
          mkdir ".vscode"
          echo "${aLaunch_json}"    >".vscode/launch.json"
@@ -930,21 +938,22 @@ commit.no
          echo "${aREADME_md}"      >"README.md"                                         # .(41109.03.3)
          git add README.md .gitignore .vscode/launch.json "${aProject_}${aStage}.code-workspace"
 
-         echo "" >"${aDir}/.gitkeep";         git add "${aDir}/.gitkeep"
-         echo "" >"${aDirC}/.gitkeep";        git add "${aDirC}/.gitkeep"
-         echo "" >"${aDirS}/.gitkeep";        git add "${aDirS}/.gitkeep"
+#        aSrcC="../../FRTools/._2/FRTs/formR/client/c00_sample-client-app"              ##.(50827.02.1 RAM Src dir for a00 apps).(51129.01.2)
+#        aSrcS="../../FRTools/._2/FRTs/formR/server/s00_sample-client-api"              ##.(50827.02.2 RAM Src dir for a00 apps).(51129.01.3)
+         aSrcC="../../../._2/FRTs/formR/client/c00_sample-client-app"                   # .(51129.01.2).(50827.02.1 RAM Src dir for a00 apps)
+         aSrcS="../../../._2/FRTs/formR/server/s00_sample-server-api"                   # .(51129.01.3).(50827.02.1 RAM Src dir for a00 apps)
 
-         aSrcC="../../FRTools/._2/FRTs/formR/client/c00_sample-client-app"              # .(50827.02.1 RAM Src dir for a00 apps)
-         aSrcS="../../FRTools/._2/FRTs/formR/server/s00_sample-server-api"              # .(50827.02.2)
-
-         mkdir -p "${aSrcC:29}"                                                         # .(50827.02.3)
-         mkdir -p "${aSrcS:29}"                                                         # .(50827.02.4)
-#        echo "" >"${aDirC:0:28}/index.html"; git add "${aDirC:0:28}/index.html"        ##.(50826.03a.1 RAM was 27).(50716.06.1).(50827.02.5)
+         echo "";
+#        echo "  aSrcC: '${aGitRDir}/${aSrcC}'";
+         mkdir -p "${aSrcC:24}"                                                         # .(51129.01.4 RAM Was 29).(50827.02.3)
+         mkdir -p "${aSrcS:24}"                                                         # .(51129.01.5).(50827.02.4)
+#        echo "" >"${aDirC:0:28}/index.html"; git add "${aDirC:0:28}/index.html"        ##.(50826.03a.1 RAM was 16.06.1).(50827.02.5)
 #        echo "" >"${aDirS:0:28}/server.mjs"; git add "${aDirS:0:28}/server.mjs"        ##.(50826.03a.3).(50716.06.2 RAM Was server.js).(50827.02.6)
-         cp -p  "${aSrcC}/index.html"      "${aSrcC:29}/";    git add "${aSrcC:29}/index.html"              # .(50827.02.5).(50826.03a.1 RAM was 27).(50716.06.1)
-         cp -p  "${aSrcS}/server.mjs"      "${aSrcS:29}/";    git add "${aSrcS:29}/server.mjs"              # .(50827.02.6).(50826.03a.3).(50716.06.2 RAM Was server.js)
-         cp -p  "${aSrcS}/package.json"    "${aSrcS:29}/";    git add "${aSrcS:29}/package.json"            # .(50827.02b.1 RAM Add package.json to s00 app)
-         cp -p  "${aSrcS}/../package.json" "${aSrcS:29}/../"; git add "${aSrcS:29}/../package.json"         # .(50827.02b.2 RAM Add package,json to server)
+
+         cp -p  "${aGitRDir}/${aSrcC}/index.html"      "${aSrcC:24}/";    git add "${aSrcC:24}/index.html"       # .(51129.01.6).(50827.02.5).(50826.03a.1 RAM was 27).(50716.06.1)
+         cp -p  "${aGitRDir}/${aSrcS}/server.mjs"      "${aSrcS:24}/";    git add "${aSrcS:24}/server.mjs"       # .(51129.01.7).(50827.02.6).(50826.03a.3).(50716.06.2 RAM Was server.js)
+         cp -p  "${aGitRDir}/${aSrcS}/package.json"    "${aSrcS:24}/";    git add "${aSrcS:24}/package.json"     # .(51129.01.8).(50827.02b.1 RAM Add package.json to s00 app)
+         cp -p  "${aGitRDir}/${aSrcS}/../package.json" "${aSrcS:24}/../"; git add "${aSrcS:24}/../package.json"  # .(51129.01.9).(50827.02b.2 RAM Add package,json to server)
 
          mkdir  "docs"
 
@@ -960,29 +969,38 @@ commit.no
 
 #        -----------------------------------------------------                          # .(50826.01.1 RAM Add AI-App files Beg)
 
-         echo -e "\n  Adding docs/a00_AI-App files'."                                   # .(50826.01a.1)
+#        echo -e "\n  Adding docs/a00_AI-App files'."                                   # .(50826.01a.1)
          mkdir    "docs/a00_AI-App-Specs"                                               # .(50716.01c.1).(50716.06.3 RAM Add 'em Beg)
-         mkdir    "docs/a01_Docs-Viewer-App"                                            # .(50826.01d.1 RAM Need to create the folder first for MacOS's BSD cp).(50716.06.3 RAM Add 'em Beg)
-         mkdir    "docs/a02_Docs-Viewer-App"                                            # .(50826.01d.2).(50716.06.3 RAM Add 'em Beg)
+#        mkdir    "docs/a01_Docs-Loader-App"                                            ##.(50826.01d.1 RAM Need to create the folder first for MacOS's BSD cp).(50716.06.3 RAM Add 'em Beg).(50826.01.1).(51129.01.10)
+#        mkdir    "docs/a02_Docs-Viewer-App"                                            ##.(50826.01d.2).(50716.06.3 RAM Add 'em Beg).(50826.01.2).(51129.01.11)
 
 #        echo "" >"docs/a00_AI-Context/a00-01_System-Prompt.md"
 #        echo "" >"docs/a00_AI-Context/a00-10_Development-Plan.md"
 #        echo "" >"docs/a00_AI-Context/a00-20_Technical-Specs.md"                       ##.(50716.06.3 End)
 #        cp       "../../../docs/a00_AI-Context/*" "docs/a00_AI-Context/*"              ##.(50716.06.3 End).(50716.06a.3)
 #        cp -rp "${aReposDir}/FRTools/docs/a00_AI-Context/" "docs/a00_AI-Context/*"     # .(50716.01a.1)
-         cp -rp "${aReposDir}/FRTools/docs/a00_AI-App-Specs/"*    "docs/a00_AI-App-Specs/"                  # .(50826.01e.1).(50826.01d.3).(50716.01b.1)
-         cp -rp "${aReposDir}/FRTools/docs/a01_Docs-Viewer-App/"* "docs/a01_Docs-Viewer-App/"               # .(50826.01e.2).(50826.01d.4).(50826.01.2)
-         cp -rp "${aReposDir}/FRTools/docs/a02_Docs-Viewer-App/"* "docs/a02_Docs-Viewer-App/"               # .(50826.01e.3).(50826.01d.5).(50826.01.3)
+
+         echo "";
+#        echo "  aSrcC: '${aGitRDir}/../../../docs'";
+#        cp -rp "${aReposDir}/FRTools/docs/a01_Docs-Viewer-App/"* "docs/a01_Docs-Viewer-App/"                    ##.(50826.01e.2).(50826.01d.4).(50826.01.2).(51129.01.12)
+#        cp -rp "${aReposDir}/FRTools/docs/a02_Docs-Viewer-App/"* "docs/a02_Docs-Viewer-App/"                    ##.(50826.01e.3).(50826.01d.5).(50826.01.2).(51129.01.13)
+#        cp -rp "${aReposDir}/FRTools/docs/a00_AI-App-Specs/"*    "docs/a00_AI-App-Specs/"                       ##.(50826.01e.1).(50826.01d.3).(50716.01b.1).(51129.01.14)
+         cp -rp "${aGitRDir}/../../../docs/a00_AI-App-Specs/"*    "docs/a00_AI-App-Specs/"                       # .(51129.01.12).(50826.01e.1).(50826.01d.3).(50716.01b.1)
+         cp -rp "${aGitRDir}/../../../docs/a00_AI-App-Specs/."*   "docs/a00_AI-App-Specs/"                       # .(51129.01.13).(50826.01e.1).(50826.01d.3).(50716.01b.1)
 
 #        cp -p  "${aReposDir}/FRTools/docs/a00_AI-App-Specs/formR_AI-App-Prompts.md" .  ##.(50826.01a.2 RAM Opps).(50826.01.4).(50826.01c.1)
 #        cp -p  "${aReposDir}/FRTools/docs/a00_AI-App-Specs/run-app.sh" .               ##.(50826.01b.1 RAM Add).(50826.01c.2)
-         mv                          "docs/a00_AI-App-Specs/formR_AI-App-Prompts.md" .  # .(50826.01c.1 RAM Move it).(50826.01a.2 RAM Opps).(50826.01.4)
+
+#        mv                          "docs/a00_AI-App-Specs/formR_AI-App-Prompts.md" .  ##.(50826.01c.1 RAM Move it).(50826.01a.2 RAM Opps).(50826.01.4).(51129.01.3)
          mv                          "docs/a00_AI-App-Specs/run-app.sh" .               # .(50826.01c.2).(50826.01b.1 RAM Add)
+         mv                          "docs/a00_AI-App-Specs/.ai-rules" .                # .(51129.01.4 RAM Copy into root)
+
                  if [ "${OS:0:3}" != "Win" ]; then chmod 777 run-app.sh; fi             # .(50826.01b.2)
 
          git add docs/                                                                  # .(50826.01.5)
          git add run-app.sh                                                             # .(50826.01b.3)
-         git add formR_AI-App-Prompts.md                                                # .(50826.01.6)
+#        git add formR_AI-App-Prompts.md                                                ##.(50826.01.6).(51129.01.4)
+         git add .ai-rules/                                                             # .(51129.01.4)
 
          aTS="$(date +%y%m%d)"; aTS="${aTS:1}"
          git commit -m ".(${aTS}.02_Add sample AI-App files" | awk '{ print "  " $0 }'  # .(50826.01.7)
