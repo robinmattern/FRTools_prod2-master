@@ -150,7 +150,7 @@ function setPort() { # $1 = 3201, 3251 or 64361: Proj#: 3,64; Stage#: 1)Prod, 2)
     }
 # ---------------------------------------------------
 
-function findVar() {                                                                    # .(51111.03.1 RAM Add findVar Beg)
+function findVar() {                                                                    # .(51111.03.1 RAM Add findVar Beg)  
     aVAR="$( echo "${1}" | tr '[a-z]' '[A-Z]' )"; aVAL=""
     while IFS= read -r aLine; do
 #   echo "Given: '${aLine}'"
@@ -162,7 +162,7 @@ function findVar() {                                                            
 #   if [ "${aVAL}" != "" ]; then echo "-- found: ${aVAR}: ${aVAL}"; fi
     if [ "${aVAL}" != "" ]; then echo "--${aVAR}: ${aVAL}"; else echo ""; fi
 #   if [ "${aVAL}" != "" ]; then echo "${aVAL}"; fi
-    }                                                                                   # .(51111.03.1 End)
+    }                                                                                   # .(51111.03.1 End)  
 # ---------------------------------------------------
 
 function getPrjNo() {
