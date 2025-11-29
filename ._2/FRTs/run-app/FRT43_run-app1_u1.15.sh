@@ -10,7 +10,7 @@
   aRootDir="$( git rev-parse --show-toplevel 2>/dev/null || pwd)"                       # .(51108.07.1 RAM set aRootDir)
   aStage="$(basename "${aRootDir}")"
 
-  nVer=1.15.1005
+  nVer=1.15.1428
 # ---------------------------------------------------
 
 # if [ "$1" == "source" ]; then echo -e  "\n  ${0} (v${nVer})"; if [ "${OS:0:3}" != "Win" ]; then echo ""; fi; exit; fi
@@ -232,7 +232,7 @@ function chkEnvFile( ) {                                                        
    }
 # ---------------------------------------------------
 
-function setServerAPI_URL() {                                                           # .(51108.07.x RAM Server only).(50911.04.1 RAM Write function Beg)
+function setServerAPI_URL() {                                                           # .(51108.07.2 RAM Server only).(50911.04.1 RAM Write function Beg)
          cd "${aRootDir}"
          aServerDir=$1
          }                                                                              # .(50911.04.1 End)
