@@ -59,6 +59,8 @@
 # .(30917.01 12/01/24 RAM 12:10p| Add Kill/Show multiple ports
 # .(30917.01 12/01/24 RAM  5:05p| Check for missing port
 # .(41202.04 12/02/24 RAM  9:20p| Revise Show Ports on Mac
+# .(51114.02 11/14/25 RAM  8:10a| Modify List ports
+# .(51114.03 11/14/25 RAM  9:45a| Redo column widths for List ports
 
 ##PRGM     +====================+===============================================+
 ##ID 69.600. Main0              |
