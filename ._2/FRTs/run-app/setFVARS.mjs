@@ -113,8 +113,8 @@ export function initFVARS( aApp ) {
 
           pFVARS[ `C${nApp}_CLIENT_PORT`    ] = (fvars.CLIENT_PORT    || aClientPort) + '';
           pFVARS[ `C${nApp}_CLIENT_HOST`    ] =  fvars.CLIENT_HOST    || aClient_Host;
-          pFVARS[ `C${nApp}_SERVER_PORT`    ] = (fvars.SERVER_PORT    || aServerPort) + '';                 // .(51118.01.x)
-          pFVARS[ `C${nApp}_SERVER_API_URL` ] =  fvars.SERVER_API_URL || aServer_API_URL;                   // .(51118.01.x)
+          pFVARS[ `C${nApp}_SERVER_PORT`    ] = (fvars.SERVER_PORT    || aServerPort) + '';                 // .(51118.01.1)
+          pFVARS[ `C${nApp}_SERVER_API_URL` ] =  fvars.SERVER_API_URL || aServer_API_URL;                   // .(51118.01.2)
 
       var mOrigins              = (fixHosts( fvars.CORS_ORIGINS, aClientPort ) || aClient_Host ).split(",").map(s => s.trim());
           mOrigins.forEach( aHost => { if (aHost.match( /localhost/ ) ) { mOrigins.push( aHost.replace( /localhost/, "127.0.0.1" ) ) } } )
@@ -292,9 +292,9 @@ function parseFVARS( aRootDir, aApp ) {
  for (var aLine of mLines) {
     const mMatch = aLine.match(/\s+(\w+):\s*[\"']?([^\"'\n]+)[\"']?/);
       if (mMatch) {
-      var bStripApp = mMatch[1].match( /SERVER|CLIENT/ ) != null                                            // .(51118.01.1 RAM Keep other vars)
-//    if (mMatch[1].slice(2,3) == aApp.slice(2,3)) { mMatch[1] = mMatch[1].slice(4) }                       //#.(51116.01.1 RAM Strip aApp if FVAR is for it).(51118.01.1)
-      if (bStripApp && mMatch[1].slice(2,3) == aApp.slice(2,3)) { mMatch[1] = mMatch[1].slice(4) }          // .(51118.01.1).(51116.01.1 RAM Strip aApp if FVAR is for it)
+      var bStripApp = mMatch[1].match( /SERVER|CLIENT/ ) != null                                            // .(51118.01.3 RAM Keep other vars)
+//    if (mMatch[1].slice(2,3) == aApp.slice(2,3)) { mMatch[1] = mMatch[1].slice(4) }                       //#.(51116.01.1 RAM Strip aApp if FVAR is for it).(51118.01.4)
+      if (bStripApp && mMatch[1].slice(2,3) == aApp.slice(2,3)) { mMatch[1] = mMatch[1].slice(4) }          // .(51118.01.4).(51116.01.1 RAM Strip aApp if FVAR is for it)
           fvars[ mMatch[1] ] = mMatch[2].trim();
           }
       }
