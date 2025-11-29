@@ -199,7 +199,7 @@ if [ "${1:0:1}" == "s" ]; then aFldr="${aServer}"; fi
 #if [ "${aApp}" == "c02" ]; then aAppName="c02_docs-viewer-app"; fi
 
 if [ -d "${aFldr}" ] && [ "${aAppName}" == "Unknown" ]; then
-   aAppName=$(  find "./${aFldr}" -maxdepth 3 -type d -name "${aApp}_*" | awk '{ sub( /.+\//, ""   ); print; exit }' )   # .(51119.01.1 RAM Was maxdepth=1)
+   aAppName=$(  find "./${aFldr}" -maxdepth 3 -type d -name "${aApp}_*" | awk '{ sub( /.+\//, ""   ); print; exit }' )   # .(51119.01.1 RAM Was maxdepth=1)  
    fi
    }
 # ---------------------------------------------------
