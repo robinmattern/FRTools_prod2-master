@@ -10,12 +10,12 @@
 				},
 				{
 					"label": "Sudo",
-					"line": 843,
+					"line": 848,
 					"column": 0
 				},
 				{
 					"label": "copyFile",
-					"line": 848,
+					"line": 853,
 					"column": 0
 				}
 			]
@@ -335,146 +335,146 @@
 			"bookmarks": [
 				{
 					"label": "getProjectStage_fromURL",
-					"line": 1149,
+					"line": 1152,
 					"column": 0
 				},
 				{
 					"label": "getRemoteName",
-					"line": 1162,
+					"line": 1165,
 					"column": 0
 				},
 				{
-					"line": 1259,
+					"line": 1262,
 					"column": 0,
 					"label": "cloneRemote"
 				},
 				{
-					"line": 1411,
+					"line": 1414,
 					"column": 0,
 					"label": "setGlobals"
 				},
 				{
-					"line": 1428,
+					"line": 1431,
 					"column": 0,
 					"label": "help"
 				},
 				{
-					"line": 1437,
+					"line": 1440,
 					"column": 0,
 					"label": "gitStatus"
 				},
 				{
-					"line": 1458,
+					"line": 1461,
 					"column": 0,
 					"label": "addCommit"
 				},
 				{
-					"line": 1519,
+					"line": 1522,
 					"column": 0,
 					"label": "updateRepo"
 				},
 				{
-					"line": 1625,
+					"line": 1628,
 					"column": 0,
 					"label": "shoLast"
 				},
 				{
-					"line": 1654,
+					"line": 1657,
 					"column": 0,
 					"label": ""
 				},
 				{
-					"line": 1664,
+					"line": 1667,
 					"column": 0,
 					"label": "shoCommit"
 				},
 				{
-					"line": 1686,
+					"line": 1689,
 					"column": 0,
 					"label": "pullRemote"
 				},
 				{
-					"line": 1730,
+					"line": 1733,
 					"column": 0,
 					"label": "pushRemote"
 				},
 				{
-					"line": 1751,
+					"line": 1754,
 					"column": 0,
 					"label": "listBranches"
 				},
 				{
-					"line": 1766,
+					"line": 1769,
 					"column": 0,
 					"label": "deleteBranch"
 				},
 				{
-					"line": 1794,
+					"line": 1797,
 					"column": 0,
 					"label": "checkoutBranch"
 				},
 				{
-					"line": 1841,
+					"line": 1844,
 					"column": 0,
 					"label": "makRemote"
 				},
 				{
-					"line": 1897,
+					"line": 1900,
 					"column": 0,
 					"label": "trackBranch"
 				},
 				{
-					"line": 1924,
+					"line": 1927,
 					"column": 0,
 					"label": "replaceLocal"
 				},
 				{
-					"line": 1942,
+					"line": 1945,
 					"column": 0,
 					"label": "mergeRemote"
 				},
 				{
-					"line": 1989,
+					"line": 1992,
 					"column": 0,
 					"label": "addRemote"
 				},
 				{
-					"line": 1990,
+					"line": 1993,
 					"column": 0,
 					"label": "setRemote"
 				},
 				{
 					"label": "setRemote1",
-					"line": 2146,
+					"line": 2149,
 					"column": 0
 				},
 				{
 					"label": "setRemote",
-					"line": 2168,
+					"line": 2171,
 					"column": 0
 				},
 				{
-					"line": 2320,
+					"line": 2323,
 					"column": 0,
 					"label": "deleteRemote"
 				},
 				{
-					"line": 2335,
+					"line": 2338,
 					"column": 0,
 					"label": "shoRemote"
 				},
 				{
-					"line": 2348,
+					"line": 2351,
 					"column": 0,
 					"label": "installGH"
 				},
 				{
-					"line": 2427,
+					"line": 2430,
 					"column": 0,
 					"label": "backupLocal"
 				},
 				{
-					"line": 2454,
+					"line": 2457,
 					"column": 0,
 					"label": "listWorkingFiles"
 				}
@@ -781,111 +781,6 @@
 			]
 		},
 		{
-			"path": "._2/JPTs/JPT12_Main2Fns_p1.07.sh",
-			"bookmarks": [
-				{
-					"label": "exit_wCR",
-					"line": 116,
-					"column": 0
-				},
-				{
-					"label": "setOS",
-					"line": 123,
-					"column": 0
-				},
-				{
-					"label": "logIt",
-					"line": 226,
-					"column": 0
-				},
-				{
-					"label": "pause",
-					"line": 236,
-					"column": 0
-				},
-				{
-					"label": "ask4Anything",
-					"line": 242,
-					"column": 0
-				},
-				{
-					"label": "ask4Required",
-					"line": 247,
-					"column": 0
-				},
-				{
-					"label": "ask4Default",
-					"line": 256,
-					"column": 0
-				},
-				{
-					"label": "askYN",
-					"line": 265,
-					"column": 0
-				},
-				{
-					"label": "Begin",
-					"line": 275,
-					"column": 0
-				},
-				{
-					"label": "End",
-					"line": 308,
-					"column": 0
-				},
-				{
-					"label": "isDir",
-					"line": 323,
-					"column": 0
-				},
-				{
-					"label": "sayMBugEnd",
-					"line": 334,
-					"column": 0
-				},
-				{
-					"label": "sayMsg",
-					"line": 341,
-					"column": 0
-				},
-				{
-					"label": "setArgs",
-					"line": 411,
-					"column": 0
-				},
-				{
-					"label": "getOpts",
-					"line": 442,
-					"column": 0
-				},
-				{
-					"label": "getOpt",
-					"line": 457,
-					"column": 0
-				},
-				{
-					"label": "setCmds",
-					"line": 488,
-					"column": 0
-				},
-				{
-					"label": "setLv",
-					"line": 507,
-					"column": 0
-				},
-				{
-					"label": "getCmd1",
-					"line": 531,
-					"column": 0
-				},
-				{
-					"label": "getCmd",
-					"line": 543,
-					"column": 0
-				}
-			]
-		},
-		{
 			"path": "._2/JPTs/JPT13_reNum_p1.08.sh",
 			"bookmarks": [
 				{
@@ -925,12 +820,12 @@
 			"bookmarks": [
 				{
 					"label": "Help",
-					"line": 111,
+					"line": 113,
 					"column": 0
 				},
 				{
 					"label": "subFunction",
-					"line": 387,
+					"line": 407,
 					"column": 0
 				}
 			]

@@ -1,0 +1,16 @@
+
+      { "git.ignoredRepositories": 
+          [ "E:/Repos/Robin/FRTools_/._/ZIPs/prod2-master_v50717_rm228/.git"          
+          , "E:/Repos/Robin/FRTools_/._/ZIPs/prod2-master_v50824/.git"                
+          , "E:/Repos/Robin/FRTools_/._/ZIPs/prod3-master_v41031/.git"                
+          , "E:/Repos/Robin/FRTools_/._/ZIPs/prod2-master_v41031_rm231/.git"          
+          , "E:/Repos/Robin/FRTools_/._/ZIPs/prod2-master_v41118_rm231/.git"          
+          , "E:/Repos/Robin/FRTools_/._/ZIPs/prod2-master_v41113_rm231/.git"          
+          , "E:/Repos/Robin/FRTools_/._/ZIPs/prod2-master_v41030_rm231/.git"          
+          , "E:/Repos/Robin/FRTools_/._/ZIPs/prod1-master_v41029/.git"                
+          , "E:/Repos/Robin/FRTools_/._/ZIPs/FRTools_prod2-master_v50104/.git"        
+          , "E:/Repos/Robin/FRTools_/._/ZIPs/FRTools_prod2-master_v41125_rm231/.git"  
+          , "E:/Repos/Robin/FRTools_/._/ZIPs/FRTools_dev03-robin_v41205-rm228/.git"   
+            ] ,
+        "liveServer.settings.root": "."            
+        }            

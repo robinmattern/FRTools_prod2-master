@@ -15,7 +15,17 @@
             "type": "bashdb",
             "name": "Debug Bash Script",
             "request": "launch",
-            "program": "${file}"
-        }
+            "program": "/usr/bin/bash",
+            "args": [ "${file}" ],
+            "env": { "PATH": "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/c/Users/Robin/AppData/Local/nvs/default/node:/c/Windows/System32:/c/Home/._0/bin"
+             }            
+        },
+        {
+            "type": "bashdb",
+            "name": "Debug AWK Script", 
+            "request": "launch",
+            "program": "/usr/bin/awk",
+            "args": ["-f", "${file}", "_config.yaml"]
+            }        
     ]
 }
