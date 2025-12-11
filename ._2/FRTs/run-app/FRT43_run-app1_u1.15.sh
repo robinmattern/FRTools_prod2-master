@@ -414,7 +414,7 @@ function runClient() {
 function main( ) {
 
 #   chkApp  "$1"                                                                        ##.(51204.02.1 RAM Check if c## or s## or both app folderes exist).(51204.02b.1 RAM But don't use it)   
-    getFVARS                                                                            # .(51210.01.2 RAM Use it)                            
+    getFVARS                                                                            # .(51210.01.2 RAM Use it)                             
 
 #   ------------------------------------------------------------------
     
