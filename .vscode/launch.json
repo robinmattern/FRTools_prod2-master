@@ -13,13 +13,22 @@
         },
         {
             "type": "bashdb",
-            "name": "Debug Bash Script",
+            "name": "Debug Bash Script (Git Bash)",
             "request": "launch",
             "program": "/usr/bin/bash",
             "args": [ "${file}" ],
+            "pathBash" : "/bin/usr/bash",
             "env": { "PATH": "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/c/Users/Robin/AppData/Local/nvs/default/node:/c/Windows/System32:/c/Home/._0/bin"
              }            
         },
+        {
+            "type": "bashdb",
+            "request": "launch",
+            "name": "Debug Bash Script (WSL)",
+            "cwd": "${workspaceFolder}",
+            "program": "${file}",
+            "terminalKind": "integrated"
+             },
         {
             "type": "bashdb",
             "name": "Debug AWK Script", 
