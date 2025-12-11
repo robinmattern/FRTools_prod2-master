@@ -10,7 +10,7 @@
   aRootDir="$( git rev-parse --show-toplevel 2>/dev/null || pwd)"                       # .(51108.07.1 RAM set aRootDir)
   aStage="$(basename "${aRootDir}")"
 
-  nVer=1.15.1428
+  nVer=1.15.1210
 # ---------------------------------------------------
 
 # if [ "$1" == "source" ]; then echo -e  "\n  ${0} (v${nVer})"; if [ "${OS:0:3}" != "Win" ]; then echo ""; fi; exit; fi
@@ -116,7 +116,8 @@ function chkPort() {
 
     if [[ "$OSTYPE" == "msys" || "$OSTYPE" == "win32" ]]; then
         # Windows (Git Bash)
-        local pid=$(netstat -ano | findstr ":$port" | awk '{print $5}' | head -1)
+        local pid
+        pid=$(netstat -ano | findstr ":$port" | awk '{print $5}' | head -1)
         if [ "$pid" != "0" ] && [ ! -z "$pid" ]; then
           sayMsg "! Killing windows process $pid for port $port"
 #         taskkill /PID $pid /F > /dev/null 2>&1
@@ -124,7 +125,8 @@ function chkPort() {
         fi
     else
         # Linux/macOS
-        local pid=$(lsof -ti:$port)
+        local pid
+        pid=$(lsof -ti:$port)
         if [ "$pid" != "0" ] && [ ! -z "$pid" ]; then
           sayMsg "! Killing linux process $pid for port $port"
           kill -9 $pid 2>&1 > /dev/null 2>&1 | awk '{ print "  " $0 }'
@@ -150,7 +152,7 @@ function setPort() { # $1 = 3201, 3251 or 64361: Proj#: 3,64; Stage#: 1)Prod, 2)
     }
 # ---------------------------------------------------
 
-function findVar() {                                                                    # .(51111.03.1 RAM Add findVar Beg)  
+function findVar() {                                                                    # .(51111.03.1 RAM Add findVar Beg)
     aVAR="$( echo "${1}" | tr '[a-z]' '[A-Z]' )"; aVAL=""
     while IFS= read -r aLine; do
 #   echo "Given: '${aLine}'"
@@ -162,7 +164,7 @@ function findVar() {                                                            
 #   if [ "${aVAL}" != "" ]; then echo "-- found: ${aVAR}: ${aVAL}"; fi
     if [ "${aVAL}" != "" ]; then echo "--${aVAR}: ${aVAL}"; else echo ""; fi
 #   if [ "${aVAL}" != "" ]; then echo "${aVAL}"; fi
-    }                                                                                   # .(51111.03.1 End)  
+    }                                                                                   # .(51111.03.1 End)
 # ---------------------------------------------------
 
 function getPrjNo() {
@@ -199,7 +201,7 @@ if [ "${1:0:1}" == "s" ]; then aFldr="${aServer}"; fi
 #if [ "${aApp}" == "c02" ]; then aAppName="c02_docs-viewer-app"; fi
 
 if [ -d "${aFldr}" ] && [ "${aAppName}" == "Unknown" ]; then
-   aAppName=$(  find "./${aFldr}" -maxdepth 3 -type d -name "${aApp}_*" | awk '{ sub( /.+\//, ""   ); print; exit }' )   # .(51119.01.1 RAM Was maxdepth=1)  
+   aAppName=$(  find "./${aFldr}" -maxdepth 3 -type d -name "${aApp}_*" | awk '{ sub( /.+\//, ""   ); print; exit }' )   # .(51119.01.1 RAM Was maxdepth=1)
    fi
    }
 # ---------------------------------------------------
@@ -232,14 +234,94 @@ function chkEnvFile( ) {                                                        
    }
 # ---------------------------------------------------
 
+function chkApp( ) {                                                                    # .(51204.01.1 RAM Write chkApp Beg)
+    local aApp="$1"
+    local aType="${aApp:0:1}"  # First character: c, s, or a
+    local nClient="${aApp:1:1}"  # Second digit (client/server number)
+    local nApp="${aApp:2:1}"     # Third digit (app number)
+    
+    # 1. Validate argument format: must be [csa][0-9]{2}
+    if [[ ! "$aApp" =~ ^[csa][0-9]{2}$ ]]; then
+        sayMsg "x Invalid app format: '$aApp'. Must be c##, s##, or a## where ## is [0-9]{2}"
+        exit 1
+    fi
+    
+    # 2. Check folder existence based on type
+    
+    # Check client folder if type is 'c' or 'a'
+    if [[ "$aType" == "c" ]] || [[ "$aType" == "a" ]]; then
+        local aClientFolder=""
+        if [ "$nClient" == "0" ]; then
+            aClientFolder="client"
+        else
+            aClientFolder="client${nClient}"
+        fi
+        
+        # Find matching folder with at least 10 characters in name
+        local aFound
+        aFound=$(find "./${aClientFolder}" -maxdepth 1 -type d -name "c${nClient}${nApp}_*" 2>/dev/null | head -1)
+        if [ -n "$aFound" ] && [ ${#aFound} -ge $((${#aClientFolder} + 12)) ]; then
+            : # Client folder found
+        else
+            sayMsg "x Client folder not found: ./${aClientFolder}/c${nClient}${nApp}_* (min 10 chars after _)"
+            exit 1
+        fi
+    fi
+    
+    # Check server folder if type is 's' or 'a'
+    if [[ "$aType" == "s" ]] || [[ "$aType" == "a" ]]; then
+        local aServerFolder=""
+        if [ "$nClient" == "0" ]; then
+            aServerFolder="server"
+        else
+            aServerFolder="server${nClient}"
+        fi
+        
+        # Find matching folder with at least 10 characters in name
+        local aFound
+        aFound=$(find "./${aServerFolder}" -maxdepth 1 -type d -name "s${nClient}${nApp}_*" 2>/dev/null | head -1)
+        if [ -n "$aFound" ] && [ ${#aFound} -ge $((${#aServerFolder} + 12)) ]; then
+            : # Server folder found
+        else
+            sayMsg "x Server folder not found: ./${aServerFolder}/s${nClient}${nApp}_* (min 10 chars after _)"
+            exit 1
+        fi
+    fi
+    
+    # Return success if we got here
+    return 0
+   }                                                                                    # .(51204.01.1 End)
+# ---------------------------------------------------
+ 
+function getFVARS() {                                                                   # .(51210.01.1 RAM Write getFVARS)                            
+    mFVARS=""
+if [   -f $"_config.yaml" ]; then
+    mFVARS=$( cat _config.yaml );   
+    fi 
+if [   -f $"_config.yaml.js" ]; then
+    aAWKscr='
+/FVARS =/ { print "FVARS: "; next }
+          { if (match( $0, /"([^"]+)":[ ]*"([^"]+)"/, arr ) ) {
+                printf "  %-20s \"%s\"\n", arr[1]":", arr[2] }
+            }'
+    mFVARS="$( cat _config.yaml.js | awk "${aAWKscr}" )";   
+    fi
+if [ "${mFVARS}" == "" ]; then
+    sayMsg   "! Missing _config.yaml.js file, using defaults."
+    return 
+    fi
+    echo "${mFVARS}"  # it's in aRootDir
+    }                                                                                   # .(51210.01.1 End)                            
+# ---------------------------------------------------
+
 function setServerAPI_URL() {                                                           # .(51108.07.2 RAM Server only).(50911.04.1 RAM Write function Beg)
-         cd "${aRootDir}"
+         cd "${aRootDir}" || return
          aServerDir=$1
          }                                                                              # .(50911.04.1 End)
 # ---------------------------------------------------
 
 function setClientAPI_URL() {                                                           # .(50911.04.1 RAM Write function Beg)
-         cd "${aRootDir}"
+         cd "${aRootDir}" || return
          }                                                                              # .(50911.04.1 End)
 # ---------------------------------------------------
 # -------------------------------------------------------------------------------------------------
@@ -264,16 +346,16 @@ function runServer() {
  if [ "${bDoit}" == "1" ] && [ -f "${aServer}/package.json" ]; then
 
     sayMsg "|n  Installing ${aServer} dependencies..."
-    cd ${aServer}
+    cd ${aServer} || return
     npm install
     echo -e "\n-----------------------------------------------------------------------"
-    cd ..
+    cd .. || return
     fi
  #   ----------------------------------------------------------------
 
     sayMsg "|n  Starting ${aServer}, ${aAppName}, on port ${nPort} ..."
 #   cd ${aServer}/${aApp}_*
-    cd ${aServer}/${aAppName}
+    cd ${aServer}/${aAppName} || return
 #   node server.mjs &
 
     aExt='mjs'; if [ -f "server.js" ]; then aExt='js'; fi
@@ -284,7 +366,7 @@ function runServer() {
 
 #   sayMsg   "% Server is running at: http://localhost:${nPort}/api\n"
 #   if [ "${aQuiet}" == "" ]; then echo ""; fi
-    cd ../..
+    cd ../.. || return
     }
 # ---------------------------------------------------
 
@@ -304,40 +386,38 @@ function runClient() {
  if [ "${bDoit}" == "1" ] && [ -f "${aClient}/package.json" ]; then
 
     sayMsg "|n  Installing ${aClient} dependencies..."
-    cd ${aClient}
+    cd ${aClient} || return
     npm install
     sayMsg "-----------------------------------------------------------------------"
-    cd ..
+    cd .. || return
     fi
  #   ----------------------------------------------------------------
 
     sayMsg "|n  Starting ${aClient}, ${aAppName}, on port ${nPort} ..."
 
 #   cd ${aClient}/${aApp}_*
-    cd ${aClient}/${aAppName}
+    cd ${aClient}/${aAppName} || return
 #   npx http-server@latest -p ${nPort} -s &
 #   python -m SimpleHTTPServer
 #   npx -q serve -p ${nPort} -s &
 
-#            live-server ${aQuiet} --port=${nPort} --host=0.0.0.0 --open=${aClient}/${aAppName} --watch=${aClient}/${aAppName},${aServer}/${aServerName} &   # .(51112.0x.x)
+#            live-server ${aQuiet} --port=${nPort} --host=0.0.0.0 --open=${aClient}/${aAppName} --watch=${aClient}/${aAppName},${aServer}/${aServerName} &   ##.(50926.05.2).(51112.0x.x)
              live-server ${aQuiet} --port=${nPort} --watch=.,../../${aServer}/${aServerName} &
              CLIENT_PID=$!
 
     sayMsg "|n% Client is running at: http://localhost:${nPort}"
-    cd ../..
+    cd ../.. || return
     }
-# --------------------------------------------------------------------------------------------------------------------
-
-if [ ! -f $"_config.yaml" ]; then
-    sayMsg   "! Missing _config.yaml file, using defaults."
-  else
-    mFVARS=$( cat _config.yaml );   
-#   echo "${mFVARS}"  # it's in aRootDir
-    fi
+# --------------------------------------------------------------------
 # -------------------------------------------------------------------------------------------
 
 function main( ) {
 
+#   chkApp  "$1"                                                                        ##.(51204.02.1 RAM Check if c## or s## or both app folderes exist).(51204.02b.1 RAM But don't use it)   
+    getFVARS                                                                            # .(51210.01.2 RAM Use it)                            
+
+#   ------------------------------------------------------------------
+    
     getPrjNo; getStgNo;
 
     nPort="${nPrj}${nStg}##"
@@ -379,5 +459,5 @@ done
 # -------------------------------------------------------------------------------------------------------
          
 #   Wait for user interrupt
-    trap "kill $SERVER_PID $CLIENT_PID; exit" INT
+    trap 'kill $SERVER_PID $CLIENT_PID; exit' INT
     wait
