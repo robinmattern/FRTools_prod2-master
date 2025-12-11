@@ -374,7 +374,7 @@ function setBashrc() {
 #    echo ""                                                >>"${aBashrc}"
 #    echo "alias history=\"fc -il 1\""                      >>"${aBashrc}"
 #    fi
-     echo "  echo \" in Server: \$THE_SERVER [$HOME/.bash_profile v${aTS}]\"" >>"${aBashrc}" # .(50907.03.7 RAM Say what we are)
+     echo -e "  echo \"  in Server: \$THE_SERVER [$HOME/.bash_profile v${aTS}]\\n\"" >>"${aBashrc}" # .(50907.03.7 RAM Say what we are)
 
 #    echo -e "  Executing: source \"${aBashrc}\"\n"
 # if [ "${bDoProfile}" == "1" ]; then     source "${aBashrc}" "" 2>/dev/null;  fi       # .(41030.06.2 RAM setopt gets an error in MacOS when run here, but not during login)
@@ -543,7 +543,9 @@ function  makScript() {
 # echo "    aAnyLLMscr:  $2/$3"
 # return
   echo "#!/bin/bash"   >"$2/$3"
-  echo "  $1 \"\$@\"" >>"$2/$3"
+  echo "   WSL=\"\"; if [ \"\${OSTYPE}\" == \"linux-gnu\" ]; then WSL=\"/mnt\"; fi"  >>"$2/$3"              # .(51210.02.1 RAM Accomodate WSL)
+# echo        "  $1 \"\$@\"" >>"$2/$3"                                                                      ##.(51210.02.2)
+  echo "  \${WSL}$1 \"\$@\"" >>"$2/$3"                                                                      # .(51210.02.2)
   chmod 777 "$2/$3"
   }
 # -----------------------------------------------------------
