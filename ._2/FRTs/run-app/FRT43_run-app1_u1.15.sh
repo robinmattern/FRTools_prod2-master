@@ -240,13 +240,15 @@ if [ -d "${aFldr}" ] && [ "${aAppName}" == "Unknown" ]; then
 # ---------------------------------------------------
 
 function chkEnvFile( ) {                                                                # .(50915.02.1 RAM Write chkEnvFile Beg)
-         aENV_FILE="$(   getFVar "ENV_FILE" | tr 'A-Z' 'a-z' )";                        # .(51108.06.1 Beg)
+         aServerDir="$1"                                                                # .(50915.02b.1)
+         aENV_FILE="$( getFVar "ENV_FILE" | tr 'A-Z' 'a-z' )";                          # .(51108.06.1 Beg)
 
   if [ ! -f "${aServer}/${aServerDir}/.env" ] || [ "${bDoit}" == "1" ]; then
           sayMsg ""
        if [ "${aENV_FILE}" == "" ]; then
-          sayMsg "! Missing ENV_FILE, using 'Local'";       aENV_FILE="local"; fi
-       if [ "${aENV_FILE/.env/}" == "${aENV_FILE}" ]; then aENV_FILE="${aServer}/${aServerDir}/.env-$( echo ${aENV_FILE} | tr 'A-Z' 'a-z' )"; fi
+          sayMsg "! Missing ENV_FILE, using 'Local'";         aENV_FILE="local"; fi
+       if [    "${aENV_FILE/.env/}" == "${aENV_FILE}" ]; then aENV_FILE="${aServer}/${aServerDir}/.env-$( echo ${aENV_FILE} | tr 'A-Z' 'a-z' )"; fi  # .(50915.02b.2 RAM .env not in ENV_FILE)
+       if [    "${aENV_FILE/.env/}" != "${aENV_FILE}" ]; then aENV_FILE="${aServer}/${aServerDir}/$(      echo ${aENV_FILE} | tr 'A-Z' 'a-z' )"; fi  # .(50915.02b.3 RAM .env in ENV_FILE)
        if [ -f "${aENV_FILE}" ]; then
           sayMsg "  Copying \"${aENV_FILE}\" to \"${aServer}/${aServerDir}/.env\""
           cp "${aENV_FILE}" "${aServer}/${aServerDir}/.env"                             # .(51108.06.2 RAM Copy .env-xxx to .env)
@@ -417,7 +419,6 @@ function main( ) {
 
 #   chkApp  "$1"                                                                        ##.(51204.02.1 RAM Check if c## or s## or both app folderes exist).(51204.02b.1 RAM But don't use it)
     getFVARS                                                                            # .(51210.01.2 RAM Use it)
-    chkEnvFile                                                                          # .(50915.02.2 RAM Use chkEnvFile)
 
 #   ------------------------------------------------------------------
 
@@ -426,6 +427,8 @@ function main( ) {
     nPort="${nPrj}${nStg}##"
     getAppName "s${1:1:2}" ${nPort}; aServerName=${aAppName}
  #  echo "  Starting ${aAppName}"; exit
+
+    chkEnvFile ${aServerName}                                                           # .(50915.02b.4 RAM Add sServerName).(50915.02.2 RAM Use chkEnvFile)
 
     bFirst=1
 #   sayMsg "-----------------------------------------------------------------------"
