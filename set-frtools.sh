@@ -20,6 +20,7 @@
 ##FD         set-frtools.sh     |  33251|  7/22/25 12:50|   532| v1.05`50722.1250
 ##FD         set-frtools.sh     |  35901|  8/10/25 13:12|   563| v1.05`50810.1312
 ##FD         set-frtools.sh     |  37419|  9/08/25  8:15|   579| v1.05`50908.0815
+##FD         set-frtools.sh     |  38594| 12/11/25  9:15|   590| v1.05`51211.0915
 #
 ##DESC     .--------------------+-------+-----------------+------+---------------+
 #            Create ._0/bin folder and copy all command scripts there as well as
@@ -77,6 +78,8 @@
 #.(50908.01   9/08/25 RAM  8:15a| Add commit
 #.(50908.05   9/08/25 RAM  6:15p| Fix cd-list alias code
 #.(51108.01  11/08/25 RAM  8:30a| Add run.app
+#.(51210.02  12/10/25 RAM 10:05p| Add Check for WSL
+#.(51210.02a 12/11/25 RAM  9:15a| Better check for WSL
 #
 ##PRGM     +====================+===============================================+
 ##ID 69.600. Main0              |
@@ -98,6 +101,7 @@
   aVer="v1.05\`50722.1245"
   aVer="v1.05\`50810.1312"
   aVer="v1.05\`50908.0815"
+  aVer="v1.05\`51211.0915"
 
   echo ""
 
@@ -140,11 +144,12 @@ function setOSvars() {
 
      aBinDir="/home/._0/bin"                                                                                # .(41211.02.1 RAM Was /Home/._0/bin)
      aOS="linux"
-     fi # eif not msys                                                                                      # .(50406.04.2)
-     fi                                                                                                     # .(41208.02e.9)
+     fi # eif not msys
+     if [ -d "/mnt/c" ]; then bWSL="1"; fi                                                                  # .(51210.02a.1 RAM Set bWSL)
+     fi 
 
   if [ "${OSTYPE:0:6}" == "darwin"  ]; then
-     bZSHver="0"; if [[ "${OSTYPE:6:2}" > 21 ]]; then bZSHver="1"; fi                                       # .(41208.02b.1)
+     bZSHver="0"; if [[ "${OSTYPE:6:2}" -gt 21 ]]; then bZSHver="1"; fi                                     # .(41208.02b.1)
 #    echo "  bZSHver: '${bZSHver}', OSTYPE:6:2: '${OSTYPE:6:2}'"; exit
   if [ "${bZSHver}" == "0" ]; then                                                                          # .(41208.02e.10)
      if [ -f "$HOME/.bashrc"        ]; then aBashrc="$HOME/.bashrc";       fi                               # .(41208.02b.3).(41208.02.2)
@@ -543,7 +548,8 @@ function  makScript() {
 # echo "    aAnyLLMscr:  $2/$3"
 # return
   echo "#!/bin/bash"   >"$2/$3"
-  echo "   WSL=\"\"; if [ \"\${OSTYPE}\" == \"linux-gnu\" ]; then WSL=\"/mnt\"; fi"  >>"$2/$3"              # .(51210.02.1 RAM Accomodate WSL)
+# echo "   WSL=\"\"; if [ \"\${OSTYPE}\" == \"linux-gnu\" ]; then WSL=\"/mnt\"; fi"  >>"$2/$3"              ##.(51210.02.1 RAM Accomodate WSL).(51210.02a.1 RAM Same on any Ubuntu)
+  echo "   WSL=\"\"; if [ -d \"/mnt/c\" ]; then WSL=\"/mnt\"; fi"  >>"$2/$3"                                # .(51210.02a.1 RAM Better test for WSL)
 # echo        "  $1 \"\$@\"" >>"$2/$3"                                                                      ##.(51210.02.2)
   echo "  \${WSL}$1 \"\$@\"" >>"$2/$3"                                                                      # .(51210.02.2)
   chmod 777 "$2/$3"

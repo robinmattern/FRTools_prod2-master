@@ -158,12 +158,12 @@ if [   -f $"_config.yaml" ]; then
     mFVARS=$( cat _config.yaml );
     fi
 if [   -f $"_config.yaml.js" ]; then
-    aAWKscr='
-/FVARS =/ { print "FVARS: "; next }
-          { if (match( $0, /"([^"]+)":[ ]*"([^"]+)"/, arr ) ) {
-                printf "  %-20s \"%s\"\n", arr[1]":", arr[2] }
-            }'
-#   mFVARS="$( cat _config.yaml.js | awk "${aAWKscr}" )";                              # .(51210.01b.1 RAM Doesn't work in MacOS Old BSD awk)
+#    aAWKscr='
+#/FVARS =/ { print "FVARS: "; next }
+#          { if (match( $0, /"([^"]+)":[ ]*"([^"]+)"/, arr ) ) {
+#                printf "  %-20s \"%s\"\n", arr[1]":", arr[2] }
+#            }'
+#   mFVARS="$( cat _config.yaml.js | awk "${aAWKscr}" )";                               # .(51210.01b.1 RAM Doesn't work in MacOS Old BSD awk)
     mFVARS="$( cat _config.yaml.js | sed -e 's/^ *"\([^"]*\)": *"\([^"]*\)"/  \1: "\2"/' )"
     mFVARS="$( echo "${mFVARS}" | awk '/FVARS =/ { print "FVARS: "; next }; /{/ { next }; { gsub( /,/, "" ); printf "  %-20s \%s\n", $1, $2 }' )"
     fi
