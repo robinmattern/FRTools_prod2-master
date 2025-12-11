@@ -10,7 +10,7 @@
   aRootDir="$( git rev-parse --show-toplevel 2>/dev/null || pwd)"                       # .(51108.07.1 RAM set aRootDir)
   aStage="$(basename "${aRootDir}")"
 
-  nVer=1.15.1210
+  nVer=1.15.1211
 # ---------------------------------------------------
 
 # if [ "$1" == "source" ]; then echo -e  "\n  ${0} (v${nVer})"; if [ "${OS:0:3}" != "Win" ]; then echo ""; fi; exit; fi
@@ -165,7 +165,7 @@ if [   -f $"_config.yaml.js" ]; then
 #            }'
 #   mFVARS="$( cat _config.yaml.js | awk "${aAWKscr}" )";                               # .(51210.01b.1 RAM Doesn't work in MacOS Old BSD awk)
     mFVARS="$( cat _config.yaml.js | sed -e 's/^ *"\([^"]*\)": *"\([^"]*\)"/  \1: "\2"/' )"
-    mFVARS="$( echo "${mFVARS}" | awk '/FVARS =/ { print "FVARS: "; next }; /{/ { next }; { gsub( /,/, "" ); printf "  %-20s \%s\n", $1, $2 }' )"
+    mFVARS="$( echo "${mFVARS}" | awk '/FVARS =/ { print "FVARS: "; next }; /{/ { next }; { gsub( /,/, "" ); printf "  %-20s %s\n", $1, $2 }' )"
     fi
 if [ "${mFVARS}" == "" ]; then
     sayMsg   "! Missing _config.yaml.js file, using defaults."
@@ -175,14 +175,14 @@ if [ "${mFVARS}" == "" ]; then
     }                                                                                   # .(51210.01.1 End)
 # ---------------------------------------------------
 
-function getFVar( ) {                                                                   # .(50915.02.1 RAM Write getFVar)
+function getFVar( ) {                                                                   # .(51016.02.1 RAM Write getFVar Beg)
 #        aAWKpgm="/^[,{SP}\"]*${1}[{SP}\"]*:/ { sub( /^[,{SP}\"]*${1}[{SP}\"]*:/, \"\" ); sub( /.+={SP}*/, \"\" ); a=\$0; }; END { print a }"
 #        aAWKpgm="${aAWKpgm//{SP\}/ }"
 #        aVar="$( cat "${aRootDir}/_config.js" | awk "${aAWKpgm}" | tr -d "'" | tr -d '"' )"   # .(51016.02.2).(51013.05.7)
 #        aVar="$( echo "${aVar}" | awk '{ a = substr( $0, 1, 66 ); sub( / +$/, "", a ); sub( /^ +/, "", a ); print a; }' )"
          aVar="$( findVar "$1")"; aVar="${aVar/*:/}"; aVar="${aVar// /}"
          echo "${aVar}"
-         }                                                                              # .(51016.02.1)
+         }                                                                              # .(51016.02.1 End)
 # ---------------------------------------------------
 
 function findVar() {                                                                    # .(51111.03.1 RAM Add findVar Beg)
@@ -239,7 +239,7 @@ if [ -d "${aFldr}" ] && [ "${aAppName}" == "Unknown" ]; then
    }
 # ---------------------------------------------------
 
-function chkEnvFile( ) {                                                                # .(50915.02.1 RAM Write chkEnvFile)
+function chkEnvFile( ) {                                                                # .(50915.02.1 RAM Write chkEnvFile Beg)
          aENV_FILE="$(   getFVar "ENV_FILE" | tr 'A-Z' 'a-z' )";                        # .(51108.06.1 Beg)
 
   if [ ! -f "${aServer}/${aServerDir}/.env" ] || [ "${bDoit}" == "1" ]; then
@@ -254,7 +254,7 @@ function chkEnvFile( ) {                                                        
           sayMsg "! Missing ENV_FILE: \"${aENV_FILE}\". Can't copy to \"${aServer}/${aServerDir}/.env\"."
           fi;
       fi
-   }
+   }                                                                                    # .(50915.02.1 End)
 # ---------------------------------------------------
 
 function chkApp( ) {                                                                    # .(51204.01.1 RAM Write chkApp Beg)
@@ -417,6 +417,7 @@ function main( ) {
 
 #   chkApp  "$1"                                                                        ##.(51204.02.1 RAM Check if c## or s## or both app folderes exist).(51204.02b.1 RAM But don't use it)
     getFVARS                                                                            # .(51210.01.2 RAM Use it)
+    chkEnvFile                                                                          # .(50915.02.2 RAM Use chkEnvFile)
 
 #   ------------------------------------------------------------------
 
