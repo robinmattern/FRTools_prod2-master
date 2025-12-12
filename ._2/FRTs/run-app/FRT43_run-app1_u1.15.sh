@@ -88,12 +88,13 @@ function sayMsg() {
     if [ "${aMsg}"     == ""  ]; then aCR="\n"; echo ""; return; fi
     if [ "${bFirst}"   == "1" ]; then bFirst=0; echo -e "----------------------------------------------------------------------\n"; fi
     if [ "${aMsg:0:1}" == "-" ]; then              aMsg="----------------------------------------------------------------------"; fi
-    if [ "${aMsg:0:1}" == "%" ]; then aMsg="??${aMsg:1}"; fi
-    if [ "${aMsg:0:1}" == "=" ]; then aMsg="?${aMsg:1}"; fi
-    if [ "${aMsg:0:1}" == "x" ]; then aMsg="?${aMsg:1}"; fi
-    if [ "${aMsg:0:1}" == "X" ]; then aMsg="?${aMsg:1}"; fi
-    if [ "${aMsg:0:1}" == "!" ]; then aMsg="?? ${aMsg:1}"; fi
-    if [ "${aMsg:0:1}" == " " ]; then aMsg="  ${aMsg:1}"; fi
+    if [ "${aMsg:0:1}" == "%" ]; then aMsg="✅ ${aMsg:1}"; fi  # Check 
+    if [ "${aMsg:0:1}" == "i" ]; then aMsg="ℹ️ ${aMsg:1}"; fi  # Info
+    if [ "${aMsg:0:1}" == "!" ]; then aMsg="⚠️ ${aMsg:1}"; fi  # Warn
+    if [ "${aMsg:0:1}" == "x" ]; then aMsg="❌ ${aMsg:1}"; fi  # Error 
+    if [ "${aMsg:0:1}" == "X" ]; then aMsg="🛑 ${aMsg:1}"; fi  # Stop
+    if [ "${aMsg:0:1}" == "=" ]; then aMsg="🚀 ${aMsg:1}"; fi  # Take off
+    if [ "${aMsg:0:1}" == " " ]; then aMsg="  ${aMsg:1}";   fi
     echo -e "${aCR}${aMsg}";
     }
 # ----------------------------------------------------------------------------------------------------------------------------------
@@ -152,26 +153,30 @@ function setPort() { # $1 = 3201, 3251 or 64361: Proj#: 3,64; Stage#: 1)Prod, 2)
     }
 # ---------------------------------------------------
 
-function getFVARS() {                                                                   # .(51210.01.1 RAM Write getFVARS)
+function getFVARS() {                                                                   # .(51210.03.1 RAM Write getFVARS)
     mFVARS=""
-if [   -f $"_config.yaml" ]; then
-    mFVARS=$( cat _config.yaml );
+# if [   -f $"_config.yaml" ]; then                                                     ##.(51211.04.1)
+# if [   -f $"_config.yaml.js" ]; then                                                  ##.(51211.04.3)
+  if [   -f "${1}"          ]; then                                                     # .(51211.04.1)
+    mFVARS=$( cat "$1" );                                                               # .(51211.04.2 RAM Was: _config.yaml)
     fi
-if [   -f $"_config.yaml.js" ]; then
+
+  if [   -f "${1}.js"          ]; then                                                  # .(51211.04.3 RAM Was: _config.yaml.js)
 #    aAWKscr='
 #/FVARS =/ { print "FVARS: "; next }
 #          { if (match( $0, /"([^"]+)":[ ]*"([^"]+)"/, arr ) ) {
 #                printf "  %-20s \"%s\"\n", arr[1]":", arr[2] }
 #            }'
-#   mFVARS="$( cat _config.yaml.js | awk "${aAWKscr}" )";                               # .(51210.01b.1 RAM Doesn't work in MacOS Old BSD awk)
-    mFVARS="$( cat _config.yaml.js | sed -e 's/^ *"\([^"]*\)": *"\([^"]*\)"/  \1: "\2"/' )"
-    mFVARS="$( echo "${mFVARS}" | awk '/FVARS =/ { print "FVARS: "; next }; /{/ { next }; { gsub( /,/, "" ); printf "  %-20s %s\n", $1, $2 }' )"
+#   mFVARS="$( cat _config.yaml.js | awk "${aAWKscr}" )";                               ##.(51210.03b.1 RAM Doesn't work in MacOS Old BSD awk)
+    mFVARS="$( cat "${1}.js"   | sed -e 's/^ *"\([^"]*\)": *"\([^"]*\)"/  \1: "\2"/' )" # .(51211.04.4 RAM Was: _config.yaml.js).(51210.03b.1 RAM Use sed)
+    mFVARS="$( echo "${mFVARS}" | awk '/FVARS =/ { print "FVARS: "; next }; /[\/#] / { next }; /}/ { exit }; { gsub( /,/, "" ); printf "  %-20s %s\n", $1, $2 }' )" # .(51210.03b.2)
     fi
+
 if [ "${mFVARS}" == "" ]; then
-    sayMsg   "! Missing _config.yaml.js file, using defaults."
+    sayMsg   "! Missing FVARS ${1} file, using defaults."                               # .(51211.04.5)
     return
     fi
-    echo "${mFVARS}"  # it's in aRootDir
+#   echo "${mFVARS}"  # it's in aRootDir                                                ##.(51211.04.6 RAM Not here)
     }                                                                                   # .(51210.01.1 End)
 # ---------------------------------------------------
 
@@ -180,7 +185,8 @@ function getFVar( ) {                                                           
 #        aAWKpgm="${aAWKpgm//{SP\}/ }"
 #        aVar="$( cat "${aRootDir}/_config.js" | awk "${aAWKpgm}" | tr -d "'" | tr -d '"' )"   # .(51016.02.2).(51013.05.7)
 #        aVar="$( echo "${aVar}" | awk '{ a = substr( $0, 1, 66 ); sub( / +$/, "", a ); sub( /^ +/, "", a ); print a; }' )"
-         aVar="$( findVar "$1")"; aVar="${aVar/*:/}"; aVar="${aVar// /}"
+#        aVar="$( findVar "$1")"; aVar="${aVar/*:/}";  aVar="${aVar// /}"               ##.(51211.05.x)
+         aVar="$( findVar "$1")"; aVar="${aVar/*: /}"; aVar="${aVar// /}"               # .(51211.05.x RAM Add space)
          echo "${aVar}"
          }                                                                              # .(51016.02.1 End)
 # ---------------------------------------------------
@@ -189,11 +195,12 @@ function findVar() {                                                            
     aVAR="$( echo "${1}" | tr '[a-z]' '[A-Z]' )"; aVAL=""
     while IFS= read -r aLine; do
 #   echo "Given: '${aLine}'"
-    aVal="${aLine:20}";   aVal="${aVal// /}";  aVal="${aVal//\"/}"
+    aVal="${aLine:23}";   aVal="${aVal// /}";  aVal="${aVal//\"/}"                      # .(51211.05.1 RAM Was: 20)
     aVar="${aLine:2:${#aVAR}}";
 #   echo "Looking for: '${aVAR}' in '${aVar}' <- '${aVal}'"
     if [ "${aVAR}" ==  "${aVar}" ]; then aVAL="${aVal}"; break; fi
     done <<< "${mFVARS}"
+
 #   if [ "${aVAL}" != "" ]; then echo "-- found: ${aVAR}: ${aVAL}"; fi
     if [ "${aVAL}" != "" ]; then echo "--${aVAR}: ${aVAL}"; else echo ""; fi
 #   if [ "${aVAL}" != "" ]; then echo "${aVAL}"; fi
@@ -319,12 +326,28 @@ function chkApp( ) {                                                            
 # ---------------------------------------------------
 
 function setServerAPI_URL() {                                                           # .(51108.07.2 RAM Server only).(50911.04.1 RAM Write function Beg)
+#        echo "--- cd ${aServer}/${1}"
+         cd "${aServer}/${1}"                                                           # .(51211.01.1 RAM Rewrite and use setServerAPI_URL Beg)
+         getFVARS "_config"
+#        echo -e "\nServer ${mFVARS}"
+         aRemote="$( getFVar "SERVER_LOCATION" | tr 'a-z' 'A-Z' )";
+#        echo          "--- aRemote: ${aRemote}_API_URL"
+         aServerAPI_URL="$( getFVar "${aRemote}_API_URL" )";                            # .(51211.01.1 End)
+#        echo "--- aServerAPI_URL: ${aServerAPI_URL}"; exit
          cd "${aRootDir}" || return
          aServerDir=$1
          }                                                                              # .(50911.04.1 End)
 # ---------------------------------------------------
 
 function setClientAPI_URL() {                                                           # .(50911.04.1 RAM Write function Beg)
+#        echo "--- cd ${aServer}/${1}"
+         cd "${aClient}/${1}"                                                           # .(51211.01.2 RAM Rewrite and use setClientAPI_URL Beg)
+         getFVARS "_config"
+#        echo -e "\nClient ${mFVARS}"
+         aRemote="$( getFVar "SERVER_LOCATION" | tr 'a-z' 'A-Z' )";
+#        echo       "--- aRemote: ${aRemote}_HOST";# exit
+         aClientHOST="$( getFVar "${aRemote}_HOST")";                                   # .(51211.01.2 End)
+#        echo "--- aClientHOST: ${aClientHOST}"; exit
          cd "${aRootDir}" || return
          }                                                                              # .(50911.04.1 End)
 # ---------------------------------------------------
@@ -348,12 +371,14 @@ function runServer() {
     sayMsg "|n! Missing ./${aServer}/package.json. Can't install node_modules!\n"
     fi
  if [ "${bDoit}" == "1" ] && [ -f "${aServer}/package.json" ]; then
+ if [ "$( cat "${aServer}/package.json" | awk '/ependencies/ { print "1"; exit }' )" == "1" ]; then         # .(51211.03.1 RAM Check for NPM Installs)
 
     sayMsg "|n  Installing ${aServer} dependencies..."
     cd ${aServer} || return
     npm install
     echo -e "\n-----------------------------------------------------------------------"
     cd .. || return
+    fi                                                                                                      # .(51211.03.2 End)
     fi
  #   ----------------------------------------------------------------
 
@@ -368,7 +393,8 @@ function runServer() {
         node --trace-deprecation ${aQuiet} server.${aExt} &
         SERVER_PID=$!
 
-#   sayMsg   "% Server is running at: http://localhost:${nPort}/api\n"
+#   sayMsg   "% Server is running at: http://localhost:${nPort}/api\n"                  ##.(51211.02.1)
+    sayMsg   "% Server is running at: ${aServerAPI_URL}\n"                              # .(51211.02.1)
 #   if [ "${aQuiet}" == "" ]; then echo ""; fi
     cd ../.. || return
     }
@@ -386,8 +412,9 @@ function runClient() {
  if [ "$(command -v live-server)" == "" ]; then npm install -g live-server >/dev/null 2>&1; fi
 
     bDoit="0"; if [ "${3:0:2}" == "-d" ]; then bDoit="1"; fi
- if [ ! -d "${aClient}/node_modules"   ]; then bDoit="1"; fi
+ if [    ! -d "${aClient}/node_modules"   ]; then bDoit="1"; fi
  if [ "${bDoit}" == "1" ] && [ -f "${aClient}/package.json" ]; then
+ if [ "$( cat "${aClient}/package.json" | awk '/ependencies/ { print "1"; exit }' )" == "1" ]; then         # .(51211.03.3 RAM Check for NMP Installs)
 
     sayMsg "|n  Installing ${aClient} dependencies..."
     cd ${aClient} || return
@@ -395,8 +422,10 @@ function runClient() {
     sayMsg "-----------------------------------------------------------------------"
     cd .. || return
     fi
+    fi                                                                                                      # .(51211.03.4)
  #   ----------------------------------------------------------------
 
+    setClientAPI_URL "${aAppName}"                                                      # .(51211.04.7 RAM Do it here)
     sayMsg "|n  Starting ${aClient}, ${aAppName}, on port ${nPort} ..."
 
 #   cd ${aClient}/${aApp}_*
@@ -406,10 +435,12 @@ function runClient() {
 #   npx -q serve -p ${nPort} -s &
 
 #            live-server ${aQuiet} --port=${nPort} --host=0.0.0.0 --open=${aClient}/${aAppName} --watch=${aClient}/${aAppName},${aServer}/${aServerName} &   ##.(50926.05.2).(51112.0x.x)
-             live-server ${aQuiet} --port=${nPort} --watch=.,../../${aServer}/${aServerName} &
+             live-server ${aQuiet} --port=${nPort}                                              --watch=.,../../${aServer}/${aServerName} &
+#            live-server ${aQuiet} --port=${nPort} --host=${aClientHOST/:${nPort}/}             --watch=.,../../${aServer}/${aServerName} &
              CLIENT_PID=$!
 
-    sayMsg "|n% Client is running at: http://localhost:${nPort}"
+#   sayMsg "|n% Client is running at: http://localhost:${nPort}"                        ##.(51211.02.2)
+    sayMsg "|n% Client is running at: ${aClientHOST}"                                   # .(51211.02.2)
     cd ../.. || return
     }
 # --------------------------------------------------------------------
@@ -418,7 +449,9 @@ function runClient() {
 function main( ) {
 
 #   chkApp  "$1"                                                                        ##.(51204.02.1 RAM Check if c## or s## or both app folderes exist).(51204.02b.1 RAM But don't use it)
-    getFVARS                                                                            # .(51210.01.2 RAM Use it)
+    getFVARS "_config.yaml"                                                             # .(51211.04.8 RAM Add _config file name).(51210.01.2 RAM Use it)
+    echo "Global: ${mFVARS}"  # it's in aRootDir                                        # .(51211.04.6 RAM Here)
+
 
 #   ------------------------------------------------------------------
 
@@ -441,7 +474,7 @@ function main( ) {
 
     fi
  if [ "${1:0:1}" == "c" ] || [ "${1:0:1}" == "a" ]; then
-#   setClientAPI_URL
+#   setClientAPI_URL "${aAppName}"                                                      ##.(51211.04.7 RAM Not here)       
     runClient "c${1:1:2}" ${nPort}                                                      # .(50911.04.4)
     sayMsg "|n-----------------------------------------------------------------------"
     fi
