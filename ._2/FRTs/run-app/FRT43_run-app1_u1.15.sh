@@ -155,28 +155,28 @@ function setPort() { # $1 = 3201, 3251 or 64361: Proj#: 3,64; Stage#: 1)Prod, 2)
 
 function getFVARS() {                                                                   # .(51210.03.1 RAM Write getFVARS)
     mFVARS=""
-# if [   -f $"_config.yaml" ]; then                                                     ##.(51211.04.1)
-# if [   -f $"_config.yaml.js" ]; then                                                  ##.(51211.04.3)
-  if [   -f "${1}"          ]; then                                                     # .(51211.04.1)
-    mFVARS=$( cat "$1" );                                                               # .(51211.04.2 RAM Was: _config.yaml)
+# if [   -f $"_config.yaml" ]; then                                                     ##.(51211.04.1)  
+# if [   -f $"_config.yaml.js" ]; then                                                  ##.(51211.04.3)  
+  if [   -f "${1}"          ]; then                                                     # .(51211.04.1)  
+    mFVARS=$( cat "$1" );                                                               # .(51211.04.2 RAM Was: _config.yaml)  
     fi
 
-  if [   -f "${1}.js"          ]; then                                                  # .(51211.04.3 RAM Was: _config.yaml.js)
+  if [   -f "${1}.js"          ]; then                                                  # .(51211.04.3 RAM Was: _config.yaml.js)  
 #    aAWKscr='
 #/FVARS =/ { print "FVARS: "; next }
 #          { if (match( $0, /"([^"]+)":[ ]*"([^"]+)"/, arr ) ) {
 #                printf "  %-20s \"%s\"\n", arr[1]":", arr[2] }
 #            }'
 #   mFVARS="$( cat _config.yaml.js | awk "${aAWKscr}" )";                               ##.(51210.03b.1 RAM Doesn't work in MacOS Old BSD awk)
-    mFVARS="$( cat "${1}.js"   | sed -e 's/^ *"\([^"]*\)": *"\([^"]*\)"/  \1: "\2"/' )" # .(51211.04.4 RAM Was: _config.yaml.js).(51210.03b.1 RAM Use sed)
+    mFVARS="$( cat "${1}.js"   | sed -e 's/^ *"\([^"]*\)": *"\([^"]*\)"/  \1: "\2"/' )" # .(51211.04.4 RAM Was: _config.yaml.js).(51210.03b.1 RAM Use sed)  
     mFVARS="$( echo "${mFVARS}" | awk '/FVARS =/ { print "FVARS: "; next }; /[\/#] / { next }; /}/ { exit }; { gsub( /,/, "" ); printf "  %-20s %s\n", $1, $2 }' )" # .(51210.03b.2)
     fi
 
 if [ "${mFVARS}" == "" ]; then
-    sayMsg   "! Missing FVARS ${1} file, using defaults."                               # .(51211.04.5)
+    sayMsg   "! Missing FVARS ${1} file, using defaults."                               # .(51211.04.5)  
     return
     fi
-#   echo "${mFVARS}"  # it's in aRootDir                                                ##.(51211.04.6 RAM Not here)
+#   echo "${mFVARS}"  # it's in aRootDir                                                ##.(51211.04.6 RAM Not here)  
     }                                                                                   # .(51210.01.1 End)
 # ---------------------------------------------------
 
@@ -425,7 +425,7 @@ function runClient() {
     fi                                                                                                      # .(51211.03.4)  
  #   ----------------------------------------------------------------
 
-    setClientAPI_URL "${aAppName}"                                                      # .(51211.04.7 RAM Do it here)
+    setClientAPI_URL "${aAppName}"                                                      # .(51211.04.7 RAM Do it here)  
     sayMsg "|n  Starting ${aClient}, ${aAppName}, on port ${nPort} ..."
 
 #   cd ${aClient}/${aApp}_*
@@ -449,8 +449,8 @@ function runClient() {
 function main( ) {
 
 #   chkApp  "$1"                                                                        ##.(51204.02.1 RAM Check if c## or s## or both app folderes exist).(51204.02b.1 RAM But don't use it)
-    getFVARS "_config.yaml"                                                             # .(51211.04.8 RAM Add _config file name).(51210.01.2 RAM Use it)
-    echo "Global: ${mFVARS}"  # it's in aRootDir                                        # .(51211.04.6 RAM Here)
+    getFVARS "_config.yaml"                                                             # .(51211.04.8 RAM Add _config file name).(51210.01.2 RAM Use it)  
+    echo "Global: ${mFVARS}"  # it's in aRootDir                                        # .(51211.04.6 RAM Here)  
 
 
 #   ------------------------------------------------------------------
@@ -474,7 +474,7 @@ function main( ) {
 
     fi
  if [ "${1:0:1}" == "c" ] || [ "${1:0:1}" == "a" ]; then
-#   setClientAPI_URL "${aAppName}"                                                      ##.(51211.04.7 RAM Not here)       
+#   setClientAPI_URL "${aAppName}"                                                      ##.(51211.04.7 RAM Not here)         
     runClient "c${1:1:2}" ${nPort}                                                      # .(50911.04.4)
     sayMsg "|n-----------------------------------------------------------------------"
     fi
