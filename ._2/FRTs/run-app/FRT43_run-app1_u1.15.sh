@@ -371,14 +371,14 @@ function runServer() {
     sayMsg "|n! Missing ./${aServer}/package.json. Can't install node_modules!\n"
     fi
  if [ "${bDoit}" == "1" ] && [ -f "${aServer}/package.json" ]; then
- if [ "$( cat "${aServer}/package.json" | awk '/ependencies/ { print "1"; exit }' )" == "1" ]; then         # .(51211.03.1 RAM Check for NPM Installs)
+ if [ "$( cat "${aServer}/package.json" | awk '/ependencies/ { print "1"; exit }' )" == "1" ]; then         # .(51211.03.1 RAM Check for NPM Installs) 
 
     sayMsg "|n  Installing ${aServer} dependencies..."
     cd ${aServer} || return
     npm install
     echo -e "\n-----------------------------------------------------------------------"
     cd .. || return
-    fi                                                                                                      # .(51211.03.2 End)
+    fi                                                                                                      # .(51211.03.2)  
     fi
  #   ----------------------------------------------------------------
 
@@ -414,7 +414,7 @@ function runClient() {
     bDoit="0"; if [ "${3:0:2}" == "-d" ]; then bDoit="1"; fi
  if [    ! -d "${aClient}/node_modules"   ]; then bDoit="1"; fi
  if [ "${bDoit}" == "1" ] && [ -f "${aClient}/package.json" ]; then
- if [ "$( cat "${aClient}/package.json" | awk '/ependencies/ { print "1"; exit }' )" == "1" ]; then         # .(51211.03.3 RAM Check for NMP Installs)
+ if [ "$( cat "${aClient}/package.json" | awk '/ependencies/ { print "1"; exit }' )" == "1" ]; then         # .(51211.03.3 RAM Check for NPM Installs)  
 
     sayMsg "|n  Installing ${aClient} dependencies..."
     cd ${aClient} || return
@@ -422,7 +422,7 @@ function runClient() {
     sayMsg "-----------------------------------------------------------------------"
     cd .. || return
     fi
-    fi                                                                                                      # .(51211.03.4)
+    fi                                                                                                      # .(51211.03.4)  
  #   ----------------------------------------------------------------
 
     setClientAPI_URL "${aAppName}"                                                      # .(51211.04.7 RAM Do it here)
