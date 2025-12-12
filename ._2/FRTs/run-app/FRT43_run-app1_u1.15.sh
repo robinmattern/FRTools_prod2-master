@@ -393,8 +393,8 @@ function runServer() {
         node --trace-deprecation ${aQuiet} server.${aExt} &
         SERVER_PID=$!
 
-#   sayMsg   "% Server is running at: http://localhost:${nPort}/api\n"                  ##.(51211.02.1)
-    sayMsg   "% Server is running at: ${aServerAPI_URL}\n"                              # .(51211.02.1)
+#   sayMsg   "% Server is running at: http://localhost:${nPort}/api\n"                  ##.(51211.02.1)  
+    sayMsg   "% Server is running at: ${aServerAPI_URL}\n"                              # .(51211.02.1 RAM Use FVAR for server)
 #   if [ "${aQuiet}" == "" ]; then echo ""; fi
     cd ../.. || return
     }
@@ -440,7 +440,7 @@ function runClient() {
              CLIENT_PID=$!
 
 #   sayMsg "|n% Client is running at: http://localhost:${nPort}"                        ##.(51211.02.2)
-    sayMsg "|n% Client is running at: ${aClientHOST}"                                   # .(51211.02.2)
+    sayMsg "|n% Client is running at: ${aClientHOST}"                                   # .(51211.02.2 RAM Use FVAR for client)
     cd ../.. || return
     }
 # --------------------------------------------------------------------
