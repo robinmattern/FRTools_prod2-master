@@ -24,7 +24,8 @@
      aZIP_Ver="$( 7-zip -h 2>&1 | awk '/Zip.+Usage/  { print "Info-Zip zip " $2 }' )"; fi;                                    # .(50102.04.3 End
 
  if [ "${aZIP_Ver}" == "" ]; then                                                                                             ##.(50907.01.1 RAM)
-     aZIP_Ver="$( unzip    2>&1 | awk '/UnZip.+Debi/ { print "unzip  unzip " $2 }' )";  fi;                                   # .(50907.01.2 RAM On all Unix version?)
+#    aZIP_Ver="$( unzip    2>&1 | awk  '/UnZip.+Debi/        { print "unzip  unzip " $2 }' )";  fi;                           ##.(50907.01.2 RAM On all Unix version?).(60719.01.1)
+     aZIP_Ver="$( unzip    2>&1 | awk '/UnZip(.+Debi| 6.00)/ { print "unzip  unzip " $2 }' )";  fi;                           # .(60719.01.1 RAM On all Unix And Mac?)
 
 #    echo "  aZIP_Ver: '${aZIP_Ver}'"; # exit
 
