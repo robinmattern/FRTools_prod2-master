@@ -61,6 +61,7 @@
 #.(50516.11   5/16/25 RAM  8:00p| Add search for "aStr1|aStr2"  
 #.(50516.11a  5/17/25 CAI 12:00p| Do multiple 'or' search strings
 #.(50610.03   6/10/25 RAM  8:30a| Use mmin for fractional nDays
+#.(60506.01   5/06/26 RAM  9:00a| Add default arg to Dirlist (aka Filelist))
 #
 ##PRGM     +====================+===============================================+
 ##ID 69.600. Main               |
