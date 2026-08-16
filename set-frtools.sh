@@ -80,6 +80,7 @@
 #.(51108.01  11/08/25 RAM  8:30a| Add run.app
 #.(51210.02  12/10/25 RAM 10:05p| Add Check for WSL
 #.(51210.02a 12/11/25 RAM  9:15a| Better check for WSL
+#.(60424.01   4/24/26 RAM  6:00p| Add one more Sudo for frt scripts
 #
 ##PRGM     +====================+===============================================+
 ##ID 69.600. Main0              |
@@ -102,6 +103,8 @@
   aVer="v1.05\`50810.1312"
   aVer="v1.05\`50908.0815"
   aVer="v1.05\`51211.0915"
+  aVer="v1.05\`60424.1800"
+  aVer="v1.10\`60719.1328"
 
   echo ""
 
@@ -146,7 +149,7 @@ function setOSvars() {
      aOS="linux"
      fi # eif not msys
      if [ -d "/mnt/c" ]; then bWSL="1"; fi                                                                  # .(51210.02a.1 RAM Set bWSL)
-     fi 
+     fi
 
   if [ "${OSTYPE:0:6}" == "darwin"  ]; then
      bZSHver="0"; if [[ "${OSTYPE:6:2}" -gt 21 ]]; then bZSHver="1"; fi                                     # .(41208.02b.1)
@@ -552,7 +555,7 @@ function  makScript() {
   echo "   WSL=\"\"; if [ -d \"/mnt/c\" ]; then WSL=\"/mnt\"; fi"  >>"$2/$3"                                # .(51210.02a.1 RAM Better test for WSL)
 # echo        "  $1 \"\$@\"" >>"$2/$3"                                                                      ##.(51210.02.2)
   echo "  \${WSL}$1 \"\$@\"" >>"$2/$3"                                                                      # .(51210.02.2)
-  chmod 777 "$2/$3"
+  Sudo chmod 777 "$2/$3"                                                                                    # .(60424.01.1 Add Sudo)
   }
 # -----------------------------------------------------------
 
