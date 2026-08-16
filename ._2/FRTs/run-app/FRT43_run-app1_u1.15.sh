@@ -10,7 +10,7 @@
   aRootDir="$( git rev-parse --show-toplevel 2>/dev/null || pwd)"                       # .(51108.07.1 RAM set aRootDir)
   aStage="$(basename "${aRootDir}")"
 
-  nVer=1.15.1211
+  nVer=1.15.1212
 # ---------------------------------------------------
 
 # if [ "$1" == "source" ]; then echo -e  "\n  ${0} (v${nVer})"; if [ "${OS:0:3}" != "Win" ]; then echo ""; fi; exit; fi
@@ -88,18 +88,28 @@ function sayMsg() {
     if [ "${aMsg}"     == ""  ]; then aCR="\n"; echo ""; return; fi
     if [ "${bFirst}"   == "1" ]; then bFirst=0; echo -e "----------------------------------------------------------------------\n"; fi
     if [ "${aMsg:0:1}" == "-" ]; then              aMsg="----------------------------------------------------------------------"; fi
-    if [ "${aMsg:0:1}" == "%" ]; then aMsg="✅ ${aMsg:1}"; fi  # Check 
-    if [ "${aMsg:0:1}" == "i" ]; then aMsg="ℹ️ ${aMsg:1}"; fi  # Info
-    if [ "${aMsg:0:1}" == "!" ]; then aMsg="⚠️ ${aMsg:1}"; fi  # Warn
-    if [ "${aMsg:0:1}" == "x" ]; then aMsg="❌ ${aMsg:1}"; fi  # Error 
-    if [ "${aMsg:0:1}" == "X" ]; then aMsg="🛑 ${aMsg:1}"; fi  # Stop
-    if [ "${aMsg:0:1}" == "=" ]; then aMsg="🚀 ${aMsg:1}"; fi  # Take off
-    if [ "${aMsg:0:1}" == " " ]; then aMsg="  ${aMsg:1}";   fi
+    if [ "${aMsg:0:1}" == "%" ]; then aMsg="✅ ${aMsg:1}";  fi  # Check                  # .(51212.01.1 RAM Add Msg chars back Beg) 
+    if [ "${aMsg:0:1}" == "i" ]; then aMsg="ℹ️  ${aMsg:1}"; fi  # Info
+    if [ "${aMsg:0:1}" == "!" ]; then aMsg="⚠️  ${aMsg:1}"; fi  # Warn
+    if [ "${aMsg:0:1}" == "x" ]; then aMsg="❌ ${aMsg:1}";  fi  # Error 
+    if [ "${aMsg:0:1}" == "X" ]; then aMsg="🛑 ${aMsg:1}";  fi  # Stop
+    if [ "${aMsg:0:1}" == "=" ]; then aMsg="🚀 ${aMsg:1}";  fi  # Take off                
+    if [ "${aMsg:0:1}" == " " ]; then aMsg="   ${aMsg:1}";  fi  # Normal                # .(51212.01.1 End) 
     echo -e "${aCR}${aMsg}";
     }
 # ----------------------------------------------------------------------------------------------------------------------------------
 
          sayMsg "";
+   if [ "testMsg" == "textMsg" ]; then          
+         sayMsg "% Check";
+         sayMsg "i Info";
+         sayMsg "! Warn";
+         sayMsg "x Error";
+         sayMsg "X Stop";
+         sayMsg "= Take off";
+         sayMsg "  Normal";
+         exit 
+         fi 
 
 function checkFW() {
     bOK="$( sudo ufw status | awk '/'$1'/ { print 1 }; END { print 0 }' )"
@@ -451,7 +461,6 @@ function main( ) {
 #   chkApp  "$1"                                                                        ##.(51204.02.1 RAM Check if c## or s## or both app folderes exist).(51204.02b.1 RAM But don't use it)
     getFVARS "_config.yaml"                                                             # .(51211.04.8 RAM Add _config file name).(51210.01.2 RAM Use it)  
     echo "Global: ${mFVARS}"  # it's in aRootDir                                        # .(51211.04.6 RAM Here)  
-
 
 #   ------------------------------------------------------------------
 
