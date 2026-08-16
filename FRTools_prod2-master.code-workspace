@@ -1,16 +1,11 @@
 {
     "folders": [
-        {
-            "name": "FRTools Support Files",
-            "path": "../._"
-        },
-        {
-            "name": "FRTools_prod2-master",
-            "path": "."
-        }
+        {   "name": "FRTools_prod2-master",  "path": "."     },
+        {   "name": "FRTools Support Files", "path": "../._1" },
+        {   "name": "FRTools_Data Files",    "path": "../data" }
     ],
     "settings": {
-        "files.exclude": { "**/ZIPs": true }, 
+//      "files.exclude": { "**/ZIPs": true }, 
         "liveServer.settings.multiRootWorkspaceName": "FRTools_prod2-master",
         "liveServer.settings.port": 52110,
         }

@@ -1,5 +1,10 @@
 
 ## Welcome to the formR Repos starter page
+
+### Quick cleanup command (macOS sidecar files)
+- From this repo root, run: <code>bash scripts/clean-mac-sidecars.sh</code>
+- Short form from repo root: <code>bash clean-sidecars.sh</code>
+- Preview only (no delete): <code>bash scripts/clean-mac-sidecars.sh --dry-run</code>
  
 ### A. First create a Repos folder: 
 - <code>mkdir C:\\Users\Public\Repos &nbsp; </code> # in Windows, or <code>D:\\Repos</code>
