@@ -2,6 +2,7 @@ v-env
 .env
 !.env.example
 
+,git
 node_modules
 __pycache__
 v-env
@@ -15,3 +16,6 @@ yarn.lock
 
 bookmarks.json
 commit.no
+# Ignore AppleDouble resource files, but keep directories whose names start with ._
+**/._*
+!**/._*/
